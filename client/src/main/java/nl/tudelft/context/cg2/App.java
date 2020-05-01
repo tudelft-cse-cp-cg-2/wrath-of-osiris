@@ -5,6 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import nl.tudelft.context.cg2.controller.Controller;
+import nl.tudelft.context.cg2.model.Model;
+import nl.tudelft.context.cg2.view.View;
 
 import java.io.IOException;
 
@@ -13,19 +16,27 @@ import java.io.IOException;
  */
 public class App extends Application {
 
-    private static Scene scene;
+    private Controller controller;
+    private View view;
+    private Model model;
 
     @Override
-    public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("helloworld"));
-        scene.getStylesheets().add(App.class.getResource("styles.css").toExternalForm());
-        stage.setScene(scene);
+    public void start(Stage stage) {
+        this.model = new Model();
+        model.loadData();
+
+        this.view = new View(stage);
+        view.loadScene();
+
+        this.controller = new Controller(model, view);
+        controller.getGraphicsTimer().start();
+
         stage.show();
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(App.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    @Override
+    public void stop() {
+
     }
 
     public static void main(String[] args) {
