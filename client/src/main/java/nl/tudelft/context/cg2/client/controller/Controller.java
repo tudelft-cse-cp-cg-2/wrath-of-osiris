@@ -17,7 +17,7 @@ public class Controller {
      * @param model The Model object to send interaction data towards.
      * @param view The View object, containing the UI controls calling back to this controller.
      */
-    public Controller(final Model model, final View view) {
+    public Controller(Model model, View view) {
         this.view = view;
         this.model = model;
     }

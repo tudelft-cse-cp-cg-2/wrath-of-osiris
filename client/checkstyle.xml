@@ -31,6 +31,15 @@
 -->
 
 <module name="Checker">
+    <property name="charset" value="UTF-8"/>
+    <property name="severity" value="warning"/>
+    <property name="fileExtensions" value="java, properties, xml"/>
+    <!-- Checks for whitespace                               -->
+    <!-- See http://checkstyle.sf.net/config_whitespace.html -->
+    <module name="FileTabCharacter">
+        <property name="eachLine" value="true"/>
+    </module>
+
     <!--
         If you set the basedir property below, then all reported file
         names will be relative to the specified directory. See
@@ -38,11 +47,6 @@
 
         <property name="basedir" value="${basedir}"/>
     -->
-
-    <!-- Checks whether files end with a new line.                        -->
-    <!-- See http://checkstyle.sf.net/config_misc.html#NewlineAtEndOfFile -->
-    <module name="NewlineAtEndOfFile"/>
-
     <!-- Checks that property files contain the same keys.         -->
     <!-- See http://checkstyle.sf.net/config_misc.html#Translation -->
     <module name="Translation"/>
@@ -63,7 +67,6 @@
     </module>
 
     <module name="TreeWalker">
-
         <property name="cacheFile" value="${checkstyle.cache.file}"/>
 
         <!-- required for SuppressWarningsFilter (and other Suppress* rules not used here) -->
@@ -73,8 +76,6 @@
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <module name="JavadocMethod"/>
-        <module name="JavadocType"/>
-        <module name="JavadocVariable"/>
         <module name="JavadocStyle"/>
 
 
@@ -156,27 +157,21 @@
         <module name="AvoidInlineConditionals"/>
         <module name="EmptyStatement"/>
         <module name="EqualsHashCode"/>
-        <module name="HiddenField"/>
         <module name="IllegalInstantiation"/>
         <module name="InnerAssignment"/>
-        <module name="MagicNumber"/>
         <module name="MissingSwitchDefault"/>
         <module name="SimplifyBooleanExpression"/>
         <module name="SimplifyBooleanReturn"/>
 
         <!-- Checks for class design                         -->
         <!-- See http://checkstyle.sf.net/config_design.html -->
-        <module name="DesignForExtension"/>
-        <module name="FinalClass"/>
         <module name="HideUtilityClassConstructor"/>
         <module name="InterfaceIsType"/>
         <module name="VisibilityModifier"/>
 
-
         <!-- Miscellaneous other checks.                   -->
         <!-- See http://checkstyle.sf.net/config_misc.html -->
         <module name="ArrayTypeStyle"/>
-        <module name="FinalParameters"/>
         <module name="TodoComment"/>
         <module name="UpperEll"/>
 
