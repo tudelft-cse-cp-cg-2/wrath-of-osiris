@@ -1,8 +1,8 @@
-package nl.tudelft.context.cg2.controller;
+package nl.tudelft.context.cg2.client.controller;
 
-import nl.tudelft.context.cg2.controller.core.GraphicsTimer;
-import nl.tudelft.context.cg2.model.Model;
-import nl.tudelft.context.cg2.view.View;
+import nl.tudelft.context.cg2.client.controller.core.GraphicsTimer;
+import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.view.View;
 
 public class Controller {
 

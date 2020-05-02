@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2;
+package nl.tudelft.context.cg2.client;
 
 import org.junit.jupiter.api.Test;
 

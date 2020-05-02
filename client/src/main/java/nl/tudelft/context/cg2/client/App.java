@@ -1,15 +1,10 @@
-package nl.tudelft.context.cg2;
+package nl.tudelft.context.cg2.client;
 
 import javafx.application.Application;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.tudelft.context.cg2.controller.Controller;
-import nl.tudelft.context.cg2.model.Model;
-import nl.tudelft.context.cg2.view.View;
-
-import java.io.IOException;
+import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.view.View;
 
 /**
  * JavaFX App

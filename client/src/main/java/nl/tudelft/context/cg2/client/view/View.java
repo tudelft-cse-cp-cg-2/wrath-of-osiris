@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.view;
+package nl.tudelft.context.cg2.client.view;
 
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;

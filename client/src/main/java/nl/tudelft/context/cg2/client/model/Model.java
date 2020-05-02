@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.model;
+package nl.tudelft.context.cg2.client.model;
 
 public class Model {
 

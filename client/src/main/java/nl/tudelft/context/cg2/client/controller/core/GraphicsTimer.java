@@ -1,7 +1,7 @@
-package nl.tudelft.context.cg2.controller.core;
+package nl.tudelft.context.cg2.client.controller.core;
 
 import javafx.animation.AnimationTimer;
-import nl.tudelft.context.cg2.view.View;
+import nl.tudelft.context.cg2.client.view.View;
 
 public class GraphicsTimer extends AnimationTimer {
 
