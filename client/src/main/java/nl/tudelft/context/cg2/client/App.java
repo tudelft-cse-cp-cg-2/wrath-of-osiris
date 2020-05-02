@@ -24,7 +24,6 @@ public class App extends Application {
         view.loadScene();
 
         this.controller = new Controller(model, view);
-        controller.getGraphicsTimer().start();
 
         stage.show();
     }
