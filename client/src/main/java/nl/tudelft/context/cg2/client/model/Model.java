@@ -1,5 +1,8 @@
 package nl.tudelft.context.cg2.client.model;
 
+/**
+ * The model class.
+ */
 public class Model {
 
     /**

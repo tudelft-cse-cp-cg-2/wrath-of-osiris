@@ -7,6 +7,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * The view class.
+ */
 public class View {
 
     private final Stage stage;
