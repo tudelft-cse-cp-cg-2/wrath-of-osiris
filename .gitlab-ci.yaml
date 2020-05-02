@@ -1,0 +1,17 @@
+image: maven-latest
+
+build:
+        stage: build
+        script:
+                - cd client/
+                - mvn clean compile
+                - cd ../server/
+                - mvn clean compile
+
+test:
+        stage: build
+        script:
+                - cd client/
+                - mvn clean test
+                - cd ../server/
+                - mvn clean test
