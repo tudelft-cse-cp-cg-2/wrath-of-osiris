@@ -9,7 +9,7 @@ build:
                 - mvn clean compile
 
 test:
-        stage: build
+        stage: test
         script:
                 - cd client/
                 - mvn clean test
