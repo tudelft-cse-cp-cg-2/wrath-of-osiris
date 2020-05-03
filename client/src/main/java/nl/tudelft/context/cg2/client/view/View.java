@@ -7,11 +7,18 @@ import javafx.scene.text.Text;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * The view class.
+ */
 public class View {
 
-    private Stage stage;
+    private final Stage stage;
     private Scene scene;
 
+    /**
+     * The view constructor.
+     * @param stage the javafx window being displayed to the user.
+     */
     public View(Stage stage) {
         this.stage = stage;
         stage.setTitle("Hole in the wall");
@@ -28,10 +35,10 @@ public class View {
         this.scene = new Scene(new StackPane(new Text("Hello world")));
     }
 
+    /**
+     * Loads a javafx scene into the window.
+     */
     public void loadScene() {
         stage.setScene(scene);
-    }
-
-    public void updateScene(double t, double dt) {
     }
 }
