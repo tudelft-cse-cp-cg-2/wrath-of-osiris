@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.tudelft.context.cg2.client.controller.Controller;
@@ -9,6 +10,8 @@ import nl.tudelft.context.cg2.client.view.View;
 /**
  * JavaFX App.
  */
+@SuppressFBWarnings(value = "URF_UNREAD_FIELD",
+                    justification = "'controller' will be used very soon.")
 public class App extends Application {
 
     private Controller controller;
