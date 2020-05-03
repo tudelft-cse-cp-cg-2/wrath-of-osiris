@@ -25,5 +25,6 @@ test:
 warnings:
         stage: static-analysis
         script:
-                - "mvn -B test-compile checkstyle:check"
-                - "mvn -B spotbugs:check"
+                - cd client/
+                - mvn -B test-compile checkstyle:check
+                - mvn -B spotbugs:check
