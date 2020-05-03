@@ -28,3 +28,6 @@ warnings:
                 - cd client/
                 - mvn -B test-compile checkstyle:check
                 - mvn -B spotbugs:check
+                - cd ../server/
+                - mvn -B test-compile checkstyle:check
+                - mvn -B spotbug:check
