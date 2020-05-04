@@ -1,0 +1,33 @@
+image: maven:3-jdk-11
+
+stages:
+        - build
+        - test
+        - static-analysis
+
+
+build:
+        stage: build
+        script:
+                - cd client/
+                - mvn clean compile
+                - cd ../server/
+                - mvn clean compile
+
+test:
+        stage: test
+        script:
+                - cd client/
+                - mvn clean test
+                - cd ../server/
+                - mvn clean test
+
+warnings:
+        stage: static-analysis
+        script:
+                - cd client/
+                - mvn -B test-compile checkstyle:check
+                - mvn -B spotbugs:check
+                - cd ../server/
+                - mvn -B test-compile checkstyle:check
+                - mvn -B spotbugs:check
