@@ -9,8 +9,12 @@ import nl.tudelft.context.cg2.client.view.View;
  */
 public class Controller {
 
-    private final Model model;
-    private final View view;
+    private Model model;
+    private View view;
+
+    public Controller() {
+
+    }
 
     /**
      * Constructor for the Controller object.
@@ -21,4 +25,5 @@ public class Controller {
         this.view = view;
         this.model = model;
     }
+
 }

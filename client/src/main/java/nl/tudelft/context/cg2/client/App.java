@@ -7,6 +7,9 @@ import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 /**
  * JavaFX App.
  */
@@ -23,13 +26,10 @@ public class App extends Application {
      * @param stage the window displayed to the user.
      */
     @Override
-    public void start(Stage stage) {
+    public void start(Stage stage) throws IOException, URISyntaxException {
         this.model = new Model();
         model.loadData();
-
         this.view = new View(stage);
-        view.loadScene();
-
         this.controller = new Controller(model, view);
 
         stage.show();
