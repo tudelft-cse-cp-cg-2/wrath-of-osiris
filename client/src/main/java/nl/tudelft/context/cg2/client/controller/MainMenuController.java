@@ -1,24 +1,46 @@
 package nl.tudelft.context.cg2.client.controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
+/**
+ * Controller for Main Menu scene.
+ */
+@SuppressFBWarnings()
 public class MainMenuController {
 
     @FXML
-    public Button joinGameButton;
+    private Button joinGameButton;
     @FXML
-    public Button createGameButton;
+    private Button createGameButton;
     @FXML
-    public Button quitButton;
+    private Button quitButton;
 
     /**
-     * Handles pressing the Quit button.
-     * @param event click event.
+     * Handles pressing the Join Game button, and changes the scene
+     * to the Lobby List scene.
+     * @param actionEvent Click event.
+     */
+    public void pressJoinGame(ActionEvent actionEvent) {
+        // TODO
+    }
+
+    /**
+     * Handles pressing the Create Game button, and changes the scene
+     * to the Create Game scene.
+     * @param actionEvent Click event.
+     */
+    public void pressCreateGame(ActionEvent actionEvent) {
+        // TODO
+    }
+
+    /**
+     * Handles pressing the Quit button, and quits the game.
+     * @param event Click event.
      */
     @FXML
     public void pressQuit(ActionEvent event) {
@@ -27,5 +49,4 @@ public class MainMenuController {
         Platform.exit();
         System.exit(0);
     }
-
 }

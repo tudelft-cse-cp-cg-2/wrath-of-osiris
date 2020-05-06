@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.view;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Parent;
@@ -8,22 +9,24 @@ import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.net.URISyntaxException;
 
 /**
  * The view class.
  */
+@SuppressFBWarnings()
+@SuppressWarnings("HideUtilityClassConstructor")
 public class View {
 
     private static Stage stage;
     private static Scene scene;
-    public static FXMLLoader loader;
+    private static FXMLLoader loader;
 
     /**
      * The view constructor.
-     * @param stage the javafx window being displayed to the user.
+     * @param stage The javafx window being displayed to the user.
+     * @throws IOException Whether FXML resource is found.
      */
-    public View(Stage stage) throws IOException, URISyntaxException {
+    public View(Stage stage) throws IOException {
         this.stage = stage;
         this.loader = new FXMLLoader();
         stage.setTitle("Hole in the wall");
@@ -42,8 +45,9 @@ public class View {
 
     /**
      * Loads a javafx scene into the window.
+     * @param scene The scene to load.
      */
-    public static void loadScene(Scene scene) throws IOException {
+    public static void loadScene(Scene scene) {
         stage.setScene(scene);
     }
 }

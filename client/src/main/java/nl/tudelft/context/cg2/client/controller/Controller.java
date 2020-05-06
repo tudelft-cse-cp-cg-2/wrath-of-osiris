@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.controller;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
@@ -7,11 +8,15 @@ import nl.tudelft.context.cg2.client.view.View;
  * Controller class representing the Controller in the View-Controller-Model design pattern.
  * It handles user input and sends it to the model.
  */
+@SuppressFBWarnings()
 public class Controller {
 
     private Model model;
     private View view;
 
+    /**
+     * Required for running. TODO
+     */
     public Controller() {
 
     }
