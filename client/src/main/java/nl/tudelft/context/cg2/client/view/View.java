@@ -1,62 +1,74 @@
 package nl.tudelft.context.cg2.client.view;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
-import javafx.stage.Screen;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
-import java.io.IOException;
-import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The view class.
  */
-@SuppressFBWarnings()
-@SuppressWarnings("HideUtilityClassConstructor")
 public class View {
 
-    private Stage stage;
-    private Scene scene;
-    private FXMLLoader loader = new FXMLLoader();
+    private final Window window;
+
+    private final ArrayList<BaseScene> scenes;
+    private final MenuScene menuScene;
 
     /**
      * The view constructor.
-     * @param stage The javafx window being displayed to the user.
-     * @throws IOException Whether FXML resource is found.
+     * @param stage the javafx window being displayed to the user.
      */
-    public View(Stage stage) throws IOException {
-        this.stage = stage;
-        stage.setTitle("Hole in the wall");
-        stage.setResizable(true);
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        stage.setWidth(bounds.getWidth());
-        stage.setHeight(bounds.getHeight());
-        stage.setMinWidth(800);
-        stage.setMinHeight(600);
-        stage.setX(0.D);
-        stage.setY(0.D);
+    public View(final Stage stage) {
+        this.window = new Window(stage);
+        this.menuScene = new MenuScene(window, new StackPane());
+
+        this.scenes = new ArrayList<>(Arrays.asList(
+                menuScene
+        ));
+
+        scenes.forEach(BaseScene::draw);
+
+        window.getStage().widthProperty().addListener((obs, oldVal, newVal) -> onResized());
+        window.getStage().heightProperty().addListener((obs, oldVal, newVal) -> onResized());
     }
 
     /**
-     * Loads a javafx scene into the window.
-     * @param fxml FXML file to load.
+     * Updates everything that runs on the graphics timer.
+     * @param t the passed time in s since timer initialization.
+     * @param dt the passed time in s since the last update.
      */
-    public void loadScene(String fxml) {
-        URL url = View.class.getClassLoader().getResource(fxml);
-        Scene scene;
-        try {
-            scene = new Scene(loader.load(url));
-            stage.setScene(scene);
-        } catch (IOException e) {
-            System.out.println("FXML was not found: " + fxml);
-            e.printStackTrace();
-            stage.close();
-            Platform.exit();
-            System.exit(0);
+    public void update(double t, double dt) {
+        if(window.getShownScene() != null) {
+            window.getShownScene().animate();
         }
+    }
+
+    /**
+     * Event thrown when the window is resized.
+     * Can be used to update the location of various UI elements.
+     */
+    private void onResized() {
+        if(window.getShownScene() != null) {
+            window.getShownScene().onResized();
+        }
+    }
+
+    /**
+     * The window getter.
+     * @return the window.
+     */
+    public Window getWindow() {
+        return window;
+    }
+
+    /**
+     * The menu scene getter.
+     * @return the menu scene.
+     */
+    public MenuScene getMenuScene() {
+        return menuScene;
     }
 }

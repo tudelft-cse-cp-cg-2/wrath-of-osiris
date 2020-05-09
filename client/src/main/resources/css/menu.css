@@ -1,0 +1,46 @@
+.root {
+    -fx-background-color: rgb(145,180,191);
+}
+
+#example-text {
+    -fx-font-size: 40px;
+    -fx-font-family: 'SanSerif';
+    -fx-fill: white;
+    -fx-font-weight: bold ;
+}
+
+.simple-button {
+    -fx-background-color: lightblue;
+    -fx-text-fill: white;
+}
+
+.simple-button .text {
+    -fx-font-size: 16px;
+    -fx-font-family: 'SanSerif';
+    -fx-fill: white;
+}
+
+.simple-button:hover {
+    -fx-background-color: lightblue;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+}
+
+#example-button-three {
+    -fx-background-color: purple;
+}
+
+#example-button-three:hover {
+    -fx-background-color: purple;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 2px;
+}
+
+#example-button-three .text {
+    -fx-font-size: 12px;
+    -fx-font-family: 'SanSerif';
+    -fx-fill: black;
+    -fx-font-weight: bold;
+}
