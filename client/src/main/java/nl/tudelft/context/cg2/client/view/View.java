@@ -1,14 +1,15 @@
 package nl.tudelft.context.cg2.client.view;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Rectangle2D;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * The view class.
@@ -17,9 +18,9 @@ import java.io.IOException;
 @SuppressWarnings("HideUtilityClassConstructor")
 public class View {
 
-    private static Stage stage;
-    private static Scene scene;
-    private static FXMLLoader loader;
+    private Stage stage;
+    private Scene scene;
+    private FXMLLoader loader = new FXMLLoader();
 
     /**
      * The view constructor.
@@ -28,7 +29,6 @@ public class View {
      */
     public View(Stage stage) throws IOException {
         this.stage = stage;
-        this.loader = new FXMLLoader();
         stage.setTitle("Hole in the wall");
         stage.setResizable(true);
         Screen screen = Screen.getPrimary();
@@ -39,15 +39,24 @@ public class View {
         stage.setMinHeight(600);
         stage.setX(0.D);
         stage.setY(0.D);
-        Parent root = loader.load(View.class.getClassLoader().getResource("fxml/MainMenu.fxml"));
-        stage.setScene(new Scene(root));
     }
 
     /**
      * Loads a javafx scene into the window.
-     * @param scene The scene to load.
+     * @param fxml FXML file to load.
      */
-    public static void loadScene(Scene scene) {
-        stage.setScene(scene);
+    public void loadScene(String fxml) {
+        URL url = View.class.getClassLoader().getResource(fxml);
+        Scene scene;
+        try {
+            scene = new Scene(loader.load(url));
+            stage.setScene(scene);
+        } catch (IOException e) {
+            System.out.println("FXML was not found: " + fxml);
+            e.printStackTrace();
+            stage.close();
+            Platform.exit();
+            System.exit(0);
+        }
     }
 }

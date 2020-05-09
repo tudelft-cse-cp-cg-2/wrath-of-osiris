@@ -2,8 +2,10 @@ package nl.tudelft.context.cg2.client;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
-import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.MainMenuController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
@@ -12,13 +14,15 @@ import java.io.IOException;
 /**
  * JavaFX App.
  */
-@SuppressFBWarnings(value = "URF_UNREAD_FIELD",
-                    justification = "'controller' will be used very soon.")
+@SuppressFBWarnings(value = {"URF_UNREAD_FIELD", "ST_WRITE_TO_STATIC_FROM_INSTANCE_METHOD" },
+                    justification = "'controller' will be used very soon."
+                            + "Don't know how to do this otherwise.")
+
 public class App extends Application {
 
-    private Controller controller;
-    private View view;
-    private Model model;
+    //private Controller controller;
+    private static View view;
+    //private Model model;
 
     /**
      * Launches the javafx application.
@@ -26,11 +30,18 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) throws IOException {
-        this.model = new Model();
-        model.loadData();
-        this.view = new View(stage);
-        this.controller = new Controller(model, view);
 
+        FXMLLoader mainMenuLoader = new FXMLLoader(
+                getClass().getClassLoader().getResource("fxml/MainMenu.fxml"));
+        stage.setScene(new Scene(mainMenuLoader.load()));
+        MainMenuController mainMenuController = mainMenuLoader.getController();
+
+        view = new View(stage);
+        Model model = new Model(view);
+        mainMenuController.init(model, view);
+        model.loadData();
+
+        view.loadScene("fxml/MainMenu.fxml");
         stage.show();
     }
 
@@ -48,5 +59,13 @@ public class App extends Application {
      */
     public static void main(String[] args) {
         launch();
+    }
+
+    /**
+     * Getter for view field.
+     * @return View field value.
+     */
+    public static View getView() {
+        return view;
     }
 }

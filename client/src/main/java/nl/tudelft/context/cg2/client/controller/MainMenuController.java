@@ -6,12 +6,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import nl.tudelft.context.cg2.client.App;
 
 /**
  * Controller for Main Menu scene.
  */
 @SuppressFBWarnings()
-public class MainMenuController {
+public class MainMenuController extends AbstractController {
 
     @FXML
     private Button joinGameButton;
@@ -25,6 +26,7 @@ public class MainMenuController {
      * to the Lobby List scene.
      * @param actionEvent Click event.
      */
+    @FXML
     public void pressJoinGame(ActionEvent actionEvent) {
         // TODO
     }
@@ -34,8 +36,9 @@ public class MainMenuController {
      * to the Create Game scene.
      * @param actionEvent Click event.
      */
+    @FXML
     public void pressCreateGame(ActionEvent actionEvent) {
-        // TODO
+        App.getView().loadScene("fxml/CreateGame.fxml");
     }
 
     /**
