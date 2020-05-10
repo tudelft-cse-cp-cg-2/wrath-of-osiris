@@ -1,6 +1,8 @@
 package nl.tudelft.context.cg2.client;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.Group;
@@ -8,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import org.opencv.core.*;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
@@ -23,6 +26,9 @@ import java.awt.image.WritableRaster;
 @SuppressFBWarnings(value = "URF_UNREAD_FIELD",
         justification = "'controller' will be used very soon.")
 public class App extends Application {
+    VideoCapture videoCapture;
+    CascadeClassifier classifier;
+
     /**
      * Launches the javafx application.
      *
@@ -32,38 +38,43 @@ public class App extends Application {
     public void start(Stage stage) {
         nu.pattern.OpenCV.loadLocally();
 
-        App obj = new App();
-        WritableImage writableImage = obj.captureSnapshot();
+        // Init video capture
+        videoCapture = new VideoCapture();
+        videoCapture.open(0);
 
-        ImageView imageView = new ImageView(writableImage);
-        imageView.setPreserveRatio(true);
+        // Select a classifier
+//        classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_fullbody.xml");
+        classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
 
-        Group root = new Group(imageView);
-        Scene scene = new Scene(root);
+        // Schedule an interval to capture a frame, process it and display it
+        Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+            WritableImage writableImage = this.captureAndProcessSnapshot();
+
+            ImageView imageView = new ImageView(writableImage);
+            imageView.setPreserveRatio(true);
+
+            Group root = new Group(imageView);
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+        }));
+        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
+        fiveSecondsWonder.play();
+
         stage.setTitle("Capture image");
-        stage.setScene(scene);
-
         stage.show();
     }
 
-    public WritableImage captureSnapshot() {
+    public WritableImage captureAndProcessSnapshot() {
         WritableImage writableImage = null;
 
-        VideoCapture videoCapture = new VideoCapture();
-        videoCapture.open(0);
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
-        if (videoCapture.isOpened() && videoCapture.read(matrix)) {
+        if (videoCapture.isOpened()) {
             BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
 
-            CascadeClassifier cascadeClassifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_fullbody.xml");
-//            CascadeClassifier cascadeClassifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
-
             MatOfRect faceDetections = new MatOfRect();
-            cascadeClassifier.detectMultiScale(matrix, faceDetections, 1.05, 0);
-            System.out.println(String.format("Detected %s faces",
-                    faceDetections.toArray().length));
+            classifier.detectMultiScale(matrix, faceDetections);
 
             // Drawing boxes
             for (Rect rect : faceDetections.toArray()) {
