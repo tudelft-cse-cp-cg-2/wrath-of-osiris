@@ -10,62 +10,85 @@ import java.util.HashMap;
  */
 public class Wall {
     private static final int MAX_NUMBER_AMOUNT = 3;
-    private Pose left;
-    private Pose middle;
-    private Pose right;
+    private HashMap<ScreenPos, Pose> poses;
     private HashMap<ScreenPos, Integer> restrictions;
 
     /**
-     * Constructor.
-     * @param left left pose
-     * @param middle middle pose
-     * @param right right pose
+     * Constructor. Produces a blank wall, its poses and numbers should be set using the setters.
      */
-    public Wall(Pose left, Pose middle, Pose right) {
-        this.left = left;
-        this.middle = middle;
-        this.right = right;
+    public Wall() {
+        poses = new HashMap<>(MAX_NUMBER_AMOUNT);
         restrictions = new HashMap<>(MAX_NUMBER_AMOUNT);
         for (ScreenPos position : ScreenPos.values()) {
             restrictions.put(position, null);
+            poses.put(position, null);
         }
     }
 
     /**
      * Sets a number at one of the three screen positions.
+     *
      * @param position screen position
-     * @param num number that should be set
+     * @param num      number that should be set
      */
     public void setNumber(ScreenPos position, int num) {
         restrictions.put(position, num);
     }
 
     /**
+     * Getter.
+     * @param position screen position
+     * @return number in that position
+     */
+    public Integer getNumber(ScreenPos position) {
+        return restrictions.get(position);
+    }
+
+    /**
+     * Sets a Pose at one of the three screen positions.
+     *
+     * @param position screen position
+     * @param pose     pose that should be set
+     */
+    public void setPose(ScreenPos position, Pose pose) {
+        poses.put(position, pose);
+    }
+
+    /**
+     * Getter.
+     * @param position screen position
+     * @return pose in that position
+     */
+    public Pose getPose(ScreenPos position) {
+        return poses.get(position);
+    }
+
+    /**
      * Compares the players' poses to the poses required for the wall.
      *
-     * @param poses ArrayList of the players' poses
+     * @param playerPoses ArrayList of the players' poses
      * @return false if a life is lost, else true
      */
-    public boolean compare(ArrayList<Pose> poses) {
+    public boolean compare(ArrayList<Pose> playerPoses) {
         int[] frequency = new int[MAX_NUMBER_AMOUNT];
-        for (Pose pose : poses) {
+        for (Pose pose : playerPoses) {
             switch (pose.getScreenPos()) {
                 case LEFT:
-                    if (pose.equals(left)) {
+                    if (pose.equals(getPose(ScreenPos.LEFT))) {
                         frequency[0]++;
                     } else {
                         return false;
                     }
                     break;
                 case MIDDLE:
-                    if (pose.equals(middle)) {
+                    if (pose.equals(getPose(ScreenPos.MIDDLE))) {
                         frequency[1]++;
                     } else {
                         return false;
                     }
                     break;
                 case RIGHT:
-                    if (pose.equals(right)) {
+                    if (pose.equals(getPose(ScreenPos.RIGHT))) {
                         frequency[2]++;
                     } else {
                         return false;

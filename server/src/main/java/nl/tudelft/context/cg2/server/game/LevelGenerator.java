@@ -4,7 +4,9 @@ package nl.tudelft.context.cg2.server.game;
  * Everything that has to do with randomly generated things in the game resides in this class.
  */
 public class LevelGenerator {
+    private static final int AMOUNT_OF_WALLS_PER_LEVEL = 50;
     private int amountOfPlayers;
+//    private int level;
 
     /**
      * Constructor.
@@ -12,6 +14,15 @@ public class LevelGenerator {
      */
     public LevelGenerator(int amountOfPlayers) {
         this.amountOfPlayers = amountOfPlayers;
+//        level = 1;
+    }
+
+    /**
+     * Temporary getter to suppress spotbugs warning.
+     * @return amount of players
+     */
+    public int getAmountOfPlayers() {
+        return amountOfPlayers;
     }
 
     /**
