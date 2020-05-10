@@ -47,7 +47,6 @@ public class Window {
 
     /**
      * Show a scene in the window.
-     *
      * @param scene the scene to be displayed.
      */
     public void showScene(BaseScene scene) {

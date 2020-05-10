@@ -16,7 +16,6 @@ public abstract class BaseScene extends Scene {
 
     /**
      * The base scene constructor.
-     *
      * @param window the window currently showing.
      * @param root   the root UI element.
      */
@@ -56,7 +55,6 @@ public abstract class BaseScene extends Scene {
 
     /**
      * Gets the size of the scene.
-     *
      * @return the width and height dimensions of the scene.
      */
     public Dimension getSceneSize() {

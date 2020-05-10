@@ -12,8 +12,7 @@ public class SimpleButton extends StackPane {
     private Text text;
 
     /**
-     * The sumple button constructor.
-     *
+     * The simple button constructor.
      * @param name the name of the button.
      */
     public SimpleButton(String name) {
@@ -35,7 +34,6 @@ public class SimpleButton extends StackPane {
 
     /**
      * Sets the size of the button.
-     *
      * @param width  the width of the button.
      * @param height the height of the button.
      */
