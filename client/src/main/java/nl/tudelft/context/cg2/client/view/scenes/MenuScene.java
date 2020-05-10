@@ -9,6 +9,10 @@ import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
+/**
+ * The menu scene.
+ * Features the main menu UI as shown to the user.
+ */
 public class MenuScene extends BaseScene {
 
     private Text exampleText;
@@ -19,6 +23,7 @@ public class MenuScene extends BaseScene {
     private SimpleButton exampleButtonThree;
 
     /**
+     * The menu scene constructor.
      * @param window the window currently showing.
      * @param root   the root UI element.
      */
@@ -26,6 +31,9 @@ public class MenuScene extends BaseScene {
         super(window, root);
     }
 
+    /**
+     * Draws the scene.
+     */
     @Override
     public void draw() {
         this.getStylesheets().add("/css/menu.css");
@@ -56,29 +64,50 @@ public class MenuScene extends BaseScene {
         root.getChildren().addAll(exampleHBox, exampleButtonThree, exampleText);
     }
 
+    /**
+     * Animates the scene.
+     */
     @Override
     public void animate() {
 
     }
 
+    /**
+     * Event thrown when the window is resized.
+     */
     @Override
     public void onResized() {
 
     }
 
+    /**
+     * Event thrown when the scene is shown in the window.
+     */
     @Override
     public void onShown() {
 
     }
 
+    /**
+     * The example button one getter.
+     * @return the example button one.
+     */
     public SimpleButton getExampleButtonOne() {
         return exampleButtonOne;
     }
 
+    /**
+     * The example button two getter.
+     * @return the example button two.
+     */
     public SimpleButton getExampleButtonTwo() {
         return exampleButtonTwo;
     }
 
+    /**
+     * The example button three getter.
+     * @return the example button three.
+     */
     public SimpleButton getExampleButtonThree() {
         return exampleButtonThree;
     }

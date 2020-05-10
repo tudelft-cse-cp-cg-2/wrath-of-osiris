@@ -45,6 +45,5 @@ public abstract class SceneController {
      * Sets up the event listeners attach to various UI properties.
      */
     protected abstract void setupEventListeners();
-    
 
 }

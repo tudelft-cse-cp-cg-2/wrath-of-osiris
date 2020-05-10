@@ -17,7 +17,6 @@ public class Popup extends StackPane {
     /**
      * Draws the popup.
      */
-    private void draw() {
-        
-    }
+    private void draw() { }
+
 }

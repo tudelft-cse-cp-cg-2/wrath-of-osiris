@@ -4,6 +4,11 @@ import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 
+/**
+ * The window class.
+ * This class wraps the JavaFX stage which is shown as a window to the user.
+ * Contains various window utility functions.
+ */
 public class Window {
 
 	private final Stage stage;
@@ -43,11 +48,11 @@ public class Window {
 		shownScene = scene;
 		stage.setScene(scene);
 	}
-	
+
 	/**
 	 * Gets the window stage.
 	 * @return the stage.
-	 */
+     */
 	public Stage getStage() {
 		return stage;
 	}

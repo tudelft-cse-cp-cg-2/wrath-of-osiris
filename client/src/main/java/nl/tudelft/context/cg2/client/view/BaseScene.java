@@ -3,19 +3,19 @@ package nl.tudelft.context.cg2.client.view;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
-import java.awt.*;
+import java.awt.Dimension;
 
 /**
  * The base scene class.
  * Can be set in a window to show a scene.
  */
 public abstract class BaseScene extends Scene {
-	
-	protected final Window window;
+
+    protected final Window window;
 	protected final Pane root;
 
 	/**
-	 *
+	 * The base scene constructor.
 	 * @param window the window currently showing.
 	 * @param root the root UI element.
 	 */
@@ -58,7 +58,6 @@ public abstract class BaseScene extends Scene {
 	 * @return the width and height dimensions of the scene.
 	 */
 	public Dimension getSceneSize() {
-		return new Dimension((int) getWidth(), (int) getHeight());
+	    return new Dimension((int) getWidth(), (int) getHeight());
 	}
-
-};
+}

@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.view;
 
+import javafx.application.Platform;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
@@ -30,9 +31,7 @@ public class View {
         ));
 
         scenes.forEach(BaseScene::draw);
-
-        window.getStage().widthProperty().addListener((obs, oldVal, newVal) -> onResized());
-        window.getStage().heightProperty().addListener((obs, oldVal, newVal) -> onResized());
+        window.resizedProperty().addListener((obj, oldV, newV) -> onResized(newV));
     }
 
     /**
@@ -41,17 +40,15 @@ public class View {
      * @param dt the passed time in s since the last update.
      */
     public void update(double t, double dt) {
-        if(window.getShownScene() != null) {
-            window.getShownScene().animate();
-        }
+        Platform.runLater(() -> window.getShownScene().animate());
     }
 
     /**
-     * Event thrown when the window is resized.
-     * Can be used to update the location of various UI elements.
+     * Handles the windows resize action.
+     * @param resized was resized or not.
      */
-    private void onResized() {
-        if(window.getShownScene() != null) {
+    private void onResized(boolean resized) {
+        if (resized) {
             window.getShownScene().onResized();
         }
     }

@@ -25,6 +25,9 @@ public class MenuSceneController extends SceneController {
         scene = view.getMenuScene();
     }
 
+    /**
+     * Sets up the mouse listeners attached to the various GUI elements.
+     */
     @Override
     protected void setupMouseListeners() {
         scene.getExampleButtonOne().setOnMouseClicked(event -> {
@@ -40,11 +43,17 @@ public class MenuSceneController extends SceneController {
         });
     }
 
+    /**
+     * Sets up the keyboard listeners attached to the various GUI elements.
+     */
     @Override
     protected void setupKeyboardListeners() {
 
     }
 
+    /**
+     * Sets up the event listeners attach to various UI properties.
+     */
     @Override
     protected void setupEventListeners() {
 
