@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.view;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -14,6 +15,8 @@ public class Window {
 	private final Stage stage;
 	private BaseScene shownScene;
 
+	private SimpleBooleanProperty resized;
+
 	/**
 	 * The window constructor.
 	 * @param stage the window stage.
@@ -21,6 +24,7 @@ public class Window {
 	public Window(final Stage stage) {
 		this.stage = stage;
 		this.shownScene = null;
+		this.resized = new SimpleBooleanProperty(false);
 		this.drawWindow();
 	}
 
@@ -50,6 +54,15 @@ public class Window {
 	}
 
 	/**
+	 * Event thrown when the window gets resized.
+	 * Flashes the resized property for window observers to catch that the window was resized.
+	 */
+	private void onResized() {
+		resized.setValue(true);
+		resized.setValue(false);
+	}
+
+	/**
 	 * Gets the window stage.
 	 * @return the stage.
      */
@@ -63,5 +76,13 @@ public class Window {
 	 */
 	public BaseScene getShownScene() {
 		return shownScene;
+	}
+
+	/**
+	 * The resized property getter.
+	 * @return the property that flashes to true when the window is resized.
+	 */
+	public SimpleBooleanProperty resizedProperty() {
+		return resized;
 	}
 }
