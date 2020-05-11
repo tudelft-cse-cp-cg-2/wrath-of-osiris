@@ -43,6 +43,8 @@ public class Window {
         stage.setMinHeight(600D);
         stage.setX(0D);
         stage.setY(0D);
+        stage.widthProperty().addListener((obs, oldVal, newVal) -> onResized());
+        stage.heightProperty().addListener((obs, oldVal, newVal) -> onResized());
     }
 
     /**
