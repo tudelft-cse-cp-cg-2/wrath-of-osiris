@@ -12,10 +12,12 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.opencv.core.*;
+import org.opencv.core.Point;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -26,6 +28,7 @@ import java.awt.image.WritableRaster;
 @SuppressFBWarnings(value = "URF_UNREAD_FIELD",
         justification = "'controller' will be used very soon.")
 public class App extends Application {
+    BufferedImage baseImage = null;
     VideoCapture videoCapture;
     CascadeClassifier classifier;
 
@@ -43,7 +46,6 @@ public class App extends Application {
         videoCapture.open(0);
 
         // Select a classifier
-//        classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_fullbody.xml");
         classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
 
         // Schedule an interval to capture a frame, process it and display it
@@ -53,6 +55,7 @@ public class App extends Application {
             ImageView imageView = new ImageView(writableImage);
             imageView.setPreserveRatio(true);
 
+            // Probably there is a more efficient, more javafx way to do this
             Group root = new Group(imageView);
             Scene scene = new Scene(root);
             stage.setScene(scene);
@@ -65,35 +68,50 @@ public class App extends Application {
     }
 
     public WritableImage captureAndProcessSnapshot() {
-        WritableImage writableImage = null;
+        if (!videoCapture.isOpened()) throw new Error("Camera is not active");
 
         Mat matrix = new Mat();
         videoCapture.read(matrix);
-
-        if (videoCapture.isOpened()) {
-            BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
-
-            MatOfRect faceDetections = new MatOfRect();
-            classifier.detectMultiScale(matrix, faceDetections);
-
-            // Drawing boxes
-            for (Rect rect : faceDetections.toArray()) {
-                Imgproc.rectangle(
-                        matrix,                                   //where to draw the box
-                        new Point(rect.x, rect.y),                            //bottom left
-                        new Point(rect.x + rect.width, rect.y + rect.height), //top right
-                        new Scalar(0, 0, 255)                                 //RGB colour
-                );
-            }
-
-            WritableRaster raster = image.getRaster();
-            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-            byte[] data = dataBuffer.getData();
-            matrix.get(0, 0, data);
-            writableImage = SwingFXUtils.toFXImage(image, null);
+        BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
+        if (baseImage == null) {
+            baseImage = image;
         }
 
-        return writableImage;
+        // FACE DETECTION
+
+//            MatOfRect detections = new MatOfRect();
+//            classifier.detectMultiScale(matrix, detections);
+//            // Drawing boxes
+//            for (Rect rect : detections.toArray()) {
+//                Imgproc.rectangle(
+//                        matrix,                                   //where to draw the box
+//                        new Point(rect.x, rect.y),                            //bottom left
+//                        new Point(rect.x + rect.width, rect.y + rect.height), //top right
+//                        new Scalar(0, 0, 255)                                 //RGB colour
+//                );
+//            }
+
+        WritableRaster raster = image.getRaster();
+        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+        byte[] data = dataBuffer.getData();
+        matrix.get(0, 0, data);
+
+        image = blendAndCompareImages(image);
+        return SwingFXUtils.toFXImage(image, null);
+    }
+
+    BufferedImage blendAndCompareImages(BufferedImage img) {
+        int epsilon = 750000;
+        for (int x = 0; x < img.getWidth(); x++) {
+            for (int y = 0; y < img.getHeight(); y++) {
+                int rgbValue = (baseImage.getRGB(x, y) + img.getRGB(x, y)) / 2;
+                baseImage.setRGB(x, y, rgbValue);
+                if (Math.abs(rgbValue - img.getRGB(x, y)) > epsilon) {
+                    img.setRGB(x, y, new Color(0, 255, 0).getRGB());
+                }
+            }
+        }
+        return img;
     }
 
     /**
