@@ -1,6 +1,6 @@
 package nl.tudelft.context.cg2.client.controller;
 
-import nl.tudelft.context.cg2.client.controller.core.GraphicsTimer;
+import nl.tudelft.context.cg2.client.controller.core.GameTimer;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
@@ -12,7 +12,7 @@ import nl.tudelft.context.cg2.client.view.View;
 public class Controller {
 
     private final ViewController viewController;
-    private final GraphicsTimer graphicsTimer;
+    private final GameTimer gameTimer;
 
     private final Model model;
     private final View view;
@@ -24,7 +24,7 @@ public class Controller {
      */
     public Controller(final Model model, final View view) {
         this.viewController = new ViewController(this, view);
-        this.graphicsTimer = new GraphicsTimer(view);
+        this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;
     }
@@ -57,7 +57,7 @@ public class Controller {
      * The graphics timer getter.
      * @return the graphics timer.
      */
-    public GraphicsTimer getGraphicsTimer() {
-        return graphicsTimer;
+    public GameTimer getGameTimer() {
+        return gameTimer;
     }
 }

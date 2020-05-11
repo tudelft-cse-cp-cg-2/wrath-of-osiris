@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.view;
 
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -16,6 +17,8 @@ public class Window {
     private BaseScene shownScene;
 
     private SimpleBooleanProperty resized;
+    private SimpleDoubleProperty sceneWidth;
+    private SimpleDoubleProperty sceneHeight;
 
     /**
      * The window constructor.
@@ -26,6 +29,8 @@ public class Window {
         this.stage = stage;
         this.shownScene = null;
         this.resized = new SimpleBooleanProperty(false);
+        this.sceneWidth = new SimpleDoubleProperty(0);
+        this.sceneHeight = new SimpleDoubleProperty(0);
         this.drawWindow();
     }
 
@@ -45,6 +50,8 @@ public class Window {
         stage.setY(0D);
         stage.widthProperty().addListener((obs, oldVal, newVal) -> onResized());
         stage.heightProperty().addListener((obs, oldVal, newVal) -> onResized());
+        sceneHeight.bind(stage.heightProperty().subtract(37.6));
+        sceneWidth.bind(stage.widthProperty());
     }
 
     /**
@@ -67,7 +74,6 @@ public class Window {
 
     /**
      * Gets the window stage.
-     *
      * @return the stage.
      */
     public Stage getStage() {
@@ -76,7 +82,6 @@ public class Window {
 
     /**
      * Gets the base scene that is currently being displayed in the window.
-     *
      * @return the displayed scene.
      */
     public BaseScene getShownScene() {
@@ -85,10 +90,25 @@ public class Window {
 
     /**
      * The resized property getter.
-     *
      * @return the property that flashes to true when the window is resized.
      */
     public SimpleBooleanProperty resizedProperty() {
         return resized;
+    }
+
+    /**
+     * The scene width property defines the scene width to equal the window width.
+     * @return the scene height.
+     */
+    public SimpleDoubleProperty sceneWidthProperty() {
+        return sceneWidth;
+    }
+
+    /**
+     * The scene height property defines the scene height in terms of the window height minus the titlebar.
+     * @return the scene height.
+     */
+    public SimpleDoubleProperty sceneHeightProperty() {
+        return sceneHeight;
     }
 }

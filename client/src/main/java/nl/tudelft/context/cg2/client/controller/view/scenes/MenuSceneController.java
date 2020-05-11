@@ -48,7 +48,11 @@ public class MenuSceneController extends SceneController {
      */
     @Override
     protected void setupKeyboardListeners() {
-
+        scene.setOnKeyPressed(event -> {
+            switch (event.getCode()) {
+                case SPACE: view.getGameScene().show(); break;
+            }
+        });
     }
 
     /**

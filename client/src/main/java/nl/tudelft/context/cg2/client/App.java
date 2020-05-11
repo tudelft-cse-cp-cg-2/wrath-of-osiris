@@ -22,13 +22,13 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         this.model = new Model();
-        model.loadData();
+        model.load();
 
-        this.view = new View(stage);
+        this.view = new View(stage, model);
         view.getMenuScene().show();
 
         this.controller = new Controller(model, view);
-        controller.getGraphicsTimer().start();
+        controller.getGameTimer().start();
 
         stage.show();
     }
