@@ -1,8 +1,9 @@
 package nl.tudelft.context.cg2.client.view;
 
-import javafx.application.Platform;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
+import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ public class View {
 
     private final ArrayList<BaseScene> scenes;
     private final MenuScene menuScene;
+    private final CreateGameScene createGameScene;
+    private final LobbyScene lobbyScene;
 
     /**
      * The view constructor.
@@ -25,9 +28,12 @@ public class View {
     public View(final Stage stage) {
         this.window = new Window(stage);
         this.menuScene = new MenuScene(window, new StackPane());
-
+        this.createGameScene = new CreateGameScene(window, new StackPane());
+        this.lobbyScene = new LobbyScene(window, new StackPane());
         this.scenes = new ArrayList<>(Arrays.asList(
-                menuScene
+                menuScene,
+                createGameScene,
+                lobbyScene
         ));
 
         scenes.forEach(BaseScene::draw);
@@ -40,7 +46,7 @@ public class View {
      * @param dt the passed time in s since the last update.
      */
     public void update(double t, double dt) {
-        Platform.runLater(() -> window.getShownScene().animate());
+        window.getShownScene().animate();
     }
 
     /**
@@ -67,5 +73,21 @@ public class View {
      */
     public MenuScene getMenuScene() {
         return menuScene;
+    }
+
+    /**
+     * The create game scene getter.
+     * @return the create game scene.
+     */
+    public CreateGameScene getCreateGameScene() {
+        return createGameScene;
+    }
+
+    /**
+     * The lobby scene getter.
+     * @return the lobby scene.
+     */
+    public LobbyScene getLobbyScene() {
+        return lobbyScene;
     }
 }

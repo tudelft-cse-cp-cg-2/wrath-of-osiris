@@ -12,8 +12,8 @@
 .simple-button {
     -fx-background-color: #213121;
     -fx-text-fill: white;
-    -fx-background-radius: 44;
-    -fx-border-radius: 35;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 35px;
     -fx-border-color: darkseagreen;
     -fx-border-style: solid;
     -fx-border-width: 4px;
@@ -29,24 +29,36 @@
 .simple-button:hover {
     -fx-background-color: darkseagreen;
     -fx-border-color: white;
-    /*-fx-border-style: solid;*/
-    /*-fx-border-width: 2px;*/
 }
 
-#quit-button {
-    -fx-background-color: darkred;
+.text-box1 .text-box2 {
+    -fx-font-size: 16px;
+    -fx-font-family: 'Arial';
 }
 
-#quit-button:hover {
-    -fx-background-color: palevioletred;
+#leave-button {
+    -fx-background-color: darkblue;
+    -fx-fill: white;
+    -fx-border-width: 4px;
+}
+
+#leave-button:hover {
+    -fx-background-color: lightblue;
     -fx-border-color: white;
     -fx-border-style: solid;
-    -fx-border-width: 2px;
+    -fx-border-width: 4px;
 }
 
-#quit-button .text {
+#leave-button .text {
     -fx-font-size: 16px;
     -fx-font-family: 'Arial';
     -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-font-size: 16;
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
     -fx-font-weight: bold;
 }
