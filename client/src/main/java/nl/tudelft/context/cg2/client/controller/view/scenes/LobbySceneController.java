@@ -5,6 +5,8 @@ import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 
+import java.util.ArrayList;
+
 /**
  * The Lobby scene controller class.
  * Controls the lobby scene.
@@ -22,6 +24,10 @@ public class LobbySceneController extends SceneController {
     public LobbySceneController(Controller controller, View view) {
         super(controller, view);
         this.scene = view.getLobbyScene();
+        ArrayList<String> mockNames = new ArrayList<>();
+        mockNames.add("Player1");
+        mockNames.add("Player2");
+        scene.setPlayerNames(mockNames);
     }
 
     @Override

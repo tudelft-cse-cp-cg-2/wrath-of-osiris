@@ -6,8 +6,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
@@ -22,9 +20,9 @@ public class CreateGameScene extends BaseScene {
     private Text headerText;
     private VBox centerVBox;
 
-
-    private TextField name;
-    private TextField password;
+    private TextField playerNameField;
+    private TextField lobbyNameField;
+    private TextField passwordField;
     private SimpleButton createGameButton;
     private SimpleButton leaveButton;
 
@@ -50,25 +48,30 @@ public class CreateGameScene extends BaseScene {
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
 
         centerVBox = new VBox();
-        centerVBox.setSpacing(30);
+        centerVBox.setSpacing(25);
         centerVBox.setMaxSize(50, 0);
 
-        Label nameLabel = new Label();
-        nameLabel.setLabelFor(name);
-        nameLabel.setText("Lobby name:");
-        nameLabel.getStyleClass().add("label");
-        name = new TextField();
-        name.setPromptText("Lobby name");
-        name.setId("text-box1");
-        name.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        Label playerNameLabel = new Label();
+        playerNameLabel.setLabelFor(playerNameField);
+        playerNameLabel.setText("Player name:");
+        playerNameLabel.getStyleClass().add("label");
+        playerNameField = new TextField();
+        playerNameField.setPromptText("Player name");
+        playerNameField.getStyleClass().add("text-box");
+        Label lobbyNameLabel = new Label();
+        lobbyNameLabel.setLabelFor(lobbyNameField);
+        lobbyNameLabel.setText("Lobby name:");
+        lobbyNameLabel.getStyleClass().add("label");
+        lobbyNameField = new TextField();
+        lobbyNameField.setPromptText("Lobby name");
+        lobbyNameField.getStyleClass().add("text-box");
         Label passwordLabel = new Label();
-        passwordLabel.setLabelFor(password);
+        passwordLabel.setLabelFor(passwordField);
         passwordLabel.setText("Password:");
         passwordLabel.getStyleClass().add("label");
-        password = new TextField();
-        password.setPromptText("Password (optional)");
-        password.setId("text-box2");
-        password.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        passwordField = new TextField();
+        passwordField.setPromptText("Password (optional)");
+        passwordField.getStyleClass().add("text-box");
 
         createGameButton = new SimpleButton("Create Game");
         createGameButton.setSize(220, 80);
@@ -80,7 +83,8 @@ public class CreateGameScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
-        centerVBox.getChildren().addAll(nameLabel, name, passwordLabel, password, createGameButton);
+        centerVBox.getChildren().addAll(playerNameLabel, playerNameField, lobbyNameLabel,
+                lobbyNameField, passwordLabel, passwordField, createGameButton);
         root.getChildren().addAll(centerVBox, leaveButton, headerText);
     }
 
@@ -129,15 +133,24 @@ public class CreateGameScene extends BaseScene {
      * The lobby name text field getter.
      * @return the lobby name text field.
      */
-    public TextField getName() {
-        return name;
+    public TextField getLobbyNameField() {
+        return lobbyNameField;
     }
 
     /**
      * The password text field getter.
      * @return the password text field.
      */
-    public TextField getPassword() {
-        return password;
+    public TextField getPasswordField() {
+        return passwordField;
+    }
+
+    /**
+     * The player name text field getter.
+     * @return the player name text field.
+     */
+    public TextField getPlayerNameField() {
+        return playerNameField;
+
     }
 }

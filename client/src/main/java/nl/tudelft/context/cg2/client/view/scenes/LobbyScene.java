@@ -1,13 +1,17 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
+
+import java.util.ArrayList;
 
 /**
  * The lobby scene.
@@ -17,6 +21,10 @@ public class LobbyScene extends BaseScene {
 
     private Text headerText;
     private HBox centerHBox;
+
+    private VBox playerListVBox;
+
+    private ArrayList<Label> playerEntries;
 
     private SimpleButton startButton;
     private SimpleButton leaveButton;
@@ -28,6 +36,7 @@ public class LobbyScene extends BaseScene {
      */
     public LobbyScene(Window window, Pane root) {
         super(window, root);
+        playerEntries = new ArrayList<>(5);
     }
 
     /**
@@ -42,10 +51,19 @@ public class LobbyScene extends BaseScene {
         headerText.setTranslateY(20);
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
 
-        centerHBox = new HBox();
-        centerHBox.setSpacing(50);
-        centerHBox.setMaxSize(50, 0);
+        playerListVBox = new VBox();
+        playerListVBox.setId("player-list");
+        for (int i = 1; i <= 5; i++) {
+            Label playerEntry = new Label();
+            playerEntry.getStyleClass().add("name-entry");
+            playerEntry.setMinWidth(150);
+            playerEntries.add(playerEntry);
+            playerListVBox.getChildren().add(playerEntry);
+        }
 
+        centerHBox = new HBox();
+        centerHBox.setSpacing(70);
+        centerHBox.setMaxSize(50, 0);
 
         startButton = new SimpleButton("Start Game");
         startButton.setSize(220, 80);
@@ -57,7 +75,7 @@ public class LobbyScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
-        centerHBox.getChildren().addAll(startButton);
+        centerHBox.getChildren().addAll(playerListVBox, startButton);
         root.getChildren().addAll(centerHBox, leaveButton, headerText);
     }
 
@@ -99,6 +117,25 @@ public class LobbyScene extends BaseScene {
      */
     public SimpleButton getLeaveButton() {
         return leaveButton;
+    }
+
+    /**
+     * Player names list getter.
+     * @return list of player names.
+     */
+    public ArrayList<Label> getPlayerEntries() {
+        return playerEntries;
+    }
+
+    /**
+     * Fills the five player entries with the first five names of the list.
+     * @param playerNames list of new player names.
+     */
+    public void setPlayerNames(ArrayList<String> playerNames) {
+        int minLength = Math.min(playerEntries.size(), playerNames.size());
+        for (int i = 0; i < minLength; i++) {
+            playerEntries.get(i).setText(playerNames.get(i));
+        }
     }
 
 }
