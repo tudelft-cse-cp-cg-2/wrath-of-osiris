@@ -23,7 +23,7 @@ public class Controller {
      * @param view The View object, containing the UI controls calling back to this controller.
      */
     public Controller(final Model model, final View view) {
-        this.viewController = new ViewController(this, view);
+        this.viewController = new ViewController(this, model, view);
         this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;

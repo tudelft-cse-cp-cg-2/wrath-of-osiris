@@ -3,8 +3,12 @@ package nl.tudelft.context.cg2.client.view.scenes;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlendMode;
+import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Polygon;
+import javafx.scene.transform.Affine;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.view.BaseScene;
@@ -126,14 +130,32 @@ public class GameScene extends BaseScene {
      * Redraws all the game element graphics on the scene canvasses.
      */
     private void process() {
+        //Calculate draw variables
+        double width = window.sceneWidthProperty().getValue();
+        double height = window.sceneHeightProperty().getValue();
+        double widthRatio = width / World.WIDTH;
+        double heightRatio = height / World.HEIGHT;
+
+        //Draws the background objects.
+        GraphicsContext backgroundGC = getBackgroundGraphicsContext();
+        backgroundGC.drawImage(ImageCache.IMAGES[1], 0, 0, width * 0.495D, height);
+        backgroundGC.drawImage(ImageCache.IMAGES[2], width * 0.505D, 0, width * 0.495D, height);
+
+        //Draws the world objects on the screen.
         world.getEntities().forEach(e -> {
-            getMainGraphicsContext().drawImage(e.getTexture(),
-                    e.getPosition().x, e.getPosition().y,
-                    e.getSize().x / World.WIDTH * mainCanvas.getWidth(),
-                    e.getSize().y / World.HEIGHT * mainCanvas.getHeight());
+            Image image = e.getTexture();
+            double w = e.getSize().x * widthRatio * e.getDepthScalar();
+            double h = e.getSize().y * heightRatio * e.getDepthScalar();
+            double x = (e.getPosition().x) * widthRatio + ((w / e.getDepthScalar() - w) * 0.5D);
+            double y = e.getPosition().x * heightRatio + ((h / e.getDepthScalar() - h) * 0.5D);
 
-            System.out.println(window.getStage().getHeight() + ", " + this.getHeight() + ", " + mainCanvas.getHeight());
+            getMainGraphicsContext().drawImage(image, x, y, w, h);
 
+            if(e.getDepthScalar() > 0D) {
+                double darkScalar = 0.6D;
+                getMainGraphicsContext().setFill(new Color(0, 0, 0,darkScalar - e.getDepthScalar() * darkScalar));
+                getMainGraphicsContext().fillRect(x, y, w, h);
+            }
         });
     }
 

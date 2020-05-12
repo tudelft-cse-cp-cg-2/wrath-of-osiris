@@ -14,6 +14,7 @@
         <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
         <spotbugs.version>4.0.2</spotbugs.version>
     </properties>
+
     <dependencies>
         <dependency>
             <groupId>org.openjfx</groupId>
@@ -37,6 +38,7 @@
             <version>4.0.2</version>
         </dependency>
     </dependencies>
+
     <build>
         <plugins>
             <plugin>
@@ -96,6 +98,7 @@
             </plugin>
         </plugins>
     </build>
+
     <reporting>
         <plugins>
             <plugin>
@@ -128,4 +131,5 @@
             </plugin>
         </plugins>
     </reporting>
+
 </project>

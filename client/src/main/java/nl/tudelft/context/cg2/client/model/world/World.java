@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.model.world;
 
+import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.factories.WallFactory;
 
 import java.util.ArrayList;
@@ -11,15 +12,18 @@ public class World {
     public static final double DEPTH = 500D;
 
     private final ArrayList<Entity> entities;
+    private boolean inMotion;
 
     public World() {
         this.entities = new ArrayList<>();
+        this.inMotion = false;
     }
 
     /**
      * Creates a new world.
      */
     public void create() {
+        inMotion = false;
         entities.clear();
         entities.add(WallFactory.generateWall());
     }
@@ -30,9 +34,9 @@ public class World {
      * @param dt the passed time in s since the last update.
      */
     public void step(double t, double dt) {
-        entities.forEach(e -> {
-            e.step(t, dt);
-        });
+        if(inMotion) {
+            entities.forEach(e -> e.step(t, dt));
+        }
     }
 
     /**
@@ -41,5 +45,29 @@ public class World {
      */
     public ArrayList<Entity> getEntities() {
         return entities;
+    }
+
+    /**
+     * Returns the world Dimensions as a 3D vector.
+     * @return the world dimension vector.
+     */
+    public Vector3D getDimensions() {
+        return new Vector3D(WIDTH, HEIGHT, DEPTH);
+    }
+
+    /**
+     * Checks if the world is in motion.
+     * @return inMotion boolean.
+     */
+    public boolean isInMotion() {
+        return inMotion;
+    }
+
+    /**
+     * Sets the world in motion.
+     * @param inMotion toggle.
+     */
+    public void setInMotion(boolean inMotion) {
+        this.inMotion = inMotion;
     }
 }

@@ -10,8 +10,8 @@ public class WallFactory {
 
     public static Wall generateWall() {
         Image image = ImageCache.IMAGES[0];
-        Vector3D position = new Vector3D(0, 0, World.DEPTH);
-        Vector3D velocity = new Vector3D(0D, 0D, -1D);
+        Vector3D position = new Vector3D(0D, 0, World.DEPTH);
+        Vector3D velocity = new Vector3D(0D, 0D, -60D);
         Vector3D size = new Vector3D(World.WIDTH, World.HEIGHT, 0);
         return new Wall(image, position, velocity, size);
     }

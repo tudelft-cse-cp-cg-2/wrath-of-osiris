@@ -50,8 +50,8 @@ public class Window {
         stage.setY(0D);
         stage.widthProperty().addListener((obs, oldVal, newVal) -> onResized());
         stage.heightProperty().addListener((obs, oldVal, newVal) -> onResized());
-        sceneHeight.bind(stage.heightProperty().subtract(37.6));
-        sceneWidth.bind(stage.widthProperty());
+        sceneWidth.bind(stage.widthProperty().subtract(14D));
+        sceneHeight.bind(stage.heightProperty().subtract(37.6D));
     }
 
     /**
@@ -61,6 +61,7 @@ public class Window {
     public void showScene(BaseScene scene) {
         shownScene = scene;
         stage.setScene(scene);
+        scene.getRoot().resize(sceneWidth.get(), sceneHeight.get());
     }
 
     /**

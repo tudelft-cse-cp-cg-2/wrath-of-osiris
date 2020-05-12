@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.view;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
 /**
@@ -10,6 +11,7 @@ import nl.tudelft.context.cg2.client.view.View;
 public abstract class SceneController {
 
     protected final Controller controller;
+    protected final Model model;
     protected final View view;
 
     /**
@@ -17,8 +19,9 @@ public abstract class SceneController {
      * @param controller the controller class.
      * @param view the view class.
      */
-    public SceneController(Controller controller, View view) {
+    public SceneController(Controller controller, Model model, View view) {
         this.controller = controller;
+        this.model = model;
         this.view = view;
     }
 

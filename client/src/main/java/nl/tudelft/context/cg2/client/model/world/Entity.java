@@ -19,6 +19,12 @@ public abstract class Entity {
 
     public abstract void step(double t, double dt);
 
+    public double getDepthScalar() {
+        double slope = 80D;
+        double scalar = slope / (position.z + slope);
+        return scalar > 1D ? 1D : scalar;
+    }
+
     public Image getTexture() {
         return texture;
     }

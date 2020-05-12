@@ -26,7 +26,7 @@ public class View {
     /**
      * The view constructor.
      * @param stage the javafx window being displayed to the user.
-     * @param model
+     * @param model the model that contains elements to be drawn in the window.
      */
     public View(final Stage stage, Model model) {
         this.model = model;
