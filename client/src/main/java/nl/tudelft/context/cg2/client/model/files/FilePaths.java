@@ -1,9 +1,20 @@
 package nl.tudelft.context.cg2.client.model.files;
 
-public class FilePaths {
+/**
+ * The filepaths class.
+ * Contains various frequently used file location constants.
+ */
+public final class FilePaths {
 
-    public static final String CLIENT_FOLDER_PATH = "./";
-    public static final String RESOURCES_FOLDER_PATH = CLIENT_FOLDER_PATH + "src/main/resources/";
-    public static final String IMAGES_FOLDER_PATH = RESOURCES_FOLDER_PATH + "images/";
+    static final String CLIENT_FOLDER_PATH = "./";
+    static final String RESOURCES_FOLDER_PATH = CLIENT_FOLDER_PATH + "src/main/resources/";
+    static final String IMAGES_FOLDER_PATH = RESOURCES_FOLDER_PATH + "images/";
+
+    /**
+     * The unused utility class constructor.
+     */
+    private FilePaths() {
+
+    }
 
 }

@@ -6,9 +6,6 @@ import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Polygon;
-import javafx.scene.transform.Affine;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.view.BaseScene;
@@ -27,10 +24,9 @@ public class GameScene extends BaseScene {
     private final World world;
 
     private ArrayList<Canvas> canvasses;
-    private Canvas mainCanvas;
+    private Canvas objectCanvas;
     private Canvas backgroundCanvas;
     private Canvas lightCanvas;
-    private Canvas shadowLayer;
 
     /**
      * The menu scene constructor.
@@ -49,13 +45,14 @@ public class GameScene extends BaseScene {
     @Override
     public void draw() {
         //Create canvasses
-        this.mainCanvas = new Canvas();
         this.backgroundCanvas = new Canvas();
+        this.objectCanvas = new Canvas();
         this.lightCanvas = new Canvas();
-        this.shadowLayer = new Canvas();
 
         //Keep track of all the canvasses
-        this.canvasses = new ArrayList<>(Arrays.asList(backgroundCanvas, lightCanvas, shadowLayer, mainCanvas));
+        this.canvasses = new ArrayList<>(Arrays.asList(
+                backgroundCanvas, objectCanvas, lightCanvas
+        ));
 
         //Bind canvasses to the stage size
         for (Canvas canvas : canvasses) {
@@ -65,7 +62,6 @@ public class GameScene extends BaseScene {
 
         // Set the blend modes of the canvasses
         lightCanvas.setBlendMode(BlendMode.SCREEN);
-        shadowLayer.setBlendMode(BlendMode.MULTIPLY);
 
         // Add the canvasses to the root
         root.getChildren().addAll(canvasses);
@@ -102,11 +98,11 @@ public class GameScene extends BaseScene {
      * Should always be called at the start of a drawing cycle.
      */
     public void preprocess() {
-        // Clear the main canvas.
-        GraphicsContext mainGC = getMainGraphicsContext();
-        mainGC.clearRect(0, 0, getWidth(), getHeight());
+        // Clear the object canvas.
+        GraphicsContext objectGC = getObjectGraphicsContext();
+        objectGC.clearRect(0, 0, getWidth(), getHeight());
 
-        // Fill the background will black
+        // Fill the background with black
         GraphicsContext backgroundGC = getBackgroundGraphicsContext();
         backgroundGC.setFill(Color.BLACK);
         backgroundGC.fillRect(0, 0, getWidth(), getHeight());
@@ -117,13 +113,6 @@ public class GameScene extends BaseScene {
         lightGC.setFill(Color.BLACK);
         lightGC.fillRect(0, 0, getWidth(), getHeight());
         lightGC.setGlobalBlendMode(BlendMode.SCREEN);
-
-        // Clear the shadows
-        GraphicsContext shadowGC = getShadowGraphicsContext();
-        shadowGC.setGlobalBlendMode(BlendMode.SRC_OVER);
-        shadowGC.setFill(Color.WHITE);
-        shadowGC.fillRect(0, 0, getWidth(), getHeight());
-        shadowGC.setGlobalBlendMode(BlendMode.MULTIPLY);
     }
 
     /**
@@ -149,12 +138,13 @@ public class GameScene extends BaseScene {
             double x = (e.getPosition().x) * widthRatio + ((w / e.getDepthScalar() - w) * 0.5D);
             double y = e.getPosition().x * heightRatio + ((h / e.getDepthScalar() - h) * 0.5D);
 
-            getMainGraphicsContext().drawImage(image, x, y, w, h);
+            getObjectGraphicsContext().drawImage(image, x, y, w, h);
 
-            if(e.getDepthScalar() > 0D) {
+            if (e.getDepthScalar() > 0D) {
                 double darkScalar = 0.6D;
-                getMainGraphicsContext().setFill(new Color(0, 0, 0,darkScalar - e.getDepthScalar() * darkScalar));
-                getMainGraphicsContext().fillRect(x, y, w, h);
+                getObjectGraphicsContext().setFill(new Color(0, 0, 0,
+                        darkScalar - e.getDepthScalar() * darkScalar));
+                getObjectGraphicsContext().fillRect(x, y, w, h);
             }
         });
     }
@@ -168,8 +158,8 @@ public class GameScene extends BaseScene {
     }
 
     /**
-     * Saves the state of all GraphicsContexts from the layers. This save is pushed onto a stack and does not overwrite
-     * previous saves.
+     * Saves the state of all GraphicsContexts from the layers.
+     * This save is pushed onto a stack and does not overwrite previous saves.
      */
     public void save() {
         for (GraphicsContext graphicsContext : getAllGraphicsContexts()) {
@@ -178,7 +168,8 @@ public class GameScene extends BaseScene {
     }
 
     /**
-     * Restores the state of all GraphicsContexts from the layers. This takes the state from the previous save and
+     * Restores the state of all GraphicsContexts from the layers.
+     * This takes the state from the previous save and
      * removes that save from a stack.
      */
     public void restore() {
@@ -192,21 +183,14 @@ public class GameScene extends BaseScene {
      * @return A list of all GraphicsContexts of all canvasses.
      */
     public List<GraphicsContext> getAllGraphicsContexts() {
-        return Arrays.asList(getMainGraphicsContext(), getBackgroundGraphicsContext(),
-                getLightGraphicsContext(), getShadowGraphicsContext());
+        return Arrays.asList(getObjectGraphicsContext(),
+                getBackgroundGraphicsContext(),
+                getLightGraphicsContext());
     }
 
     /**
-     * Gets the GraphicsContext of the main canvas. This canvas should be used for drawing normal sprites
-     * (no effects of any sort) meant to be between the back- and foreground.
-     * @return The GraphicsContext of the main canvas
-     */
-    public GraphicsContext getMainGraphicsContext() {
-        return mainCanvas.getGraphicsContext2D();
-    }
-
-    /**
-     * Gets the GraphicsContext of the background canvas. This canvas should be used for drawing the background.
+     * Gets the GraphicsContext of the background canvas.
+     * This canvas should be used for drawing the background.
      * The background should not be transparent anywhere.
      * @return The GraphicsContext of the background canvas
      */
@@ -215,19 +199,20 @@ public class GameScene extends BaseScene {
     }
 
     /**
-     * Gets the GraphicsContext of the light canvas. This canvas should be used for drawing lighting.
+     * Gets the GraphicsContext of the object canvas.
+     * This canvas should be used for drawing the object sprites.
+     * @return The GraphicsContext of the object canvas
+     */
+    public GraphicsContext getObjectGraphicsContext() {
+        return objectCanvas.getGraphicsContext2D();
+    }
+
+    /**
+     * Gets the GraphicsContext of the light canvas.
+     * This canvas should be used for drawing lighting.
      * @return The GraphicsContext of the light canvas
      */
     public GraphicsContext getLightGraphicsContext() {
         return lightCanvas.getGraphicsContext2D();
-    }
-
-    /**
-     * Gets the GraphicsContext of the shadow canvas. This canvas should be used for drawing shadows that
-     * darkens the color from the background, main and light layers.
-     * @return The GraphicsContext of the shadow canvas
-     */
-    public GraphicsContext getShadowGraphicsContext() {
-        return shadowLayer.getGraphicsContext2D();
     }
 }

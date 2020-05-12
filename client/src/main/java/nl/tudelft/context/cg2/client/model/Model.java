@@ -11,6 +11,9 @@ public class Model {
 
     private final World world;
 
+    /**
+     * The model constructor.
+     */
     public Model() {
         this.world = new World();
     }

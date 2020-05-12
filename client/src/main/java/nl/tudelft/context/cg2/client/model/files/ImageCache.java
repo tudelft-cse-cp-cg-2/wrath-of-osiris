@@ -5,21 +5,35 @@ import javafx.scene.image.Image;
 import java.io.File;
 import java.util.Objects;
 
-public class ImageCache {
+/**
+ * The ImageCache class.
+ * Loads and caches all the image files. used in the client.
+ */
+public final class ImageCache {
 
     public static final Image[] IMAGES = new Image[1000];
 
+    /**
+     * Loads the client images from the image source folder.
+     */
     public static void loadImages() {
         File folder = new File(FilePaths.IMAGES_FOLDER_PATH);
-
         try {
             if (folder.exists()) {
-                for (int i = 0; i < Objects.requireNonNull(folder.listFiles(File::isFile)).length; i++) {
+                int x = Objects.requireNonNull(folder.listFiles(File::isFile)).length;
+                for (int i = 0; i < x; i++) {
                     IMAGES[i] = new Image("/images/" + i + ".png");
                 }
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * The unused utility class constructor.
+     */
+    private ImageCache() {
+
     }
 }

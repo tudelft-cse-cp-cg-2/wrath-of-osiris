@@ -106,7 +106,8 @@ public class Window {
     }
 
     /**
-     * The scene height property defines the scene height in terms of the window height minus the titlebar.
+     * The scene height property defines the scene height
+     * in terms of the window height minus the title bar.
      * @return the scene height.
      */
     public SimpleDoubleProperty sceneHeightProperty() {

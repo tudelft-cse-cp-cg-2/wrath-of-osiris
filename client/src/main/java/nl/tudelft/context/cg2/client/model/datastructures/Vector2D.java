@@ -43,38 +43,82 @@ public class Vector2D {
         return new Vector2D(this.x + x, this.y + y);
     }
 
+    /**
+     * Subtracts two vectors.
+     * @param other the other vector.
+     * @return the subtracted vector.
+     */
     public Vector2D sub(Vector2D other) {
         return new Vector2D(this.x - other.x, this.y - other.y);
     }
 
+    /**
+     * Subtracts two vectors.
+     * @param x the other vector's x component
+     * @param y the other vector's y component
+     * @return the subtracted vector
+     */
     public Vector2D sub(double x, double y) {
         return new Vector2D(this.x - x, this.y - y);
     }
 
+    /**
+     * Multiplies two vectors.
+     * @param other the other vector.
+     * @return the multiplier vector.
+     */
     public Vector2D mult(Vector2D other) {
         return new Vector2D(this.x * other.x, this.y * other.y);
     }
 
+    /**
+     * Multiplies two vectors.
+     * @param x the other vector's x component
+     * @param y the other vector's y component
+     * @return the multiplied vector
+     */
     public Vector2D mult(double x, double y) {
         return new Vector2D(this.x * x, this.y * y);
     }
 
+    /**
+     * Multiplies the 2D vector with a scalar.
+     * @param scalar the scalar to multiply by.
+     * @return the scaled vector.
+     */
     public Vector2D mult(double scalar) {
         return new Vector2D(this.x * scalar, this.y * scalar);
     }
 
+    /**
+     * Calculates the dot product of two vectors.
+     * @param other the other vector.
+     * @return the dot product.
+     */
     public double dot(Vector2D other) {
         return this.x * other.x + this.y * other.y;
     }
 
+    /**
+     * Calculates the vector length.
+     * @return the length of the vector.
+     */
     public double length() {
         return Math.sqrt(x * x + y * y);
     }
 
+    /**
+     * Calculates the squared length of the vector.
+     * @return the length squared.
+     */
     public double lengthSquared() {
         return x * x + y * y;
     }
 
+    /**
+     * Normalizes a vector to unit length.
+     * @return the unit vector.
+     */
     public Vector2D unit() {
         double multiplier = 1f / length();
         return new Vector2D(x * multiplier, y * multiplier);

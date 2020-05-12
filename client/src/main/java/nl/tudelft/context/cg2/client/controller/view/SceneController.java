@@ -17,6 +17,7 @@ public abstract class SceneController {
     /**
      * The SceneController constructor.
      * @param controller the controller class.
+     * @param model the model class.
      * @param view the view class.
      */
     public SceneController(Controller controller, Model model, View view) {

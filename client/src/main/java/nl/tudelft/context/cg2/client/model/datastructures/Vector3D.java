@@ -44,41 +44,87 @@ public class Vector3D {
      * @return the added vector
      */
     public Vector3D add(double x, double y, double z) {
-        return new Vector3D(this.x + x, this.y + y, this.z + z );
+        return new Vector3D(this.x + x, this.y + y, this.z + z);
     }
 
+    /**
+     * Subtracts two vectors.
+     * @param other the other vector.
+     * @return the subtracted vector.
+     */
     public Vector3D sub(Vector3D other) {
         return new Vector3D(this.x - other.x, this.y - other.y, this.z - other.z);
     }
 
+    /**
+     * Subtracts two vectors.
+     * @param x the other vector's x component
+     * @param y the other vector's y component
+     * @param z the other vector's z component
+     * @return the subtracted vector
+     */
     public Vector3D sub(double x, double y, double z) {
         return new Vector3D(this.x - x, this.y - y, this.z - z);
     }
 
+    /**
+     * Multiplies two vectors.
+     * @param other the other vector.
+     * @return the multiplier vector.
+     */
     public Vector3D mult(Vector3D other) {
         return new Vector3D(this.x * other.x, this.y * other.y, this.z * other.z);
     }
 
+    /**
+     * Multiplies two vectors.
+     * @param x the other vector's x component
+     * @param y the other vector's y component
+     * @param z the other vector's z component
+     * @return the multiplied vector
+     */
     public Vector3D mult(double x, double y, double z) {
         return new Vector3D(this.x * x, this.y * y, this.z * z);
     }
 
+    /**
+     * Multiplies the 3D vector with a scalar.
+     * @param scalar the scalar to multiply by.
+     * @return the scaled vector.
+     */
     public Vector3D mult(double scalar) {
         return new Vector3D(this.x * scalar, this.y * scalar, this.z * scalar);
     }
 
+    /**
+     * Calculates the dot product of two vectors.
+     * @param other the other vector.
+     * @return the dot product.
+     */
     public double dot(Vector3D other) {
         return this.x * other.x + this.y * other.y + this.z * other.z;
     }
 
+    /**
+     * Calculates the vector length.
+     * @return the length of the vector.
+     */
     public double length() {
         return Math.sqrt(x * x + y * y + z * z);
     }
 
+    /**
+     * Calculates the squared length of the vector.
+     * @return the length squared.
+     */
     public double lengthSquared() {
         return x * x + y * y + z * z;
     }
 
+    /**
+     * Normalizes a vector to unit length.
+     * @return the unit vector.
+     */
     public Vector3D unit() {
         double multiplier = 1f / length();
         return new Vector3D(x * multiplier, y * multiplier, z * multiplier);

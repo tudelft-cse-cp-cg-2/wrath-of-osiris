@@ -44,8 +44,14 @@ public class GameSceneController extends SceneController {
     protected void setupKeyboardListeners() {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case SPACE: world.setInMotion(!world.isInMotion()); break;
-                case BACK_SPACE: view.getMenuScene().show(); break;
+                case SPACE:
+                    world.setInMotion(!world.isInMotion());
+                    break;
+                case BACK_SPACE:
+                    view.getMenuScene().show();
+                    break;
+                default:
+                    break;
             }
         });
     }

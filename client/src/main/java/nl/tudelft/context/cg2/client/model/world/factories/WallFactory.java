@@ -6,8 +6,17 @@ import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 
+/**
+ * The wall factory class.
+ * Generates a wall entity.
+ */
+@SuppressWarnings(value = "HideUtilityClassConstructor")
 public class WallFactory {
 
+    /**
+     * Generates a pseudo-random wall entity.
+     * @return a new wall.
+     */
     public static Wall generateWall() {
         Image image = ImageCache.IMAGES[0];
         Vector3D position = new Vector3D(0D, 0, World.DEPTH);

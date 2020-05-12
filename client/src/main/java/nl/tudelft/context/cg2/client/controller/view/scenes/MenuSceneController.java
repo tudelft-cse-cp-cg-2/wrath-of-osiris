@@ -52,7 +52,11 @@ public class MenuSceneController extends SceneController {
     protected void setupKeyboardListeners() {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case SPACE: startGame(); break;
+                case SPACE:
+                    startGame();
+                    break;
+                default:
+                    break;
             }
         });
     }

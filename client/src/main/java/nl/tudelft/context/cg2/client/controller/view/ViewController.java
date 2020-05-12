@@ -23,6 +23,7 @@ public class ViewController {
     /**
      * The view controller constructor.
      * @param controller the controller class.
+     * @param model the model class.
      * @param view the view class.
      */
     public ViewController(final Controller controller, final Model model, final View view) {

@@ -5,6 +5,10 @@ import nl.tudelft.context.cg2.client.model.world.factories.WallFactory;
 
 import java.util.ArrayList;
 
+/**
+ * The World class.
+ * Features the game world.
+ */
 public class World {
 
     public static final double WIDTH = 2000D;
@@ -14,6 +18,9 @@ public class World {
     private final ArrayList<Entity> entities;
     private boolean inMotion;
 
+    /**
+     * The World Constructor.
+     */
     public World() {
         this.entities = new ArrayList<>();
         this.inMotion = false;
@@ -34,7 +41,7 @@ public class World {
      * @param dt the passed time in s since the last update.
      */
     public void step(double t, double dt) {
-        if(inMotion) {
+        if (inMotion) {
             entities.forEach(e -> e.step(t, dt));
         }
     }
