@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.model.files;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.scene.image.Image;
 
 import java.io.File;
@@ -11,6 +12,7 @@ import java.util.Objects;
  */
 public final class ImageCache {
 
+    @SuppressFBWarnings(value = "MS_MUTABLE_ARRAY", justification = "Array cache required here.")
     public static final Image[] IMAGES = new Image[1000];
 
     /**
