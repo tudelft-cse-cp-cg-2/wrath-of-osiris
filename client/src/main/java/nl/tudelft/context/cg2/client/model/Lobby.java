@@ -17,7 +17,9 @@ public class Lobby {
      * When the host creates a Lobby, only the host is added as player.
      * If a player joins a lobby, 'players' contains all players, including himself.
      * @param name lobby name.
+     * @param password lobby password.
      * @param players list of current players in the lobby.
+     * @param isHost whether currentPlayer is host of the lobby.
      */
     public Lobby(String name, String password, ArrayList<Player> players, Boolean isHost) {
         this.name = name;

@@ -32,6 +32,8 @@ public class LobbySceneController extends SceneController {
             System.out.println("Clicked");
         });
         scene.getLeaveButton().setOnMouseClicked(event -> {
+            controller.leaveLobbyCallback();
+            scene.setPlayerNames(new ArrayList<>());
             view.getMenuScene().show();
         });
     }

@@ -7,7 +7,6 @@ package nl.tudelft.context.cg2.client.model;
 public class Model {
 
     private Lobby currentLobby = null;
-
     private Player currentPlayer = null;
 
     /**

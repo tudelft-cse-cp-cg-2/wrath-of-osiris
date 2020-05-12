@@ -36,6 +36,7 @@ public class Controller {
     /**
      * Callback for the CreateGameScene 'Create Game' button listener.
      * Creates the game with the player as host.
+     * todo: Communicate game creation with server.
      * @param playerName the player name.
      * @param lobbyName the lobby name.
      * @param password the lobby password.
@@ -50,7 +51,15 @@ public class Controller {
         view.getLobbyScene().setPlayerNames(players);
     }
 
-
+    /**
+     * Callback for the LobbyScene 'Leave' button listener.
+     * Leaves the current lobby and forgets current player information.
+     * todo: Communicate game leaving with server.
+     */
+    public void leaveLobbyCallback() {
+        model.setCurrentPlayer(null);
+        model.setCurrentLobby(null);
+    }
 
     /**
      * Gets the view.
