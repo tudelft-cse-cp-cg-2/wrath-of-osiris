@@ -27,6 +27,10 @@ public class CreateGameSceneController extends SceneController {
     @Override
     protected void setupMouseListeners() {
         scene.getCreateGameButton().setOnMouseClicked(event -> {
+            String playerName = scene.getPlayerNameField().getText();
+            String lobbyName = scene.getLobbyNameField().getText();
+            String password = scene.getPasswordField().getText();
+            controller.createGameCallback(playerName, lobbyName, password);
             view.getLobbyScene().show();
         });
         scene.getLeaveButton().setOnMouseClicked(event -> {

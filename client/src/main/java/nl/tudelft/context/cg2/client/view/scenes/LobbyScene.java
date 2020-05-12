@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.context.cg2.client.model.Player;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -129,12 +130,12 @@ public class LobbyScene extends BaseScene {
 
     /**
      * Fills the five player entries with the first five names of the list.
-     * @param playerNames list of new player names.
+     * @param players list of new player names.
      */
-    public void setPlayerNames(ArrayList<String> playerNames) {
-        int minLength = Math.min(playerEntries.size(), playerNames.size());
+    public void setPlayerNames(ArrayList<Player> players) {
+        int minLength = Math.min(playerEntries.size(), players.size());
         for (int i = 0; i < minLength; i++) {
-            playerEntries.get(i).setText(playerNames.get(i));
+            playerEntries.get(i).setText(players.get(i).getName());
         }
     }
 

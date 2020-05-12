@@ -2,8 +2,12 @@ package nl.tudelft.context.cg2.client.controller;
 
 import nl.tudelft.context.cg2.client.controller.core.GraphicsTimer;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
+import nl.tudelft.context.cg2.client.model.Lobby;
 import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.model.Player;
 import nl.tudelft.context.cg2.client.view.View;
+
+import java.util.ArrayList;
 
 /**
  * Controller class representing the Controller in the View-Controller-Model design pattern.
@@ -28,6 +32,25 @@ public class Controller {
         this.model = model;
         this.view = view;
     }
+
+    /**
+     * Callback for the CreateGameScene 'Create Game' button listener.
+     * Creates the game with the player as host.
+     * @param playerName the player name.
+     * @param lobbyName the lobby name.
+     * @param password the lobby password.
+     */
+    public void createGameCallback(String playerName, String lobbyName, String password) {
+        Player player = new Player(playerName);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(player);
+        Lobby lobby = new Lobby(lobbyName, password, players, true);
+        model.setCurrentPlayer(player);
+        model.setCurrentLobby(lobby);
+        view.getLobbyScene().setPlayerNames(players);
+    }
+
+
 
     /**
      * Gets the view.

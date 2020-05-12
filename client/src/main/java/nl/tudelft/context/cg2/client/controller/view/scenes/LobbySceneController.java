@@ -24,10 +24,6 @@ public class LobbySceneController extends SceneController {
     public LobbySceneController(Controller controller, View view) {
         super(controller, view);
         this.scene = view.getLobbyScene();
-        ArrayList<String> mockNames = new ArrayList<>();
-        mockNames.add("Player1");
-        mockNames.add("Player2");
-        scene.setPlayerNames(mockNames);
     }
 
     @Override
