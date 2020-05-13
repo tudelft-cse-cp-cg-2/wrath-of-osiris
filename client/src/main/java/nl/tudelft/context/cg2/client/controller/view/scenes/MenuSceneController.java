@@ -73,8 +73,8 @@ public class MenuSceneController extends SceneController {
      * Starts the game.
      */
     private void startGame() {
-        controller.getModel().getWorld().create();
-        view.getGameScene().preprocess();
+        model.getWorld().create();
+        view.getGameScene().clear();
         view.getGameScene().show();
     }
 }

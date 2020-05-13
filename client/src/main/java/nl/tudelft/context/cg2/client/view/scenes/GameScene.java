@@ -94,6 +94,13 @@ public class GameScene extends BaseScene {
     }
 
     /**
+     * Clears the game scene by pre processing.
+     */
+    public void clear() {
+        preprocess();
+    }
+
+    /**
      * Pre processes all graphics before drawing the game elements.
      * Should always be called at the start of a drawing cycle.
      */

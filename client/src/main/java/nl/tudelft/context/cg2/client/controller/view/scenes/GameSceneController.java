@@ -45,10 +45,10 @@ public class GameSceneController extends SceneController {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case SPACE:
-                    world.setInMotion(!world.isInMotion());
+                    startWorldTimer();
                     break;
                 case BACK_SPACE:
-                    view.getMenuScene().show();
+                    showMenuScene();
                     break;
                 default:
                     break;
@@ -62,5 +62,19 @@ public class GameSceneController extends SceneController {
     @Override
     protected void setupEventListeners() {
 
+    }
+
+    /**
+     * Starts the world timer.
+     */
+    private void startWorldTimer() {
+        world.setInMotion(!world.isInMotion());
+    }
+
+    /**
+     * Displays the menu scene in the window.
+     */
+    private void showMenuScene() {
+        view.getMenuScene().show();
     }
 }
