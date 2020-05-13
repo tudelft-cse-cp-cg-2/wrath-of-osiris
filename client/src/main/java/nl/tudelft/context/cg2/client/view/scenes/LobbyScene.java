@@ -26,9 +26,10 @@ public class LobbyScene extends BaseScene {
     private HBox centerHBox;
 
     private VBox playerListVBox;
-
+    private VBox controlsVBox;
     private ObservableList<Label> playerEntries;
 
+    private Label waitMessage;
     private SimpleButton startButton;
     private SimpleButton leaveButton;
 
@@ -71,6 +72,11 @@ public class LobbyScene extends BaseScene {
         startButton = new SimpleButton("Start Game");
         startButton.setSize(220, 80);
 
+        waitMessage = new Label("Wait until the host\n starts the game");
+        waitMessage.getStyleClass().add("label");
+
+        controlsVBox = new VBox(waitMessage, startButton);
+
         leaveButton = new SimpleButton("Leave");
         leaveButton.setId("leave-button");
         leaveButton.setSize(80, 60);
@@ -78,7 +84,7 @@ public class LobbyScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
-        centerHBox.getChildren().addAll(playerListVBox, startButton);
+        centerHBox.getChildren().addAll(playerListVBox, controlsVBox);
         root.getChildren().addAll(centerHBox, leaveButton, headerText);
     }
 
@@ -141,4 +147,11 @@ public class LobbyScene extends BaseScene {
         }
     }
 
+    /**
+     * Getter for wait message label.
+     * @return the wait message.
+     */
+    public Label getWaitMessage() {
+        return waitMessage;
+    }
 }

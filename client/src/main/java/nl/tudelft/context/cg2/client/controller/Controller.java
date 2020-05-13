@@ -46,6 +46,7 @@ public class Controller {
         // Retrieve and store lobby data from server.
         view.getLobbyScene().setPlayerNames(players);
         view.getLobbyScene().getStartButton().setVisible(false);
+        view.getLobbyScene().getWaitMessage().setVisible(true);
         view.getLobbyScene().show();
     }
 
@@ -66,6 +67,8 @@ public class Controller {
         model.setCurrentLobby(lobby);
         view.getLobbyScene().setPlayerNames(players);
         view.getLobbyScene().getStartButton().setVisible(true);
+
+        view.getLobbyScene().getWaitMessage().setVisible(false);
         view.getLobbyScene().show();
     }
 
