@@ -19,7 +19,7 @@ public class Lobby {
      * @param name lobby name.
      * @param password lobby password.
      * @param players list of current players in the lobby.
-     * @param isHost whether currentPlayer is host of the lobby.
+     * @param isHost whether currentPlayer is host of the lobby.6
      */
     public Lobby(String name, String password, ArrayList<Player> players, Boolean isHost) {
         this.name = name;

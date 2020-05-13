@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.view;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.view.scenes.CreateGameSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.JoinSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.LobbySceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.MenuSceneController;
 import nl.tudelft.context.cg2.client.view.View;
@@ -18,6 +19,7 @@ public class ViewController {
 
     private final ArrayList<SceneController> sceneControllers;
     private final MenuSceneController menuSceneController;
+    private final JoinSceneController joinSceneController;
     private final CreateGameSceneController createGameSceneController;
     private final LobbySceneController lobbySceneController;
 
@@ -28,10 +30,12 @@ public class ViewController {
      */
     public ViewController(final Controller controller, final View view) {
         this.menuSceneController = new MenuSceneController(controller, view);
+        this.joinSceneController = new JoinSceneController(controller, view);
         this.createGameSceneController = new CreateGameSceneController(controller, view);
         this.lobbySceneController = new LobbySceneController(controller, view);
         this.sceneControllers = new ArrayList<>(Arrays.asList(
                 menuSceneController,
+                joinSceneController,
                 createGameSceneController,
                 lobbySceneController
         ));
@@ -45,6 +49,14 @@ public class ViewController {
      */
     public MenuSceneController getMenuSceneController() {
         return menuSceneController;
+    }
+
+    /**
+     * Gets the join scene controller.
+     * @return the join scene controller.
+     */
+    public JoinSceneController getJoinSceneController() {
+        return joinSceneController;
     }
 
     /**

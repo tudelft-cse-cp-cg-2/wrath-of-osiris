@@ -3,6 +3,7 @@ package nl.tudelft.context.cg2.client.view;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
+import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
@@ -18,6 +19,7 @@ public class View {
 
     private final ArrayList<BaseScene> scenes;
     private final MenuScene menuScene;
+    private final JoinScene joinScene;
     private final CreateGameScene createGameScene;
     private final LobbyScene lobbyScene;
 
@@ -28,10 +30,12 @@ public class View {
     public View(final Stage stage) {
         this.window = new Window(stage);
         this.menuScene = new MenuScene(window, new StackPane());
+        this.joinScene = new JoinScene(window, new StackPane());
         this.createGameScene = new CreateGameScene(window, new StackPane());
         this.lobbyScene = new LobbyScene(window, new StackPane());
         this.scenes = new ArrayList<>(Arrays.asList(
                 menuScene,
+                joinScene,
                 createGameScene,
                 lobbyScene
         ));
@@ -73,6 +77,14 @@ public class View {
      */
     public MenuScene getMenuScene() {
         return menuScene;
+    }
+
+    /**
+     * The join scene getter.
+     * @return the join scene.
+     */
+    public JoinScene getJoinScene() {
+        return joinScene;
     }
 
     /**

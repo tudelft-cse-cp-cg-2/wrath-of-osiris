@@ -151,6 +151,5 @@ public class CreateGameScene extends BaseScene {
      */
     public TextField getPlayerNameField() {
         return playerNameField;
-
     }
 }

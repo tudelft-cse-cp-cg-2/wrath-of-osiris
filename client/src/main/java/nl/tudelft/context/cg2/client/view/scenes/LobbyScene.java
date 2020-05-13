@@ -1,5 +1,7 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 
 /**
  * The lobby scene.
- * Features the main menu UI as shown to the user.
+ * Features the lobby UI as shown to the user.
  */
 public class LobbyScene extends BaseScene {
 
@@ -25,7 +27,7 @@ public class LobbyScene extends BaseScene {
 
     private VBox playerListVBox;
 
-    private ArrayList<Label> playerEntries;
+    private ObservableList<Label> playerEntries;
 
     private SimpleButton startButton;
     private SimpleButton leaveButton;
@@ -37,7 +39,7 @@ public class LobbyScene extends BaseScene {
      */
     public LobbyScene(Window window, Pane root) {
         super(window, root);
-        playerEntries = new ArrayList<>(5);
+        playerEntries = FXCollections.observableArrayList();
     }
 
     /**
@@ -105,7 +107,7 @@ public class LobbyScene extends BaseScene {
     }
 
     /**
-     * The start game getter.
+     * The start game button getter.
      * @return the start game button.
      */
     public SimpleButton getStartButton() {
@@ -124,7 +126,7 @@ public class LobbyScene extends BaseScene {
      * Player names list getter.
      * @return list of player names.
      */
-    public ArrayList<Label> getPlayerEntries() {
+    public ObservableList<Label> getPlayerEntries() {
         return playerEntries;
     }
 

@@ -31,7 +31,6 @@ public class CreateGameSceneController extends SceneController {
             String lobbyName = scene.getLobbyNameField().getText();
             String password = scene.getPasswordField().getText();
             controller.createGameCallback(playerName, lobbyName, password);
-            view.getLobbyScene().show();
         });
         scene.getLeaveButton().setOnMouseClicked(event -> {
             view.getMenuScene().show();

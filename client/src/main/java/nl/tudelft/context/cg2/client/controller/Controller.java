@@ -34,6 +34,22 @@ public class Controller {
     }
 
     /**
+     * Callback for the joinScene 'Join Game' button listener.
+     * Joins the game with the player as guest.
+     * todo: Communicate game joining with server.
+     * @param playerName the player name.
+     */
+    public void joinGameCallback(String playerName) {
+        Player player = new Player(playerName);
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(player);
+        // Retrieve and store lobby data from server.
+        view.getLobbyScene().setPlayerNames(players);
+        view.getLobbyScene().getStartButton().setVisible(false);
+        view.getLobbyScene().show();
+    }
+
+    /**
      * Callback for the CreateGameScene 'Create Game' button listener.
      * Creates the game with the player as host.
      * todo: Communicate game creation with server.
@@ -49,6 +65,8 @@ public class Controller {
         model.setCurrentPlayer(player);
         model.setCurrentLobby(lobby);
         view.getLobbyScene().setPlayerNames(players);
+        view.getLobbyScene().getStartButton().setVisible(true);
+        view.getLobbyScene().show();
     }
 
     /**
