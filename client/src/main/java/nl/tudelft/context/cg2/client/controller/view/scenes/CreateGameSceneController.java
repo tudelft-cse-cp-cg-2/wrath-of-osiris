@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
+import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
 
@@ -17,10 +18,11 @@ public class CreateGameSceneController extends SceneController {
      * The SceneController constructor.
      *
      * @param controller the controller class.
+     * @param model the model class.
      * @param view       the view class.
      */
-    public CreateGameSceneController(Controller controller, View view) {
-        super(controller, view);
+    public CreateGameSceneController(Controller controller, Model model, View view) {
+        super(controller, model, view);
         this.scene = view.getCreateGameScene();
     }
 

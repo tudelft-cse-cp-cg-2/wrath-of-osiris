@@ -40,7 +40,7 @@ public class ViewController {
         this.lobbySceneController = new LobbySceneController(controller, model, view);
         this.sceneControllers = new ArrayList<>(Arrays.asList(
                 menuSceneController,
-                gameSceneController
+                gameSceneController,
                 joinSceneController,
                 createGameSceneController,
                 lobbySceneController
