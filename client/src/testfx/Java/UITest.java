@@ -1,4 +1,3 @@
-package nl.tudelft.context.cg2.client;
 
 import javafx.scene.Parent;
 import javafx.stage.Stage;
@@ -8,9 +7,11 @@ import nl.tudelft.context.cg2.client.view.View;
 import org.junit.jupiter.api.Test;
 import org.testfx.framework.junit5.ApplicationTest;
 
+import java.util.ArrayList;
+
 import static org.testfx.assertions.api.Assertions.assertThat;
 
-public class MenuTest extends ApplicationTest {
+public class UITest extends ApplicationTest {
     private Controller controller;
     private View view;
     private Model model;
@@ -30,10 +31,22 @@ public class MenuTest extends ApplicationTest {
         stage.show();
     }
 
-
     @Test
-    public void should_contain_buttons() {
+    public void joinGameTest() {
         clickOn("Join Game");
         assertThat(view.getWindow().getShownScene()).isEqualTo(view.getJoinScene());
+        write("TestName");
+        clickOn("Join Lobby");
+        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getLobbyScene());
+        assertThat(view.getLobbyScene().getWaitMessage().isVisible()).isTrue();
+        ArrayList<String> names = new ArrayList<>();
+        view.getLobbyScene().getPlayerEntries().forEach(label -> {
+            names.add(label.getText());
+        });
+        assertThat(names.contains("TestName")).isTrue();
+        clickOn("Leave");
+        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getMenuScene());
     }
+
+
 }
