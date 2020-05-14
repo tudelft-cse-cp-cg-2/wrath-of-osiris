@@ -37,6 +37,7 @@ public class Wall {
 
     /**
      * Getter.
+     *
      * @param position screen position
      * @return number in that position
      */
@@ -56,6 +57,7 @@ public class Wall {
 
     /**
      * Getter.
+     *
      * @param position screen position
      * @return pose in that position
      */
@@ -106,5 +108,17 @@ public class Wall {
             }
         }
         return true;
+    }
+
+    /**
+     * Returns a string representation of Wall, for debugging purposes.
+     * @return String representation
+     */
+    public String toString() {
+        String res = "";
+        for (ScreenPos s : ScreenPos.values()) {
+            res += restrictions.get(s) + "\n" + poses.get(s) + "\n";
+        }
+        return res;
     }
 }
