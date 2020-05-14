@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.model.world;
 
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
+import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 import nl.tudelft.context.cg2.client.model.world.factories.WallFactory;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class World {
     public static final double DEPTH = 500D;
 
     private final ArrayList<Entity> entities;
+    private Wall currentWall;
     private boolean inMotion;
 
     /**
@@ -23,6 +25,7 @@ public class World {
      */
     public World() {
         this.entities = new ArrayList<>();
+        this.currentWall = null;
         this.inMotion = false;
     }
 
@@ -32,7 +35,8 @@ public class World {
     public void create() {
         inMotion = false;
         entities.clear();
-        entities.add(WallFactory.generateWall());
+        currentWall = WallFactory.generateWall();
+        entities.add(currentWall);
     }
 
     /**
@@ -43,6 +47,13 @@ public class World {
     public void step(double t, double dt) {
         if (inMotion) {
             entities.forEach(e -> e.step(t, dt));
+
+            // Makes walls appear in sequence.
+            if (currentWall != null && currentWall.getPosition().z <= 0) {
+                entities.remove(currentWall);
+                currentWall = WallFactory.generateWall();
+                entities.add(currentWall);
+            }
         }
     }
 

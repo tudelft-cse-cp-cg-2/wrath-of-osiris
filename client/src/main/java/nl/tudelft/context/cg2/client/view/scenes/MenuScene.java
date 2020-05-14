@@ -73,14 +73,6 @@ public class MenuScene extends BaseScene {
     }
 
     /**
-     * Event thrown when the window is resized.
-     */
-    @Override
-    public void onResized() {
-
-    }
-
-    /**
      * Event thrown when the scene is shown in the window.
      */
     @Override

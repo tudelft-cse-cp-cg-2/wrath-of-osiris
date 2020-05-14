@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.client.view;
 
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
@@ -16,7 +15,6 @@ public class Window {
     private final Stage stage;
     private BaseScene shownScene;
 
-    private SimpleBooleanProperty resized;
     private SimpleDoubleProperty sceneWidth;
     private SimpleDoubleProperty sceneHeight;
 
@@ -28,7 +26,6 @@ public class Window {
     public Window(final Stage stage) {
         this.stage = stage;
         this.shownScene = null;
-        this.resized = new SimpleBooleanProperty(false);
         this.sceneWidth = new SimpleDoubleProperty(0);
         this.sceneHeight = new SimpleDoubleProperty(0);
         this.drawWindow();
@@ -48,8 +45,6 @@ public class Window {
         stage.setMinHeight(600D);
         stage.setX(0D);
         stage.setY(0D);
-        stage.widthProperty().addListener((obs, oldVal, newVal) -> onResized());
-        stage.heightProperty().addListener((obs, oldVal, newVal) -> onResized());
         sceneWidth.bind(stage.widthProperty().subtract(14D));
         sceneHeight.bind(stage.heightProperty().subtract(37.6D));
     }
@@ -62,15 +57,6 @@ public class Window {
         shownScene = scene;
         stage.setScene(scene);
         scene.getRoot().resize(sceneWidth.get(), sceneHeight.get());
-    }
-
-    /**
-     * Event thrown when the window gets resized.
-     * Flashes the resized property for window observers to catch that the window was resized.
-     */
-    private void onResized() {
-        resized.setValue(true);
-        resized.setValue(false);
     }
 
     /**
@@ -87,14 +73,6 @@ public class Window {
      */
     public BaseScene getShownScene() {
         return shownScene;
-    }
-
-    /**
-     * The resized property getter.
-     * @return the property that flashes to true when the window is resized.
-     */
-    public SimpleBooleanProperty resizedProperty() {
-        return resized;
     }
 
     /**

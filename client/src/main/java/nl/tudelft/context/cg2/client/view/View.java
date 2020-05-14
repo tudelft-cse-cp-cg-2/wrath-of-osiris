@@ -39,7 +39,6 @@ public class View {
         ));
 
         scenes.forEach(BaseScene::draw);
-        window.resizedProperty().addListener((obj, oldV, newV) -> onResized(newV));
     }
 
     /**
@@ -47,16 +46,6 @@ public class View {
      */
     public void update() {
         Platform.runLater(() -> window.getShownScene().animate());
-    }
-
-    /**
-     * Handles the windows resize action.
-     * @param resized was resized or not.
-     */
-    private void onResized(boolean resized) {
-        if (resized) {
-            window.getShownScene().onResized();
-        }
     }
 
     /**

@@ -44,6 +44,8 @@ public class GameScene extends BaseScene {
      */
     @Override
     public void draw() {
+        this.getStylesheets().add("/css/game.css");
+
         //Create canvasses
         this.backgroundCanvas = new Canvas();
         this.objectCanvas = new Canvas();
@@ -75,14 +77,6 @@ public class GameScene extends BaseScene {
         preprocess();
         process();
         postprocess();
-    }
-
-    /**
-     * Event thrown when the window is resized.
-     */
-    @Override
-    public void onResized() {
-
     }
 
     /**
