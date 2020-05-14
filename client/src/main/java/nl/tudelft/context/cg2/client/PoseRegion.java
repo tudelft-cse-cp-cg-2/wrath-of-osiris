@@ -1,10 +1,10 @@
 package nl.tudelft.context.cg2.client;
 
 public class PoseRegion {
-    private int topLeftX;
-    private int topLeftY;
-    private int bottomRightX;
-    private int bottomRightY;
+    private final int topLeftX;
+    private final int topLeftY;
+    private final int bottomRightX;
+    private final int bottomRightY;
 
     public PoseRegion(int tx, int ty, int bx, int by) {
         topLeftX = tx;
