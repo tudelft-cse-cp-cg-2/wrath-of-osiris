@@ -87,7 +87,6 @@ public class Wall {
                 case MIDDLE:
                     if (pose.equals(getPose(ScreenPos.MIDDLE))) {
                         frequency[1]++;
-                        System.out.println("yes");
                     } else {
                         return false;
                     }

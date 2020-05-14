@@ -96,12 +96,12 @@ public class Pose {
      */
     public boolean setRightLegUp() {
         switch (this.legs) {
-            case DOWNDOWN:
-                setLegs(Legs.DOWNUP);
+            case DOWN:
+                setLegs(Legs.RIGHTUP);
                 return true;
-            case DOWNUP:
+            case RIGHTUP:
                 return true;
-            case UPDOWN:
+            case LEFTUP:
             default:
                 return false;
         }
@@ -111,8 +111,8 @@ public class Pose {
      * Setter for individually lowering the right leg.
      */
     public void setRightLegDown() {
-        if (this.legs == Legs.DOWNUP) {
-            setLegs(Legs.DOWNDOWN);
+        if (this.legs == Legs.RIGHTUP) {
+            setLegs(Legs.DOWN);
         }
     }
 
@@ -122,12 +122,12 @@ public class Pose {
      */
     public boolean setLeftLegUp() {
         switch (this.legs) {
-            case DOWNDOWN:
-                setLegs(Legs.UPDOWN);
+            case DOWN:
+                setLegs(Legs.LEFTUP);
                 return true;
-            case UPDOWN:
+            case LEFTUP:
                 return true;
-            case DOWNUP:
+            case RIGHTUP:
             default:
                 return false;
         }
@@ -137,8 +137,8 @@ public class Pose {
      * Setter for individually lowering the left leg.
      */
     public void setLeftLegDown() {
-        if (this.legs == Legs.UPDOWN) {
-            setLegs(Legs.DOWNDOWN);
+        if (this.legs == Legs.LEFTUP) {
+            setLegs(Legs.DOWN);
         }
     }
 

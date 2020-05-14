@@ -6,7 +6,7 @@ import java.util.HashMap;
  * This enum represents a pose's legs, which can be in 3 different positions.
  */
 public enum Legs {
-    DOWNDOWN(0), UPDOWN(1), DOWNUP(2);
+    DOWN(0), LEFTUP(1), RIGHTUP(2);
 
     private final int id;
     private static final HashMap<Integer, Legs> MAP = new HashMap<>();
