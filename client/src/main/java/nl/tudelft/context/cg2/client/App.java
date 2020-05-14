@@ -34,6 +34,8 @@ public class App extends Application {
     WritableImage image = null;
     VideoCapture videoCapture;
     CascadeClassifier classifier;
+    int red;
+    int green;
     int counter = 0;
 
     /**
@@ -44,6 +46,9 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         nu.pattern.OpenCV.loadLocally();
+
+        this.red = new Color(255, 0, 0).getRGB();
+        this.green = new Color(0, 255, 0).getRGB();
 
         // Init video capture
         videoCapture = new VideoCapture();
@@ -94,13 +99,15 @@ public class App extends Application {
 
             MatOfRect detections = new MatOfRect();
             classifier.detectMultiScale(matrix, detections);
+//            System.out.println(detections.size());
             // Drawing boxes
             for (Rect rect : detections.toArray()) {
                 Imgproc.rectangle(
                         matrix,                                   //where to draw the box
                         new Point(rect.x, rect.y),                            //bottom left
                         new Point(rect.x + rect.width, rect.y + rect.height), //top right
-                        new Scalar(0, 0, 255)                                 //RGB colour
+                        new Scalar(0, 0, 255),                                 //RGB colour
+                        3
                 );
             }
 
@@ -121,8 +128,8 @@ public class App extends Application {
                 int rgbValue = (baseImage.getRGB(x, y) + img.getRGB(x, y)) / 2;
                 baseImage.setRGB(x, y, rgbValue);
                 int rgbValueImg = img.getRGB(x, y);
-                if (rgbValueImg != new Color(255, 0, 0).getRGB() && Math.abs(rgbValue - rgbValueImg) > epsilon) {
-                    img.setRGB(x, y, new Color(0, 255, 0).getRGB());
+                if (rgbValueImg != this.red && Math.abs(rgbValue - rgbValueImg) > epsilon) {
+                    img.setRGB(x, y, this.green);
                 }
             }
         }
