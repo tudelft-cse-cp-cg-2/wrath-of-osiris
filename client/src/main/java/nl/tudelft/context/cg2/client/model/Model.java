@@ -35,7 +35,7 @@ public class Model {
     public World getWorld() {
         return world;
     }
-    
+
     /**
      * Getter for current lobby object.
      * @return the currently participating lobby.

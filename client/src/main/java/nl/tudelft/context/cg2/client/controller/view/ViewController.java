@@ -1,8 +1,8 @@
 package nl.tudelft.context.cg2.client.controller.view;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.view.scenes.GameSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.CreateGameSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.GameSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.JoinSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.LobbySceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.MenuSceneController;
@@ -48,7 +48,7 @@ public class ViewController {
 
         sceneControllers.forEach(SceneController::setupListeners);
     }
-    
+
     /**
      * Gets the menu scene controller.
      * @return the menu scene controller.
