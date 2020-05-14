@@ -32,15 +32,15 @@ public class MenuSceneController extends SceneController {
      */
     @Override
     protected void setupMouseListeners() {
-        scene.getExampleButtonOne().setOnMouseClicked(event -> {
-            System.out.println("CLICKED!!!");
+        scene.getJoinGameButton().setOnMouseClicked(event -> {
+            view.getJoinScene().show();
         });
 
-        scene.getExampleButtonTwo().setOnMouseClicked(event -> {
-            System.out.println("CLICKED!!!");
+        scene.getCreateGameButton().setOnMouseClicked(event -> {
+            view.getCreateGameScene().show();
         });
 
-        scene.getExampleButtonThree().setOnMouseClicked(event -> {
+        scene.getQuitButton().setOnMouseClicked(event -> {
             Platform.exit();
         });
     }

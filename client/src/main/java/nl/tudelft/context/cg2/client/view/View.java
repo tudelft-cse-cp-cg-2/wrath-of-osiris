@@ -6,6 +6,9 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.scenes.GameScene;
+import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
+import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
+import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
 import java.util.ArrayList;
@@ -22,6 +25,9 @@ public class View {
     private final ArrayList<BaseScene> scenes;
     private final MenuScene menuScene;
     private final GameScene gameScene;
+    private final JoinScene joinScene;
+    private final CreateGameScene createGameScene;
+    private final LobbyScene lobbyScene;
 
     /**
      * The view constructor.
@@ -33,9 +39,15 @@ public class View {
         this.window = new Window(stage);
         this.menuScene = new MenuScene(window, new StackPane());
         this.gameScene = new GameScene(window, new Pane(), model.getWorld());
-
+        this.joinScene = new JoinScene(window, new StackPane());
+        this.createGameScene = new CreateGameScene(window, new StackPane());
+        this.lobbyScene = new LobbyScene(window, new StackPane());
         this.scenes = new ArrayList<>(Arrays.asList(
-                menuScene, gameScene
+                menuScene,
+                gameScene,
+                joinScene,
+                createGameScene,
+                lobbyScene
         ));
 
         scenes.forEach(BaseScene::draw);
@@ -70,5 +82,29 @@ public class View {
      */
     public GameScene getGameScene() {
         return gameScene;
+    }
+     
+    /**   
+     * The join scene getter.
+     * @return the join scene.
+     */
+    public JoinScene getJoinScene() {
+        return joinScene;
+    }
+
+    /**
+     * The create game scene getter.
+     * @return the create game scene.
+     */
+    public CreateGameScene getCreateGameScene() {
+        return createGameScene;
+    }
+
+    /**
+     * The lobby scene getter.
+     * @return the lobby scene.
+     */
+    public LobbyScene getLobbyScene() {
+        return lobbyScene;
     }
 }

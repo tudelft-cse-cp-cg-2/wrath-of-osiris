@@ -1,8 +1,8 @@
 .root {
-    -fx-background-color: rgb(145,180,191);
+    -fx-background-color: rgb(29, 29, 47);
 }
 
-#example-text {
+#header-text {
     -fx-font-size: 40px;
     -fx-font-family: 'SanSerif';
     -fx-fill: white;
@@ -10,37 +10,43 @@
 }
 
 .simple-button {
-    -fx-background-color: lightblue;
+    -fx-background-color: #213121;
     -fx-text-fill: white;
+    -fx-background-radius: 44;
+    -fx-border-radius: 35;
+    -fx-border-color: darkseagreen;
+    -fx-border-style: solid;
+    -fx-border-width: 4px;
 }
 
 .simple-button .text {
-    -fx-font-size: 16px;
-    -fx-font-family: 'SanSerif';
+    -fx-font-size: 18px;
+    -fx-font-family: 'Arial';
     -fx-fill: white;
+    -fx-font-weight: bold;
 }
 
 .simple-button:hover {
-    -fx-background-color: lightblue;
+    -fx-background-color: darkseagreen;
+    -fx-border-color: white;
+    /*-fx-border-style: solid;*/
+    /*-fx-border-width: 2px;*/
+}
+
+#quit-button {
+    -fx-background-color: darkred;
+}
+
+#quit-button:hover {
+    -fx-background-color: palevioletred;
     -fx-border-color: white;
     -fx-border-style: solid;
     -fx-border-width: 2px;
 }
 
-#example-button-three {
-    -fx-background-color: purple;
-}
-
-#example-button-three:hover {
-    -fx-background-color: purple;
-    -fx-border-color: white;
-    -fx-border-style: solid;
-    -fx-border-width: 2px;
-}
-
-#example-button-three .text {
-    -fx-font-size: 12px;
-    -fx-font-family: 'SanSerif';
-    -fx-fill: black;
+#quit-button .text {
+    -fx-font-size: 16px;
+    -fx-font-family: 'Arial';
+    -fx-fill: white;
     -fx-font-weight: bold;
 }

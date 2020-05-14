@@ -15,12 +15,12 @@ import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
  */
 public class MenuScene extends BaseScene {
 
-    private Text exampleText;
-    private HBox exampleHBox;
+    private Text headerText;
+    private HBox centerHBox;
 
-    private SimpleButton exampleButtonOne;
-    private SimpleButton exampleButtonTwo;
-    private SimpleButton exampleButtonThree;
+    private SimpleButton joinGameButton;
+    private SimpleButton createGameButton;
+    private SimpleButton quitButton;
 
     /**
      * The menu scene constructor.
@@ -38,30 +38,30 @@ public class MenuScene extends BaseScene {
     public void draw() {
         this.getStylesheets().add("/css/menu.css");
 
-        exampleText = new Text("Hello world!");
-        exampleText.setId("example-text");
-        exampleText.setTranslateY(20);
-        StackPane.setAlignment(exampleText, Pos.TOP_CENTER);
+        headerText = new Text("Hole in the Wall");
+        headerText.setId("header-text");
+        headerText.setTranslateY(20);
+        StackPane.setAlignment(headerText, Pos.TOP_CENTER);
 
-        exampleHBox = new HBox();
-        exampleHBox.setSpacing(50);
-        exampleHBox.setMaxSize(0, 50);
+        centerHBox = new HBox();
+        centerHBox.setSpacing(50);
+        centerHBox.setMaxSize(0, 50);
 
-        exampleButtonOne = new SimpleButton("Start");
-        exampleButtonOne.setSize(150, 50);
+        joinGameButton = new SimpleButton("Join Game");
+        joinGameButton.setSize(220, 80);
 
-        exampleButtonTwo = new SimpleButton("Stop");
-        exampleButtonTwo.setSize(150, 50);
+        createGameButton = new SimpleButton("Create Game");
+        createGameButton.setSize(220, 80);
 
-        exampleButtonThree = new SimpleButton("Quit");
-        exampleButtonThree.setId("example-button-three");
-        exampleButtonThree.setSize(60, 40);
-        exampleButtonThree.setTranslateX(-30);
-        exampleButtonThree.setTranslateY(-30);
-        StackPane.setAlignment(exampleButtonThree, Pos.BOTTOM_RIGHT);
+        quitButton = new SimpleButton("Quit");
+        quitButton.setId("quit-button");
+        quitButton.setSize(80, 60);
+        quitButton.setTranslateX(-30);
+        quitButton.setTranslateY(-30);
+        StackPane.setAlignment(quitButton, Pos.BOTTOM_RIGHT);
 
-        exampleHBox.getChildren().addAll(exampleButtonOne, exampleButtonTwo);
-        root.getChildren().addAll(exampleHBox, exampleButtonThree, exampleText);
+        centerHBox.getChildren().addAll(joinGameButton, createGameButton);
+        root.getChildren().addAll(centerHBox, quitButton, headerText);
     }
 
     /**
@@ -84,23 +84,23 @@ public class MenuScene extends BaseScene {
      * The example button one getter.
      * @return the example button one.
      */
-    public SimpleButton getExampleButtonOne() {
-        return exampleButtonOne;
+    public SimpleButton getJoinGameButton() {
+        return joinGameButton;
     }
 
     /**
      * The example button two getter.
      * @return the example button two.
      */
-    public SimpleButton getExampleButtonTwo() {
-        return exampleButtonTwo;
+    public SimpleButton getCreateGameButton() {
+        return createGameButton;
     }
 
     /**
      * The example button three getter.
      * @return the example button three.
      */
-    public SimpleButton getExampleButtonThree() {
-        return exampleButtonThree;
+    public SimpleButton getQuitButton() {
+        return quitButton;
     }
 }

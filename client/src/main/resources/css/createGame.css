@@ -1,0 +1,120 @@
+.root {
+    -fx-background-color: rgb(29, 29, 47);
+}
+
+#header-text {
+    -fx-font-size: 40px;
+    -fx-font-family: 'SanSerif';
+    -fx-fill: white;
+    -fx-font-weight: bold ;
+}
+
+.simple-button {
+    -fx-background-color: #213121;
+    -fx-text-fill: white;
+    -fx-background-radius: 40px;
+    -fx-border-radius: 35px;
+    -fx-border-color: darkseagreen;
+    -fx-border-style: solid;
+    -fx-border-width: 4px;
+}
+
+.simple-button .text {
+    -fx-font-size: 18px;
+    -fx-font-family: 'Arial';
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.simple-button:hover {
+    -fx-background-color: darkseagreen;
+    -fx-border-color: white;
+}
+
+.text-box {
+    -fx-font-size: 16;
+    -fx-font-family: 'Arial';
+    -fx-font-weight: bold;
+}
+
+#leave-button {
+    -fx-background-color: darkblue;
+    -fx-fill: white;
+    -fx-border-width: 4px;
+}
+
+#leave-button:hover {
+    -fx-background-color: lightblue;
+    -fx-border-color: white;
+    -fx-border-style: solid;
+    -fx-border-width: 4px;
+}
+
+#leave-button .text {
+    -fx-font-size: 16px;
+    -fx-font-family: 'Arial';
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}
+
+.label {
+    -fx-font-size: 16;
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.name-entry {
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 17;
+    -fx-padding: 14;
+}
+
+#player-list {
+    -fx-background-color: transparent;
+    -fx-background-radius: 15;
+    -fx-border-radius: 9px;
+    -fx-padding: 7;
+    -fx-border-color: rgb(120, 120, 149);
+    -fx-border-style: solid;
+    -fx-border-width: 4px;
+
+}
+
+.lobby-entry {
+    -fx-font-family: "Arial";
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 17;
+    -fx-padding: 14;
+    -fx-border-radius: 9px;
+    -fx-border-color: #404040;
+    -fx-border-style: solid;
+    -fx-border-width: 4px;
+}
+
+.lobby-entry:hover {
+    -fx-border-color: white;
+}
+
+#lobby-list, .scroll-pane{
+    -fx-background-color: rgb(29, 29, 47);
+}
+
+.scroll-bar:vertical{
+    -fx-background-color:transparent;
+    -fx-min-width: 9px;
+}
+
+.increment-button, .decrement-button {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.scroll-bar:vertical .track{
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
