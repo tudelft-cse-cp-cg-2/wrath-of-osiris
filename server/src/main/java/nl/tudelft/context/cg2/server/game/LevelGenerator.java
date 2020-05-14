@@ -59,7 +59,7 @@ public class LevelGenerator {
      * @param minimumPoses minimum amount of Poses that should be in the Wall
      * @return randomly generated Wall
      */
-    public Wall generateWall(int minimumPoses) {
+    private Wall generateWall(int minimumPoses) {
         int amountOfPoses = randomAmountOfPoses(minimumPoses);
         Wall res = new Wall();
         HashSet<Integer> usedPositions = new HashSet<>(3);
@@ -150,7 +150,7 @@ public class LevelGenerator {
      * @param maxValue highest possible value
      * @return random integer
      */
-    protected int rand(int maxValue) {
+    private int rand(int maxValue) {
         return rand(0, maxValue);
     }
 
@@ -162,7 +162,7 @@ public class LevelGenerator {
      * @param maxValue highest possible value
      * @return random integer
      */
-    protected int rand(int minValue, int maxValue) {
+    private int rand(int minValue, int maxValue) {
         return (int) (Math.random() * (++maxValue - minValue)) + minValue;
     }
 }
