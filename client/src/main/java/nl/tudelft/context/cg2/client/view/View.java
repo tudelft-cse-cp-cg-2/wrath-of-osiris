@@ -1,8 +1,12 @@
 package nl.tudelft.context.cg2.client.view;
 
+import javafx.application.Platform;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
+import nl.tudelft.context.cg2.client.view.scenes.GameScene;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
@@ -15,10 +19,12 @@ import java.util.Arrays;
  */
 public class View {
 
+    private final Model model;
     private final Window window;
 
     private final ArrayList<BaseScene> scenes;
     private final MenuScene menuScene;
+    private final GameScene gameScene;
     private final JoinScene joinScene;
     private final CreateGameScene createGameScene;
     private final LobbyScene lobbyScene;
@@ -26,41 +32,32 @@ public class View {
     /**
      * The view constructor.
      * @param stage the javafx window being displayed to the user.
+     * @param model the model that contains elements to be drawn in the window.
      */
-    public View(final Stage stage) {
+    public View(final Stage stage, Model model) {
+        this.model = model;
         this.window = new Window(stage);
         this.menuScene = new MenuScene(window, new StackPane());
+        this.gameScene = new GameScene(window, new Pane(), model.getWorld());
         this.joinScene = new JoinScene(window, new StackPane());
         this.createGameScene = new CreateGameScene(window, new StackPane());
         this.lobbyScene = new LobbyScene(window, new StackPane());
         this.scenes = new ArrayList<>(Arrays.asList(
                 menuScene,
+                gameScene,
                 joinScene,
                 createGameScene,
                 lobbyScene
         ));
 
         scenes.forEach(BaseScene::draw);
-        window.resizedProperty().addListener((obj, oldV, newV) -> onResized(newV));
     }
 
     /**
      * Updates everything that runs on the graphics timer.
-     * @param t the passed time in s since timer initialization.
-     * @param dt the passed time in s since the last update.
      */
-    public void update(double t, double dt) {
-        window.getShownScene().animate();
-    }
-
-    /**
-     * Handles the windows resize action.
-     * @param resized was resized or not.
-     */
-    private void onResized(boolean resized) {
-        if (resized) {
-            window.getShownScene().onResized();
-        }
+    public void update() {
+        Platform.runLater(() -> window.getShownScene().animate());
     }
 
     /**
@@ -77,6 +74,14 @@ public class View {
      */
     public MenuScene getMenuScene() {
         return menuScene;
+    }
+
+    /**
+     * The game scene getter.
+     * @return the game scene.
+     */
+    public GameScene getGameScene() {
+        return gameScene;
     }
 
     /**

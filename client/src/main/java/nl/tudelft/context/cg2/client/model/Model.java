@@ -1,18 +1,39 @@
 package nl.tudelft.context.cg2.client.model;
 
+import nl.tudelft.context.cg2.client.model.files.ImageCache;
+import nl.tudelft.context.cg2.client.model.world.World;
+
 /**
  * The model class.
  * Holds all the client data and data structures.
  */
 public class Model {
 
+    private final World world;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
 
     /**
-     * Loads the client data.
+     * The model constructor.
      */
-    public void loadData() {
+    public Model() {
+        this.world = new World();
+    }
+
+    /**
+     * Loads the client data from external resources.
+     */
+    public void load() {
+        ImageCache.loadImages();
+        world.create();
+    }
+
+    /**
+     * World getter.
+     * @return the game world.
+     */
+    public World getWorld() {
+        return world;
     }
 
     /**
@@ -46,5 +67,4 @@ public class Model {
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
-
 }

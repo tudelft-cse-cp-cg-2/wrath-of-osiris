@@ -1,6 +1,6 @@
 package nl.tudelft.context.cg2.client.controller;
 
-import nl.tudelft.context.cg2.client.controller.core.GraphicsTimer;
+import nl.tudelft.context.cg2.client.controller.core.GameTimer;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Lobby;
 import nl.tudelft.context.cg2.client.model.Model;
@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class Controller {
 
     private final ViewController viewController;
-    private final GraphicsTimer graphicsTimer;
+    private final GameTimer gameTimer;
 
     private final Model model;
     private final View view;
@@ -27,8 +27,8 @@ public class Controller {
      * @param view The View object, containing the UI controls calling back to this controller.
      */
     public Controller(final Model model, final View view) {
-        this.viewController = new ViewController(this, view);
-        this.graphicsTimer = new GraphicsTimer(view);
+        this.viewController = new ViewController(this, model, view);
+        this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;
     }
@@ -110,7 +110,7 @@ public class Controller {
      * The graphics timer getter.
      * @return the graphics timer.
      */
-    public GraphicsTimer getGraphicsTimer() {
-        return graphicsTimer;
+    public GameTimer getGameTimer() {
+        return gameTimer;
     }
 }

@@ -1,19 +1,20 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
-import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.view.View;
-import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
+import nl.tudelft.context.cg2.client.view.scenes.GameScene;
 
 /**
  * The Menu scene controller class.
  * Controls the menu scene.
  */
-public class MenuSceneController extends SceneController {
+public class GameSceneController extends SceneController {
 
-    private final MenuScene scene;
+    private final GameScene scene;
+    private final World world;
 
     /**
      * The main scene controller.
@@ -22,9 +23,10 @@ public class MenuSceneController extends SceneController {
      * @param model the model class.
      * @param view the view class.
      */
-    public MenuSceneController(Controller controller, Model model, View view) {
+    public GameSceneController(Controller controller, Model model, View view) {
         super(controller, model, view);
-        scene = view.getMenuScene();
+        scene = view.getGameScene();
+        world = model.getWorld();
     }
 
     /**
@@ -32,17 +34,7 @@ public class MenuSceneController extends SceneController {
      */
     @Override
     protected void setupMouseListeners() {
-        scene.getJoinGameButton().setOnMouseClicked(event -> {
-            view.getJoinScene().show();
-        });
 
-        scene.getCreateGameButton().setOnMouseClicked(event -> {
-            view.getCreateGameScene().show();
-        });
-
-        scene.getQuitButton().setOnMouseClicked(event -> {
-            Platform.exit();
-        });
     }
 
     /**
@@ -53,7 +45,10 @@ public class MenuSceneController extends SceneController {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case SPACE:
-                    startGame();
+                    startWorldTimer();
+                    break;
+                case BACK_SPACE:
+                    showMenuScene();
                     break;
                 default:
                     break;
@@ -70,11 +65,16 @@ public class MenuSceneController extends SceneController {
     }
 
     /**
-     * Starts the game.
+     * Starts the world timer.
      */
-    private void startGame() {
-        model.getWorld().create();
-        view.getGameScene().clear();
-        view.getGameScene().show();
+    private void startWorldTimer() {
+        world.setInMotion(!world.isInMotion());
+    }
+
+    /**
+     * Displays the menu scene in the window.
+     */
+    private void showMenuScene() {
+        view.getMenuScene().show();
     }
 }

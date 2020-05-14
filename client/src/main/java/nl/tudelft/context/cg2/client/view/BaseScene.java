@@ -3,8 +3,6 @@ package nl.tudelft.context.cg2.client.view;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 
-import java.awt.Dimension;
-
 /**
  * The base scene class.
  * Can be set in a window to show a scene.
@@ -44,20 +42,7 @@ public abstract class BaseScene extends Scene {
     public abstract void animate();
 
     /**
-     * Event thrown when the window is resized.
-     */
-    public abstract void onResized();
-
-    /**
      * Event thrown when the scene is shown in the window.
      */
     public abstract void onShown();
-
-    /**
-     * Gets the size of the scene.
-     * @return the width and height dimensions of the scene.
-     */
-    public Dimension getSceneSize() {
-        return new Dimension((int) getWidth(), (int) getHeight());
-    }
 }

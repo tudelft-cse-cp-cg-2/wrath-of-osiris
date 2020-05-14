@@ -1,14 +1,18 @@
 package nl.tudelft.context.cg2.client.controller.core;
 
 import javafx.animation.AnimationTimer;
+import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
 /**
- * The Graphics Timer class.
- * Starts a timer that dynamically updates the graphics.
+ * The GaneTimer class.
+ * Starts a timer that dynamically updates the game.
+ * First updates the game world stepwise.
+ * Then updates the view based on the new state of the world.
  */
-public class GraphicsTimer extends AnimationTimer {
+public class GameTimer extends AnimationTimer {
 
+    private final Model model;
     private final View view;
 
     private long previousNanoTime;
@@ -16,9 +20,11 @@ public class GraphicsTimer extends AnimationTimer {
 
     /**
      * The graphics timer constructor.
-     * @param view the view that holds the graphics
+     * @param model the model that holds the game data.
+     * @param view the view that holds the game graphics.
      */
-    public GraphicsTimer(View view) {
+    public GameTimer(Model model, View view) {
+        this.model = model;
         this.view = view;
     }
 
@@ -50,7 +56,8 @@ public class GraphicsTimer extends AnimationTimer {
      * @param dt the passed time in s since the last update.
      */
     private void update(double t, double dt) {
-        view.update(t, dt);
+        model.getWorld().step(t, dt);
+        view.update();
     }
 
 }

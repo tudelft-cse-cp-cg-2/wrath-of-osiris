@@ -1,6 +1,6 @@
 package nl.tudelft.context.cg2.client.view;
 
-import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
@@ -15,7 +15,8 @@ public class Window {
     private final Stage stage;
     private BaseScene shownScene;
 
-    private SimpleBooleanProperty resized;
+    private SimpleDoubleProperty sceneWidth;
+    private SimpleDoubleProperty sceneHeight;
 
     /**
      * The window constructor.
@@ -25,7 +26,8 @@ public class Window {
     public Window(final Stage stage) {
         this.stage = stage;
         this.shownScene = null;
-        this.resized = new SimpleBooleanProperty(false);
+        this.sceneWidth = new SimpleDoubleProperty(0);
+        this.sceneHeight = new SimpleDoubleProperty(0);
         this.drawWindow();
     }
 
@@ -43,8 +45,8 @@ public class Window {
         stage.setMinHeight(600D);
         stage.setX(0D);
         stage.setY(0D);
-        stage.widthProperty().addListener((obs, oldVal, newVal) -> onResized());
-        stage.heightProperty().addListener((obs, oldVal, newVal) -> onResized());
+        sceneWidth.bind(stage.widthProperty().subtract(14D));
+        sceneHeight.bind(stage.heightProperty().subtract(37.6D));
     }
 
     /**
@@ -54,20 +56,11 @@ public class Window {
     public void showScene(BaseScene scene) {
         shownScene = scene;
         stage.setScene(scene);
-    }
-
-    /**
-     * Event thrown when the window gets resized.
-     * Flashes the resized property for window observers to catch that the window was resized.
-     */
-    private void onResized() {
-        resized.setValue(true);
-        resized.setValue(false);
+        scene.getRoot().resize(sceneWidth.get(), sceneHeight.get());
     }
 
     /**
      * Gets the window stage.
-     *
      * @return the stage.
      */
     public Stage getStage() {
@@ -76,7 +69,6 @@ public class Window {
 
     /**
      * Gets the base scene that is currently being displayed in the window.
-     *
      * @return the displayed scene.
      */
     public BaseScene getShownScene() {
@@ -84,11 +76,19 @@ public class Window {
     }
 
     /**
-     * The resized property getter.
-     *
-     * @return the property that flashes to true when the window is resized.
+     * The scene width property defines the scene width to equal the window width.
+     * @return the scene height.
      */
-    public SimpleBooleanProperty resizedProperty() {
-        return resized;
+    public SimpleDoubleProperty sceneWidthProperty() {
+        return sceneWidth;
+    }
+
+    /**
+     * The scene height property defines the scene height
+     * in terms of the window height minus the title bar.
+     * @return the scene height.
+     */
+    public SimpleDoubleProperty sceneHeightProperty() {
+        return sceneHeight;
     }
 }
