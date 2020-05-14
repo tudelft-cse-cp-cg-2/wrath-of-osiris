@@ -26,7 +26,8 @@ public class Wall {
     }
 
     /**
-     * Sets a number at one of the three screen positions.
+     * Sets a number at one of the three screen positions. Before using this, first make sure there
+     * exists a Pose on that position.
      *
      * @param position screen position
      * @param num      number that should be set
@@ -52,6 +53,7 @@ public class Wall {
      * @param pose     pose that should be set
      */
     public void setPose(ScreenPos position, Pose pose) {
+        pose.setScreenPos(position);
         poses.put(position, pose);
     }
 
@@ -85,6 +87,7 @@ public class Wall {
                 case MIDDLE:
                     if (pose.equals(getPose(ScreenPos.MIDDLE))) {
                         frequency[1]++;
+                        System.out.println("yes");
                     } else {
                         return false;
                     }
