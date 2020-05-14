@@ -46,13 +46,14 @@ public class App extends Application {
         videoCapture = new VideoCapture();
         videoCapture.open(0);
 
+        PoseDetector pd = new PoseDetector();
+
         // Select a classifier
 //        classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_fullbody.xml");
-        classifier = new CascadeClassifier("/home/mpm/Git/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
 
         // Schedule an interval to capture a frame, process it and display it
         Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            WritableImage writableImage = this.captureAndProcessSnapshot();
+            WritableImage writableImage = this.captureAndProcessSnapshot(pd);
 
             ImageView imageView = new ImageView(writableImage);
             imageView.setPreserveRatio(true);
@@ -68,32 +69,17 @@ public class App extends Application {
         stage.show();
     }
 
-    public WritableImage captureAndProcessSnapshot() {
+    public WritableImage captureAndProcessSnapshot(PoseDetector pd) {
         WritableImage writableImage = null;
 
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
         if (videoCapture.isOpened()) {
-            BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
+            // asdf
+            BufferedImage image = pd.generatePoseRegions(matrix);
 
-            MatOfRect faceDetections = new MatOfRect();
-            classifier.detectMultiScale(matrix, faceDetections);
 
-            // Drawing boxes
-            for (Rect rect : faceDetections.toArray()) {
-                Imgproc.rectangle(
-                        matrix,                                   //where to draw the box
-                        new Point(rect.x, rect.y),                            //bottom left
-                        new Point(rect.x + rect.width, rect.y + rect.height), //top right
-                        new Scalar(0, 0, 255)                                 //RGB colour
-                );
-            }
-
-            WritableRaster raster = image.getRaster();
-            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-            byte[] data = dataBuffer.getData();
-            matrix.get(0, 0, data);
             writableImage = SwingFXUtils.toFXImage(image, null);
         }
 
