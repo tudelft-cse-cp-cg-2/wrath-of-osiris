@@ -69,14 +69,13 @@ public class PoseTest {
         pose.incrementCounter(3, 0);
         // limb 3 option 0 has most votes
         pose.updatePose();
-        assertTrue(pose.leftArm == 1);
-        assertTrue(pose.rightArm == 2);
-        assertTrue(pose.leftLeg == 1);
-        assertTrue(pose.rightLeg == 0);
+        assertTrue(pose.toString()
+                .equals("Pose: la: " + 1 + "| ra: " + 2 + "| ll: " + 1 + "| rl: " + 0));
 
         pose.incrementCounter(0, 0);
         pose.incrementCounter(0, 0);
         pose.updatePose();
-        assertTrue(pose.leftArm == 0);
+        assertTrue(pose.toString()
+                .equals("Pose: la: " + 0 + "| ra: " + 2 + "| ll: " + 1 + "| rl: " + 0));
     }
 }
