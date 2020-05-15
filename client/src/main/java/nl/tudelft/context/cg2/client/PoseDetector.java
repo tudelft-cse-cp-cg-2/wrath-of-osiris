@@ -2,12 +2,23 @@ package nl.tudelft.context.cg2.client;
 
 import org.opencv.core.*;
 import org.opencv.objdetect.CascadeClassifier;
+import org.opencv.imgproc.Imgproc;
 
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PoseDetector {
     private final CascadeClassifier classifier = new CascadeClassifier("/home/mpm/Git/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
+    final private int red = new Color(255, 0, 0).getRGB();
+    final private int green = new Color(0, 255, 0).getRGB();
+    final private int blue = new Color(0, 0, 255).getRGB();
+
+    final private Pose pose = new Pose(0, 0, 0, 0);
+    private BufferedImage baseImage;
 
     /**
      * Given the coordinates of a head, calculate the bounding boxes
@@ -23,32 +34,38 @@ public class PoseDetector {
         out.add(new PoseRegion(head.getTopLeftX() + head.getBottomRightX(),
                 head.getTopLeftY() - 3 * head.getBottomRightY(),
                 head.getTopLeftX() + 3 * head.getBottomRightX(),
-                head.getTopLeftY() + head.getBottomRightY()));
+                head.getTopLeftY() + head.getBottomRightY(),
+                1, 0));
         // arm middle right
         out.add(new PoseRegion(head.getTopLeftX() + (int)(1.5 * (double)head.getBottomRightX()),
                 head.getTopLeftY() + head.getBottomRightY() + 10,
                 head.getTopLeftX() + 5 * head.getBottomRightX(),
-                head.getTopLeftY() + 3 * head.getBottomRightY()));
+                head.getTopLeftY() + 3 * head.getBottomRightY(),
+                1, 1));
         // arm bottom right
         out.add(new PoseRegion(head.getTopLeftX() + head.getBottomRightX(),
                 head.getTopLeftY() + 2 * head.getBottomRightY(),
                 head.getTopLeftX() + 3 * head.getBottomRightX(),
-                head.getTopLeftY() + 5 * head.getBottomRightY()));
+                head.getTopLeftY() + 5 * head.getBottomRightY(),
+                1, 2));
         // arm top left
         out.add(new PoseRegion(head.getTopLeftX(),
                 head.getTopLeftY() - 3 * head.getBottomRightY(),
                 head.getTopLeftX() - 2 * head.getBottomRightX(),
-                head.getTopLeftY() + head.getBottomRightY()));
+                head.getTopLeftY() + head.getBottomRightY(),
+                0, 0));
         // arm middle left
         out.add(new PoseRegion(head.getTopLeftX() - (int)(0.5 * (double)head.getBottomRightX()),
                 head.getTopLeftY() + head.getBottomRightY() + 10,
                 head.getTopLeftX() - 4 * head.getBottomRightX(),
-                head.getTopLeftY() + 3 * head.getBottomRightY()));
+                head.getTopLeftY() + 3 * head.getBottomRightY(),
+                0, 1));
         // arm bottom left
         out.add(new PoseRegion(head.getTopLeftX(),
                 head.getTopLeftY() + 2 * head.getBottomRightY(),
                 head.getTopLeftX() - 2 * head.getBottomRightX(),
-                head.getTopLeftY() + 5 * head.getBottomRightY()));
+                head.getTopLeftY() + 5 * head.getBottomRightY(),
+                0, 2));
 
         return out;
     }
@@ -61,21 +78,69 @@ public class PoseDetector {
      * @return a list with six regions, in the order top -> bottom,
      * right -> left. if no faces are found, this list will be empty.
      */
-    public List<PoseRegion> generatePoseRegions(Mat matrix) {
+    public BufferedImage generatePoseRegions(Mat matrix) {
         MatOfRect faceDetections = new MatOfRect();
         classifier.detectMultiScale(matrix, faceDetections);
+        BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
+        List<PoseRegion> poseRegions = new ArrayList<>();
 
         // Loop through detections
         if (faceDetections.toArray().length > 0) {
             Rect rect = faceDetections.toArray()[0];
-            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height);
-            return generatePoseRegionsFromHead(head); // we always take the last found match
+            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, -1, -1);
+            poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
-            return new ArrayList<>();
+            return image;
         }
+//        drawPoseRegions(faceDetections, matrix);
+
+        for (PoseRegion poseRegion : poseRegions) {
+            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(), new Scalar(255, 0, 0), 3, 0, 0);
+        }
+        /// _______________________________
+
+        WritableRaster raster = image.getRaster();
+        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+        byte[] data = dataBuffer.getData();
+        matrix.get(0, 0, data);
+
+        if (baseImage == null) {
+            baseImage = image;
+        } else {
+            image = findLimbLocations(poseRegions, image);
+        }
+
+        return image;
     }
 
-    public boolean findLimbLocations() {
-        return false;
+    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image) {
+        this.pose.resetCounters();
+        BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
+        this.pose.updatePose();
+        System.out.println(this.pose.toString());
+        return bufferedImage;
     }
+
+    BufferedImage blendAndCompareImages(List<PoseRegion> poseRegions, BufferedImage img) {
+        int epsilon = 750000;
+        for (int x = 0; x < img.getWidth(); x++) {
+            for (int y = 0; y < img.getHeight(); y++) {
+                int rgbValue = (baseImage.getRGB(x, y) + img.getRGB(x, y)) / 2;
+                baseImage.setRGB(x, y, rgbValue);
+                int rgbValueImg = img.getRGB(x, y);
+                // TODO: exclude the lines we draw ourselves
+                if (Math.abs(rgbValue - rgbValueImg) > epsilon) {
+                    img.setRGB(x, y, this.green);
+                    for (PoseRegion poseRegion : poseRegions) {
+                        if (poseRegion.inRange(x, y)) {
+                            this.pose.incrementCounter(poseRegion.getLimb(), poseRegion.getOption());
+                        }
+                    }
+                }
+            }
+        }
+        return img;
+    }
+
+
 }

@@ -11,12 +11,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.opencv.core.*;
+
+import org.opencv.core.Mat;
+import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
+
+import static org.opencv.core.Core.flip;
 
 /**
  * JavaFX App.
@@ -25,6 +27,8 @@ import java.awt.image.WritableRaster;
         justification = "'controller' will be used very soon.")
 public class App extends Application {
     VideoCapture videoCapture;
+    WritableImage writableImage;
+    boolean skip = false;
 
     /**
      * Launches the javafx application.
@@ -33,18 +37,22 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) {
+        // Load in open cv library, must be done manually
         nu.pattern.OpenCV.loadLocally();
 
         // Init video capture
         videoCapture = new VideoCapture();
         videoCapture.open(0);
 
+        PoseDetector pd = new PoseDetector();
+
         // Schedule an interval to capture a frame, process it and display it
         Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            WritableImage writableImage = this.captureAndProcessSnapshot();
+            WritableImage writableImage = this.captureAndProcessSnapshot(pd);
 
             ImageView imageView = new ImageView(writableImage);
             imageView.setPreserveRatio(true);
+            imageView.setFitHeight(900);
 
             Group root = new Group(imageView);
             Scene scene = new Scene(root);
@@ -57,23 +65,25 @@ public class App extends Application {
         stage.show();
     }
 
-    public WritableImage captureAndProcessSnapshot() {
+    public WritableImage captureAndProcessSnapshot(PoseDetector pd) {
         WritableImage writableImage = null;
 
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
+        if (skip) {
+            skip = false;
+            return this.writableImage;
+        }
+
+        flip(matrix, matrix, +1);
         if (videoCapture.isOpened()) {
-            BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
-
-            WritableRaster raster = image.getRaster();
-            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-            byte[] data = dataBuffer.getData();
-            matrix.get(0, 0, data);
-
-
+            BufferedImage image = pd.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
         }
+
+        skip = true;
+        this.writableImage = writableImage;
 
         return writableImage;
     }
