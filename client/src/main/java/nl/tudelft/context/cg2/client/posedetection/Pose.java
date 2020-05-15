@@ -7,15 +7,15 @@ import java.util.Map;
  * Class representing the pose of a human body.
  */
 public class Pose {
-    private int leftArm;
-    private int rightArm;
-    private int leftLeg;
-    private int rightLeg;
+    private Position leftArm;
+    private Position rightArm;
+    private Position leftLeg;
+    private Position rightLeg;
 
-    private Map<Integer, Integer> leftArmCounter;
-    private Map<Integer, Integer> rightArmCounter;
-    private Map<Integer, Integer> leftLegCounter;
-    private Map<Integer, Integer> rightLegCounter;
+    private Map<Position, Integer> leftArmCounter;
+    private Map<Position, Integer> rightArmCounter;
+    private Map<Position, Integer> leftLegCounter;
+    private Map<Position, Integer> rightLegCounter;
 
     /**
      * Constructor for pose.
@@ -24,7 +24,7 @@ public class Pose {
      * @param ll - left leg
      * @param rl - right leg
      */
-    public Pose(int la, int ra, int ll, int rl) {
+    public Pose(Position la, Position ra, Position ll, Position rl) {
         leftArm = la;
         rightArm = ra;
         leftLeg = ll;
@@ -37,8 +37,8 @@ public class Pose {
      */
     @Override
     public String toString() {
-        return "Pose: la: " + leftArm + "| ra: " + rightArm + "| ll: " + leftLeg + "| rl: "
-                + rightLeg;
+        return "Pose: la: " + leftArm.name() + "| ra: " + rightArm.name() + "| ll: "
+                + leftLeg.name() + "| rl: " + rightLeg.name();
     }
 
     /**
@@ -47,41 +47,41 @@ public class Pose {
      */
     public void resetCounters() {
         leftArmCounter = new HashMap<>();
-        leftArmCounter.put(0, 0);
-        leftArmCounter.put(1, 0);
-        leftArmCounter.put(2, 0);
+        leftArmCounter.put(Position.top, 0);
+        leftArmCounter.put(Position.middle, 0);
+        leftArmCounter.put(Position.bottom, 0);
         rightArmCounter = new HashMap<>();
-        rightArmCounter.put(0, 0);
-        rightArmCounter.put(1, 0);
-        rightArmCounter.put(2, 0);
+        rightArmCounter.put(Position.top, 0);
+        rightArmCounter.put(Position.middle, 0);
+        rightArmCounter.put(Position.bottom, 0);
         leftLegCounter = new HashMap<>();
-        leftLegCounter.put(0, 0);
-        leftLegCounter.put(1, 0);
+        leftLegCounter.put(Position.raised, 0);
+        leftLegCounter.put(Position.neutral, 0);
         rightLegCounter = new HashMap<>();
-        rightLegCounter.put(0, 0);
-        rightLegCounter.put(1, 0);
+        rightLegCounter.put(Position.raised, 0);
+        rightLegCounter.put(Position.neutral, 0);
     }
 
     /**
      * Increments the counter for a limb, increasing the chance that the limb
      * is found to be in this pose.
      * @param limb - the limb in question
-     * @param option - the pose it might be in
+     * @param position - the pose it might be in
      */
-    public void incrementCounter(int limb, int option) {
-        if (limb == 0) {
-            leftArmCounter.put(option, leftArmCounter.get(option) + 1);
+    public void incrementCounter(Limb limb, Position position) {
+        if (limb == Limb.left_arm) {
+            leftArmCounter.put(position, leftArmCounter.get(position) + 1);
             return;
         }
-        if (limb == 1) {
-            rightArmCounter.put(option, rightArmCounter.get(option) + 1);
+        if (limb == Limb.right_arm) {
+            rightArmCounter.put(position, rightArmCounter.get(position) + 1);
             return;
         }
-        if (limb == 2) {
-            leftLegCounter.put(option, leftLegCounter.get(option) + 1);
+        if (limb == Limb.legs) {
+            leftLegCounter.put(position, leftLegCounter.get(position) + 1);
             return;
         }
-        rightLegCounter.put(option, rightLegCounter.get(option) + 1);
+        rightLegCounter.put(position, rightLegCounter.get(position) + 1);
     }
 
     /**
@@ -89,36 +89,36 @@ public class Pose {
      * incrementCounter calls.
      */
     public void updatePose() {
-        leftArm = getBestArmOption(leftArmCounter);
-        rightArm = getBestArmOption(rightArmCounter);
-        if (leftLegCounter.get(0) > leftLegCounter.get(1)) {
-            leftLeg = 0;
+        leftArm = getBestArmPosition(leftArmCounter);
+        rightArm = getBestArmPosition(rightArmCounter);
+        if (leftLegCounter.get(Position.neutral) > leftLegCounter.get(Position.raised)) {
+            leftLeg = Position.neutral;
         } else {
-            leftLeg = 1;
+            leftLeg = Position.raised;
         }
-        if (rightLegCounter.get(0) > rightLegCounter.get(1)) {
-            rightLeg = 0;
+        if (rightLegCounter.get(Position.neutral) > rightLegCounter.get(Position.raised)) {
+            rightLeg = Position.neutral;
         } else {
-            rightLeg = 1;
+            rightLeg = Position.raised;
         }
     }
 
     /**
-     * Get the best pose option for an arm.
+     * Get the best pose position for an arm.
      * @param map - the counter for the arm
      * @return the pose with the highest chance of being correct
      */
-    private int getBestArmOption(Map<Integer, Integer> map) {
-        if (map.get(0) > map.get(1)) {
-            if (map.get(0) > map.get(2)) {
-                return 0;
+    private Position getBestArmPosition(Map<Position, Integer> map) {
+        if (map.get(Position.top) > map.get(Position.middle)) {
+            if (map.get(Position.top) > map.get(Position.bottom)) {
+                return Position.top;
             } else {
-                return 2;
+                return Position.bottom;
             }
-        } else if (map.get(1) > map.get(2)) {
-            return 1;
+        } else if (map.get(Position.middle) > map.get(Position.bottom)) {
+            return Position.middle;
         } else {
-            return 2;
+            return Position.bottom;
         }
     }
 }

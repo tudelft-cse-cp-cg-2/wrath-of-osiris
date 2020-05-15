@@ -11,8 +11,8 @@ public class PoseRegion {
     private final int topY;
     private final int rightX;
     private final int bottomY;
-    private final int limb; // Left/Right Arm/Leg
-    private final int option; // Up/Down/Horizontal
+    private final Limb limb; // Left/Right Arm/Leg
+    private final Position position; // Up/Down/Horizontal
 
     /**
      * Initializer for PoseRegion.
@@ -21,15 +21,15 @@ public class PoseRegion {
      * @param bx - right x coordinate
      * @param by - bottom y coordinate
      * @param limb - limb of the pose
-     * @param option - pose of the limb
+     * @param position - pose of the limb
      */
-    public PoseRegion(int tx, int ty, int bx, int by, int limb, int option) {
+    public PoseRegion(int tx, int ty, int bx, int by, Limb limb, Position position) {
         leftX = tx;
         topY = ty;
         rightX = bx;
         bottomY = by;
         this.limb = limb;
-        this.option = option;
+        this.position = position;
     }
 
     /**
@@ -68,16 +68,16 @@ public class PoseRegion {
      * Getter for limb.
      * @return limb.
      */
-    public int getLimb() {
+    public Limb getLimb() {
         return limb;
     }
 
     /**
-     * Getter for option.
-     * @return option.
+     * Getter for position.
+     * @return position.
      */
-    public int getOption() {
-        return option;
+    public Position getPosition() {
+        return position;
     }
 
     /**

@@ -23,7 +23,8 @@ public class PoseDetector {
             "src/main/java/nl/tudelft/context/cg2/client/posedetection/haarcascade_frontalface_default.xml");
     private final int green = new Color(0, 255, 0).getRGB();
 
-    private final Pose pose = new Pose(0, 0, 0, 0);
+    private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral,
+            Position.neutral);
     private BufferedImage baseImage;
 
     /**
@@ -41,37 +42,37 @@ public class PoseDetector {
                 head.getTopY() - 3 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + head.getBottomY(),
-                1, 0));
+                Limb.right_arm, Position.top));
         // arm middle right
         out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * (double) head.getRightX()),
                 head.getTopY() + head.getBottomY() + 10,
                 head.getLeftX() + 5 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
-                1, 1));
+                Limb.right_arm, Position.middle));
         // arm bottom right
         out.add(new PoseRegion(head.getLeftX() + head.getRightX(),
                 head.getTopY() + 2 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
-                1, 2));
+                Limb.right_arm, Position.bottom));
         // arm top left
         out.add(new PoseRegion(head.getLeftX(),
                 head.getTopY() - 3 * head.getBottomY(),
                 head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() + head.getBottomY(),
-                0, 0));
+                Limb.left_arm, Position.top));
         // arm middle left
         out.add(new PoseRegion(head.getLeftX() - (int) (0.5 * (double) head.getRightX()),
                 head.getTopY() + head.getBottomY() + 10,
                 head.getLeftX() - 4 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
-                0, 1));
+                Limb.left_arm, Position.middle));
         // arm bottom left
         out.add(new PoseRegion(head.getLeftX(),
                 head.getTopY() + 2 * head.getBottomY(),
                 head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
-                0, 2));
+                Limb.left_arm, Position.bottom));
 
         return out;
     }
@@ -94,7 +95,7 @@ public class PoseDetector {
         // Detect
         if (faceDetections.toArray().length > 0) {
             Rect rect = faceDetections.toArray()[0];
-            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, -1, -1);
+            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
             return image;
@@ -151,7 +152,7 @@ public class PoseDetector {
                     for (PoseRegion poseRegion : poseRegions) {
                         if (poseRegion.inRange(x, y)) {
                             this.pose.incrementCounter(poseRegion.getLimb(),
-                                    poseRegion.getOption());
+                                    poseRegion.getPosition());
                         }
                     }
                 }
