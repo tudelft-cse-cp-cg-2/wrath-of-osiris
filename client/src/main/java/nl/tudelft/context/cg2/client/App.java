@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.client;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import nl.tudelft.context.cg2.client.controller.Controller;
@@ -10,8 +9,6 @@ import nl.tudelft.context.cg2.client.view.View;
 /**
  * JavaFX App.
  */
-@SuppressFBWarnings(value = "URF_UNREAD_FIELD",
-                    justification = "'controller' will be used very soon.")
 public class App extends Application {
 
     private Controller controller;
@@ -25,12 +22,13 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         this.model = new Model();
-        model.loadData();
+        model.load();
 
-        this.view = new View(stage);
-        view.loadScene();
+        this.view = new View(stage, model);
+        view.getMenuScene().show();
 
         this.controller = new Controller(model, view);
+        controller.getGameTimer().start();
 
         stage.show();
     }

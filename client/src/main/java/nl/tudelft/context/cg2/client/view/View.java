@@ -1,44 +1,110 @@
 package nl.tudelft.context.cg2.client.view;
 
-import javafx.geometry.Rectangle2D;
-import javafx.scene.Scene;
+import javafx.application.Platform;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import javafx.scene.text.Text;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
+import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
+import nl.tudelft.context.cg2.client.view.scenes.GameScene;
+import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
+import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
+import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * The view class.
  */
 public class View {
 
-    private final Stage stage;
-    private Scene scene;
+    private final Model model;
+    private final Window window;
+
+    private final ArrayList<BaseScene> scenes;
+    private final MenuScene menuScene;
+    private final GameScene gameScene;
+    private final JoinScene joinScene;
+    private final CreateGameScene createGameScene;
+    private final LobbyScene lobbyScene;
 
     /**
      * The view constructor.
      * @param stage the javafx window being displayed to the user.
+     * @param model the model that contains elements to be drawn in the window.
      */
-    public View(Stage stage) {
-        this.stage = stage;
-        stage.setTitle("Hole in the wall");
-        stage.setResizable(true);
-        Screen screen = Screen.getPrimary();
-        Rectangle2D bounds = screen.getVisualBounds();
-        stage.setWidth(bounds.getWidth());
-        stage.setHeight(bounds.getHeight());
-        stage.setMinWidth(800);
-        stage.setMinHeight(600);
-        stage.setX(0.D);
-        stage.setY(0.D);
+    public View(final Stage stage, Model model) {
+        this.model = model;
+        this.window = new Window(stage);
+        this.menuScene = new MenuScene(window, new StackPane());
+        this.gameScene = new GameScene(window, new Pane(), model.getWorld());
+        this.joinScene = new JoinScene(window, new StackPane());
+        this.createGameScene = new CreateGameScene(window, new StackPane());
+        this.lobbyScene = new LobbyScene(window, new StackPane());
+        this.scenes = new ArrayList<>(Arrays.asList(
+                menuScene,
+                gameScene,
+                joinScene,
+                createGameScene,
+                lobbyScene
+        ));
 
-        this.scene = new Scene(new StackPane(new Text("Hello world")));
+        scenes.forEach(BaseScene::draw);
     }
 
     /**
-     * Loads a javafx scene into the window.
+     * Updates everything that runs on the graphics timer.
      */
-    public void loadScene() {
-        stage.setScene(scene);
+    public void update() {
+        Platform.runLater(() -> window.getShownScene().animate());
+    }
+
+    /**
+     * The window getter.
+     * @return the window.
+     */
+    public Window getWindow() {
+        return window;
+    }
+
+    /**
+     * The menu scene getter.
+     * @return the menu scene.
+     */
+    public MenuScene getMenuScene() {
+        return menuScene;
+    }
+
+    /**
+     * The game scene getter.
+     * @return the game scene.
+     */
+    public GameScene getGameScene() {
+        return gameScene;
+    }
+
+    /**
+     * The join scene getter.
+     * @return the join scene.
+     */
+    public JoinScene getJoinScene() {
+        return joinScene;
+    }
+
+    /**
+     * The create game scene getter.
+     * @return the create game scene.
+     */
+    public CreateGameScene getCreateGameScene() {
+        return createGameScene;
+    }
+
+    /**
+     * The lobby scene getter.
+     * @return the lobby scene.
+     */
+    public LobbyScene getLobbyScene() {
+        return lobbyScene;
     }
 }
