@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 import org.opencv.core.Mat;
-import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
 import java.awt.image.BufferedImage;
@@ -26,9 +25,9 @@ import static org.opencv.core.Core.flip;
 @SuppressFBWarnings(value = "URF_UNREAD_FIELD",
         justification = "'controller' will be used very soon.")
 public class App extends Application {
-    VideoCapture videoCapture;
-    WritableImage writableImage;
-    boolean skip = false;
+    private VideoCapture videoCapture;
+    private WritableImage writableImage;
+    private boolean skip = false;
 
     /**
      * Launches the javafx application.
@@ -65,6 +64,11 @@ public class App extends Application {
         stage.show();
     }
 
+    /**
+     * Captures and processes a snapshot of webcam feed.
+     * @param pd - PoseDetector object
+     * @return an image with the player pose marked
+     */
     public WritableImage captureAndProcessSnapshot(PoseDetector pd) {
         WritableImage writableImage = null;
 
