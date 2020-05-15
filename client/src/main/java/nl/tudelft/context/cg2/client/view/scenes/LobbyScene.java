@@ -72,7 +72,7 @@ public class LobbyScene extends BaseScene {
         startButton = new SimpleButton("Start Game");
         startButton.setSize(220, 80);
 
-        waitMessage = new Label("Wait until the host\n starts the game");
+        waitMessage = new Label("Wait until the host\nstarts the game");
         waitMessage.getStyleClass().add("label");
 
         controlsVBox = new VBox(waitMessage, startButton);

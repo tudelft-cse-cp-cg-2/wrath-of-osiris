@@ -16,6 +16,8 @@ import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
+import java.util.ArrayList;
+
 /**
  * The scene to join available lobbies.
  * Features the lobby selection menu as shown to the user.
@@ -34,7 +36,7 @@ public class JoinScene extends BaseScene {
 
     private SimpleButton backButton;
 
-    private ObservableList<Lobby> lobbyEntries;
+    private ObservableList<HBox> lobbyEntries;
 
     /**
      * The lobby joining scene constructor.
@@ -61,12 +63,14 @@ public class JoinScene extends BaseScene {
         lobbyListVBox = new VBox();
         lobbyListVBox.setId("lobby-list");
         lobbyListVBox.setMinWidth(220);
-        for (int i = 1; i <= 10; i++) {
-            HBox lobbyEntry = new HBox(new Label("TestLobby1"));
-            lobbyEntry.getStyleClass().add("lobby-entry");
-            lobbyEntry.setMinWidth(200);
-            lobbyEntry.setMaxWidth(200);
-            lobbyListVBox.getChildren().add(lobbyEntry);
+
+        // Example lobby.
+        lobbyEntries.add(new HBox(new Label("ExampleLobby")));
+        for (HBox lobby : lobbyEntries) {
+            lobby.getStyleClass().add("lobby-entry");
+            lobby.setMinWidth(200);
+            lobby.setMaxWidth(200);
+            lobbyListVBox.getChildren().add(lobby);
         }
 
         scrollPane = new ScrollPane(lobbyListVBox);
@@ -140,8 +144,19 @@ public class JoinScene extends BaseScene {
      * Lobby list getter.
      * @return list of available lobbies.
      */
-    public ObservableList<Lobby> getLobbyEntries() {
+    public ObservableList<HBox> getLobbyEntries() {
         return lobbyEntries;
+    }
+
+    /**
+     * Updates the displayed list of available lobbies.
+     * @param newLobbies the new set of lobbies.
+     */
+    public void setLobbyEntries(ArrayList<Lobby> newLobbies) {
+        this.lobbyEntries.clear();
+        for (Lobby newLobby : newLobbies) {
+            lobbyEntries.add(new HBox(new Label(newLobby.getName())));
+        }
     }
 
     /**

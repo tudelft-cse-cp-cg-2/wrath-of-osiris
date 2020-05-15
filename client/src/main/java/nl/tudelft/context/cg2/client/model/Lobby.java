@@ -1,5 +1,7 @@
 package nl.tudelft.context.cg2.client.model;
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+
 import java.util.ArrayList;
 
 /**
@@ -32,7 +34,7 @@ public class Lobby {
      * Setter method to adjust current players in the lobby.
      * @param players the new set of players in the lobby.
      */
-    public void setPlayers(ArrayList<Player> players) {
+    public void setPlayers(@NonNull ArrayList<Player> players) {
         this.players = players;
     }
 

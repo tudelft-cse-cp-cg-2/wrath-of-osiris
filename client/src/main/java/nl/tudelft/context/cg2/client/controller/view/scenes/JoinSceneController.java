@@ -13,6 +13,7 @@ import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 public class JoinSceneController extends SceneController {
 
     private final JoinScene scene;
+    private int selectedLobby;
 
     /**
      * The SceneController constructor.
@@ -29,7 +30,12 @@ public class JoinSceneController extends SceneController {
     @Override
     protected void setupMouseListeners() {
         scene.getJoinButton().setOnMouseClicked(event -> {
-            controller.joinGameCallback(scene.getPlayerNameField().getText());
+            controller.joinGameCallback(scene.getPlayerNameField().getText(), selectedLobby);
+        });
+        scene.getLobbyEntries().forEach(lobby -> {
+            lobby.setOnMouseClicked(event -> {
+                this.selectedLobby = scene.getLobbyEntries().indexOf(lobby);
+            });
         });
         scene.getBackButton().setOnMouseClicked(event -> {
             view.getMenuScene().show();
