@@ -56,21 +56,21 @@ public class PoseDetector {
                 head.getTopY() + 5 * head.getBottomY(),
                 Limb.right_arm, Position.bottom));
         // arm top left
-        out.add(new PoseRegion(head.getLeftX(),
+        out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() - 3 * head.getBottomY(),
-                head.getLeftX() - 2 * head.getRightX(),
+                head.getLeftX(),
                 head.getTopY() + head.getBottomY(),
                 Limb.left_arm, Position.top));
         // arm middle left
-        out.add(new PoseRegion(head.getLeftX() - (int) (0.5 * (double) head.getRightX()),
+        out.add(new PoseRegion(head.getLeftX() - 4 * head.getRightX(),
                 head.getTopY() + head.getBottomY() + 10,
-                head.getLeftX() - 4 * head.getRightX(),
+                head.getLeftX() - (int) (0.5 * (double) head.getRightX()),
                 head.getTopY() + 3 * head.getBottomY(),
                 Limb.left_arm, Position.middle));
         // arm bottom left
-        out.add(new PoseRegion(head.getLeftX(),
+        out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() + 2 * head.getBottomY(),
-                head.getLeftX() - 2 * head.getRightX(),
+                head.getLeftX(),
                 head.getTopY() + 5 * head.getBottomY(),
                 Limb.left_arm, Position.bottom));
 
