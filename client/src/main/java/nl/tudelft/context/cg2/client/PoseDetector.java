@@ -1,79 +1,78 @@
 package nl.tudelft.context.cg2.client;
 
-import nl.tudelft.context.cg2.client.PoseRegion;
 import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
 public class PoseDetector {
-    private CascadeClassifier classifier = new CascadeClassifier("/home/mpm/Git/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
+    private final CascadeClassifier classifier = new CascadeClassifier("/home/mpm/Git/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
 
-    //public List<PoseRegion> generatePoseRegions(Mat matrix) {
-    public BufferedImage generatePoseRegions(Mat matrix) {
-        List<PoseRegion> out = new ArrayList<PoseRegion>();
+    /**
+     * Given the coordinates of a head, calculate the bounding boxes
+     * corresponding to the arm positions.
+     * @param head - coordinates of the detected head
+     * @return a list with six regions, in the order top -> bottom,
+     * right -> left. if no faces are found, this list will be empty.
+     */
+    private List<PoseRegion> generatePoseRegionsFromHead(PoseRegion head) {
+        List<PoseRegion> out = new ArrayList<>();
+
+        // arm top right
+        out.add(new PoseRegion(head.getTopLeftX() + head.getBottomRightX(),
+                head.getTopLeftY() - 3 * head.getBottomRightY(),
+                head.getTopLeftX() + 3 * head.getBottomRightX(),
+                head.getTopLeftY() + head.getBottomRightY()));
+        // arm middle right
+        out.add(new PoseRegion(head.getTopLeftX() + (int)(1.5 * (double)head.getBottomRightX()),
+                head.getTopLeftY() + head.getBottomRightY() + 10,
+                head.getTopLeftX() + 5 * head.getBottomRightX(),
+                head.getTopLeftY() + 3 * head.getBottomRightY()));
+        // arm bottom right
+        out.add(new PoseRegion(head.getTopLeftX() + head.getBottomRightX(),
+                head.getTopLeftY() + 2 * head.getBottomRightY(),
+                head.getTopLeftX() + 3 * head.getBottomRightX(),
+                head.getTopLeftY() + 5 * head.getBottomRightY()));
+        // arm top left
+        out.add(new PoseRegion(head.getTopLeftX(),
+                head.getTopLeftY() - 3 * head.getBottomRightY(),
+                head.getTopLeftX() - 2 * head.getBottomRightX(),
+                head.getTopLeftY() + head.getBottomRightY()));
+        // arm middle left
+        out.add(new PoseRegion(head.getTopLeftX() - (int)(0.5 * (double)head.getBottomRightX()),
+                head.getTopLeftY() + head.getBottomRightY() + 10,
+                head.getTopLeftX() - 4 * head.getBottomRightX(),
+                head.getTopLeftY() + 3 * head.getBottomRightY()));
+        // arm bottom left
+        out.add(new PoseRegion(head.getTopLeftX(),
+                head.getTopLeftY() + 2 * head.getBottomRightY(),
+                head.getTopLeftX() - 2 * head.getBottomRightX(),
+                head.getTopLeftY() + 5 * head.getBottomRightY()));
+
+        return out;
+    }
+
+    /**
+     * Detect faces in an image, and return the six bounding boxes in which
+     * the arms might be found. In case of multiple faces, take the first
+     * detected match.
+     * @param matrix - the input image, a webcam frame
+     * @return a list with six regions, in the order top -> bottom,
+     * right -> left. if no faces are found, this list will be empty.
+     */
+    public List<PoseRegion> generatePoseRegions(Mat matrix) {
         MatOfRect faceDetections = new MatOfRect();
         classifier.detectMultiScale(matrix, faceDetections);
-        BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
 
-        // Drawing boxes
-        for (Rect rect : faceDetections.toArray()) {
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x, rect.y),                            //bottom left
-                    new Point(rect.x + rect.width, rect.y + rect.height), //top right
-                    new Scalar(0, 255, 0)                                 //RGB colour
-            );
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x + rect.width, rect.y - 3 * rect.height),                            //bottom left
-                    new Point(rect.x + 3 * rect.width, rect.y + rect.height), //top right
-                    new Scalar(0, 0, 255)                                 //RGB colour
-            );
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x + 1.5 * rect.width, rect.y + rect.height + 10),                            //bottom left
-                    new Point(rect.x + 5 * rect.width, rect.y + 3 * rect.height), //top right
-                    new Scalar(0, 0, 255)                                 //RGB colour
-            );
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x + rect.width, rect.y + rect.height * 2),                            //bottom left
-                    new Point(rect.x + 3 * rect.width, rect.y + 5 * rect.height), //top right
-                    new Scalar(0, 0, 255)                                 //RGB colour
-            );
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x, rect.y - 3 * rect.height),                            //bottom left
-                    new Point(rect.x - 2 * rect.width, rect.y + rect.height), //top right
-                    new Scalar(0, 0, 255)                                 //RGB colour
-            );
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x - 0.5 * rect.width, rect.y + rect.height + 10),                            //bottom left
-                    new Point(rect.x - 4 * rect.width, rect.y + 3 * rect.height), //top right
-                    new Scalar(0, 0, 255)                                 //RGB colour
-            );
-            Imgproc.rectangle(
-                    matrix,                                   //where to draw the box
-                    new Point(rect.x, rect.y + rect.height * 2),                            //bottom left
-                    new Point(rect.x - 2 * rect.width, rect.y + 5 * rect.height), //top right
-                    new Scalar(0, 0, 255)                                 //RGB colour
-            );
+        // Loop through detections
+        if (faceDetections.toArray().length > 0) {
+            Rect rect = faceDetections.toArray()[0];
+            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height);
+            return generatePoseRegionsFromHead(head); // we always take the last found match
+        } else {
+            return new ArrayList<>();
         }
-        WritableRaster raster = image.getRaster();
-        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-        byte[] data = dataBuffer.getData();
-        matrix.get(0, 0, data);
-
-        return image;
-
-        //return out;
     }
 
     public boolean findLimbLocations() {

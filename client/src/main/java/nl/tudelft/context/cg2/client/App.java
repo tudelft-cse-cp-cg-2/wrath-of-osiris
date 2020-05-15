@@ -12,17 +12,11 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.opencv.core.*;
-import org.opencv.core.Point;
-import org.opencv.imgproc.Imgproc;
-import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
-
-import static org.opencv.core.Core.flip;
 
 /**
  * JavaFX App.
@@ -31,7 +25,6 @@ import static org.opencv.core.Core.flip;
         justification = "'controller' will be used very soon.")
 public class App extends Application {
     VideoCapture videoCapture;
-    CascadeClassifier classifier;
 
     /**
      * Launches the javafx application.
@@ -46,14 +39,9 @@ public class App extends Application {
         videoCapture = new VideoCapture();
         videoCapture.open(0);
 
-        PoseDetector pd = new PoseDetector();
-
-        // Select a classifier
-//        classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_fullbody.xml");
-
         // Schedule an interval to capture a frame, process it and display it
         Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            WritableImage writableImage = this.captureAndProcessSnapshot(pd);
+            WritableImage writableImage = this.captureAndProcessSnapshot();
 
             ImageView imageView = new ImageView(writableImage);
             imageView.setPreserveRatio(true);
@@ -69,15 +57,19 @@ public class App extends Application {
         stage.show();
     }
 
-    public WritableImage captureAndProcessSnapshot(PoseDetector pd) {
+    public WritableImage captureAndProcessSnapshot() {
         WritableImage writableImage = null;
 
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
         if (videoCapture.isOpened()) {
-            // asdf
-            BufferedImage image = pd.generatePoseRegions(matrix);
+            BufferedImage image = new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
+
+            WritableRaster raster = image.getRaster();
+            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+            byte[] data = dataBuffer.getData();
+            matrix.get(0, 0, data);
 
 
             writableImage = SwingFXUtils.toFXImage(image, null);
