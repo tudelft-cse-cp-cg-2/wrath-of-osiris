@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.model;
 
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

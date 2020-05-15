@@ -1,5 +1,7 @@
 package nl.tudelft.context.cg2.client.model;
 
+import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

@@ -1,5 +1,7 @@
 package nl.tudelft.context.cg2.client.model;
 
+import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 

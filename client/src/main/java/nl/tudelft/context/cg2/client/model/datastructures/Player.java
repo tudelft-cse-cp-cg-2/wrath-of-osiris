@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.model;
+package nl.tudelft.context.cg2.client.model.datastructures;
 
 /**
  * Contains local information about a player.

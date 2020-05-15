@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.model;
+package nl.tudelft.context.cg2.client.model.datastructures;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 

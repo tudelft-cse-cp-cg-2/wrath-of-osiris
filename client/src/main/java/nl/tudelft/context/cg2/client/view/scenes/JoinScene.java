@@ -11,7 +11,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.context.cg2.client.model.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
