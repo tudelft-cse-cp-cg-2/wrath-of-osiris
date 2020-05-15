@@ -4,6 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -27,7 +28,7 @@ public class JoinScene extends BaseScene {
     private Text headerText;
     private HBox centerHBox;
 
-    private VBox lobbyListVBox;
+    private ListView listView;
     private ScrollPane scrollPane;
 
     private VBox controlsVBox;
@@ -36,7 +37,7 @@ public class JoinScene extends BaseScene {
 
     private SimpleButton backButton;
 
-    private ObservableList<HBox> lobbyEntries;
+    private ObservableList<String> lobbyNames;
 
     /**
      * The lobby joining scene constructor.
@@ -45,7 +46,7 @@ public class JoinScene extends BaseScene {
      */
     public JoinScene(Window window, Pane root) {
         super(window, root);
-        lobbyEntries = FXCollections.observableArrayList();
+        lobbyNames = FXCollections.observableArrayList();
     }
 
     /**
@@ -60,20 +61,12 @@ public class JoinScene extends BaseScene {
         headerText.setTranslateY(20);
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
 
-        lobbyListVBox = new VBox();
-        lobbyListVBox.setId("lobby-list");
-        lobbyListVBox.setMinWidth(220);
+        listView = new ListView<String>(lobbyNames);
+        listView.setId("lobby-list");
+        listView.setMinWidth(220);
+        listView.setEditable(false);
 
-        // Example lobby.
-        lobbyEntries.add(new HBox(new Label("ExampleLobby")));
-        for (HBox lobby : lobbyEntries) {
-            lobby.getStyleClass().add("lobby-entry");
-            lobby.setMinWidth(200);
-            lobby.setMaxWidth(200);
-            lobbyListVBox.getChildren().add(lobby);
-        }
-
-        scrollPane = new ScrollPane(lobbyListVBox);
+        scrollPane = new ScrollPane(listView);
         scrollPane.setId("scroll-pane");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         scrollPane.setMinWidth(220);
@@ -144,18 +137,18 @@ public class JoinScene extends BaseScene {
      * Lobby list getter.
      * @return list of available lobbies.
      */
-    public ObservableList<HBox> getLobbyEntries() {
-        return lobbyEntries;
+    public ObservableList<String> getLobbyNames() {
+        return lobbyNames;
     }
 
     /**
      * Updates the displayed list of available lobbies.
      * @param newLobbies the new set of lobbies.
      */
-    public void setLobbyEntries(ArrayList<Lobby> newLobbies) {
-        this.lobbyEntries.clear();
+    public void setLobbyNames(ArrayList<Lobby> newLobbies) {
+        this.lobbyNames.clear();
         for (Lobby newLobby : newLobbies) {
-            lobbyEntries.add(new HBox(new Label(newLobby.getName())));
+            lobbyNames.add(newLobby.getPlayers().size() + "/5 " + newLobby.getName());
         }
     }
 
@@ -165,5 +158,13 @@ public class JoinScene extends BaseScene {
      */
     public TextField getPlayerNameField() {
         return playerNameField;
+    }
+
+    /**
+     * Getter for the lobby ListView.
+     * @return ListView containing the lobbies.
+     */
+    public ListView getListView() {
+        return listView;
     }
 }

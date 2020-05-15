@@ -43,10 +43,12 @@ public class Controller {
      */
     public void lobbyListCallback() {
         // Example lobby.
-        Lobby exampleLobby = new Lobby("ExampleLobby", null, null, false);
+        ArrayList<Player> exampleList = new ArrayList<Player>();
+        exampleList.add(new Player("host"));
+        Lobby exampleLobby = new Lobby("ExampleLobby", null, exampleList, false);
         ArrayList<Lobby> lobbies = new ArrayList<>();
         lobbies.add(exampleLobby);
-        view.getJoinScene().setLobbyEntries(lobbies);
+        view.getJoinScene().setLobbyNames(lobbies);
         view.getJoinScene().show();
     }
 
