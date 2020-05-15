@@ -42,8 +42,8 @@ public class Pose {
     }
 
     /**
-     * Reset the counters that determine the chance limbs are in.
-     * specific positions
+     * Reset the counters that determine the chance limbs are in
+     * specific positions.
      */
     public void resetCounters() {
         leftArmCounter = new HashMap<>();
