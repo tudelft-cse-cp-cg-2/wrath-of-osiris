@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.posedetection;
+package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -19,8 +19,8 @@ import java.util.List;
  */
 public class PoseDetector {
     @SuppressWarnings("LineLength")
-    private final CascadeClassifier classifier = new CascadeClassifier(
-            "src/main/java/nl/tudelft/context/cg2/client/posedetection/haarcascade_frontalface_default.xml");
+    private static final String POSE_DETECTION_DEFAULT = "./src/main/resources/xml/haarcascade_frontalface_default.xml";
+    private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
 
     private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral,

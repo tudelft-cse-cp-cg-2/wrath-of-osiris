@@ -1,8 +1,8 @@
 package nl.tudelft.context.cg2.client;
 
-import nl.tudelft.context.cg2.client.posedetection.Limb;
-import nl.tudelft.context.cg2.client.posedetection.PoseRegion;
-import nl.tudelft.context.cg2.client.posedetection.Position;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Limb;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.PoseRegion;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
