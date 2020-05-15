@@ -71,7 +71,6 @@ public class Pose {
     public void incrementCounter(Limb limb, Position position) {
         if (limb == Limb.left_arm) {
             leftArmCounter.put(position, leftArmCounter.get(position) + 1);
-            System.out.println("update left");
         } else if (limb == Limb.right_arm) {
             rightArmCounter.put(position, rightArmCounter.get(position) + 1);
         } else if (limb == Limb.left_leg) {
