@@ -12,8 +12,6 @@ import nl.tudelft.context.cg2.client.view.View;
 /**
  * JavaFX App.
  */
-@SuppressFBWarnings(value = "URF_UNREAD_FIELD",
-        justification = "'controller' will be used very soon.")
 public class App extends Application {
 
     private Model model;
