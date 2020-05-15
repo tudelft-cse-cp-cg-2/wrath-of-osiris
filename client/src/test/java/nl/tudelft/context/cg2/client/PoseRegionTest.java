@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client;
 
+import nl.tudelft.context.cg2.client.posedetection.PoseRegion;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;

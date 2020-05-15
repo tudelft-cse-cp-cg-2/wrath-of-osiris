@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client;
+package nl.tudelft.context.cg2.client.posedetection;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -18,8 +18,9 @@ import java.util.List;
  * Class for detecting a player's body posture.
  */
 public class PoseDetector {
+    @SuppressWarnings("LineLength")
     private final CascadeClassifier classifier = new CascadeClassifier(
-            "src/main/java/nl/tudelft/context/cg2/client/haarcascade_frontalface_default.xml");
+            "src/main/java/nl/tudelft/context/cg2/client/posedetection/haarcascade_frontalface_default.xml");
     private final int green = new Color(0, 255, 0).getRGB();
 
     private final Pose pose = new Pose(0, 0, 0, 0);

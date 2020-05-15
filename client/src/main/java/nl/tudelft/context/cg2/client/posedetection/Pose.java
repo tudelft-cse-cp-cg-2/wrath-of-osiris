@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client;
+package nl.tudelft.context.cg2.client.posedetection;
 
 import java.util.HashMap;
 import java.util.Map;

@@ -12,6 +12,7 @@ import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import nl.tudelft.context.cg2.client.posedetection.PoseDetector;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
