@@ -1,24 +1,13 @@
 package nl.tudelft.context.cg2.client;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+
 import javafx.application.Application;
-import javafx.embed.swing.SwingFXUtils;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
-import nl.tudelft.context.cg2.client.posedetection.PoseDetector;
-import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
-
-import java.awt.image.BufferedImage;
-
-import static org.opencv.core.Core.flip;
+import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.view.View;
 
 /**
  * JavaFX App.
@@ -26,9 +15,10 @@ import static org.opencv.core.Core.flip;
 @SuppressFBWarnings(value = "URF_UNREAD_FIELD",
         justification = "'controller' will be used very soon.")
 public class App extends Application {
-    private VideoCapture videoCapture;
-    private WritableImage writableImage;
-    private boolean skip = false;
+
+    private Model model;
+    private View view;
+    private Controller controller;
 
     /**
      * Launches the javafx application.
@@ -37,62 +27,17 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) {
-        // Load in open cv library, must be done manually
-        nu.pattern.OpenCV.loadLocally();
+        this.model = new Model();
+        model.load();
 
-        // Init video capture
-        videoCapture = new VideoCapture();
-        videoCapture.open(0);
+        this.view = new View(stage, model);
+        view.getMenuScene().show();
 
-        PoseDetector pd = new PoseDetector();
+        this.controller = new Controller(model, view);
+        controller.getGameTimer().start();
 
-        // Schedule an interval to capture a frame, process it and display it
-        Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
-            WritableImage writableImage = this.captureAndProcessSnapshot(pd);
-
-            ImageView imageView = new ImageView(writableImage);
-            imageView.setPreserveRatio(true);
-            imageView.setFitHeight(900);
-
-            Group root = new Group(imageView);
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-        }));
-        fiveSecondsWonder.setCycleCount(Timeline.INDEFINITE);
-        fiveSecondsWonder.play();
-
-        stage.setTitle("Capture image");
         stage.show();
     }
-
-    /**
-     * Captures and processes a snapshot of webcam feed.
-     * @param pd - PoseDetector object
-     * @return an image with the player pose marked
-     */
-    public WritableImage captureAndProcessSnapshot(PoseDetector pd) {
-        WritableImage writableImage = null;
-
-        Mat matrix = new Mat();
-        videoCapture.read(matrix);
-
-        if (skip) {
-            skip = false;
-            return this.writableImage;
-        }
-
-        flip(matrix, matrix, +1);
-        if (videoCapture.isOpened()) {
-            BufferedImage image = pd.generatePoseRegions(matrix);
-            writableImage = SwingFXUtils.toFXImage(image, null);
-        }
-
-        skip = true;
-        this.writableImage = writableImage;
-
-        return writableImage;
-    }
-
 
     /**
      * Ran as the very last method when the application is shut down.
