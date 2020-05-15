@@ -7,10 +7,10 @@ import org.opencv.core.Point;
  * specific pose.
  */
 public class PoseRegion {
-    private final int topLeftX;
-    private final int topLeftY;
-    private final int bottomRightX;
-    private final int bottomRightY;
+    private final int leftX;
+    private final int topY;
+    private final int rightX;
+    private final int bottomY;
     private final int limb; // Left/Right Arm/Leg
     private final int option; // Up/Down/Horizontal
 
@@ -24,44 +24,44 @@ public class PoseRegion {
      * @param option - pose of the limb
      */
     public PoseRegion(int tx, int ty, int bx, int by, int limb, int option) {
-        topLeftX = tx;
-        topLeftY = ty;
-        bottomRightX = bx;
-        bottomRightY = by;
+        leftX = tx;
+        topY = ty;
+        rightX = bx;
+        bottomY = by;
         this.limb = limb;
         this.option = option;
     }
 
     /**
-     * Getter for topLeftX.
-     * @return topLeftX.
+     * Getter for leftX.
+     * @return leftX.
      */
-    public int getTopLeftX() {
-        return topLeftX;
+    public int getLeftX() {
+        return leftX;
     }
 
     /**
-     * Getter for topLeftY.
-     * @return topLeftY.
+     * Getter for topY.
+     * @return topY.
      */
-    public int getTopLeftY() {
-        return topLeftY;
+    public int getTopY() {
+        return topY;
     }
 
     /**
-     * Getter for bottomRightX.
-     * @return bottomRightX.
+     * Getter for rightX.
+     * @return rightX.
      */
-    public int getBottomRightX() {
-        return bottomRightX;
+    public int getRightX() {
+        return rightX;
     }
 
     /**
-     * Getter for bottomRightY.
-     * @return bottomRightY.
+     * Getter for bottomY.
+     * @return bottomY.
      */
-    public int getBottomRightY() {
-        return bottomRightY;
+    public int getBottomY() {
+        return bottomY;
     }
 
     /**
@@ -85,7 +85,7 @@ public class PoseRegion {
      * @return a new point with the coordinates of the top left.
      */
     public Point getTopLeft() {
-        return new Point(topLeftX, topLeftY);
+        return new Point(leftX, topY);
     }
 
     /**
@@ -93,7 +93,7 @@ public class PoseRegion {
      * @return a new point with the coordinates of the bottom right.
      */
     public Point getBottomRight() {
-        return new Point(bottomRightX, bottomRightY);
+        return new Point(rightX, bottomY);
     }
 
     /**
@@ -103,8 +103,8 @@ public class PoseRegion {
      * @return true if (x, y) is in the region, false otherwise
      */
     public boolean inRange(int x, int y) {
-        return (getTopLeftX() <= x && x <= getBottomRightX()
-                && getTopLeftY() <= y && y <= getBottomRightY());
+        return (getLeftX() <= x && x <= getRightX()
+                && getTopY() <= y && y <= getBottomY());
     }
 
 }

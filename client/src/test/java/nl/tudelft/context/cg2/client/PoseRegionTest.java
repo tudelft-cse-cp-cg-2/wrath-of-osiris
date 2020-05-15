@@ -16,10 +16,10 @@ public class PoseRegionTest {
         PoseRegion poseRegion = new PoseRegion(tx, ty, bx, by, limb, option);
 
         // Test getters
-        assertTrue(poseRegion.getTopLeftX() == tx);
-        assertTrue(poseRegion.getTopLeftY() == ty);
-        assertTrue(poseRegion.getBottomRightX() == bx);
-        assertTrue(poseRegion.getBottomRightY() == by);
+        assertTrue(poseRegion.getLeftX() == tx);
+        assertTrue(poseRegion.getTopY() == ty);
+        assertTrue(poseRegion.getRightX() == bx);
+        assertTrue(poseRegion.getBottomY() == by);
         assertTrue(poseRegion.getLimb() == limb);
         assertTrue(poseRegion.getOption() == option);
 
