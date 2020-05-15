@@ -11,16 +11,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.WritableImage;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import org.opencv.core.*;
-import org.opencv.core.Point;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.core.Mat;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.videoio.VideoCapture;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 
 import static org.opencv.core.Core.flip;
 
@@ -31,7 +26,9 @@ import static org.opencv.core.Core.flip;
         justification = "'controller' will be used very soon.")
 public class App extends Application {
     VideoCapture videoCapture;
-    CascadeClassifier classifier;
+
+    WritableImage writableImage;
+    boolean skip = false;
 
     /**
      * Launches the javafx application.
@@ -40,6 +37,7 @@ public class App extends Application {
      */
     @Override
     public void start(Stage stage) {
+        // Load in open cv library, must be done manually
         nu.pattern.OpenCV.loadLocally();
 
         // Init video capture
@@ -47,9 +45,6 @@ public class App extends Application {
         videoCapture.open(0);
 
         PoseDetector pd = new PoseDetector();
-
-        // Select a classifier
-//        classifier = new CascadeClassifier("/home/asitaram/ContextProject/main-repository/client/src/main/java/nl/tudelft/context/cg2/client/haarcascade_fullbody.xml");
 
         // Schedule an interval to capture a frame, process it and display it
         Timeline fiveSecondsWonder = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
@@ -75,13 +70,19 @@ public class App extends Application {
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
+        if (skip) {
+            skip = false;
+            return this.writableImage;
+        }
+
+        flip(matrix, matrix, +1);
         if (videoCapture.isOpened()) {
-            // asdf
             BufferedImage image = pd.generatePoseRegions(matrix);
-
-
             writableImage = SwingFXUtils.toFXImage(image, null);
         }
+
+        skip = true;
+        this.writableImage = writableImage;
 
         return writableImage;
     }
