@@ -1,7 +1,5 @@
 package nl.tudelft.context.cg2.client;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-
 import javafx.application.Application;
 import javafx.stage.Stage;
 
