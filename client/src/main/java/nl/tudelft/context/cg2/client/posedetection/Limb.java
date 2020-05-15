@@ -6,5 +6,6 @@ package nl.tudelft.context.cg2.client.posedetection;
 public enum Limb {
     left_arm,
     right_arm,
-    legs
+    left_leg,
+    right_leg
 }
