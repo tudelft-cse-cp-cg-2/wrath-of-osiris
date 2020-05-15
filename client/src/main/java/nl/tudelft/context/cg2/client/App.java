@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
+
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
@@ -11,12 +12,13 @@ import nl.tudelft.context.cg2.client.view.View;
  */
 public class App extends Application {
 
-    private Controller controller;
-    private View view;
     private Model model;
+    private View view;
+    private Controller controller;
 
     /**
      * Launches the javafx application.
+     *
      * @param stage the window displayed to the user.
      */
     @Override
@@ -43,9 +45,10 @@ public class App extends Application {
 
     /**
      * The main method.
+     *
      * @param args arguments passed to the main method.
      */
     public static void main(String[] args) {
-        launch();
+        launch(args);
     }
 }

@@ -6,6 +6,7 @@ import nl.tudelft.context.cg2.client.controller.view.scenes.GameSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.JoinSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.LobbySceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.MenuSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.OpenCVSceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
@@ -25,6 +26,7 @@ public class ViewController {
     private final JoinSceneController joinSceneController;
     private final CreateGameSceneController createGameSceneController;
     private final LobbySceneController lobbySceneController;
+    private final OpenCVSceneController openCVSceneController;
 
     /**
      * The view controller constructor.
@@ -38,12 +40,15 @@ public class ViewController {
         this.joinSceneController = new JoinSceneController(controller, model, view);
         this.createGameSceneController = new CreateGameSceneController(controller, model, view);
         this.lobbySceneController = new LobbySceneController(controller, model, view);
+        this.openCVSceneController = new OpenCVSceneController(controller, model, view);
+
         this.sceneControllers = new ArrayList<>(Arrays.asList(
                 menuSceneController,
                 gameSceneController,
                 joinSceneController,
                 createGameSceneController,
-                lobbySceneController
+                lobbySceneController,
+                openCVSceneController
         ));
 
         sceneControllers.forEach(SceneController::setupListeners);
@@ -89,4 +94,11 @@ public class ViewController {
         return lobbySceneController;
     }
 
+    /**
+     * Gets the OpenCV scene controller.
+     * @return the OpenCV scene controller.
+     */
+    public OpenCVSceneController getOpenCVSceneController() {
+        return openCVSceneController;
+    }
 }

@@ -55,6 +55,10 @@ public class MenuSceneController extends SceneController {
                 case SPACE:
                     startGame();
                     break;
+                case ENTER:
+                    view.getOpenCVScene().show();
+                    controller.getViewController().getOpenCVSceneController().startCapture();
+                    break;
                 default:
                     break;
             }

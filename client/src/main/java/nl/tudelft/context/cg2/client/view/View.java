@@ -10,6 +10,7 @@ import nl.tudelft.context.cg2.client.view.scenes.GameScene;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
+import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ public class View {
     private final JoinScene joinScene;
     private final CreateGameScene createGameScene;
     private final LobbyScene lobbyScene;
+    private final OpenCVScene openCVScene;
 
     /**
      * The view constructor.
@@ -42,12 +44,15 @@ public class View {
         this.joinScene = new JoinScene(window, new StackPane());
         this.createGameScene = new CreateGameScene(window, new StackPane());
         this.lobbyScene = new LobbyScene(window, new StackPane());
+        this.openCVScene = new OpenCVScene(window, new StackPane());
+
         this.scenes = new ArrayList<>(Arrays.asList(
                 menuScene,
                 gameScene,
                 joinScene,
                 createGameScene,
-                lobbyScene
+                lobbyScene,
+                openCVScene
         ));
 
         scenes.forEach(BaseScene::draw);
@@ -106,5 +111,13 @@ public class View {
      */
     public LobbyScene getLobbyScene() {
         return lobbyScene;
+    }
+
+    /**
+     * The openCV scene getter.
+     * @return the openCV scene.
+     */
+    public OpenCVScene getOpenCVScene() {
+        return openCVScene;
     }
 }
