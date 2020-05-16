@@ -36,6 +36,8 @@ public class Player extends Thread {
     private void processInput(String clientInput) {
         if ("listlobbies".equals(clientInput)) {
             App.packLobbies().forEach(out::println);
+        } else if ("leavelobby".equals(clientInput)) {
+            App.removePlayerFromLobbies(this);
         } else if (clientInput.startsWith("joinlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             this.setPlayerName(clientInput.split(" ")[2]);

@@ -33,6 +33,10 @@ public class App {
         }
     }
 
+    public static void removePlayerFromLobbies(Player player) {
+        lobbies.forEach(x -> x.removePlayerIfPresent(player));
+    }
+
     public static List<String> addPlayerToLobby(int index, Player player) {
         List<String> out = new ArrayList<>();
 

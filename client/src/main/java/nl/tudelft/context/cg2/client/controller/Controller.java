@@ -102,6 +102,7 @@ public class Controller {
      * todo: Communicate game leaving with server.
      */
     public void leaveLobbyCallback() {
+        server.leaveLobby();
         model.setCurrentPlayer(null);
         model.setCurrentLobby(null);
     }

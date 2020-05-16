@@ -58,4 +58,10 @@ public class Lobby {
     public String pack() {
         return players.size() + name;
     }
+
+    public void removePlayerIfPresent(Player player) {
+        if (this.players.contains(player)) {
+            this.players.remove(player);
+        }
+    }
 }

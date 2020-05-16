@@ -55,6 +55,10 @@ public class Server {
         return lobby;
     }
 
+    public void leaveLobby() {
+        out.println("leavelobby");
+    }
+
     /**
      * Request and parse a simple list of lobbies from the server.
      * @return a list of lobbies, with their respective amounts of players
