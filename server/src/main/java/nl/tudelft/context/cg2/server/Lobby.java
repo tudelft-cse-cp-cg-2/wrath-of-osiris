@@ -1,9 +1,8 @@
-package nl.tudelft.context.cg2.client.model.datastructures;
+package nl.tudelft.context.cg2.server;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class containing information about the lobby a player is currently in.
@@ -12,8 +11,11 @@ public class Lobby {
 
     private final String name;
     private final String password;
+
+    /**
+     * The list of connected players. The first one (index 0) is always the host.
+     */
     private ArrayList<Player> players;
-    private final Boolean isHost;
 
     /**
      * Constructor for the Lobby.
@@ -22,30 +24,17 @@ public class Lobby {
      * @param name lobby name.
      * @param password lobby password.
      * @param players list of current players in the lobby.
-     * @param isHost whether currentPlayer is host of the lobby.6
      */
-    public Lobby(String name, String password, ArrayList<Player> players, Boolean isHost) {
+    public Lobby(String name, String password, ArrayList<Player> players) {
         this.name = name;
         this.password = password;
         this.players = players;
-        this.isHost = isHost;
-    }
-
-    public static Lobby unpackLobby(String packed) {
-        ArrayList<Player> playerList = new ArrayList<>();
-        int playerCount = packed.charAt(0) - '0';
-        for (int i = 0; i < playerCount; i++) { playerList.add(new Player("")); }
-        return new Lobby(packed.substring(1),"",playerList,false);
     }
 
     /**
      * Setter method to adjust current players in the lobby.
-     * @param players the new set of players in the lobby.
+     * @param player the new set of players in the lobby.
      */
-    public void setPlayers(@NonNull ArrayList<Player> players) {
-        this.players = players;
-    }
-
     public void addPlayer(@NonNull Player player) {
         this.players.add(player);
     }
@@ -66,11 +55,7 @@ public class Lobby {
         return name;
     }
 
-    /**
-     * Checks whether the current player is host of current lobby.
-     * @return boolean whether the current player is host of current lobby.
-     */
-    public Boolean getHost() {
-        return isHost;
+    public String pack() {
+        return players.size() + name;
     }
 }

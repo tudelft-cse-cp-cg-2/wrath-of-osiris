@@ -5,8 +5,10 @@ import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 /**
@@ -21,6 +23,8 @@ public class Controller {
     private final Model model;
     private final View view;
 
+    private Server server;
+
     // todo: Use this field to maintain available lobbies.
 //    private ArrayList<Lobby> lobbies;
 
@@ -34,6 +38,8 @@ public class Controller {
         this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;
+        this.server = new Server();
+        server.connect();
     }
 
     /**
@@ -42,12 +48,10 @@ public class Controller {
      * todo: Retrieve lobbies from server.
      */
     public void lobbyListCallback() {
-        // Example lobby.
-        ArrayList<Player> exampleList = new ArrayList<Player>();
-        exampleList.add(new Player("host"));
-        Lobby exampleLobby = new Lobby("ExampleLobby", null, exampleList, false);
-        ArrayList<Lobby> lobbies = new ArrayList<>();
-        lobbies.add(exampleLobby);
+        // fetch from server
+        ArrayList<Lobby> lobbies = server.listLobbies();
+
+        // display
         view.getJoinScene().setLobbyNames(lobbies);
         view.getJoinScene().show();
     }
@@ -61,11 +65,10 @@ public class Controller {
      * @param selectedLobby the index of the selected lobby.
      */
     public void joinGameCallback(String playerName, int selectedLobby) {
-        Player player = new Player(playerName);
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(player);
+        Lobby lobby = server.joinLobby(selectedLobby, playerName);
+
         // Retrieve and store lobby data from server.
-        view.getLobbyScene().setPlayerNames(players);
+        view.getLobbyScene().setPlayerNames(lobby.getPlayers());
         view.getLobbyScene().getStartButton().setVisible(false);
         view.getLobbyScene().getWaitMessage().setVisible(true);
         view.getLobbyScene().show();
