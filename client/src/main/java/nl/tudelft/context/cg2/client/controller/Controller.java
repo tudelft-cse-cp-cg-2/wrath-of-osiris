@@ -8,7 +8,6 @@ import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 /**

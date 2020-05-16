@@ -1,5 +1,7 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -37,7 +39,9 @@ public class JoinScene extends BaseScene {
 
     private SimpleButton backButton;
 
-    private ObservableList<String> lobbyNames;
+    private final ObservableList<String> lobbyNames;
+
+    private static final int MAX_PLAYER_NAME_LENGTH = 15;
 
     /**
      * The lobby joining scene constructor.
@@ -79,6 +83,19 @@ public class JoinScene extends BaseScene {
         playerNameField = new TextField();
         playerNameField.setPromptText("Player name");
         playerNameField.getStyleClass().add("text-box");
+
+        // enforce that there are no spaces, and enforce the maximum length
+        playerNameField.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue,
+                                final String newValue) {
+                if (playerNameField.getText().length() > MAX_PLAYER_NAME_LENGTH) {
+                    String s = playerNameField.getText().substring(0, MAX_PLAYER_NAME_LENGTH);
+                    playerNameField.setText(s);
+                }
+                playerNameField.setText(playerNameField.getText().replaceAll("\\s+", ""));
+            }
+        });
 
         joinButton = new SimpleButton("Join Lobby");
         joinButton.setSize(220, 80);

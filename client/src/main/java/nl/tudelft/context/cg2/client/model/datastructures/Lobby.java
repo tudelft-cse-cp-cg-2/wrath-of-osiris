@@ -3,7 +3,6 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class containing information about the lobby a player is currently in.
@@ -31,11 +30,18 @@ public class Lobby {
         this.isHost = isHost;
     }
 
+    /**
+     * Create a lobby from a packed string sent by the server.
+     * @param packed lobby representation from the server
+     * @return a Lobby
+     */
     public static Lobby unpackLobby(String packed) {
         ArrayList<Player> playerList = new ArrayList<>();
         int playerCount = packed.charAt(0) - '0';
-        for (int i = 0; i < playerCount; i++) { playerList.add(new Player("")); }
-        return new Lobby(packed.substring(1),"",playerList,false);
+        for (int i = 0; i < playerCount; i++) {
+            playerList.add(new Player(""));
+        }
+        return new Lobby(packed.substring(1), "", playerList, false);
     }
 
     /**
@@ -46,6 +52,10 @@ public class Lobby {
         this.players = players;
     }
 
+    /**
+     * Add a player to the lobby.
+     * @param player the player to add
+     */
     public void addPlayer(@NonNull Player player) {
         this.players.add(player);
     }

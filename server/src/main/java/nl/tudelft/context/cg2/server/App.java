@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.server;
 
-
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -10,10 +9,15 @@ import java.util.List;
 /**
  * Main server application.
  */
-public class App {
+public final class App {
     private static final int PORT = 43594;
 
     private static ArrayList<Lobby> lobbies;
+
+    /**
+     * Private constructor, since this is a utility class that should not be instantiated.
+     */
+    private App() {}
 
     /**
      * Starts the server.
@@ -24,10 +28,10 @@ public class App {
         lobbies = new ArrayList<>();
 
         // TODO: remove these lines
-        lobbies.add(new Lobby("test","", new ArrayList<>()));
+        lobbies.add(new Lobby("test", "", new ArrayList<>()));
         lobbies.get(0).addPlayer(new Player("jan"));
         lobbies.get(0).addPlayer(new Player("piet"));
-        lobbies.add(new Lobby("one","",new ArrayList<>()));
+        lobbies.add(new Lobby("one", "", new ArrayList<>()));
 
         System.out.println("Started server on port " + PORT);
         while (true) {

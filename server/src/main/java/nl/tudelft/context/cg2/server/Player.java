@@ -17,7 +17,7 @@ public class Player extends Thread {
     private String playerName;
 
     /**
-     * Initializer for players.
+     * Constructor for players.
      * @param sock the socket for the player's connection
      * @throws IOException when the connection is interrupted
      */
@@ -33,7 +33,7 @@ public class Player extends Thread {
     }
 
     /**
-     * Setter for playerName
+     * Setter for playerName.
      * @param name playerName
      */
     public void setPlayerName(String name) {
@@ -41,7 +41,7 @@ public class Player extends Thread {
     }
 
     /**
-     * Getter for playerName
+     * Getter for playerName.
      * @return playerName
      */
     public String getPlayerName() {
@@ -74,11 +74,13 @@ public class Player extends Thread {
         String clientInput;
         try {
             while ((clientInput = in.readLine()) != null) {
-                System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> " + clientInput);
+                System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
+                        + clientInput);
                 respond(clientInput);
             }
         } catch (IOException e) {
-            System.out.println(sock.getInetAddress() + ":" + sock.getPort() + " disconnected (connection lost).");
+            System.out.println(sock.getInetAddress() + ":" + sock.getPort()
+                    + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
     }
