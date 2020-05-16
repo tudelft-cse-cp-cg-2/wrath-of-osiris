@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class Vector3DTest {
     @Test
-    void testEmptyConstructor() {
+    public void testEmptyConstructor() {
         Vector3D v = new Vector3D();
 
         assertEquals(0, v.x);
@@ -16,7 +16,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testAdd1() {
+    public void testAdd1() {
         Vector3D v = new Vector3D(2,3,-1).add(new Vector3D(4,-2,5));
 
         assertEquals(6, v.x);
@@ -25,7 +25,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testAdd2() {
+    public void testAdd2() {
         Vector3D v = new Vector3D(2,3,-1).add(4,-2,5);
 
         assertEquals(6, v.x);
@@ -34,7 +34,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testSub1() {
+    public void testSub1() {
         Vector3D v = new Vector3D(5,-5,5).sub(new Vector3D(3,2,1));
 
         assertEquals(2, v.x);
@@ -43,7 +43,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testSub2() {
+    public void testSub2() {
         Vector3D v = new Vector3D(5,-5,5).sub(3,2,1);
 
         assertEquals(2, v.x);
@@ -52,7 +52,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testMult1() {
+    public void testMult1() {
         Vector3D v = new Vector3D(2,3,4).mult(new Vector3D(5,6,7));
 
         assertEquals(10, v.x);
@@ -61,7 +61,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testMult2() {
+    public void testMult2() {
         Vector3D v = new Vector3D(2,3,4).mult(5,6,7);
 
         assertEquals(10, v.x);
@@ -70,7 +70,7 @@ public class Vector3DTest {
     }
 
     @Test
-    void testMult3() {
+    public void testMult3() {
         Vector3D v = new Vector3D(-1,1,-1).mult(2);
 
         assertEquals(-2, v.x);
@@ -79,28 +79,28 @@ public class Vector3DTest {
     }
 
     @Test
-    void testDot() {
+    public void testDot() {
         double dot = new Vector3D(3,1,2).dot(new Vector3D(-4, 5,-1));
 
         assertEquals(-9, dot);
     }
 
     @Test
-    void testLength() {
+    public void testLength() {
         double length = new Vector3D(3,4,12).length();
 
         assertEquals(13, length);
     }
 
     @Test
-    void testLengthSquared() {
+    public void testLengthSquared() {
         double lengthSquared = new Vector3D(3,4,12).lengthSquared();
 
         assertEquals(169, lengthSquared);
     }
 
     @Test
-    void testUnit() {
+    public void testUnit() {
         Vector3D unit = new Vector3D(3,4,12).unit();
 
         assertEquals(3.0 / 13.0, unit.x, 0.0001f);

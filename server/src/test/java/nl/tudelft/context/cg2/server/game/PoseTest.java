@@ -7,14 +7,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PoseTest {
     @BeforeEach
-    void setUp() {
+    public void testSetUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.DOWN, ScreenPos.MIDDLE);
         Pose c = new Pose(Arm.UP, Arm.SIDE, Legs.RIGHTUP, ScreenPos.MIDDLE);
     }
 
     @Test
-    void equalsAfterSetting() {
+    public void testEqualsAfterSetting() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.DOWN, ScreenPos.MIDDLE);
         b.setLeftArm(Arm.DOWN);
@@ -24,20 +24,20 @@ public class PoseTest {
     }
 
     @Test
-    void equalsSelf() {
+    public void testEqualsSelf() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         assertEquals(a, a);
     }
 
     @Test
-    void equalsOtherObject() {
+    public void testEqualsOtherObject() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         String s = "makes no sense";
         assertNotEquals(a, s);
     }
 
     @Test
-    void setRightLegUp() {
+    public void testSetRightLegUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
         a.setRightLegUp();
@@ -45,7 +45,7 @@ public class PoseTest {
     }
 
     @Test
-    void setLeftLegUp() {
+    public void testSetLeftLegUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         a.setLeftLegUp();
@@ -53,7 +53,7 @@ public class PoseTest {
     }
 
     @Test
-    void setLeftLegDown() {
+    public void testSetLeftLegDown() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         Pose b = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         a.setLeftLegDown();
@@ -61,7 +61,7 @@ public class PoseTest {
     }
 
     @Test
-    void setRightLegDown() {
+    public void testSetRightLegDown() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
         Pose b = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         a.setRightLegDown();
@@ -69,19 +69,19 @@ public class PoseTest {
     }
 
     @Test
-    void invalidSetRightLegUp() {
+    public void testInvalidSetRightLegUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         assertFalse(a.setRightLegUp());
     }
 
     @Test
-    void invalidSetLeftLegUp() {
+    public void testInvalidSetLeftLegUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
         assertFalse(a.setLeftLegUp());
     }
 
     @Test
-    void noChangeSetLeftLegUp() {
+    public void testNoChangeSetLeftLegUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         Pose b = new Pose(Arm.DOWN, Arm.UP, Legs.LEFTUP, ScreenPos.LEFT);
         assertTrue(a.setLeftLegUp());
@@ -89,7 +89,7 @@ public class PoseTest {
     }
 
     @Test
-    void noChangeSetRightLegUp() {
+    public void testNoChangeSetRightLegUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
         Pose b = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
         assertTrue(a.setRightLegUp());
@@ -97,9 +97,9 @@ public class PoseTest {
     }
 
     @Test
-    void toStringTest() {
+    public void testToString() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
-        assertEquals("arms: DOWN UP\nlegs: DOWNUP\nscreen: LEFT", a.toString());
+        assertEquals("arms: DOWN UP\nlegs: RIGHTUP\nscreen: LEFT", a.toString());
     }
 
 }

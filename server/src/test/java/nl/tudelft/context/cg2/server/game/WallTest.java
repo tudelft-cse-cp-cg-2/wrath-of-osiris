@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class WallTest {
     @Test
-    void empty_wall() {
+    public void testEmptyWall() {
         Wall w = new Wall();
         for (ScreenPos position : ScreenPos.values()) {
             assertNull(w.getPose(position));
@@ -17,14 +17,14 @@ public class WallTest {
     }
 
     @Test
-    void set_number() {
+    public void testSetNumber() {
         Wall w = new Wall();
         w.setNumber(ScreenPos.LEFT, 3);
         assertEquals(w.getNumber(ScreenPos.LEFT), 3);
     }
 
     @Test
-    void set_pose() {
+    public void testSetPose() {
         Wall w = new Wall();
         Pose p = new Pose(Arm.DOWN, Arm.SIDE, Legs.RIGHTUP, ScreenPos.LEFT);
         w.setPose(ScreenPos.LEFT, p);
@@ -32,7 +32,7 @@ public class WallTest {
     }
 
     @Test
-    void set_pose_mismatched_screenpos() {
+    public void testSetPoseMismatchedScreenpos() {
         Wall w = new Wall();
         Pose p = new Pose(Arm.DOWN, Arm.SIDE, Legs.RIGHTUP, ScreenPos.MIDDLE);
         w.setPose(ScreenPos.LEFT, p);
@@ -40,7 +40,7 @@ public class WallTest {
     }
 
     @Test
-    void compare_succeed_no_numbers() {
+    public void testCompareSucceedNoNumbers() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.MIDDLE);
@@ -53,7 +53,7 @@ public class WallTest {
     }
 
     @Test
-    void compare_fail_no_numbers_middle() {
+    public void testCompareFailNoNumbersMiddle() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.MIDDLE);
@@ -67,7 +67,7 @@ public class WallTest {
     }
 
     @Test
-    void compare_fail_no_numbers_left() {
+    public void testCompareFailNoNumbersLeft() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.RIGHT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.LEFT);
@@ -81,7 +81,7 @@ public class WallTest {
     }
 
     @Test
-    void compare_fail_no_numbers_right() {
+    public void testCompareFailNoNumbersRight() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.MIDDLE);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.RIGHT);
@@ -95,7 +95,7 @@ public class WallTest {
     }
 
     @Test
-    void compare_fail_too_few_for_number() {
+    public void testCompareFailTooFewForNumber() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.MIDDLE);
@@ -109,7 +109,7 @@ public class WallTest {
     }
 
     @Test
-    void compare_fail_too_many_for_number() {
+    public void testCompareFailTooManyForNumber() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.RIGHT);
@@ -123,15 +123,15 @@ public class WallTest {
     }
 
     @Test
-    void to_string() {
+    public void testToString() {
         Wall w = new Wall();
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
         Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.LEFTUP, ScreenPos.MIDDLE);
         w.setPose(ScreenPos.LEFT, a);
         w.setPose(ScreenPos.MIDDLE, b);
         w.setNumber(ScreenPos.LEFT, 2);
-        String expected = "2\narms: DOWN UP\nlegs: DOWNDOWN\nscreen: LEFT\nnull\narms: UP SIDE" +
-                "\nlegs: UPDOWN\nscreen: MIDDLE\nnull\nnull\n";
+        String expected = "2\narms: DOWN UP\nlegs: DOWN\nscreen: LEFT\nnull\narms: UP SIDE" +
+                "\nlegs: LEFTUP\nscreen: MIDDLE\nnull\nnull\n";
         assertEquals(expected, w.toString());
     }
 }

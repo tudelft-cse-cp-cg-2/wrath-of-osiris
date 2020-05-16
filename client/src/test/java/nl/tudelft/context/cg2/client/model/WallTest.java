@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class WallTest {
 
     @Test
-    void testWallConstructor() {
+    public void testWallConstructor() {
         Vector3D position = new Vector3D(1,2,3);
         Vector3D velocity = new Vector3D(4,4,4);
         Vector3D size = new Vector3D(9,7,5);
@@ -22,7 +22,7 @@ public class WallTest {
     }
 
     @Test
-    void testWallStep() {
+    public void testWallStep() {
         Vector3D position = new Vector3D(1,2,3);
         Vector3D velocity = new Vector3D(4,4,4);
         Wall wall = new Wall(null, position, velocity, null);
