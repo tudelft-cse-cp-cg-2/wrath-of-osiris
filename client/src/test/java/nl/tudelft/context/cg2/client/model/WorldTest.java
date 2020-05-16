@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class WorldTest {
 
     @Test
-    void testEmptyConstructor() {
+    public void testEmptyConstructor() {
         World w = new World();
 
         assertTrue(w.getEntities().isEmpty());
@@ -18,7 +18,7 @@ public class WorldTest {
     }
 
     @Test
-    void testSetInMotion() {
+    public void testSetInMotion() {
         World w = new World();
         assertFalse(w.isInMotion());
 
@@ -27,7 +27,7 @@ public class WorldTest {
     }
 
     @Test
-    void testWorldDimensions() {
+    public void testWorldDimensions() {
         World w = new World();
         Vector3D v = w.getDimensions();
 

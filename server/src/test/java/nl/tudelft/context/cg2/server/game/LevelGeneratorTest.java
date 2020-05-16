@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class LevelGeneratorTest {
 
     @Test
-    void no_numbers_on_level_1() {
+    public void testNoNumbersOnFirstLevel() {
         LevelGenerator gen = new LevelGenerator(4);
         ArrayList<Wall> level = gen.generateLevel();
         for (Wall w : level) {
@@ -21,7 +21,7 @@ public class LevelGeneratorTest {
     }
 
     @Test
-    void numbers_dont_exceed_playeramount() {
+    void testNumbersDoNotExceedPlayerAmount() {
         LevelGenerator gen = new LevelGenerator(4);
         for (int i = 0; i < 10; i++) {
             gen.generateLevel();

@@ -9,7 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PoseRegionTest {
     @Test
-    public void poseRegionInit() {
+    public void testPoseRegionInit() {
         int tx = 0;
         int ty = 0;
         int bx = 250;
@@ -33,19 +33,19 @@ public class PoseRegionTest {
     }
 
     @Test
-    public void pointInRangeTrue() {
+    public void testPointInRangeTrue() {
         PoseRegion poseRegion = new PoseRegion(0, 0, 250, 250, Limb.left_leg, Position.neutral);
         assertTrue(poseRegion.inRange(50, 50));
     }
 
     @Test
-    public void pointInRangeFalse() {
+    public void testPointInRangeFalse() {
         PoseRegion poseRegion = new PoseRegion(0, 0, 250, 250, Limb.left_leg, Position.neutral);
         assertTrue(!poseRegion.inRange(350, 350));
     }
 
     @Test
-    public void pointInRangeBoundary() {
+    public void testPointInRangeBoundary() {
         PoseRegion poseRegion = new PoseRegion(0, 0, 250, 250, Limb.left_leg, Position.neutral);
         assertTrue(poseRegion.inRange(50, 0));
     }
