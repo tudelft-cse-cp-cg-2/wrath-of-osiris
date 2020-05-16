@@ -15,7 +15,7 @@ public class Lobby {
     /**
      * The list of connected players. The first one (index 0) is always the host.
      */
-    private ArrayList<Player> players;
+    private final ArrayList<Player> players;
 
     /**
      * Constructor for the Lobby.
@@ -55,13 +55,19 @@ public class Lobby {
         return name;
     }
 
+    /**
+     * Pack to send over the Internet.
+     * @return a packed string representing this lobby
+     */
     public String pack() {
         return players.size() + name;
     }
 
-    public void removePlayerIfPresent(Player player) {
-        if (this.players.contains(player)) {
-            this.players.remove(player);
-        }
+    /**
+     * Removes a player from the lobby.
+     * @param player player to be removed
+     */
+    public void removePlayer(Player player) {
+        this.players.remove(player);
     }
 }

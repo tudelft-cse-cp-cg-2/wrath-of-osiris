@@ -5,15 +5,22 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
-import java.util.List;
 
+/**
+ * A connected player.
+ */
 public class Player extends Thread {
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;
 
-    private String name;
+    private String playerName;
 
+    /**
+     * Initializer for players.
+     * @param sock the socket for the player's connection
+     * @throws IOException when the connection is interrupted
+     */
     public Player(Socket sock) throws IOException {
         this.sock = sock;
         this.in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
@@ -21,19 +28,31 @@ public class Player extends Thread {
     }
 
     // TODO: remove this debug method
-    public Player(String name) {
-        this.name = name;
+    public Player(String playerName) {
+        this.playerName = playerName;
     }
 
+    /**
+     * Setter for playerName
+     * @param name playerName
+     */
     public void setPlayerName(String name) {
-        this.name = name;
+        this.playerName = name;
     }
 
+    /**
+     * Getter for playerName
+     * @return playerName
+     */
     public String getPlayerName() {
-        return this.name;
+        return this.playerName;
     }
 
-    private void processInput(String clientInput) {
+    /**
+     * Responds to messages received from the player's client.
+     * @param clientInput the input to process
+     */
+    private void respond(String clientInput) {
         if ("listlobbies".equals(clientInput)) {
             App.packLobbies().forEach(out::println);
         } else if ("leavelobby".equals(clientInput)) {
@@ -48,17 +67,19 @@ public class Player extends Thread {
         out.println(".");
     }
 
+    /**
+     * Main loop for this player, which continually listens to their messages.
+     */
     public void run() {
-        String clientInput, clientOutput;
+        String clientInput;
         try {
             while ((clientInput = in.readLine()) != null) {
                 System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> " + clientInput);
-                processInput(clientInput);
+                respond(clientInput);
             }
         } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Error: could not talk to client.");
-            System.exit(1);
+            System.out.println(sock.getInetAddress() + ":" + sock.getPort() + " disconnected (connection lost).");
+            App.disconnectPlayer(this);
         }
     }
 }

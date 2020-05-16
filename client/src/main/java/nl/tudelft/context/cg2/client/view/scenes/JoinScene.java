@@ -61,7 +61,7 @@ public class JoinScene extends BaseScene {
         headerText.setTranslateY(20);
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
 
-        listView = new ListView<String>(lobbyNames);
+        listView = new ListView<>(lobbyNames);
         listView.setId("lobby-list");
         listView.setMinWidth(220);
         listView.setEditable(false);
