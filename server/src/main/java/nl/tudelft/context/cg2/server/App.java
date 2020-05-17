@@ -27,12 +27,6 @@ public final class App {
         ServerSocket serverSock = new ServerSocket(PORT);
         lobbies = new ArrayList<>();
 
-        // TODO: remove these lines
-        lobbies.add(new Lobby("test", "", new ArrayList<>()));
-        lobbies.get(0).addPlayer(new Player("jan"));
-        lobbies.get(0).addPlayer(new Player("piet"));
-        lobbies.add(new Lobby("one", "", new ArrayList<>()));
-
         System.out.println("Started server on port " + PORT);
         while (true) {
             Socket sock = serverSock.accept();
@@ -75,9 +69,6 @@ public final class App {
             lobby.addPlayer(player);
             out.add(lobby.pack());
             lobby.getPlayers().forEach(x -> out.add(x.getPlayerName()));
-
-            // TODO: remove these lines
-            lobby.getPlayers().forEach(x -> System.out.println(x.getPlayerName()));
         }
 
         return out;

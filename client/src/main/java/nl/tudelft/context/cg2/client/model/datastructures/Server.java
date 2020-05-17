@@ -37,8 +37,9 @@ public class Server {
             this.sock = new Socket(HOST, PORT);
             this.out = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),
                     StandardCharsets.UTF_8), true);
-            this.in = new BufferedReader(new InputStreamReader(sock.getInputStream()));
-        } catch (Exception e) {
+            this.in = new BufferedReader(new InputStreamReader(sock.getInputStream(),
+                    StandardCharsets.UTF_8));
+        } catch (IOException e) {
             System.out.println("Error: could not connect to server.");
             System.exit(1);
         }
@@ -67,11 +68,13 @@ public class Server {
             if (fromServer == null) {
                 System.exit(1);
             }
+            System.out.println(fromServer);
             lobby = Lobby.unpackLobby(fromServer);
 
             // get players
             while (true) {
                 fromServer = in.readLine();
+                System.out.println(fromServer);
                 if (fromServer == null || fromServer.equals(".")) {
                     break;
                 }
@@ -91,6 +94,12 @@ public class Server {
      */
     public void leaveLobby() {
         out.println("leavelobby");
+        try {
+            String fromServer = in.readLine();
+            assert fromServer == ".";
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
