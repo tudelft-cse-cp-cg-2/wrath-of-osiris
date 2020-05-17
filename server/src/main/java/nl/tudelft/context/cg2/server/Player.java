@@ -1,10 +1,8 @@
 package nl.tudelft.context.cg2.server;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 /**
  * A connected player.
@@ -24,7 +22,8 @@ public class Player extends Thread {
     public Player(Socket sock) throws IOException {
         this.sock = sock;
         this.in = new BufferedReader(new InputStreamReader(this.sock.getInputStream()));
-        this.out = new PrintWriter(this.sock.getOutputStream(), true);
+        this.out = new new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(),
+                StandardCharsets.UTF_8), true);
     }
 
     // TODO: remove this debug method
