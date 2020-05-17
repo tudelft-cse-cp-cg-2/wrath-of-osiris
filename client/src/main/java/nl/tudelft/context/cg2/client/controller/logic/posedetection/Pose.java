@@ -85,36 +85,43 @@ public class Pose {
      * incrementCounter calls.
      */
     public void updatePose() {
-        leftArm = getBestArmPosition(leftArmCounter);
-        rightArm = getBestArmPosition(rightArmCounter);
-        if (leftLegCounter.get(Position.neutral) > leftLegCounter.get(Position.raised)) {
-            leftLeg = Position.neutral;
-        } else {
-            leftLeg = Position.raised;
-        }
-        if (rightLegCounter.get(Position.neutral) > rightLegCounter.get(Position.raised)) {
-            rightLeg = Position.neutral;
-        } else {
-            rightLeg = Position.raised;
-        }
+        leftArm = getBestArmPosition(leftArmCounter, leftArm);
+        rightArm = getBestArmPosition(rightArmCounter, rightArm);
+        leftLeg = getBestLegPosition(leftLegCounter, leftLeg);
+        rightLeg = getBestLegPosition(rightLegCounter, rightLeg);
     }
 
     /**
      * Get the best pose position for an arm.
      * @param map - the counter for the arm
-     * @return the pose with the highest chance of being correct
+     * @param current - the current position
+     * @return the pose with the highest chance of being correct, or current if too little change is detected
      */
-    private Position getBestArmPosition(Map<Position, Integer> map) {
+    private Position getBestArmPosition(Map<Position, Integer> map, Position current) {
+        int epsilon = 150;
         if (map.get(Position.top) > map.get(Position.middle)) {
             if (map.get(Position.top) > map.get(Position.bottom)) {
-                return Position.top;
-            } else {
-                return Position.bottom;
+                return map.get(Position.top) > epsilon ? Position.top : current;
             }
-        } else if (map.get(Position.middle) > map.get(Position.bottom)) {
-            return Position.middle;
-        } else {
-            return Position.bottom;
+            return map.get(Position.bottom) > epsilon ? Position.bottom : current;
         }
+        if (map.get(Position.middle) > map.get(Position.bottom)) {
+            return map.get(Position.middle) > epsilon ? Position.middle : current;
+        }
+        return map.get(Position.bottom) > epsilon ? Position.bottom : current;
+    }
+
+    /**
+     * Get the best pose position for a leg.
+     * @param map - the counter for the leg
+     * @param current - the current position
+     * @return the pose with the highest chance of being correct, or current if too little change is detected
+     */
+    private Position getBestLegPosition(Map<Position, Integer> map, Position current) {
+        int epsilon = 150;
+        if (map.get(Position.neutral) > map.get(Position.raised)) {
+            return map.get(Position.neutral) > epsilon ? Position.neutral : current;
+        }
+        return map.get(Position.raised) > epsilon ? Position.raised : current;
     }
 }
