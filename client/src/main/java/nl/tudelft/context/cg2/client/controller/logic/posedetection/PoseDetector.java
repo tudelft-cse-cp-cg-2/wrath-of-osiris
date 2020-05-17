@@ -38,41 +38,43 @@ public class PoseDetector {
         List<PoseRegion> out = new ArrayList<>();
 
         // arm top right
-        out.add(new PoseRegion(head.getLeftX() + head.getRightX(),
+        out.add(new PoseRegion(head.getLeftX() + (int) (1.2 * head.getRightX()),
                 head.getTopY() - 3 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + head.getBottomY(),
                 Limb.right_arm, Position.top));
         // arm middle right
-        out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * head.getRightX()),
+        out.add(new PoseRegion(head.getLeftX() + (int) (2.5 * head.getRightX()),
                 head.getTopY() + head.getBottomY() + 10,
-                head.getLeftX() + 5 * head.getRightX(),
+                head.getLeftX() + 6 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
                 Limb.right_arm, Position.middle));
         // arm bottom right
-        out.add(new PoseRegion(head.getLeftX() + head.getRightX(),
-                head.getTopY() + 2 * head.getBottomY(),
+        out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * head.getRightX()),
+                head.getTopY() + 3 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
-                head.getTopY() + 5 * head.getBottomY(),
+                head.getTopY() + 6 * head.getBottomY(),
                 Limb.right_arm, Position.bottom));
+
         // arm top left
         out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() - 3 * head.getBottomY(),
-                head.getLeftX(),
+                head.getLeftX() - (int) (0.2 * head.getRightX()),
                 head.getTopY() + head.getBottomY(),
                 Limb.left_arm, Position.top));
         // arm middle left
-        out.add(new PoseRegion(head.getLeftX() - 4 * head.getRightX(),
+        out.add(new PoseRegion(head.getLeftX() - 5 * head.getRightX(),
                 head.getTopY() + head.getBottomY() + 10,
-                head.getLeftX() - (int) (0.5 * head.getRightX()),
+                head.getLeftX() - (int) (1.5 * head.getRightX()),
                 head.getTopY() + 3 * head.getBottomY(),
                 Limb.left_arm, Position.middle));
         // arm bottom left
         out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
-                head.getTopY() + 2 * head.getBottomY(),
-                head.getLeftX(),
-                head.getTopY() + 5 * head.getBottomY(),
+                head.getTopY() + 3 * head.getBottomY(),
+                head.getLeftX() - (int) (0.5 * head.getRightX()),
+                head.getTopY() + 6 * head.getBottomY(),
                 Limb.left_arm, Position.bottom));
+
 
         // leg neutral right
         out.add(new PoseRegion(head.getLeftX() + (int) (0.5 * head.getRightX()),
@@ -86,6 +88,7 @@ public class PoseDetector {
                 head.getLeftX() + (int) (3.5 * head.getRightX()),
                 head.getTopY() + 10 * head.getBottomY(),
                 Limb.right_leg, Position.raised));
+
         // leg neutral left
         out.add(new PoseRegion(head.getLeftX() - head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
@@ -127,10 +130,10 @@ public class PoseDetector {
             return image;
         }
 
-        for (PoseRegion poseRegion : poseRegions) {
-            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
-                    new Scalar(255, 0, 0), 3, 0, 0);
-        }
+//        for (PoseRegion poseRegion : poseRegions) {
+//            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
+//                    new Scalar(255, 0, 0), 3, 0, 0);
+//        }
 
         WritableRaster raster = image.getRaster();
         DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
