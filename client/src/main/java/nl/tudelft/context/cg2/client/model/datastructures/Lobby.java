@@ -3,6 +3,8 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Class containing information about the lobby a player is currently in.
@@ -11,7 +13,7 @@ public class Lobby {
 
     private final String name;
     private final String password;
-    private ArrayList<Player> players;
+    private List<Player> players;
     private final Boolean isHost;
 
     /**
@@ -23,7 +25,7 @@ public class Lobby {
      * @param players list of current players in the lobby.
      * @param isHost whether currentPlayer is host of the lobby.6
      */
-    public Lobby(String name, String password, ArrayList<Player> players, Boolean isHost) {
+    public Lobby(String name, String password, List<Player> players, Boolean isHost) {
         this.name = name;
         this.password = password;
         this.players = players;
@@ -64,8 +66,16 @@ public class Lobby {
      * Getter method for current players in the lobby.
      * @return current list of players in the lobby.
      */
-    public ArrayList<Player> getPlayers() {
+    public List<Player> getPlayers() {
         return players;
+    }
+
+    /**
+     * Gets a list of player names for the players in the lobby.
+     * @return list of player names.
+     */
+    public List<String> getPlayerNames() {
+        return players.stream().map(Player::getName).collect(Collectors.toList());
     }
 
     /**

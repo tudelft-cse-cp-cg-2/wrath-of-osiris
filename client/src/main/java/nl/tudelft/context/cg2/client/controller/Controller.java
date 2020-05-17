@@ -3,12 +3,8 @@ package nl.tudelft.context.cg2.client.controller;
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
-
-import java.util.ArrayList;
 
 /**
  * Controller class representing the Controller in the View-Controller-Model design pattern.
@@ -24,8 +20,6 @@ public class Controller {
 
     private Server server;
 
-    // todo: Use this field to maintain available lobbies.
-//    private ArrayList<Lobby> lobbies;
 
     /**
      * Constructor for the Controller object.
@@ -39,71 +33,6 @@ public class Controller {
         this.view = view;
         this.server = new Server();
         server.connect();
-    }
-
-    /**
-     * Callback for main menu scene 'Join Game' button listener.
-     * Retrieves available lobbies from server and loads them into the scene.
-     * todo: Retrieve lobbies from server.
-     */
-    public void lobbyListCallback() {
-        // fetch from server
-        ArrayList<Lobby> lobbies = server.listLobbies();
-
-        // display
-        view.getJoinScene().setLobbyNames(lobbies);
-        view.getJoinScene().show();
-    }
-
-    /**
-     * Callback for the joinScene 'Join Game' button listener.
-     * Joins the game with the player as guest.
-     * It is assumed that list 'lobbies' corresponds to JoinScene's 'lobbyEntries'.
-     * todo: Communicate game joining with server.
-     * @param playerName the player name.
-     * @param selectedLobby the index of the selected lobby.
-     */
-    public void joinGameCallback(String playerName, int selectedLobby) {
-        Lobby lobby = server.joinLobby(selectedLobby, playerName);
-
-        // Retrieve and store lobby data from server.
-        view.getLobbyScene().setPlayerNames(lobby.getPlayers());
-        view.getLobbyScene().getStartButton().setVisible(false);
-        view.getLobbyScene().getWaitMessage().setVisible(true);
-        view.getLobbyScene().show();
-    }
-
-    /**
-     * Callback for the CreateGameScene 'Create Game' button listener.
-     * Creates the game with the player as host.
-     * todo: Communicate game creation with server.
-     * @param playerName the player name.
-     * @param lobbyName the lobby name.
-     * @param password the lobby password.
-     */
-    public void createGameCallback(String playerName, String lobbyName, String password) {
-        Player player = new Player(playerName);
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(player);
-        Lobby lobby = new Lobby(lobbyName, password, players, true);
-        model.setCurrentPlayer(player);
-        model.setCurrentLobby(lobby);
-        view.getLobbyScene().setPlayerNames(players);
-        view.getLobbyScene().getStartButton().setVisible(true);
-
-        view.getLobbyScene().getWaitMessage().setVisible(false);
-        view.getLobbyScene().show();
-    }
-
-    /**
-     * Callback for the LobbyScene 'Leave' button listener.
-     * Leaves the current lobby and forgets current player information.
-     * todo: Communicate game leaving with server.
-     */
-    public void leaveLobbyCallback() {
-        server.leaveLobby();
-        model.setCurrentPlayer(null);
-        model.setCurrentLobby(null);
     }
 
     /**
@@ -136,5 +65,13 @@ public class Controller {
      */
     public GameTimer getGameTimer() {
         return gameTimer;
+    }
+
+    /**
+     * Gets the server.
+     * @return the server.
+     */
+    public Server getServer() {
+        return server;
     }
 }

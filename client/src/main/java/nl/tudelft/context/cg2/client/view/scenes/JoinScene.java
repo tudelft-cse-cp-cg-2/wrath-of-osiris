@@ -1,9 +1,6 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
@@ -14,12 +11,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * The scene to join available lobbies.
@@ -30,7 +26,7 @@ public class JoinScene extends BaseScene {
     private Text headerText;
     private HBox centerHBox;
 
-    private ListView listView;
+    private ListView<String> listView;
     private ScrollPane scrollPane;
 
     private VBox controlsVBox;
@@ -38,8 +34,6 @@ public class JoinScene extends BaseScene {
     private SimpleButton joinButton;
 
     private SimpleButton backButton;
-
-    private final ObservableList<String> lobbyNames;
 
     private static final int MAX_PLAYER_NAME_LENGTH = 15;
 
@@ -50,7 +44,6 @@ public class JoinScene extends BaseScene {
      */
     public JoinScene(Window window, Pane root) {
         super(window, root);
-        lobbyNames = FXCollections.observableArrayList();
     }
 
     /**
@@ -65,7 +58,7 @@ public class JoinScene extends BaseScene {
         headerText.setTranslateY(20);
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
 
-        listView = new ListView<>(lobbyNames);
+        listView = new ListView<>();
         listView.setId("lobby-list");
         listView.setMinWidth(220);
         listView.setEditable(false);
@@ -85,16 +78,12 @@ public class JoinScene extends BaseScene {
         playerNameField.getStyleClass().add("text-box");
 
         // enforce that there are no spaces, and enforce the maximum length
-        playerNameField.textProperty().addListener(new ChangeListener<String>() {
-            @Override
-            public void changed(final ObservableValue<? extends String> ov, final String oldValue,
-                                final String newValue) {
-                if (playerNameField.getText().length() > MAX_PLAYER_NAME_LENGTH) {
-                    String s = playerNameField.getText().substring(0, MAX_PLAYER_NAME_LENGTH);
-                    playerNameField.setText(s);
-                }
-                playerNameField.setText(playerNameField.getText().replaceAll("\\s+", ""));
+        playerNameField.textProperty().addListener((obj, oldV, newV) -> {
+            if (playerNameField.getText().length() > MAX_PLAYER_NAME_LENGTH) {
+                String s = playerNameField.getText().substring(0, MAX_PLAYER_NAME_LENGTH);
+                playerNameField.setText(s);
             }
+            playerNameField.setText(playerNameField.getText().replaceAll("\\s+", ""));
         });
 
         joinButton = new SimpleButton("Join Lobby");
@@ -151,22 +140,11 @@ public class JoinScene extends BaseScene {
     }
 
     /**
-     * Lobby list getter.
-     * @return list of available lobbies.
-     */
-    public ObservableList<String> getLobbyNames() {
-        return lobbyNames;
-    }
-
-    /**
      * Updates the displayed list of available lobbies.
-     * @param newLobbies the new set of lobbies.
+     * @param lobbyNames the new set of lobbies by name.
      */
-    public void setLobbyNames(ArrayList<Lobby> newLobbies) {
-        this.lobbyNames.clear();
-        for (Lobby newLobby : newLobbies) {
-            lobbyNames.add(newLobby.getPlayers().size() + "/5 " + newLobby.getName());
-        }
+    public void setLobbyNames(List<String> lobbyNames) {
+        listView.setItems(FXCollections.observableArrayList(lobbyNames));
     }
 
     /**

@@ -3,6 +3,7 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 
@@ -28,14 +29,35 @@ public class JoinSceneController extends SceneController {
 
     @Override
     protected void setupMouseListeners() {
-        scene.getJoinButton().setOnMouseClicked(event -> {
-            int index = scene.getListView().getSelectionModel().getSelectedIndex();
-            System.out.println("Selected lobby index: " + index);
-            controller.joinGameCallback(scene.getPlayerNameField().getText(), index);
-        });
-        scene.getBackButton().setOnMouseClicked(event -> {
-            view.getMenuScene().show();
-        });
+        scene.getJoinButton().setOnMouseClicked(event -> joinButtonClicked());
+        scene.getBackButton().setOnMouseClicked(event -> backButtonClicked());
+    }
+
+    /**
+     * Callback for the back button listener.
+     * Shows the previous scene.
+     */
+    private void backButtonClicked() {
+        view.getMenuScene().show();
+    }
+
+    /**
+     * Callback for the joinScene button listener.
+     * Joins the game with the player as guest.
+     * It is assumed that list 'lobbies' corresponds to JoinScene's 'lobbyEntries'.
+     */
+    private void joinButtonClicked() {
+        int index = scene.getListView().getSelectionModel().getSelectedIndex();
+        String name = scene.getPlayerNameField().getText();
+        Lobby lobby = controller.getServer().joinLobby(index, name);
+
+        System.out.println("Selected lobby index: " + index);
+
+        // Retrieve and store lobby data from server.
+        view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());
+        view.getLobbyScene().getStartButton().setVisible(false);
+        view.getLobbyScene().getWaitMessage().setVisible(true);
+        view.getLobbyScene().show();
     }
 
     @Override

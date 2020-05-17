@@ -30,14 +30,21 @@ public class LobbySceneController extends SceneController {
 
     @Override
     protected void setupMouseListeners() {
-        scene.getStartButton().setOnMouseClicked(event -> {
-            System.out.println("Clicked");
-        });
-        scene.getLeaveButton().setOnMouseClicked(event -> {
-            controller.leaveLobbyCallback();
-            scene.setPlayerNames(new ArrayList<>());
-            view.getMenuScene().show();
-        });
+        scene.getStartButton().setOnMouseClicked(event -> System.out.println("Clicked"));
+        scene.getLeaveButton().setOnMouseClicked(event -> leaveButtonClicked());
+    }
+
+    /**
+     * Callback for the leave button listener.
+     * Leaves the current lobby and forgets current player information.
+     * Communicate game leaving with server.
+     */
+    private void leaveButtonClicked() {
+        controller.getServer().leaveLobby();
+        model.setCurrentPlayer(null);
+        model.setCurrentLobby(null);
+        scene.setPlayerNames(new ArrayList<>());
+        view.getMenuScene().show();
     }
 
     @Override
