@@ -12,11 +12,13 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.videoio.VideoCapture;
 
 import java.awt.image.BufferedImage;
 
 import static org.opencv.core.Core.flip;
+import static org.opencv.imgproc.Imgproc.resize;
 
 /**
  * The OpenCV scene controller class.
@@ -27,27 +29,24 @@ public class OpenCVSceneController extends SceneController {
     private final OpenCVScene scene;
 
     private VideoCapture videoCapture;
-    private WritableImage writableImage;
     private PoseDetector poseDetector;
     private Timeline captureTimer;
-    private boolean skip;
 
 
     /**
      * The OpenCV scene controller.
      * Controls the input on the main scene.
+     *
      * @param controller the controller class.
-     * @param model the model class.
-     * @param view the view class.
+     * @param model      the model class.
+     * @param view       the view class.
      */
     public OpenCVSceneController(Controller controller, Model model, View view) {
         super(controller, model, view);
         scene = view.getOpenCVScene();
         this.videoCapture = null;
         this.poseDetector = null;
-        this.writableImage = null;
         this.captureTimer = null;
-        this.skip = false;
     }
 
     /**
@@ -112,6 +111,7 @@ public class OpenCVSceneController extends SceneController {
 
     /**
      * Captures and processes a snapshot of webcam feed.
+     *
      * @param poseDetector - PoseDetector object
      * @return an image with the player pose marked
      */
@@ -121,19 +121,15 @@ public class OpenCVSceneController extends SceneController {
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
-        if (skip) {
-            skip = false;
-            return this.writableImage;
-        }
-
+        // Scale the image to 240p resolution
+        resize(matrix, matrix, new Size(320, 240));
+        // FIXME: Mirror the image, to make debugging easier and more intuitive
         flip(matrix, matrix, +1);
+
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
         }
-
-        skip = true;
-        this.writableImage = writableImage;
 
         return writableImage;
     }
