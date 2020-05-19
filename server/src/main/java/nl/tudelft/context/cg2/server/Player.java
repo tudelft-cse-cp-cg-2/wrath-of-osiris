@@ -59,7 +59,10 @@ public class Player extends Thread {
         } else if (clientInput.startsWith("joinlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             this.setPlayerName(clientInput.split(" ")[2]);
-            App.addPlayerToLobby(index, this).forEach(out::println);
+            App.addPlayerToLobby(index, this);
+        } else if (clientInput.startsWith("fetchlobby ")) {
+            int index = Integer.parseInt(clientInput.split(" ")[1]);
+            App.fetchLobby(index).forEach(out::println);
         } else {
             System.out.println("Unknown command from client: " + clientInput);
         }

@@ -9,7 +9,6 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 
 /**
  * Representation of the game server.
@@ -21,6 +20,27 @@ public class Server {
     private Socket sock;
     private PrintWriter out;
     private BufferedReader in;
+
+    /**
+     * Sequence sent at End Of Transmission.
+     */
+    public static final String EOT = ".";
+
+    /**
+     * Gets out.
+     * @return out.
+     */
+    public PrintWriter getOut() {
+        return out;
+    }
+
+    /**
+     * Gets in.
+     * @return in.
+     */
+    public BufferedReader getIn() {
+        return in;
+    }
 
     /**
      * Constructor for servers.
@@ -43,87 +63,5 @@ public class Server {
             System.out.println("Error: could not connect to server.");
             System.exit(1);
         }
-    }
-
-    /**
-     * Join a lobby.
-     * @param no lobby index to join
-     * @param name player name to use
-     * @return the joined lobby, as received from the server
-     */
-    @SuppressFBWarnings(value = "DM_EXIT",
-            justification = "Server is sending garbage, no use in going on.")
-    public Lobby joinLobby(int no, String name) {
-        String fromServer;
-        Lobby lobby;
-
-        if (no == -1) {
-            no = 0;
-        }
-
-        out.println("joinlobby " + no + " " + name);
-        try {
-            // get lobby
-            fromServer = in.readLine();
-            if (fromServer == null) {
-                System.exit(1);
-            }
-            System.out.println(fromServer);
-            lobby = Lobby.unpackLobby(fromServer);
-
-            // get players
-            while (true) {
-                fromServer = in.readLine();
-                System.out.println(fromServer);
-                if (fromServer == null || fromServer.equals(".")) {
-                    break;
-                }
-                System.out.println("received: " + fromServer);
-                lobby.addPlayer(new Player(fromServer));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
-        return lobby;
-    }
-
-    /**
-     * Request the server to leave the lobby.
-     */
-    public void leaveLobby() {
-        out.println("leavelobby");
-        try {
-            String fromServer = in.readLine();
-            assert fromServer == ".";
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Request and parse a simple list of lobbies from the server.
-     * @return a list of lobbies, with their respective amounts of players
-     */
-    public ArrayList<Lobby> listLobbies() {
-        String fromServer;
-        ArrayList<Lobby> lobbies = new ArrayList<>();
-
-        out.println("listlobbies");
-        try {
-            while (true) {
-                fromServer = in.readLine();
-                if (fromServer == null || fromServer.equals(".")) {
-                    break;
-                }
-                System.out.println("received: " + fromServer);
-                lobbies.add(Lobby.unpackLobby(fromServer));
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return lobbies;
     }
 }

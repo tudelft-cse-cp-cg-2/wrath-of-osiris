@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.LeaveLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
@@ -40,7 +41,11 @@ public class LobbySceneController extends SceneController {
      * Communicate game leaving with server.
      */
     private void leaveButtonClicked() {
-        controller.getServer().leaveLobby();
+        LeaveLobbyRequest req = new LeaveLobbyRequest(controller.getServer().getIn(),
+                controller.getServer().getOut());
+        controller.getEventTimer().cancel();
+        controller.getEventTimer().purge();
+        req.start();
         model.setCurrentPlayer(null);
         model.setCurrentLobby(null);
         scene.setPlayerNames(new ArrayList<>());

@@ -1,6 +1,8 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
+import nl.tudelft.context.cg2.client.controller.requests.LobbyUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
@@ -49,9 +51,21 @@ public class JoinSceneController extends SceneController {
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
         String name = scene.getPlayerNameField().getText();
-        Lobby lobby = controller.getServer().joinLobby(index, name);
+        JoinLobbyRequest req = new JoinLobbyRequest(controller.getServer().getIn(),
+                controller.getServer().getOut(), index, name);
+        req.start();
+        try {
+            req.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        Lobby lobby = req.getResult();
 
         System.out.println("Selected lobby index: " + index);
+
+        LobbyUpdater updater = new LobbyUpdater(controller.getServer().getIn(),
+                controller.getServer().getOut(), index, view.getLobbyScene());
+        controller.getEventTimer().schedule(updater, 2000, 2000);
 
         // Retrieve and store lobby data from server.
         view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());

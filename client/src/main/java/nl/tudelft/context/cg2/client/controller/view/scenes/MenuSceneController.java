@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.ListLobbiesRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
@@ -91,7 +92,15 @@ public class MenuSceneController extends SceneController {
      * Retrieves available lobbies from server and loads them into the scene.
      */
     private void joinGameClicked() {
-        ArrayList<Lobby> lobbies = controller.getServer().listLobbies();
+        ListLobbiesRequest req = new ListLobbiesRequest(controller.getServer().getIn(),
+                controller.getServer().getOut());
+        req.start();
+        try {
+            req.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        ArrayList<Lobby> lobbies = req.getResult();
         List<String> names = lobbies.stream()
                 .map(l -> l.getPlayers().size() + "/5 " + l.getName()).collect(Collectors.toList());
 

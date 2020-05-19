@@ -26,6 +26,8 @@ public final class App {
     private static void startServer() throws IOException {
         ServerSocket serverSock = new ServerSocket(PORT);
         lobbies = new ArrayList<>();
+        lobbies.add(new Lobby("test lobby", "", new ArrayList<>()));
+        lobbies.add(new Lobby("second", "", new ArrayList<>()));
 
         System.out.println("Started server on port " + PORT);
         while (true) {
@@ -57,16 +59,27 @@ public final class App {
      * Adds a player to a specific lobby.
      * @param index the index of the lobby
      * @param player the player object
-     * @return the response to the player
      */
-    public static List<String> addPlayerToLobby(int index, Player player) {
+    public static void addPlayerToLobby(int index, Player player) {
+        if (index < 0 || index >= lobbies.size()) {
+            System.out.println("No such lobby");
+        } else {
+            lobbies.get(index).addPlayer(player);
+        }
+    }
+
+    /**
+     * Fetches a lobby for the client.
+     * @param index the lobby to be fetched
+     * @return the packed lobby and its player list
+     */
+    public static List<String> fetchLobby(int index) {
         List<String> out = new ArrayList<>();
 
         if (index < 0 || index >= lobbies.size()) {
             System.out.println("No such lobby");
         } else {
             Lobby lobby = lobbies.get(index);
-            lobby.addPlayer(player);
             out.add(lobby.pack());
             lobby.getPlayers().forEach(x -> out.add(x.getPlayerName()));
         }

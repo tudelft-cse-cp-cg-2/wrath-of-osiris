@@ -6,6 +6,8 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
 
+import java.util.Timer;
+
 /**
  * Controller class representing the Controller in the View-Controller-Model design pattern.
  * It handles user input and sends it to the model.
@@ -18,7 +20,9 @@ public class Controller {
     private final Model model;
     private final View view;
 
-    private Server server;
+    private final Server server;
+
+    private final Timer eventTimer;
 
 
     /**
@@ -32,7 +36,16 @@ public class Controller {
         this.model = model;
         this.view = view;
         this.server = new Server();
+        this.eventTimer = new Timer();
         server.connect();
+    }
+
+    /**
+     * Gets the eventTimer.
+     * @return the eventTimer.
+     */
+    public Timer getEventTimer() {
+        return eventTimer;
     }
 
     /**
