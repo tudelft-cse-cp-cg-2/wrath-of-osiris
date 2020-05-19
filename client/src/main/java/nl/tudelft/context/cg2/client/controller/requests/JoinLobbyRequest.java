@@ -16,7 +16,7 @@ public class JoinLobbyRequest extends Thread {
     private int index;
     private final String playerName;
 
-    private static Lobby result;
+    private Lobby result;
 
     /**
      * Getter for result.
@@ -54,7 +54,7 @@ public class JoinLobbyRequest extends Thread {
             // join lobby
             out.println("joinlobby " + index + " " + playerName);
             fromServer = in.readLine();
-            assert fromServer.equals(Server.EOT);
+            assert fromServer != null && fromServer.equals(Server.EOT);
 
             FetchLobbyRequest req = new FetchLobbyRequest(in, out, index);
             req.start();

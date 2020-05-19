@@ -30,7 +30,7 @@ public class LeaveLobbyRequest extends Thread {
         out.println("leavelobby");
         try {
             String fromServer = in.readLine();
-            assert fromServer.equals(Server.EOT);
+            assert fromServer != null && fromServer.equals(Server.EOT);
         } catch (IOException e) {
             e.printStackTrace();
         }

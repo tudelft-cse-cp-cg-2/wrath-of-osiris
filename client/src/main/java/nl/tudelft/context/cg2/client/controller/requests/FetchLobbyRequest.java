@@ -17,7 +17,7 @@ public class FetchLobbyRequest extends Thread {
     private final PrintWriter out;
     private int index;
 
-    private static Lobby result;
+    private Lobby result;
 
     /**
      * Getter for result.
