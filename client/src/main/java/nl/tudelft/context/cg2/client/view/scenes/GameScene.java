@@ -21,6 +21,8 @@ import java.util.List;
  */
 public class GameScene extends BaseScene {
 
+    private static final double TOP_BAR_RATIO = 0.92D;
+
     private final World world;
 
     private ArrayList<Canvas> canvasses;
@@ -122,22 +124,25 @@ public class GameScene extends BaseScene {
     private void process() {
         //Calculate draw variables
         double width = window.sceneWidthProperty().getValue();
-        double height = window.sceneHeightProperty().getValue();
+        double height = window.sceneHeightProperty().multiply(TOP_BAR_RATIO).getValue();
+        double offsetY = window.sceneHeightProperty().subtract(height).getValue();
         double widthRatio = width / World.WIDTH;
         double heightRatio = height / World.HEIGHT;
 
         //Draws the background objects.
         GraphicsContext backgroundGC = getBackgroundGraphicsContext();
-        backgroundGC.drawImage(ImageCache.IMAGES[1], 0, 0, width * 0.495D, height);
-        backgroundGC.drawImage(ImageCache.IMAGES[2], width * 0.505D, 0, width * 0.495D, height);
+        backgroundGC.drawImage(ImageCache.IMAGES[3], 0, offsetY + height * 0.5D, width, height * 0.5D);
+        backgroundGC.drawImage(ImageCache.IMAGES[4], 0, offsetY, width, height * 0.5D);
+        backgroundGC.drawImage(ImageCache.IMAGES[1], 0, offsetY, width * 0.495D, height);
+        backgroundGC.drawImage(ImageCache.IMAGES[2], width * 0.505D, offsetY, width * 0.495D, height);
 
         //Draws the world objects on the screen.
         world.getEntities().forEach(e -> {
             Image image = e.getTexture();
             double w = e.getSize().x * widthRatio * e.getDepthScalar();
             double h = e.getSize().y * heightRatio * e.getDepthScalar();
-            double x = (e.getPosition().x) * widthRatio + ((w / e.getDepthScalar() - w) * 0.5D);
-            double y = e.getPosition().x * heightRatio + ((h / e.getDepthScalar() - h) * 0.5D);
+            double x = (e.getPosition().x) * widthRatio + ((width - w) * 0.5D);
+            double y = offsetY + (e.getPosition().x * heightRatio + ((height - h) * 0.5D));
 
             getObjectGraphicsContext().drawImage(image, x, y, w, h);
 
