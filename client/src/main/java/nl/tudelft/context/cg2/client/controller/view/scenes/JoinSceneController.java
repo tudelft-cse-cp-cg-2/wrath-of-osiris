@@ -46,7 +46,6 @@ public class JoinSceneController extends SceneController {
     /**
      * Callback for the joinScene button listener.
      * Joins the game with the player as guest.
-     * It is assumed that list 'lobbies' corresponds to JoinScene's 'lobbyEntries'.
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
