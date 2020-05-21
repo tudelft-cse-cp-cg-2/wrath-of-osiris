@@ -24,7 +24,6 @@ public class Controller {
 
     private final Timer eventTimer;
 
-
     /**
      * Constructor for the Controller object.
      * @param model The Model object to send interaction data towards.

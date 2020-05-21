@@ -8,6 +8,7 @@ import java.util.ArrayList;
  * Class containing information about the lobby a player is currently in.
  */
 public class Lobby {
+    private static final int MAX_PLAYERS = 5;
 
     private final String name;
     private final String password;
@@ -69,5 +70,13 @@ public class Lobby {
      */
     public void removePlayer(Player player) {
         this.players.remove(player);
+    }
+
+    /**
+     * Returns whether or not the lobby is full.
+     * @return true if full, false if not
+     */
+    public boolean isFull() {
+        return (this.players.size() >= MAX_PLAYERS);
     }
 }

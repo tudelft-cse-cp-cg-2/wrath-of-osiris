@@ -62,7 +62,12 @@ public final class App {
         if (index < 0 || index >= lobbies.size()) {
             System.out.println("No such lobby");
         } else {
-            lobbies.get(index).addPlayer(player);
+            Lobby lobby = lobbies.get(index);
+            if (lobby.isFull()) {
+                disconnectPlayer(player);
+            } else {
+                lobby.addPlayer(player);
+            }
         }
     }
 
