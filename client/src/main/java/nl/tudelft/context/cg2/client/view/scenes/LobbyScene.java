@@ -1,7 +1,5 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -9,12 +7,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
+import nl.tudelft.context.cg2.client.view.elements.etc.ListEntry;
 
-import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The lobby scene.
@@ -27,7 +26,6 @@ public class LobbyScene extends BaseScene {
 
     private VBox playerListVBox;
     private VBox controlsVBox;
-    private ObservableList<Label> playerEntries;
 
     private Label waitMessage;
     private SimpleButton startButton;
@@ -40,7 +38,6 @@ public class LobbyScene extends BaseScene {
      */
     public LobbyScene(Window window, Pane root) {
         super(window, root);
-        playerEntries = FXCollections.observableArrayList();
     }
 
     /**
@@ -57,13 +54,7 @@ public class LobbyScene extends BaseScene {
 
         playerListVBox = new VBox();
         playerListVBox.setId("player-list");
-        for (int i = 1; i <= 5; i++) {
-            Label playerEntry = new Label();
-            playerEntry.getStyleClass().add("name-entry");
-            playerEntry.setMinWidth(150);
-            playerEntries.add(playerEntry);
-            playerListVBox.getChildren().add(playerEntry);
-        }
+        playerListVBox.setAlignment(Pos.TOP_CENTER);
 
         centerHBox = new HBox();
         centerHBox.setSpacing(70);
@@ -121,22 +112,14 @@ public class LobbyScene extends BaseScene {
     }
 
     /**
-     * Player names list getter.
-     * @return list of player names.
-     */
-    public ObservableList<Label> getPlayerEntries() {
-        return playerEntries;
-    }
-
-    /**
      * Fills the five player entries with the first five names of the list.
-     * @param players list of new player names.
+     * @param playerNames list of new player names.
      */
-    public void setPlayerNames(ArrayList<Player> players) {
-        int minLength = Math.min(playerEntries.size(), players.size());
-        for (int i = 0; i < minLength; i++) {
-            playerEntries.get(i).setText(players.get(i).getName());
-        }
+    public void setPlayerNames(List<String> playerNames) {
+        playerListVBox.getChildren().clear();
+        List<ListEntry> entries = playerNames.stream()
+                .map(ListEntry::new).collect(Collectors.toList());
+        playerListVBox.getChildren().addAll(entries);
     }
 
     /**

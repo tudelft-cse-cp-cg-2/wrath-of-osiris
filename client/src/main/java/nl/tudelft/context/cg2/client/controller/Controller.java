@@ -3,11 +3,10 @@ package nl.tudelft.context.cg2.client.controller;
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
 
-import java.util.ArrayList;
+import java.util.Timer;
 
 /**
  * Controller class representing the Controller in the View-Controller-Model design pattern.
@@ -21,8 +20,9 @@ public class Controller {
     private final Model model;
     private final View view;
 
-    // todo: Use this field to maintain available lobbies.
-//    private ArrayList<Lobby> lobbies;
+    private final Server server;
+
+    private final Timer eventTimer;
 
     /**
      * Constructor for the Controller object.
@@ -34,73 +34,17 @@ public class Controller {
         this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;
+        this.server = new Server();
+        this.eventTimer = new Timer();
+        server.connect();
     }
 
     /**
-     * Callback for main menu scene 'Join Game' button listener.
-     * Retrieves available lobbies from server and loads them into the scene.
-     * todo: Retrieve lobbies from server.
+     * Gets the eventTimer.
+     * @return the eventTimer.
      */
-    public void lobbyListCallback() {
-        // Example lobby.
-        ArrayList<Player> exampleList = new ArrayList<Player>();
-        exampleList.add(new Player("host"));
-        Lobby exampleLobby = new Lobby("ExampleLobby", null, exampleList, false);
-        ArrayList<Lobby> lobbies = new ArrayList<>();
-        lobbies.add(exampleLobby);
-        view.getJoinScene().setLobbyNames(lobbies);
-        view.getJoinScene().show();
-    }
-
-    /**
-     * Callback for the joinScene 'Join Game' button listener.
-     * Joins the game with the player as guest.
-     * It is assumed that list 'lobbies' corresponds to JoinScene's 'lobbyEntries'.
-     * todo: Communicate game joining with server.
-     * @param playerName the player name.
-     * @param selectedLobby the index of the selected lobby.
-     */
-    public void joinGameCallback(String playerName, int selectedLobby) {
-        Player player = new Player(playerName);
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(player);
-        // Retrieve and store lobby data from server.
-        view.getLobbyScene().setPlayerNames(players);
-        view.getLobbyScene().getStartButton().setVisible(false);
-        view.getLobbyScene().getWaitMessage().setVisible(true);
-        view.getLobbyScene().show();
-    }
-
-    /**
-     * Callback for the CreateGameScene 'Create Game' button listener.
-     * Creates the game with the player as host.
-     * todo: Communicate game creation with server.
-     * @param playerName the player name.
-     * @param lobbyName the lobby name.
-     * @param password the lobby password.
-     */
-    public void createGameCallback(String playerName, String lobbyName, String password) {
-        Player player = new Player(playerName);
-        ArrayList<Player> players = new ArrayList<>();
-        players.add(player);
-        Lobby lobby = new Lobby(lobbyName, password, players, true);
-        model.setCurrentPlayer(player);
-        model.setCurrentLobby(lobby);
-        view.getLobbyScene().setPlayerNames(players);
-        view.getLobbyScene().getStartButton().setVisible(true);
-
-        view.getLobbyScene().getWaitMessage().setVisible(false);
-        view.getLobbyScene().show();
-    }
-
-    /**
-     * Callback for the LobbyScene 'Leave' button listener.
-     * Leaves the current lobby and forgets current player information.
-     * todo: Communicate game leaving with server.
-     */
-    public void leaveLobbyCallback() {
-        model.setCurrentPlayer(null);
-        model.setCurrentLobby(null);
+    public Timer getEventTimer() {
+        return eventTimer;
     }
 
     /**
@@ -133,5 +77,13 @@ public class Controller {
      */
     public GameTimer getGameTimer() {
         return gameTimer;
+    }
+
+    /**
+     * Gets the server.
+     * @return the server.
+     */
+    public Server getServer() {
+        return server;
     }
 }
