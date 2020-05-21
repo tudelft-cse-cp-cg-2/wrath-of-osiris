@@ -9,15 +9,11 @@ import java.util.List;
 /**
  * Main server application.
  */
+@SuppressWarnings("HideutilityClassConstructor")
 public final class App {
     private static final int PORT = 43594;
 
     private static ArrayList<Lobby> lobbies;
-
-    /**
-     * Private constructor, since this is a utility class that should not be instantiated.
-     */
-    private App() {}
 
     /**
      * Starts the server.
