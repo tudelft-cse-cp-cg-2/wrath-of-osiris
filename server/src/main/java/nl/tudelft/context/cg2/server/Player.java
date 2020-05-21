@@ -23,12 +23,18 @@ public class Player extends Thread {
      * @param sock the socket for the player's connection
      * @throws IOException when the connection is interrupted
      */
-    public Player(Socket sock) throws IOException {
-        this.sock = sock;
-        this.in = new BufferedReader(new InputStreamReader(this.sock.getInputStream(),
-                StandardCharsets.UTF_8));
-        this.out = new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(),
-                StandardCharsets.UTF_8), true);
+    public Player(Socket sock) {
+        try {
+            this.sock = sock;
+            this.in = new BufferedReader(new InputStreamReader(this.sock.getInputStream(),
+                    StandardCharsets.UTF_8));
+            this.out = new PrintWriter(new OutputStreamWriter(this.sock.getOutputStream(),
+                    StandardCharsets.UTF_8), true);
+        } catch (IOException e) {
+            System.out.println(sock.getInetAddress() + ":" + sock.getPort()
+                    + " disconnected (connection lost).");
+            App.disconnectPlayer(this);
+        }
     }
 
     /**
