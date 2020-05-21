@@ -42,6 +42,7 @@ public final class App {
      * @param player the player to interrupt
      */
     public static void disconnectPlayer(Player player) {
+        player.terminate();
         player.interrupt();
     }
 

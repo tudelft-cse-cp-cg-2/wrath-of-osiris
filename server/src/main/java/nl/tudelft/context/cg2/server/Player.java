@@ -18,10 +18,11 @@ public class Player extends Thread {
 
     private String playerName;
 
+    private boolean terminate = false;
+
     /**
      * Constructor for players.
      * @param sock the socket for the player's connection
-     * @throws IOException when the connection is interrupted
      */
     public Player(Socket sock) {
         try {
@@ -35,6 +36,13 @@ public class Player extends Thread {
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+    }
+
+    /**
+     * Changes this.terminate to true, effectively telling the run function to terminate.
+     */
+    public void terminate() {
+        this.terminate = true;
     }
 
     /**
@@ -81,7 +89,11 @@ public class Player extends Thread {
     public void run() {
         String clientInput;
         try {
-            while ((clientInput = in.readLine()) != null) {
+            while (!terminate) {
+                clientInput = in.readLine();
+                if (clientInput == null) {
+                    break;
+                }
                 System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
                         + clientInput);
                 respond(clientInput);
