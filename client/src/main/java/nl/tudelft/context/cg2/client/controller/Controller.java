@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller;
 
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
+import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Server;
@@ -21,6 +22,7 @@ public class Controller {
     private final View view;
 
     private final Server server;
+    private GameStateUpdater stateUpdater;
 
     private final Timer eventTimer;
 
@@ -85,5 +87,39 @@ public class Controller {
      */
     public Server getServer() {
         return server;
+    }
+
+    /**
+     * Getter for GameStateUpdater thread.
+     * @return current GameStateUdpater
+     */
+    public GameStateUpdater getStateUpdater() {
+        return stateUpdater;
+    }
+
+    /**
+     * Setter for GameStateUpdater thread.
+     * @param stateUpdater new GameStateUpdater thread
+     */
+    public void setStateUpdater(GameStateUpdater stateUpdater) {
+        this.stateUpdater = stateUpdater;
+    }
+
+    /**
+     * Starts the game.
+     */
+    public void startGame() {
+        viewController.getOpenCVSceneController().startCapture();
+        model.getWorld().create();
+        view.getGameScene().clear();
+        view.getGameScene().show();
+    }
+
+    /**
+     * Stops the game.
+     */
+    public void stopGame() {
+        viewController.getOpenCVSceneController().stopCapture();
+        view.getLobbyScene().show();
     }
 }

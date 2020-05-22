@@ -20,6 +20,7 @@ public class Player extends Thread {
 
     private String playerName;
     private Pose pose = null;
+    private Lobby lobby;
 
     private boolean terminate = false;
 
@@ -80,9 +81,8 @@ public class Player extends Thread {
         } else if (clientInput.startsWith("fetchlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             App.fetchLobby(index).forEach(out::println);
-        } else if (clientInput.startsWith("updatelives ")) {
-            int lives = Integer.parseInt(clientInput.split(" ")[1]);
-            //todo
+        } else if ("startgame".equals(clientInput)) {
+            lobby.startGame();
         } else {
             System.out.println("Unknown command from client: " + clientInput);
         }
@@ -125,5 +125,28 @@ public class Player extends Thread {
      */
     public void setPose(Pose pose) {
         this.pose = pose;
+    }
+
+    /**
+     * Gets the lobby of the player.
+     * @return lobby this player is in
+     */
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    /**
+     * Sets the lobby for this player.
+     * @param lobby the new lobby for the player
+     */
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+
+    /**
+     * Signals the player to start the game.
+     */
+    public void signalStart() {
+        out.println("startgame");
     }
 }

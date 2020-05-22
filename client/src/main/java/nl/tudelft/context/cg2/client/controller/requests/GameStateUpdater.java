@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
 import javafx.application.Platform;
+import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 
 import java.io.BufferedReader;
@@ -15,7 +16,8 @@ public class GameStateUpdater extends Thread {
     private final BufferedReader in;
     private final PrintWriter out;
     private final int index;
-
+    private final Controller controller;
+    private boolean started = false;
     private boolean terminate = false;
 
     /**
@@ -23,11 +25,13 @@ public class GameStateUpdater extends Thread {
      * @param in server input
      * @param out server output
      * @param index the lobby to fetch
+     * @param controller app controller
      */
-    public GameStateUpdater(BufferedReader in, PrintWriter out, int index) {
+    public GameStateUpdater(BufferedReader in, PrintWriter out, int index, Controller controller) {
         this.in = in;
         this.out = out;
         this.index = index;
+        this.controller = controller;
     }
 
     /**
@@ -42,18 +46,46 @@ public class GameStateUpdater extends Thread {
      */
     public void run() {
         String serverInput;
+        System.out.println("Started game state updater");
         try {
             while (!terminate) {
                 serverInput = in.readLine();
                 if (serverInput == null) {
                     break;
                 }
-                System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
-                        + serverInput);
+
                 respond(serverInput);
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * Responds to incoming server messages.
+     * @param serverInput message from server
+     */
+    private void respond(String serverInput) {
+        if ("startgame".equals(serverInput)) {
+            System.out.println("Received startgame");
+            started = true;
+            Platform.runLater(() -> controller.startGame());
+        }
+    }
+
+    /**
+     * Signals the server to start the game for this lobby.
+     * Only usable by the host of the lobby.
+     */
+    public void signalStart() {
+        out.println("startgame");
+    }
+
+    /**
+     * Returns whether the game has been started.
+     * @return boolean whether the game has started.
+     */
+    public boolean isStarted() {
+        return started;
     }
 }

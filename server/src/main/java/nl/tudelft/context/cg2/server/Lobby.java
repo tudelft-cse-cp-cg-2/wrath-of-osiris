@@ -12,6 +12,7 @@ public class Lobby {
 
     private final String name;
     private final String password;
+    private boolean started = false;
     private int lives;
 
     /**
@@ -96,5 +97,30 @@ public class Lobby {
      */
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    /**
+     * Gets whether the lobby has started the game.
+     * @return boolean whether the game has been started
+     */
+    public boolean isStarted() {
+        return started;
+    }
+
+    /**
+     * Starts the game for the lobby.
+     */
+    public void startGame() {
+        this.started = true;
+        for (Player player : players) {
+            player.signalStart();
+        }
+    }
+
+    /**
+     * Stops the game for the lobby.
+     */
+    public void stopGame() {
+
     }
 }

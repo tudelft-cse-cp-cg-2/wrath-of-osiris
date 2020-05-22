@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.requests.LobbyUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
@@ -62,13 +63,19 @@ public class JoinSceneController extends SceneController {
 
         System.out.println("Selected lobby index: " + index);
 
-        LobbyUpdater updater = new LobbyUpdater(controller.getServer().getIn(),
+        LobbyUpdater lobbyUpdater = new LobbyUpdater(controller.getServer().getIn(),
                 controller.getServer().getOut(), index, view.getLobbyScene());
-        controller.getEventTimer().schedule(updater, 2000, 2000);
+        controller.getEventTimer().schedule(lobbyUpdater, 2000, 2000);
+
+        // Start game state updater thread.
+        controller.setStateUpdater(new GameStateUpdater(controller.getServer().getIn(),
+                controller.getServer().getOut(), index, controller));
+        controller.getStateUpdater().start();
 
         // Retrieve and store lobby data from server.
         view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());
-        view.getLobbyScene().getStartButton().setVisible(false);
+        // todo: This is commented to test game logic without lobby creation
+        //view.getLobbyScene().getStartButton().setVisible(false);
         view.getLobbyScene().getWaitMessage().setVisible(true);
         view.getLobbyScene().show();
     }

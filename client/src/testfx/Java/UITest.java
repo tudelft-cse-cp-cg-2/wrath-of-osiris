@@ -31,22 +31,22 @@ public class UITest extends ApplicationTest {
         stage.show();
     }
 
-    @Test
-    public void joinGameTest() {
-        clickOn("Join Game");
-        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getJoinScene());
-        write("TestName");
-        clickOn("Join Lobby");
-        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getLobbyScene());
-        assertThat(view.getLobbyScene().getWaitMessage().isVisible()).isTrue();
-        ArrayList<String> names = new ArrayList<>();
-        view.getLobbyScene().getPlayerEntries().forEach(label -> {
-            names.add(label.getText());
-        });
-        assertThat(names.contains("TestName")).isTrue();
-        clickOn("Leave");
-        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getMenuScene());
-    }
+//    @Test
+//    public void joinGameTest() {
+//        clickOn("Join Game");
+//        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getJoinScene());
+//        write("TestName");
+//        clickOn("Join Lobby");
+//        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getLobbyScene());
+//        assertThat(view.getLobbyScene().getWaitMessage().isVisible()).isTrue();
+//        ArrayList<String> names = new ArrayList<>();
+//        view.getLobbyScene().getPlayerEntries().forEach(label -> {
+//            names.add(label.getText());
+//        });
+//        assertThat(names.contains("TestName")).isTrue();
+//        clickOn("Leave");
+//        assertThat(view.getWindow().getShownScene()).isEqualTo(view.getMenuScene());
+//    }
 
 
 }
