@@ -12,6 +12,7 @@ public class Lobby {
 
     private final String name;
     private final String password;
+    private int lives;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -30,6 +31,7 @@ public class Lobby {
         this.name = name;
         this.password = password;
         this.players = players;
+        lives = 10;
     }
 
     /**
@@ -78,5 +80,21 @@ public class Lobby {
      */
     public boolean isFull() {
         return (this.players.size() >= MAX_PLAYERS);
+    }
+
+    /**
+     * Getter for the group's amount of lives left.
+     * @return the amount of lives the group has left
+     */
+    public int getLives() {
+        return lives;
+    }
+
+    /**
+     * Setter for the group's amount of lives left.
+     * @param lives the updated amount of lives left
+     */
+    public void setLives(int lives) {
+        this.lives = lives;
     }
 }

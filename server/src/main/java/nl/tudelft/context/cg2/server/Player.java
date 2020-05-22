@@ -1,5 +1,7 @@
 package nl.tudelft.context.cg2.server;
 
+import nl.tudelft.context.cg2.server.game.Pose;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,6 +19,7 @@ public class Player extends Thread {
     private PrintWriter out;
 
     private String playerName;
+    private Pose pose = null;
 
     private boolean terminate = false;
 
@@ -77,6 +80,9 @@ public class Player extends Thread {
         } else if (clientInput.startsWith("fetchlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             App.fetchLobby(index).forEach(out::println);
+        } else if (clientInput.startsWith("updatelives ")) {
+            int lives = Integer.parseInt(clientInput.split(" ")[1]);
+            //todo
         } else {
             System.out.println("Unknown command from client: " + clientInput);
         }
@@ -103,5 +109,21 @@ public class Player extends Thread {
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+    }
+
+    /**
+     * Getter for a player's pose.
+     * @return the player's current pose.
+     */
+    public Pose getPose() {
+        return pose;
+    }
+
+    /**
+     * Setter for a player's pose.
+     * @param pose the player's current pose.
+     */
+    public void setPose(Pose pose) {
+        this.pose = pose;
     }
 }

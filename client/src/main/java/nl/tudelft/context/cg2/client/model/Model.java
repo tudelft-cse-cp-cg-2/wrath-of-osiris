@@ -14,6 +14,7 @@ public class Model {
     private final World world;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
+    private int lives = -1;
 
     /**
      * The model constructor.

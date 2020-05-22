@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class containing information about the lobby a player is currently in.
+ * Class containing information about a lobby.
+ * To be used both in the menus and the game.
  */
 public class Lobby {
 
