@@ -47,6 +47,8 @@ public class GameStateUpdater extends Thread {
     public void run() {
         String serverInput;
         System.out.println("Started game state updater");
+        PoseUpdater poseUpdater = new PoseUpdater(in, out, controller.getModel().getCurrentPlayer());
+        controller.getEventTimer().schedule(poseUpdater, 500, 500);
         try {
             while (!terminate) {
                 serverInput = in.readLine();
@@ -75,7 +77,7 @@ public class GameStateUpdater extends Thread {
             Platform.runLater(() -> controller.getModel().setLives(newLives));
             System.out.println("Lives: " + controller.getModel().getLives());
         } else if ("stopgame".equals(serverInput)) {
-            // todo: Do something (Show game over screen?)
+            // todo: Maybe how "game over" screen and summary?
             System.out.println("Received stopgame");
             Platform.runLater(() -> controller.stopGame());
         }

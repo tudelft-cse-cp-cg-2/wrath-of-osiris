@@ -177,4 +177,24 @@ public class Pose {
                 + "\nlegs: " + legs
                 + "\nscreen: " + screenPos;
     }
+
+
+    /**
+     * Unpack pose string packet coming from client into server format.
+     * @param poseStr string packet coming from client
+     * @return server Pose format object
+     */
+    public static Pose unpack(String poseStr) {
+        // TODO: Unpack string format of pose sent by client.
+        return new Pose(Arm.SIDE, Arm.SIDE, Legs.DOWN, ScreenPos.MIDDLE);
+    }
+
+    /**
+     * Package this pose into a string packet to send over Internet.
+     * @return the string packet containing the pose
+     */
+    public String pack() {
+        // TODO: Package pose into string format to send to client GameStateUpdater.
+        return "example-pose";
+    }
 }

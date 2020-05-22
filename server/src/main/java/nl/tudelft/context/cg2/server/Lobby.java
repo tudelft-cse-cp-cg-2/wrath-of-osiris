@@ -122,6 +122,7 @@ public class Lobby {
      * Stops the game for the lobby.
      */
     public void stopGame() {
+        this.started = false;
         for (Player player : players) {
             player.stopGame();
         }

@@ -110,6 +110,7 @@ public class Controller {
      */
     public void startGame() {
         viewController.getOpenCVSceneController().startCapture();
+
         model.getWorld().create();
         view.getGameScene().clear();
         view.getGameScene().show();

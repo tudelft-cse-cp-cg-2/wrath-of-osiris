@@ -117,4 +117,13 @@ public class Pose {
             return Position.bottom;
         }
     }
+
+    /**
+     * Pack to send over the Internet.
+     * @return a packed string representing this pose
+     */
+    public String pack() {
+        // TODO: Pack pose
+        return ("example-pose");
+    }
 }

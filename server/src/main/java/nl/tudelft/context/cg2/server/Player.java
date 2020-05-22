@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Timer;
 
 /**
  * A connected player.
@@ -21,6 +22,8 @@ public class Player extends Thread {
     private String playerName;
     private Pose pose = null;
     private Lobby lobby;
+
+    private final Timer eventTimer;
 
     private boolean terminate = false;
 
@@ -40,6 +43,7 @@ public class Player extends Thread {
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+        this.eventTimer = new Timer();
     }
 
     /**
@@ -83,6 +87,10 @@ public class Player extends Thread {
             App.fetchLobby(index).forEach(out::println);
         } else if ("startgame".equals(clientInput)) {
             lobby.startGame();
+        } else if (clientInput.startsWith("updatepose ")) {
+            String poseStr = clientInput.split(" ")[1];
+            // TODO: Unpack and update this.pose
+            this.pose = Pose.unpack(poseStr);
         } else {
             System.out.println("Unknown command from client: " + clientInput);
         }
@@ -90,9 +98,13 @@ public class Player extends Thread {
     }
 
     /**
-     * Main loop for this player, which continually listens to their messages.
+     * Main loop for this player, which continually listens to their messages,
+     * and starts the updating of other player's poses to the player.
      */
     public void run() {
+        PoseUpdater poseUpdater = new PoseUpdater(in, out, lobby, playerName);
+        eventTimer.schedule(poseUpdater, 5000, 5000);
+
         String clientInput;
         try {
             while (!terminate) {
