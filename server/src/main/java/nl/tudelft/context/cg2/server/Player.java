@@ -146,7 +146,21 @@ public class Player extends Thread {
     /**
      * Signals the player to start the game.
      */
-    public void signalStart() {
+    public void startGame() {
         out.println("startgame");
+    }
+
+    /**
+     * Signals the player to start the game.
+     */
+    public void stopGame() {
+        out.println("stopgame");
+    }
+
+    /**
+     * Updates the lives to the player with its current lobby's lives.
+     */
+    public void updateLives() {
+        out.println("updateLives " + lobby.getLives());
     }
 }

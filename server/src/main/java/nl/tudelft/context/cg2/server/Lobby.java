@@ -13,7 +13,7 @@ public class Lobby {
     private final String name;
     private final String password;
     private boolean started = false;
-    private int lives;
+    private int lives = 10;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -32,7 +32,6 @@ public class Lobby {
         this.name = name;
         this.password = password;
         this.players = players;
-        lives = 10;
     }
 
     /**
@@ -108,12 +107,14 @@ public class Lobby {
     }
 
     /**
-     * Starts the game for the lobby.
+     * Starts the game for the lobby, and update all players'
+     * lives to the starting amount.
      */
     public void startGame() {
         this.started = true;
         for (Player player : players) {
-            player.signalStart();
+            player.startGame();
+            player.updateLives();
         }
     }
 
@@ -121,6 +122,8 @@ public class Lobby {
      * Stops the game for the lobby.
      */
     public void stopGame() {
-
+        for (Player player : players) {
+            player.stopGame();
+        }
     }
 }

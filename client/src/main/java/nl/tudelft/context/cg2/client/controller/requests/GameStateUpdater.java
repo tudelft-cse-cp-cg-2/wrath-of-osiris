@@ -70,6 +70,14 @@ public class GameStateUpdater extends Thread {
             System.out.println("Received startgame");
             started = true;
             Platform.runLater(() -> controller.startGame());
+        } else if (serverInput.startsWith("updateLives ")) {
+            int newLives = Integer.parseInt(serverInput.split(" ")[1]);
+            Platform.runLater(() -> controller.getModel().setLives(newLives));
+            System.out.println("Lives: " + controller.getModel().getLives());
+        } else if ("stopgame".equals(serverInput)) {
+            // todo: Do something (Show game over screen?)
+            System.out.println("Received stopgame");
+            Platform.runLater(() -> controller.stopGame());
         }
     }
 
