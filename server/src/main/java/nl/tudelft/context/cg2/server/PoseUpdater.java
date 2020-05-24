@@ -5,7 +5,8 @@ import java.io.PrintWriter;
 import java.util.TimerTask;
 
 /**
- * Updater class that periodically updates player's pose to server.
+ * Updater class that periodically updates other player's teammates'
+ * poses to the current player.
  * Because player pose is only communicated to see others, and not for game
  * mechanics, it can be periodically sent.
  */
@@ -17,8 +18,8 @@ public class PoseUpdater extends TimerTask {
 
     /**
      * Constructor for PoseUpdater.
-     * @param in server input
-     * @param out server output
+     * @param in client input
+     * @param out client output
      * @param lobby lobby
      * @param currentPlayerName the name of the player not to be updated
      */

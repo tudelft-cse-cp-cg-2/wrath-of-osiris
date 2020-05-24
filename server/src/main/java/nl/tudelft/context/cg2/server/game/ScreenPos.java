@@ -34,4 +34,12 @@ public enum ScreenPos {
     public static ScreenPos valueOf(int index) {
         return (ScreenPos) MAP.get(index);
     }
+
+    /**
+     * Returns the index of the ScreenPos value.
+     * @return index of the ScreenPos value
+     */
+    public int indexOf() {
+        return this.id;
+    }
 }

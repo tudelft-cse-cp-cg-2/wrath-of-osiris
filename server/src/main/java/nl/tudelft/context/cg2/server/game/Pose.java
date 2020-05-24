@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.server.game;
 
+import javax.script.ScriptEngine;
 import java.util.Objects;
 
 /**
@@ -185,16 +186,49 @@ public class Pose {
      * @return server Pose format object
      */
     public static Pose unpack(String poseStr) {
-        // TODO: Unpack string format of pose sent by client.
-        return new Pose(Arm.SIDE, Arm.SIDE, Legs.DOWN, ScreenPos.MIDDLE);
+        ScreenPos screenPos = ScreenPos.valueOf(Character.getNumericValue(poseStr.charAt(0)));
+        Arm leftArm = Arm.valueOf(Character.getNumericValue(poseStr.charAt(1)));
+        Arm rightArm = Arm.valueOf(Character.getNumericValue(poseStr.charAt(2)));
+        Legs legs;
+        switch (poseStr.substring(3, 5)) {
+            case "00": legs = Legs.DOWN;
+            case "01": legs = Legs.RIGHTUP;
+            case "10": legs = Legs.LEFTUP;
+            default: legs = Legs.DOWN;
+        }
+
+        return new Pose(leftArm, rightArm, legs, screenPos);
     }
 
+
+
     /**
-     * Package this pose into a string packet to send over Internet.
-     * @return the string packet containing the pose
+     * Pack to send over the Internet. Position format is:
+     * [section][leftarm][rightarm][leftleg][rightleg]
+     * Section being:
+     * 0 - left
+     * 1 - middle
+     * 2 - right
+     * Arms being:
+     * 0 - bottom
+     * 1 - middle
+     * 2 - top
+     * Legs being:
+     * 0 - neutral
+     * 1 - raised
+     * @return a packed string representing this pose
      */
     public String pack() {
-        // TODO: Package pose into string format to send to client GameStateUpdater.
-        return "example-pose";
+        String msg = "";
+        msg += screenPos.indexOf();
+        msg += leftArm.indexOf();
+        msg += rightArm.indexOf();
+        switch (legs) {
+            case DOWN: msg += "00";
+            case LEFTUP: msg += "10";
+            case RIGHTUP: msg += "01";
+            default: msg += "00";
+        }
+        return msg;
     }
 }

@@ -1,9 +1,11 @@
 package nl.tudelft.context.cg2.client.controller;
 
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
 
@@ -122,5 +124,16 @@ public class Controller {
     public void stopGame() {
         viewController.getOpenCVSceneController().stopCapture();
         view.getLobbyScene().show();
+    }
+
+    /**
+     * Updates the player's pose.
+     * @param playerName player's name
+     * @param pose the new pose
+     */
+    public void updatePose(String playerName, Pose pose) {
+        int index = model.getCurrentLobby().getPlayerNames().indexOf(playerName);
+        Player player = model.getCurrentLobby().getPlayers().get(index);
+        player.setPose(pose);
     }
 }

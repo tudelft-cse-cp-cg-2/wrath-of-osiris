@@ -34,4 +34,12 @@ public enum Legs {
     public static Legs valueOf(int index) {
         return (Legs) MAP.get(index);
     }
+
+    /**
+     * Returns the index of the Legs value.
+     * @return index of the Legs value
+     */
+    public int indexOf() {
+        return this.id;
+    }
 }

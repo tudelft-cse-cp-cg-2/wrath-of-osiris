@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.requests;
 
 import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 
 import java.io.BufferedReader;
@@ -80,6 +81,12 @@ public class GameStateUpdater extends Thread {
             // todo: Maybe how "game over" screen and summary?
             System.out.println("Received stopgame");
             Platform.runLater(() -> controller.stopGame());
+        } else if (serverInput.startsWith("updatepose ")) {
+            String[] split = serverInput.split(" ");
+            String playerName = split[1];
+            String poseStr = split[2];
+            Pose pose = Pose.unpack(poseStr);
+            controller.updatePose(playerName, pose);
         }
     }
 

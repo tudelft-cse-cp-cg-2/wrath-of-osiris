@@ -119,11 +119,71 @@ public class Pose {
     }
 
     /**
-     * Pack to send over the Internet.
+     * Pack to send over the Internet. Position format is:
+     * [section][leftarm][rightarm][leftleg][rightleg]
+     * Section being:
+     * 0 - left
+     * 1 - middle
+     * 2 - right
+     * Arms being:
+     * 0 - bottom
+     * 1 - middle
+     * 2 - top
+     * Legs being:
+     * 0 - neutral
+     * 1 - raised
      * @return a packed string representing this pose
      */
     public String pack() {
-        // TODO: Pack pose
-        return ("example-pose");
+        String msg = "1";
+        msg = packArm(msg, leftArm);
+        msg = packArm(msg, rightArm);
+        msg = packLeg(msg, leftLeg);
+        msg = packLeg(msg, rightLeg);
+        return msg;
+    }
+
+    private String packArm(String msg, Position arm) {
+        switch (arm) {
+            case bottom: msg += "0";
+            case middle: msg += "1";
+            case top: msg += "2";
+            default: msg += "0";
+        }
+        return msg;
+    }
+
+    private String packLeg(String msg, Position leg) {
+        switch (leg) {
+            case neutral: msg += "0";
+            case raised: msg += "1";
+            default: msg += "0";
+        }
+        return msg;
+    }
+
+    public static Pose unpack(String poseStr) {
+        Position leftArm = unpackArm(poseStr.charAt(1));
+        Position rightArm = unpackArm(poseStr.charAt(2));
+        Position leftLeg = unpackLeg(poseStr.charAt(3));
+        Position rightLeg = unpackLeg(poseStr.charAt(4));
+        return new Pose(leftArm, rightArm, leftLeg, rightLeg);
+    }
+
+    private static Position unpackArm(char c) {
+        switch (c) {
+            case '0': return Position.bottom;
+            case '1': return Position.middle;
+            case '2': return Position.top;
+            default: return Position.bottom;
+        }
+    }
+
+    private static Position unpackLeg(char c) {
+        switch (c) {
+            case '0': return Position.neutral;
+            case '1': return Position.raised;
+            default: return Position.neutral;
+        }
     }
 }

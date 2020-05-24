@@ -89,7 +89,6 @@ public class Player extends Thread {
             lobby.startGame();
         } else if (clientInput.startsWith("updatepose ")) {
             String poseStr = clientInput.split(" ")[1];
-            // TODO: Unpack and update this.pose
             this.pose = Pose.unpack(poseStr);
         } else {
             System.out.println("Unknown command from client: " + clientInput);
