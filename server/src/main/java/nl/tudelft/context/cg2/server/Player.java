@@ -105,7 +105,7 @@ public class Player extends Thread {
      * and starts the updating of other player's poses to the player.
      */
     public void run() {
-        PoseUpdater poseUpdater = new PoseUpdater(in, out, lobby, playerName);
+        PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
         eventTimer.schedule(poseUpdater, 500, 500);
 
         String clientInput;
