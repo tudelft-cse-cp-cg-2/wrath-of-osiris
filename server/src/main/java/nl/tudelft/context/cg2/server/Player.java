@@ -1,6 +1,9 @@
 package nl.tudelft.context.cg2.server;
 
+import nl.tudelft.context.cg2.server.game.Arm;
+import nl.tudelft.context.cg2.server.game.Legs;
 import nl.tudelft.context.cg2.server.game.Pose;
+import nl.tudelft.context.cg2.server.game.ScreenPos;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +23,7 @@ public class Player extends Thread {
     private PrintWriter out;
 
     private String playerName;
-    private Pose pose = null;
+    private Pose pose;
     private Lobby lobby;
 
     private final Timer eventTimer;
@@ -44,6 +47,7 @@ public class Player extends Thread {
             App.disconnectPlayer(this);
         }
         this.eventTimer = new Timer();
+        this.pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
     }
 
     /**

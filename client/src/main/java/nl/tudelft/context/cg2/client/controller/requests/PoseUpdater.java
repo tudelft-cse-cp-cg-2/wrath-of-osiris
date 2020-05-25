@@ -34,6 +34,7 @@ public class PoseUpdater extends TimerTask {
      * Executes the request.
      */
     public void run() {
+        System.out.println("Updated pose to server");
         out.println("updatepose " + player.getPose().pack());
     }
 }
