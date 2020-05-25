@@ -1,13 +1,14 @@
 package nl.tudelft.context.cg2.client.model.datastructures;
 
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
 
 /**
  * Contains local information about a player.
  */
 public class Player {
     private final String name;
-    private Pose pose = null;
+    private Pose pose;
 
     /**
      * Constructor for the Player.
@@ -15,6 +16,7 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
+        this.pose = new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
     }
 
     /**
