@@ -4,12 +4,15 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
+import nl.tudelft.context.cg2.client.view.elements.Heart;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -30,6 +33,12 @@ public class GameScene extends BaseScene {
     private Canvas backgroundCanvas;
     private Canvas lightCanvas;
 
+    private VBox lifePane;
+    private ArrayList<Heart> hearts;
+
+    private ImageView cameraView;
+
+
     /**
      * The menu scene constructor.
      * @param window the window currently showing.
@@ -48,7 +57,7 @@ public class GameScene extends BaseScene {
     public void draw() {
         this.getStylesheets().add("/css/game.css");
 
-        //Create canvasses
+        //Create game canvasses
         this.backgroundCanvas = new Canvas();
         this.objectCanvas = new Canvas();
         this.lightCanvas = new Canvas();
@@ -67,8 +76,40 @@ public class GameScene extends BaseScene {
         // Set the blend modes of the canvasses
         lightCanvas.setBlendMode(BlendMode.SCREEN);
 
-        // Add the canvasses to the root
+        // Add UI elements.
+        this.lifePane = new VBox();
+        lifePane.layoutXProperty().bind(window.sceneHeightProperty().multiply(0.015D));
+        lifePane.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.015D));
+        lifePane.spacingProperty().bind(window.sceneHeightProperty().multiply(0.01D));
+
+        this.hearts = new ArrayList<>(Arrays.asList(
+                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
+                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
+                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
+                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
+                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7])
+        ));
+
+        hearts.forEach(heart -> {
+            heart.setPreserveRatio(true);
+            heart.fitHeightProperty().bind(window.sceneHeightProperty().multiply(0.07D));
+        });
+
+        hearts.get(4).deactivate();
+        hearts.get(3).deactivate();
+
+        this.cameraView = new ImageView(ImageCache.IMAGES[8]);
+        cameraView.setId("camera-view");
+        cameraView.fitWidthProperty().bind(window.sceneHeightProperty().multiply(0.35D));
+        cameraView.fitHeightProperty().bind(cameraView.fitWidthProperty().multiply(0.667D));
+        cameraView.layoutXProperty().bind(window.sceneWidthProperty()
+                .subtract(cameraView.fitWidthProperty().multiply(1.1D)));
+        cameraView.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.02D));
+
+        // Create scene node family tree.
+        lifePane.getChildren().addAll(hearts);
         root.getChildren().addAll(canvasses);
+        root.getChildren().addAll(lifePane, cameraView);
     }
 
     /**
@@ -125,16 +166,17 @@ public class GameScene extends BaseScene {
         //Calculate draw variables
         double width = window.sceneWidthProperty().getValue();
         double height = window.sceneHeightProperty().multiply(TOP_BAR_RATIO).getValue();
-        double offsetY = window.sceneHeightProperty().subtract(height).getValue();
-        double widthRatio = width / World.WIDTH;
-        double heightRatio = height / World.HEIGHT;
+        double offY = window.sceneHeightProperty().subtract(height).getValue();
+        final double widthRatio = width / World.WIDTH;
+        final double heightRatio = height / World.HEIGHT;
 
         //Draws the background objects.
         GraphicsContext backgroundGC = getBackgroundGraphicsContext();
-        backgroundGC.drawImage(ImageCache.IMAGES[3], 0, offsetY + height * 0.5D, width, height * 0.5D);
-        backgroundGC.drawImage(ImageCache.IMAGES[4], 0, offsetY, width, height * 0.5D);
-        backgroundGC.drawImage(ImageCache.IMAGES[1], 0, offsetY, width * 0.495D, height);
-        backgroundGC.drawImage(ImageCache.IMAGES[2], width * 0.505D, offsetY, width * 0.495D, height);
+        backgroundGC.drawImage(ImageCache.IMAGES[3], 0, offY + height * 0.5D, width, height * 0.5D);
+        backgroundGC.drawImage(ImageCache.IMAGES[4], 0, offY, width, height * 0.5D);
+        backgroundGC.drawImage(ImageCache.IMAGES[1], 0, offY, width * 0.495D, height);
+        backgroundGC.drawImage(ImageCache.IMAGES[2], width * 0.505D, offY, width * 0.495D, height);
+        backgroundGC.drawImage(ImageCache.IMAGES[5], 0, 0, width, offY);
 
         //Draws the world objects on the screen.
         world.getEntities().forEach(e -> {
@@ -142,7 +184,7 @@ public class GameScene extends BaseScene {
             double w = e.getSize().x * widthRatio * e.getDepthScalar();
             double h = e.getSize().y * heightRatio * e.getDepthScalar();
             double x = (e.getPosition().x) * widthRatio + ((width - w) * 0.5D);
-            double y = offsetY + (e.getPosition().x * heightRatio + ((height - h) * 0.5D));
+            double y = offY + (e.getPosition().x * heightRatio + ((height - h) * 0.5D));
 
             getObjectGraphicsContext().drawImage(image, x, y, w, h);
 
