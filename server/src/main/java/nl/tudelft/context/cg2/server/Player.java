@@ -102,7 +102,7 @@ public class Player extends Thread {
      */
     public void run() {
         PoseUpdater poseUpdater = new PoseUpdater(in, out, lobby, playerName);
-        eventTimer.schedule(poseUpdater, 5000, 5000);
+        eventTimer.schedule(poseUpdater, 500, 500);
 
         String clientInput;
         try {
