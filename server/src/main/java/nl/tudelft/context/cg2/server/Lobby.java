@@ -63,7 +63,11 @@ public class Lobby {
      * @return a packed string representing this lobby
      */
     public String pack() {
-        return players.size() + name;
+        String out = players.size() + name;
+        for (Player player : players) {
+            out += " " + player.getPlayerName();
+        }
+        return out;
     }
 
     /**
@@ -113,6 +117,7 @@ public class Lobby {
     public void startGame() {
         this.started = true;
         for (Player player : players) {
+            player.startPoseUpdater();
             player.startGame();
             player.updateLives();
         }

@@ -57,11 +57,11 @@ public class JoinLobbyRequest extends Thread {
             assert fromServer != null && fromServer.equals(Server.EOT);
 
             FetchLobbyRequest req = new FetchLobbyRequest(in, out, index);
-            req.start();
-            req.join();
-            result = req.getResult();
+//            req.start();
+//            req.join();
+//            result = req.getResult();
 
-        } catch (IOException | InterruptedException e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }

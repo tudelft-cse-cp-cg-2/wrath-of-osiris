@@ -34,7 +34,7 @@ public class Lobby {
     }
 
     /**
-     * Create a lobby from a packed string sent by the server.
+     * Create a lobby from a packed string as answer from 'listlobbies'.
      * @param packed lobby representation from the server
      * @return a Lobby
      */
@@ -45,6 +45,30 @@ public class Lobby {
             playerList.add(new Player(""));
         }
         return new Lobby(packed.substring(1), "", playerList, false);
+    }
+
+    /**
+     * Create a lobby from a packed string as answer from 'fetchlobby'.
+     * @param packed lobby representation from the server
+     * @return a Lobby
+     */
+    public static Lobby unpackFetchLobby(String packed) {
+        ArrayList<Player> playerList = new ArrayList<>();
+        String[] split = packed.split(" ");
+        String type = split[0];
+        System.out.println(type);
+        String header = split[1];
+        int playerCount = Character.getNumericValue(header.charAt(0));
+        if (type.equals("fetchlobby")) {
+            for (int i = 0; i < playerCount; i++) {
+                playerList.add(new Player(split[i + 2]));
+            }
+        } else if (type.equals("listlobbies")) {
+            for (int i = 0; i < playerCount; i++) {
+                playerList.add(new Player(""));
+            }
+        }
+        return new Lobby(header, "", playerList, false);
     }
 
     /**

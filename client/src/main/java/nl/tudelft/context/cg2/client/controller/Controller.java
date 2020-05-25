@@ -2,7 +2,9 @@ package nl.tudelft.context.cg2.client.controller;
 
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.requests.FetchLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
+import nl.tudelft.context.cg2.client.controller.requests.PoseUpdater;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
@@ -26,7 +28,7 @@ public class Controller {
     private final Server server;
     private GameStateUpdater stateUpdater;
 
-    private final Timer eventTimer;
+    private Timer eventTimer;
 
     /**
      * Constructor for the Controller object.
@@ -113,6 +115,14 @@ public class Controller {
     public void startGame() {
         viewController.getOpenCVSceneController().startCapture();
 
+        // Stop fetchLobby requests
+        eventTimer.cancel();
+
+        PoseUpdater poseUpdater = new PoseUpdater(server.getIn(),
+                server.getOut(), model.getCurrentPlayer());
+        eventTimer = new Timer();
+        eventTimer.schedule(poseUpdater, 500, 500);
+
         model.getWorld().create();
         view.getGameScene().clear();
         view.getGameScene().show();
@@ -132,8 +142,21 @@ public class Controller {
      * @param pose the new pose
      */
     public void updatePose(String playerName, Pose pose) {
-        int index = model.getCurrentLobby().getPlayerNames().indexOf(playerName);
-        Player player = model.getCurrentLobby().getPlayers().get(index);
-        player.setPose(pose);
+        try {
+            int index = model.getCurrentLobby().getPlayerNames().indexOf(playerName);
+            Player player = model.getCurrentLobby().getPlayers().get(index);
+            player.setPose(pose);
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            System.out.println("Player names not yet initialized");
+        }
+    }
+
+    /**
+     * Start lobby updater request.
+     * @param index index of lobby to update
+     */
+    public void scheduleLobbyUpdater(int index) {
+        FetchLobbyRequest fetchLobbyRequest = new FetchLobbyRequest(server.getIn(), server.getOut(), index);
+        eventTimer.schedule(fetchLobbyRequest, 500, 500);
     }
 }

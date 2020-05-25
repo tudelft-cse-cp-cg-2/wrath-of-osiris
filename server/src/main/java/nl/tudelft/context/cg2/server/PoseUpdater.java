@@ -39,13 +39,12 @@ public class PoseUpdater extends TimerTask {
             System.out.println("No players available");
         }
 
+
         for (Player otherPlayer : players) {
             if (!player.getPlayerName().equals(otherPlayer.getPlayerName())) {
                 out.println("updatepose " + otherPlayer.getPlayerName() + " " + otherPlayer.getPose().pack());
                 System.out.println("Updated " + otherPlayer.getPlayerName() + " of other poses");
             }
         }
-
-
     }
 }

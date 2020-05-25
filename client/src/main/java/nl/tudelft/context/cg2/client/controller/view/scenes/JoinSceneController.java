@@ -3,13 +3,13 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
-import nl.tudelft.context.cg2.client.controller.requests.LobbyUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
+
+import java.io.IOException;
 
 /**
  * The Lobby scene controller class.
@@ -60,14 +60,12 @@ public class JoinSceneController extends SceneController {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        Lobby lobby = req.getResult();
+
 
         System.out.println("Selected lobby index: " + index);
 
         controller.getModel().setCurrentPlayer(new Player(name));
-        LobbyUpdater lobbyUpdater = new LobbyUpdater(controller.getServer().getIn(),
-                controller.getServer().getOut(), index, view.getLobbyScene());
-        controller.getEventTimer().schedule(lobbyUpdater, 2000, 2000);
+        controller.scheduleLobbyUpdater(index);
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getServer().getIn(),
@@ -75,7 +73,7 @@ public class JoinSceneController extends SceneController {
         controller.getStateUpdater().start();
 
         // Retrieve and store lobby data from server.
-        view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());
+//        view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());
         // todo: This is commented to test game logic without lobby creation
         //view.getLobbyScene().getStartButton().setVisible(false);
         view.getLobbyScene().getWaitMessage().setVisible(true);
