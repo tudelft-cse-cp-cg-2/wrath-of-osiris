@@ -7,6 +7,7 @@ import nl.tudelft.context.cg2.client.controller.requests.LobbyUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 
@@ -63,6 +64,7 @@ public class JoinSceneController extends SceneController {
 
         System.out.println("Selected lobby index: " + index);
 
+        controller.getModel().setCurrentPlayer(new Player(name));
         LobbyUpdater lobbyUpdater = new LobbyUpdater(controller.getServer().getIn(),
                 controller.getServer().getOut(), index, view.getLobbyScene());
         controller.getEventTimer().schedule(lobbyUpdater, 2000, 2000);
