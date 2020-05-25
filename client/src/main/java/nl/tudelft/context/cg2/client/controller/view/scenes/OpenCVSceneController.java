@@ -126,13 +126,13 @@ public class OpenCVSceneController extends SceneController {
 
         // Scale the image to 480p resolution
         resize(matrix, matrix, new Size(640, 480));
-        // FIXME: Mirror the image, to make debugging easier and more intuitive
+        // Mirror the image
         flip(matrix, matrix, +1);
 
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
-            // TODO: Assign poseDetector.getPose() to Player's pose
+            this.controller.getModel().getCurrentPlayer().setPose(poseDetector.getPose());
         }
 
         return writableImage;
