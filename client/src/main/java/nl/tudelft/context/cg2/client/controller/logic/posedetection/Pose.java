@@ -187,9 +187,9 @@ public class Pose {
 
     private static Position unpackArm(char c) {
         switch (c) {
-            case '0': return Position.bottom;
+            case '0': return Position.top;
             case '1': return Position.middle;
-            case '2': return Position.top;
+            case '2': return Position.bottom;
             default: return Position.bottom;
         }
     }
