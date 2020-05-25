@@ -84,6 +84,7 @@ public class GameStateUpdater extends Thread {
         } else if (serverInput.startsWith("updatepose ")) {
             String[] split = serverInput.split(" ");
             String playerName = split[1];
+            System.out.println("Received updatepose " + playerName);
             String poseStr = split[2];
             Pose pose = Pose.unpack(poseStr);
             controller.updatePose(playerName, pose);
