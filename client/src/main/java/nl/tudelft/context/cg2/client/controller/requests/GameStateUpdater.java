@@ -8,6 +8,7 @@ import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Timer;
 import java.util.TimerTask;
 
 /**
@@ -20,6 +21,7 @@ public class GameStateUpdater extends Thread {
     private final Controller controller;
     private boolean started = false;
     private boolean terminate = false;
+    private Timer eventTimer;
 
     /**
      * Constructor for GameStateUpdater.
@@ -33,6 +35,7 @@ public class GameStateUpdater extends Thread {
         this.out = out;
         this.index = index;
         this.controller = controller;
+        this.eventTimer = new Timer();
     }
 
     /**
@@ -49,7 +52,7 @@ public class GameStateUpdater extends Thread {
         String serverInput;
         System.out.println("Started game state updater");
         PoseUpdater poseUpdater = new PoseUpdater(in, out, controller.getModel().getCurrentPlayer());
-        controller.getEventTimer().schedule(poseUpdater, 500, 500);
+        eventTimer.schedule(poseUpdater, 500, 500);
         try {
             while (!terminate) {
                 serverInput = in.readLine();
