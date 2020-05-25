@@ -14,6 +14,7 @@ import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
 
 import java.awt.image.BufferedImage;
 
@@ -27,6 +28,7 @@ import static org.opencv.imgproc.Imgproc.resize;
 public class OpenCVSceneController extends SceneController {
 
     private final OpenCVScene scene;
+    private final double fps = 15.0;
 
     private VideoCapture videoCapture;
     private PoseDetector poseDetector;
@@ -89,9 +91,10 @@ public class OpenCVSceneController extends SceneController {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
         videoCapture.open(0);
+        videoCapture.set(Videoio.CAP_PROP_FPS, fps);
         poseDetector = new PoseDetector();
 
-        captureTimer = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+        captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
             scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
         }));
         captureTimer.setCycleCount(Timeline.INDEFINITE);
@@ -121,14 +124,15 @@ public class OpenCVSceneController extends SceneController {
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
-        // Scale the image to 240p resolution
-        resize(matrix, matrix, new Size(320, 240));
+        // Scale the image to 480p resolution
+        resize(matrix, matrix, new Size(640, 480));
         // FIXME: Mirror the image, to make debugging easier and more intuitive
         flip(matrix, matrix, +1);
 
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
+            // TODO: Assign poseDetector.getPose() to Player's pose
         }
 
         return writableImage;
