@@ -3,11 +3,9 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -22,10 +20,16 @@ public class PoseDetector {
     private static final String POSE_DETECTION_DEFAULT = "./src/main/resources/xml/haarcascade_frontalface_default.xml";
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
-
-    private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral,
-            Position.neutral);
+    private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
     private BufferedImage baseImage;
+
+    /**
+     * A getter for the pose.
+     * @return The pose.
+     */
+    public Pose getPose() {
+        return pose;
+    }
 
     /**
      * Given the coordinates of a head, calculate the bounding boxes
@@ -53,7 +57,7 @@ public class PoseDetector {
         out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * head.getRightX()),
                 head.getTopY() + 3 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
-                head.getTopY() + 6 * head.getBottomY(),
+                head.getTopY() + 5 * head.getBottomY(),
                 Limb.right_arm, Position.bottom));
 
         // arm top left
@@ -72,7 +76,7 @@ public class PoseDetector {
         out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
                 head.getLeftX() - (int) (0.5 * head.getRightX()),
-                head.getTopY() + 6 * head.getBottomY(),
+                head.getTopY() + 5 * head.getBottomY(),
                 Limb.left_arm, Position.bottom));
 
 
