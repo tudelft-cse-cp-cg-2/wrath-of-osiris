@@ -29,8 +29,8 @@ public class GameScene extends BaseScene {
     private final World world;
 
     private ArrayList<Canvas> canvasses;
-    private Canvas objectCanvas;
     private Canvas backgroundCanvas;
+    private Canvas objectCanvas;
     private Canvas lightCanvas;
 
     private VBox lifePane;
@@ -141,7 +141,7 @@ public class GameScene extends BaseScene {
      * Pre processes all graphics before drawing the game elements.
      * Should always be called at the start of a drawing cycle.
      */
-    public void preprocess() {
+    private void preprocess() {
         // Clear the object canvas.
         GraphicsContext objectGC = getObjectGraphicsContext();
         objectGC.clearRect(0, 0, getWidth(), getHeight());
@@ -164,9 +164,9 @@ public class GameScene extends BaseScene {
      */
     private void process() {
         //Calculate draw variables
-        double width = window.sceneWidthProperty().getValue();
-        double height = window.sceneHeightProperty().multiply(TOP_BAR_RATIO).getValue();
-        double offY = window.sceneHeightProperty().subtract(height).getValue();
+        final double width = window.sceneWidthProperty().getValue();
+        final double height = window.sceneHeightProperty().multiply(TOP_BAR_RATIO).getValue();
+        final double offY = window.sceneHeightProperty().subtract(height).getValue();
         final double widthRatio = width / World.WIDTH;
         final double heightRatio = height / World.HEIGHT;
 
@@ -201,7 +201,7 @@ public class GameScene extends BaseScene {
      * Post processes all graphics after drawing the game entities.
      * Should always be called at the end of a drawing cycle.
      */
-    public void postprocess() {
+    private void postprocess() {
 
     }
 
