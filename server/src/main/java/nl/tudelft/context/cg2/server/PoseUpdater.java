@@ -36,7 +36,11 @@ public class PoseUpdater extends TimerTask {
     public void run() {
         for (Player player : lobby.getPlayers()) {
             if (!currentPlayerName.equals(player.getPlayerName())) {
-                out.println("updatepose " + player.getPlayerName() + " " + player.getPose().pack());
+                try {
+                    out.println("updatepose " + player.getPlayerName() + " " + player.getPose().pack());
+                } catch (NullPointerException e) {
+                    break;
+                }
             }
         }
     }
