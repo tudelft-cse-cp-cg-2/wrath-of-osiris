@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.server.game;
 
-import javax.script.ScriptEngine;
 import java.util.Objects;
 
 /**
@@ -179,7 +178,6 @@ public class Pose {
                 + "\nscreen: " + screenPos;
     }
 
-
     /**
      * Unpack pose string packet coming from client into server format.
      * @param poseStr string packet coming from client
@@ -191,16 +189,17 @@ public class Pose {
         Arm rightArm = Arm.valueOf(Character.getNumericValue(poseStr.charAt(2)));
         Legs legs;
         switch (poseStr.substring(3, 5)) {
-            case "00": legs = Legs.DOWN; break;
-            case "01": legs = Legs.RIGHTUP; break;
-            case "10": legs = Legs.LEFTUP; break;
+            case "00": legs = Legs.DOWN;
+                break;
+            case "01": legs = Legs.RIGHTUP;
+                break;
+            case "10": legs = Legs.LEFTUP;
+                break;
             default: legs = Legs.DOWN;
         }
 
         return new Pose(leftArm, rightArm, legs, screenPos);
     }
-
-
 
     /**
      * Pack to send over the Internet. Position format is:
@@ -224,9 +223,12 @@ public class Pose {
         msg += leftArm.indexOf();
         msg += rightArm.indexOf();
         switch (legs) {
-            case DOWN: msg += "00"; break;
-            case LEFTUP: msg += "10"; break;
-            case RIGHTUP: msg += "01"; break;
+            case DOWN: msg += "00";
+                break;
+            case LEFTUP: msg += "10";
+                break;
+            case RIGHTUP: msg += "01";
+                break;
             default: msg += "00";
         }
         return msg;

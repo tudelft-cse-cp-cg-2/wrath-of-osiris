@@ -115,11 +115,13 @@ public class Lobby {
      * lives to the starting amount.
      */
     public void startGame() {
-        this.started = true;
-        for (Player player : players) {
-            player.startPoseUpdater();
-            player.startGame();
-            player.updateLives();
+        if (!started) {
+            this.started = true;
+            for (Player player : players) {
+                player.startPoseUpdater();
+                player.startGame();
+                player.updateLives();
+            }
         }
     }
 

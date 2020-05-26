@@ -156,7 +156,8 @@ public class Controller {
      * @param index index of lobby to update
      */
     public void scheduleLobbyUpdater(int index) {
-        FetchLobbyRequest fetchLobbyRequest = new FetchLobbyRequest(server.getIn(), server.getOut(), index);
+        FetchLobbyRequest fetchLobbyRequest =
+                new FetchLobbyRequest(server.getIn(), server.getOut(), index);
         eventTimer.schedule(fetchLobbyRequest, 500, 500);
     }
 }

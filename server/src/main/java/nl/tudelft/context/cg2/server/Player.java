@@ -22,8 +22,12 @@ public class Player extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
+    /**
+     * Current pose of the player.
+     * This starts out with all limbs neutral, and in the middle region.
+     */
+    private Pose pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
     private String playerName;
-    private Pose pose;
     private Lobby lobby;
 
     private final Timer eventTimer;
@@ -47,7 +51,6 @@ public class Player extends Thread {
             App.disconnectPlayer(this);
         }
         this.eventTimer = new Timer();
-        this.pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
     }
 
     /**

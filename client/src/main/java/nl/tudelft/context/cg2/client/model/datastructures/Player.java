@@ -8,7 +8,13 @@ import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
  */
 public class Player {
     private final String name;
-    private Pose pose;
+
+    /**
+     * Current pose of the player.
+     * This starts out with all limbs neutral.
+     */
+    private Pose pose =
+            new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
 
     /**
      * Constructor for the Player.
@@ -16,7 +22,6 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
-        this.pose = new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
     }
 
     /**

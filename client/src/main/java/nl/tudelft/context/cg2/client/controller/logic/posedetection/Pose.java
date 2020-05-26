@@ -170,6 +170,11 @@ public class Pose {
         }
     }
 
+    /**
+     * Unpack the String packet from server representing a player's pose.
+     * @param poseStr String packet from server containing a player's pose
+     * @return player pose interpreted from packet
+     */
     public static Pose unpack(String poseStr) {
         Position leftArm = unpackArm(poseStr.charAt(1));
         Position rightArm = unpackArm(poseStr.charAt(2));
@@ -178,6 +183,11 @@ public class Pose {
         return new Pose(leftArm, rightArm, leftLeg, rightLeg);
     }
 
+    /**
+     * Helper function for unpack to specifically unpack the arm position.
+     * @param c character in the String packet representing the arm position
+     * @return arm position interpreted from packet character
+     */
     private static Position unpackArm(char c) {
         switch (c) {
             case '0': return Position.top;
@@ -187,6 +197,11 @@ public class Pose {
         }
     }
 
+    /**
+     * Helper function for unpack to specifically unpack the leg position.
+     * @param c character in the String packet representing the leg position
+     * @return leg position interpreted from packet character
+     */
     private static Position unpackLeg(char c) {
         switch (c) {
             case '0': return Position.neutral;

@@ -9,8 +9,6 @@ import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 
-import java.io.IOException;
-
 /**
  * The Lobby scene controller class.
  * Controls the lobby scene.
@@ -51,7 +49,10 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
+        System.out.println("Selected lobby index: " + index);
         String name = scene.getPlayerNameField().getText();
+
+        // Request server to join lobby.
         JoinLobbyRequest req = new JoinLobbyRequest(controller.getServer().getIn(),
                 controller.getServer().getOut(), index, name);
         req.start();
@@ -61,21 +62,17 @@ public class JoinSceneController extends SceneController {
             e.printStackTrace();
         }
 
-
-        System.out.println("Selected lobby index: " + index);
-
+        // Set current player object.
         controller.getModel().setCurrentPlayer(new Player(name));
         controller.scheduleLobbyUpdater(index);
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getServer().getIn(),
-                controller.getServer().getOut(), index, controller));
+                controller.getServer().getOut(), controller));
         controller.getStateUpdater().start();
 
-        // Retrieve and store lobby data from server.
-//        view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());
-        // todo: This is commented to test game logic without lobby creation
-        //view.getLobbyScene().getStartButton().setVisible(false);
+        // Switch to lobby scene.
+        view.getLobbyScene().getStartButton().setVisible(false);
         view.getLobbyScene().getWaitMessage().setVisible(true);
         view.getLobbyScene().show();
     }
