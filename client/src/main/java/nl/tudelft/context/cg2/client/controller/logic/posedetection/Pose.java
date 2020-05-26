@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class representing the pose of a human body.
@@ -39,6 +40,26 @@ public class Pose {
     public String toString() {
         return "Pose: la: " + leftArm.name() + "| ra: " + rightArm.name() + "| ll: "
                 + leftLeg.name() + "| rl: " + rightLeg.name();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Pose pose = (Pose) o;
+        return leftArm == pose.leftArm
+                && rightArm == pose.rightArm
+                && leftLeg == pose.leftLeg
+                && rightLeg == pose.rightLeg;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(leftArm, rightLeg, leftLeg, rightLeg);
     }
 
     /**
@@ -126,9 +147,9 @@ public class Pose {
      * 1 - middle
      * 2 - right
      * Arms being:
-     * 0 - bottom
+     * 0 - top
      * 1 - middle
-     * 2 - top
+     * 2 - bottom
      * Legs being:
      * 0 - neutral
      * 1 - raised
@@ -150,10 +171,10 @@ public class Pose {
      */
     private String packArm(Position arm) {
         switch (arm) {
-            case bottom: return "0";
+            case bottom: return "2";
             case middle: return "1";
-            case top: return "2";
-            default: return "0";
+            case top: return "0";
+            default: throw new IllegalArgumentException("Illegal arm position: " + arm);
         }
     }
 
@@ -166,7 +187,7 @@ public class Pose {
         switch (leg) {
             case neutral: return "0";
             case raised: return "1";
-            default: return "0";
+            default: throw new IllegalArgumentException("Illegal leg position: " + leg);
         }
     }
 
@@ -193,7 +214,7 @@ public class Pose {
             case '0': return Position.top;
             case '1': return Position.middle;
             case '2': return Position.bottom;
-            default: return Position.bottom;
+            default: throw new IllegalArgumentException("Illegal arm format: " + c);
         }
     }
 
@@ -206,7 +227,7 @@ public class Pose {
         switch (c) {
             case '0': return Position.neutral;
             case '1': return Position.raised;
-            default: return Position.neutral;
+            default: throw new IllegalArgumentException("Illegal leg format: " + c);
         }
     }
 }

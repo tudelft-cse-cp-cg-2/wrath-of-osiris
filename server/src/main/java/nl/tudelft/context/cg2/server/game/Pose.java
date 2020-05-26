@@ -195,7 +195,8 @@ public class Pose {
                 break;
             case "10": legs = Legs.LEFTUP;
                 break;
-            default: legs = Legs.DOWN;
+            default: throw new IllegalArgumentException("Illegal legs format: "
+                    + poseStr.substring(3, 5));
         }
 
         return new Pose(leftArm, rightArm, legs, screenPos);
@@ -209,9 +210,9 @@ public class Pose {
      * 1 - middle
      * 2 - right
      * Arms being:
-     * 0 - bottom
+     * 0 - top
      * 1 - middle
-     * 2 - top
+     * 2 - bottom
      * Legs being:
      * 0 - neutral
      * 1 - raised
