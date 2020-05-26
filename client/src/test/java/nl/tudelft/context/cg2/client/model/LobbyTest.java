@@ -48,8 +48,9 @@ public class LobbyTest {
     @Test
     public void testUnpackLobbyWithNames() {
         ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("asdf"));
         Lobby lobby = new Lobby("test1", "", players, false);
-        assertTrue(lobby.equals(Lobby.unpackLobby("listlobbies 0test1 asdf")));
+        assertTrue(lobby.equals(Lobby.unpackLobby("listlobbies 1test1 asdf")));
     }
 
     @Test

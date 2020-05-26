@@ -1,7 +1,6 @@
 package nl.tudelft.context.cg2.client.model.datastructures;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 
 import java.util.ArrayList;
 import java.util.List;
