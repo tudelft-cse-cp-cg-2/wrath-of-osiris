@@ -72,7 +72,7 @@ public class JoinSceneController extends SceneController {
         controller.getStateUpdater().start();
 
         // Switch to lobby scene.
-        view.getLobbyScene().getStartButton().setVisible(false);
+        //view.getLobbyScene().getStartButton().setVisible(false);
         view.getLobbyScene().getWaitMessage().setVisible(true);
         view.getLobbyScene().show();
     }

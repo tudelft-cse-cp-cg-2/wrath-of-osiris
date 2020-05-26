@@ -49,8 +49,8 @@ public class Lobby {
         Lobby lobby = (Lobby) o;
         return name.equals(lobby.name)
                 && players.equals(lobby.players)
-                && password == lobby.password
-                && isHost == lobby.isHost;
+                && password.equals(lobby.password)
+                && isHost.equals(lobby.isHost);
     }
 
     /**
@@ -60,13 +60,11 @@ public class Lobby {
      */
     public static Lobby unpackLobby(String packed) {
         ArrayList<Player> playerList = new ArrayList<>();
-        String[] split = packed.split(" ");
-        assert split[0].equals("listlobbies");
-        int playerCount = Character.getNumericValue(split[1].charAt(0));
+        int playerCount = Character.getNumericValue(packed.charAt(0));
         for (int i = 0; i < playerCount; i++) {
-            playerList.add(new Player(split[i + 2]));
+            playerList.add(new Player(""));
         }
-        return new Lobby(split[1].substring(1), "", playerList, false);
+        return new Lobby(packed.substring(1), "", playerList, false);
     }
 
     /**
