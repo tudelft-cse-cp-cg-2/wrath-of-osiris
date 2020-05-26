@@ -174,7 +174,7 @@ public class Pose {
             case bottom: return "2";
             case middle: return "1";
             case top: return "0";
-            default: throw new IllegalArgumentException("Illegal arm position: " + arm);
+            default: throw new IllegalArgumentException("Illegal arm position: " + arm.toString());
         }
     }
 
@@ -187,7 +187,7 @@ public class Pose {
         switch (leg) {
             case neutral: return "0";
             case raised: return "1";
-            default: throw new IllegalArgumentException("Illegal leg position: " + leg);
+            default: throw new IllegalArgumentException("Illegal leg position: " + leg.toString());
         }
     }
 

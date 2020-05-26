@@ -65,21 +65,27 @@ public class GameStateUpdater extends Thread {
      */
     private void respond(String serverInput) {
         System.out.println(serverInput);
-        if ("startgame".equals(serverInput)) {
-            started = true;
-            Platform.runLater(() -> controller.startGame());
-        } else if (serverInput.startsWith("updateLives ")) {
+        if (serverInput.startsWith("updatelives ")) {
             int newLives = Integer.parseInt(serverInput.split(" ")[1]);
             Platform.runLater(() -> controller.getModel().setLives(newLives));
-        } else if ("stopgame".equals(serverInput)) {
-            // todo: Maybe how "game over" screen and summary?
-            Platform.runLater(() -> controller.stopGame());
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
             updateLobbyNames(serverInput);
         } else {
-            System.out.println("Unknown command from server: " + serverInput);
+            switch (serverInput) {
+                case "startgame":
+                    started = true;
+                    Platform.runLater(() -> controller.startGame());
+                    break;
+                case "stopgame":
+                    // todo: Maybe how "game over" screen and summary?
+                    Platform.runLater(() -> controller.stopGame());
+                    break;
+                default:
+                    System.out.println("Unknown command from server: " + serverInput);
+
+            }
         }
     }
 

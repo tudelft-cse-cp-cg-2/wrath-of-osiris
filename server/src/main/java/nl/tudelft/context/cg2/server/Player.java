@@ -81,26 +81,33 @@ public class Player extends Thread {
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
-        if ("listlobbies".equals(clientInput)) {
-            App.packLobbies().forEach(out::println);
-        } else if ("leavelobby".equals(clientInput)) {
-            App.removePlayerFromLobbies(this);
-        } else if (clientInput.startsWith("joinlobby ")) {
+        if (clientInput.startsWith("joinlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             this.setPlayerName(clientInput.split(" ")[2]);
             App.addPlayerToLobby(index, this);
+            out.println(".");
         } else if (clientInput.startsWith("fetchlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             out.println(App.fetchLobby(index));
-        } else if ("startgame".equals(clientInput)) {
-            lobby.startGame();
         } else if (clientInput.startsWith("updatepose ")) {
             String poseStr = clientInput.split(" ")[1];
             this.pose = Pose.unpack(poseStr);
         } else {
-            System.out.println("Unknown command from client: " + clientInput);
+            switch (clientInput) {
+                case "listlobbies":
+                    App.packLobbies().forEach(out::println);
+                    out.println(".");
+                    break;
+                case "leavelobby":
+                    App.removePlayerFromLobbies(this);
+                    break;
+                case "startgame":
+                    lobby.startGame();
+                    break;
+                default:
+                    System.out.println("Unknown command from client: " + clientInput);
+            }
         }
-        out.println(".");
     }
 
     /**
@@ -176,7 +183,7 @@ public class Player extends Thread {
      * Updates the lives to the player with its current lobby's lives.
      */
     public void updateLives() {
-        out.println("updateLives " + lobby.getLives());
+        out.println("updatelives " + lobby.getLives());
     }
 
     /**

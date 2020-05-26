@@ -230,7 +230,8 @@ public class Pose {
                 break;
             case RIGHTUP: msg += "01";
                 break;
-            default: msg += "00";
+            default: throw new IllegalArgumentException("Illegal legs format: "
+                    + legs.toString());
         }
         return msg;
     }
