@@ -1,10 +1,14 @@
 package nl.tudelft.context.cg2.client.model.world;
 
+import javafx.scene.paint.Color;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
+import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
+import nl.tudelft.context.cg2.client.model.world.entities.Hole;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 import nl.tudelft.context.cg2.client.model.world.factories.WallFactory;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 /**
  * The World class.
@@ -16,7 +20,10 @@ public class World {
     public static final double HEIGHT = 1200D;
     public static final double DEPTH = 500D;
 
+    public static final Vector3D HOLE_SIZE = new Vector3D(300D, 500D, 0D);
+
     private final ArrayList<Entity> entities;
+    private final ArrayList<Hole> holes;
     private Wall currentWall;
     private boolean inMotion;
 
@@ -24,9 +31,10 @@ public class World {
      * The World Constructor.
      */
     public World() {
-        this.entities = new ArrayList<>();
-        this.currentWall = null;
         this.inMotion = false;
+        this.currentWall = null;
+        this.entities = new ArrayList<>();
+        this.holes = new ArrayList<>();
     }
 
     /**
@@ -35,8 +43,23 @@ public class World {
     public void create() {
         inMotion = false;
         entities.clear();
+
         currentWall = WallFactory.generateWall();
         entities.add(currentWall);
+
+        holes.clear();
+        holes.addAll(WallFactory.generateHoles(currentWall));
+        entities.addAll(holes);
+
+        Avatar avatarA = new Avatar(Color.DARKGREEN);
+        entities.add(avatarA);
+        Avatar avatarB = new Avatar(Color.DEEPPINK);
+        avatarB.setPosition(new Vector3D(500, 0, 0));
+        entities.add(avatarB);
+        Avatar avatarC = new Avatar(Color.DARKMAGENTA);
+        avatarC.setPosition(new Vector3D(1200, 0, 0));
+        entities.add(avatarC);
+        entities.sort(Comparator.comparing(Entity::getDepth).reversed());
     }
 
     /**
@@ -49,10 +72,15 @@ public class World {
             entities.forEach(e -> e.step(t, dt));
 
             // Makes walls appear in sequence.
-            if (currentWall != null && currentWall.getPosition().z <= 0) {
+            if (currentWall != null && currentWall.hasDecayed()) {
                 entities.remove(currentWall);
                 currentWall = WallFactory.generateWall();
                 entities.add(currentWall);
+                entities.removeAll(holes);
+                holes.clear();
+                holes.addAll(WallFactory.generateHoles(currentWall));
+                entities.addAll(holes);
+                entities.sort(Comparator.comparing(Entity::getDepth).reversed());
             }
         }
     }

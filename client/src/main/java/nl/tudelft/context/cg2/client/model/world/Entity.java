@@ -110,4 +110,12 @@ public abstract class Entity {
     public void setSize(Vector3D size) {
         this.size = size;
     }
+
+    /**
+     * Gets the depth value of the entity in the world.
+     * @return the depth value.
+     */
+    public Double getDepth() {
+        return position == null ? 0D : position.z;
+    }
 }

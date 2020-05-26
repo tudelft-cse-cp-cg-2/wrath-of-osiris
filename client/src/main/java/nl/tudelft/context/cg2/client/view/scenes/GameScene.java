@@ -183,17 +183,12 @@ public class GameScene extends BaseScene {
             Image image = e.getTexture();
             double w = e.getSize().x * widthRatio * e.getDepthScalar();
             double h = e.getSize().y * heightRatio * e.getDepthScalar();
-            double x = (e.getPosition().x) * widthRatio + ((width - w) * 0.5D);
-            double y = offY + (e.getPosition().x * heightRatio + ((height - h) * 0.5D));
+            double x = e.getPosition().x * widthRatio + (1 - e.getDepthScalar())
+                    * (width * 0.5D - e.getPosition().x * widthRatio);
+            double y = offY + height - h + (e.getPosition().y * heightRatio)
+                    - (1 - e.getDepthScalar()) * (height * 0.5D - e.getPosition().y * heightRatio);
 
             getObjectGraphicsContext().drawImage(image, x, y, w, h);
-
-            if (e.getDepthScalar() > 0D) {
-                double darkScalar = 0.6D;
-                getObjectGraphicsContext().setFill(new Color(0, 0, 0,
-                        darkScalar - e.getDepthScalar() * darkScalar));
-                getObjectGraphicsContext().fillRect(x, y, w, h);
-            }
         });
     }
 
