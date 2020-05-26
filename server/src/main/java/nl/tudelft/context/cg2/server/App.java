@@ -22,7 +22,6 @@ public final class App {
     private static void startServer() throws IOException {
         ServerSocket serverSock = new ServerSocket(PORT);
         lobbies = new ArrayList<>();
-        lobbies.add(new Lobby("test1", null, new ArrayList<>()));
 
         System.out.println("Started server on port " + PORT);
         while (true) {
