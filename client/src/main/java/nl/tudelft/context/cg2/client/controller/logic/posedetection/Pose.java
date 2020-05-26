@@ -136,30 +136,38 @@ public class Pose {
      */
     public String pack() {
         String msg = "1";
-        msg = packArm(msg, leftArm);
-        msg = packArm(msg, rightArm);
-        msg = packLeg(msg, leftLeg);
-        msg = packLeg(msg, rightLeg);
+        msg += packArm(leftArm);
+        msg += packArm(rightArm);
+        msg += packLeg(leftLeg);
+        msg += packLeg(rightLeg);
         return msg;
     }
 
-    private String packArm(String msg, Position arm) {
+    /**
+     * Packs arm Position object into a String to send over Internet.
+     * @param arm the to-be-packed arm Position object
+     * @return the String packet representing the arm Position
+     */
+    private String packArm(Position arm) {
         switch (arm) {
-            case bottom: msg += "0";
-            case middle: msg += "1";
-            case top: msg += "2";
-            default: msg += "0";
+            case bottom: return "0";
+            case middle: return "1";
+            case top: return "2";
+            default: return "0";
         }
-        return msg;
     }
 
-    private String packLeg(String msg, Position leg) {
+    /**
+     * Packs leg Position object into a String to send over Internet.
+     * @param leg the to-be-packed leg Position object
+     * @return the String packet representing the leg Position
+     */
+    private String packLeg(Position leg) {
         switch (leg) {
-            case neutral: msg += "0";
-            case raised: msg += "1";
-            default: msg += "0";
+            case neutral: return "0";
+            case raised: return "1";
+            default: return "0";
         }
-        return msg;
     }
 
     public static Pose unpack(String poseStr) {
@@ -172,9 +180,9 @@ public class Pose {
 
     private static Position unpackArm(char c) {
         switch (c) {
-            case '0': return Position.bottom;
+            case '0': return Position.top;
             case '1': return Position.middle;
-            case '2': return Position.top;
+            case '2': return Position.bottom;
             default: return Position.bottom;
         }
     }

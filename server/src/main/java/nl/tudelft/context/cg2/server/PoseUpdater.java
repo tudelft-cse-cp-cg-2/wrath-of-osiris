@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.server;
 
 import java.io.BufferedReader;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.TimerTask;
 
 /**
@@ -13,30 +14,37 @@ import java.util.TimerTask;
 public class PoseUpdater extends TimerTask {
     private final BufferedReader in;
     private final PrintWriter out;
-    private final Lobby lobby;
-    private final String currentPlayerName;
+    private final Player player;
 
     /**
      * Constructor for PoseUpdater.
      * @param in client input
      * @param out client output
-     * @param lobby lobby
-     * @param currentPlayerName the name of the player not to be updated
+     * @param player current player
      */
-    public PoseUpdater(BufferedReader in, PrintWriter out, Lobby lobby, String currentPlayerName) {
+    public PoseUpdater(BufferedReader in, PrintWriter out, Player player) {
         this.in = in;
         this.out = out;
-        this.lobby = lobby;
-        this.currentPlayerName = currentPlayerName;
+        this.player = player;
     }
 
     /**
      * Executes the request.
      */
     public void run() {
-        for (Player player : lobby.getPlayers()) {
-            if (currentPlayerName.equals(player.getPlayerName())) continue;
-            out.println("updatepose " + player.getPlayerName() + " " + player.getPose().pack());
+        ArrayList<Player> players = new ArrayList<>();
+        try {
+            players = player.getLobby().getPlayers();
+        } catch (NullPointerException e) {
+            System.out.println("No players available");
+        }
+
+
+        for (Player otherPlayer : players) {
+            if (!player.getPlayerName().equals(otherPlayer.getPlayerName())) {
+                out.println("updatepose " + otherPlayer.getPlayerName() + " " + otherPlayer.getPose().pack());
+                System.out.println("Updated " + otherPlayer.getPlayerName() + " of other poses");
+            }
         }
     }
 }

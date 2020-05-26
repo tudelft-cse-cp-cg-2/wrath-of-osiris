@@ -1,6 +1,9 @@
 package nl.tudelft.context.cg2.server;
 
+import nl.tudelft.context.cg2.server.game.Arm;
+import nl.tudelft.context.cg2.server.game.Legs;
 import nl.tudelft.context.cg2.server.game.Pose;
+import nl.tudelft.context.cg2.server.game.ScreenPos;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,7 +23,7 @@ public class Player extends Thread {
     private PrintWriter out;
 
     private String playerName;
-    private Pose pose = null;
+    private Pose pose;
     private Lobby lobby;
 
     private final Timer eventTimer;
@@ -44,6 +47,7 @@ public class Player extends Thread {
             App.disconnectPlayer(this);
         }
         this.eventTimer = new Timer();
+        this.pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
     }
 
     /**
@@ -84,7 +88,7 @@ public class Player extends Thread {
             App.addPlayerToLobby(index, this);
         } else if (clientInput.startsWith("fetchlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
-            App.fetchLobby(index).forEach(out::println);
+            out.println(App.fetchLobby(index));
         } else if ("startgame".equals(clientInput)) {
             lobby.startGame();
         } else if (clientInput.startsWith("updatepose ")) {
@@ -101,9 +105,6 @@ public class Player extends Thread {
      * and starts the updating of other player's poses to the player.
      */
     public void run() {
-        PoseUpdater poseUpdater = new PoseUpdater(in, out, lobby, playerName);
-        eventTimer.schedule(poseUpdater, 5000, 5000);
-
         String clientInput;
         try {
             while (!terminate) {
@@ -173,5 +174,13 @@ public class Player extends Thread {
      */
     public void updateLives() {
         out.println("updateLives " + lobby.getLives());
+    }
+
+    /**
+     * Starts the pose updater for this player.
+     */
+    public void startPoseUpdater() {
+        PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
+        eventTimer.schedule(poseUpdater, 500, 500);
     }
 }

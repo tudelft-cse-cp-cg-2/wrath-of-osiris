@@ -191,9 +191,9 @@ public class Pose {
         Arm rightArm = Arm.valueOf(Character.getNumericValue(poseStr.charAt(2)));
         Legs legs;
         switch (poseStr.substring(3, 5)) {
-            case "00": legs = Legs.DOWN;
-            case "01": legs = Legs.RIGHTUP;
-            case "10": legs = Legs.LEFTUP;
+            case "00": legs = Legs.DOWN; break;
+            case "01": legs = Legs.RIGHTUP; break;
+            case "10": legs = Legs.LEFTUP; break;
             default: legs = Legs.DOWN;
         }
 
@@ -224,9 +224,9 @@ public class Pose {
         msg += leftArm.indexOf();
         msg += rightArm.indexOf();
         switch (legs) {
-            case DOWN: msg += "00";
-            case LEFTUP: msg += "10";
-            case RIGHTUP: msg += "01";
+            case DOWN: msg += "00"; break;
+            case LEFTUP: msg += "10"; break;
+            case RIGHTUP: msg += "01"; break;
             default: msg += "00";
         }
         return msg;
