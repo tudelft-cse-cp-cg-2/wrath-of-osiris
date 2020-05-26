@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests the client Lobby class.
@@ -35,5 +36,27 @@ public class LobbyTest {
         Lobby lobby = new Lobby("a", "b", players, true);
         lobby.setPlayers(players1);
         assertEquals(players1, lobby.getPlayers());
+    }
+
+    @Test
+    public void testUnpackLobby() {
+        ArrayList<Player> players = new ArrayList<>();
+        Lobby lobby = new Lobby("test1", "", players, false);
+        assertTrue(lobby.equals(Lobby.unpackLobby("listlobbies 0test1")));
+    }
+
+    @Test
+    public void testUnpackLobbyWithNames() {
+        ArrayList<Player> players = new ArrayList<>();
+        Lobby lobby = new Lobby("test1", "", players, false);
+        assertTrue(lobby.equals(Lobby.unpackLobby("listlobbies 0test1 asdf")));
+    }
+
+    @Test
+    public void testUnpackFetchLobby() {
+        ArrayList<Player> players = new ArrayList<>();
+        players.add(new Player("asdf"));
+        Lobby lobby = new Lobby("test1", "", players, false);
+        assertTrue(lobby.equals(Lobby.unpackFetchLobby("fetchlobby 1test1 asdf")));
     }
 }

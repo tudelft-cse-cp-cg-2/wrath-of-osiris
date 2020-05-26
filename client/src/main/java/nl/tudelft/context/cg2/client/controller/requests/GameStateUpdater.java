@@ -100,8 +100,8 @@ public class GameStateUpdater extends Thread {
      * @param serverInput String packet from server containing the player current player names
      */
     private void updateLobbyNames(String serverInput) {
-        controller.getModel().setCurrentLobby(Lobby.unpackFetchLobby(serverInput));
-        List<String> playerNames = controller.getModel().getCurrentLobby().getPlayerNames();
+        Lobby newLobby = Lobby.unpackFetchLobby(serverInput);
+        List<String> playerNames = newLobby.getPlayerNames();
         Platform.runLater(() -> {
             controller.getView().getLobbyScene().setPlayerNames(playerNames);
         });

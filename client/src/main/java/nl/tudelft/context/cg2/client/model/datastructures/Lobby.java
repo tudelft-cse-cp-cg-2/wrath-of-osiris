@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.model.datastructures;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,6 +34,26 @@ public class Lobby {
         this.isHost = isHost;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Lobby lobby = (Lobby) o;
+        return name.equals(lobby.name)
+                && players.equals(lobby.players)
+                && password == lobby.password
+                && isHost == lobby.isHost;
+    }
+
     /**
      * Create a lobby from a packed string as answer from 'listlobbies'.
      * @param packed lobby representation from the server
@@ -40,11 +61,13 @@ public class Lobby {
      */
     public static Lobby unpackLobby(String packed) {
         ArrayList<Player> playerList = new ArrayList<>();
-        int playerCount = packed.charAt(0) - '0';
+        String[] split = packed.split(" ");
+        assert split[0].equals("listlobbies");
+        int playerCount = Character.getNumericValue(split[1].charAt(0));
         for (int i = 0; i < playerCount; i++) {
-            playerList.add(new Player(""));
+            playerList.add(new Player(split[i + 2]));
         }
-        return new Lobby(packed.substring(1), "", playerList, false);
+        return new Lobby(split[1].substring(1), "", playerList, false);
     }
 
     /**
@@ -55,20 +78,13 @@ public class Lobby {
     public static Lobby unpackFetchLobby(String packed) {
         ArrayList<Player> playerList = new ArrayList<>();
         String[] split = packed.split(" ");
-        String type = split[0];
-        System.out.println(type);
+        assert split[0].equals("fetchlobby");
         String header = split[1];
         int playerCount = Character.getNumericValue(header.charAt(0));
-        if (type.equals("fetchlobby")) {
-            for (int i = 0; i < playerCount; i++) {
-                playerList.add(new Player(split[i + 2]));
-            }
-        } else if (type.equals("listlobbies")) {
-            for (int i = 0; i < playerCount; i++) {
-                playerList.add(new Player(""));
-            }
+        for (int i = 0; i < playerCount; i++) {
+            playerList.add(new Player(split[i + 2]));
         }
-        return new Lobby(header, "", playerList, false);
+        return new Lobby(header.substring(1), "", playerList, false);
     }
 
     /**

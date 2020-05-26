@@ -24,6 +24,23 @@ public class Player {
         this.name = name;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Player player = (Player) o;
+        return name.equals(player.getName());
+    }
+
     /**
      * Getter for a player's name.
      * @return the player name.
