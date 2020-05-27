@@ -258,4 +258,20 @@ public class GameScene extends BaseScene {
     public GraphicsContext getLightGraphicsContext() {
         return lightCanvas.getGraphicsContext2D();
     }
+
+    /**
+     * Gets the list of hearts being displayed.
+     * @return the list of hearts.
+     */
+    public ArrayList<Heart> getHearts() {
+        return hearts;
+    }
+
+    /**
+     * Gets the camera view.
+     * @return the camera view.
+     */
+    public ImageView getCameraView() {
+        return cameraView;
+    }
 }
