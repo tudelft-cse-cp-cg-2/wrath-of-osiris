@@ -36,7 +36,7 @@ public class PoseUpdater extends TimerTask {
         try {
             players = player.getLobby().getPlayers();
         } catch (NullPointerException e) {
-            System.out.println("No players available");
+            System.out.println("Player not in a lobby");
         }
 
 
