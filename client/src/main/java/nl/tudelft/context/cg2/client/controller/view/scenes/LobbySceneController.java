@@ -31,7 +31,8 @@ public class LobbySceneController extends SceneController {
 
     @Override
     protected void setupMouseListeners() {
-        scene.getStartButton().setOnMouseClicked(event -> System.out.println("Clicked"));
+        scene.getStartButton().setOnMouseClicked(event ->
+                controller.getStateUpdater().signalStart());
         scene.getLeaveButton().setOnMouseClicked(event -> leaveButtonClicked());
     }
 

@@ -48,6 +48,7 @@ public final class App {
      */
     public static void removePlayerFromLobbies(Player player) {
         lobbies.forEach(x -> x.removePlayer(player));
+        player.setLobby(null);
     }
 
     /**
@@ -64,6 +65,7 @@ public final class App {
                 disconnectPlayer(player);
             } else {
                 lobby.addPlayer(player);
+                player.setLobby(lobby);
             }
         }
     }
@@ -73,15 +75,14 @@ public final class App {
      * @param index the lobby to be fetched
      * @return the packed lobby and its player list
      */
-    public static List<String> fetchLobby(int index) {
-        List<String> out = new ArrayList<>();
+    public static String fetchLobby(int index) {
+        String out = "fetchlobby ";
 
         if (index < 0 || index >= lobbies.size()) {
             System.out.println("No such lobby");
         } else {
             Lobby lobby = lobbies.get(index);
-            out.add(lobby.pack());
-            lobby.getPlayers().forEach(x -> out.add(x.getPlayerName()));
+            out += lobby.pack();
         }
 
         return out;
@@ -94,7 +95,9 @@ public final class App {
     public static List<String> packLobbies() {
         List<String> out = new ArrayList<>();
         for (Lobby lobby : lobbies) {
-            out.add(lobby.pack());
+            if (!lobby.isStarted()) {
+                out.add(lobby.getPlayers().size() + lobby.getName());
+            }
         }
         return out;
     }

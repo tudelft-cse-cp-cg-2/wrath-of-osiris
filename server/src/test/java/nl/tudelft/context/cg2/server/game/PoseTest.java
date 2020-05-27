@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PoseTest {
+
     @BeforeEach
     public void testSetUp() {
         Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
@@ -102,5 +103,21 @@ public class PoseTest {
         assertEquals("arms: DOWN UP\nlegs: RIGHTUP\nscreen: LEFT", a.toString());
     }
 
+    @Test
+    public void testPack() {
+        Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
+        assertEquals("02001", a.pack());
+    }
+
+    @Test
+    public void testUnpack() {
+        Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.RIGHTUP, ScreenPos.LEFT);
+        assertEquals(a, Pose.unpack("02001"));
+    }
+
+    @Test
+    public void testUnpackIllegalFormat() {
+        assertThrows(IllegalArgumentException.class, () -> Pose.unpack("02033"));
+    }
 }
 

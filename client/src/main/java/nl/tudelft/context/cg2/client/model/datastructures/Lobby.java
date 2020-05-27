@@ -7,7 +7,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * Class containing information about the lobby a player is currently in.
+ * Class containing information about a lobby.
+ * To be used both in the menus and the game.
  */
 public class Lobby {
 
@@ -32,18 +33,55 @@ public class Lobby {
         this.isHost = isHost;
     }
 
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Lobby lobby = (Lobby) o;
+        return name.equals(lobby.name)
+                && players.equals(lobby.players)
+                && password.equals(lobby.password)
+                && isHost.equals(lobby.isHost);
+    }
+
     /**
-     * Create a lobby from a packed string sent by the server.
+     * Create a lobby from a packed string as answer from 'listlobbies'.
      * @param packed lobby representation from the server
      * @return a Lobby
      */
     public static Lobby unpackLobby(String packed) {
         ArrayList<Player> playerList = new ArrayList<>();
-        int playerCount = packed.charAt(0) - '0';
+        int playerCount = Character.getNumericValue(packed.charAt(0));
         for (int i = 0; i < playerCount; i++) {
             playerList.add(new Player(""));
         }
         return new Lobby(packed.substring(1), "", playerList, false);
+    }
+
+    /**
+     * Create a lobby from a packed string as answer from 'fetchlobby'.
+     * @param packed lobby representation from the server
+     * @return a Lobby
+     */
+    public static Lobby unpackFetchLobby(String packed) {
+        ArrayList<Player> playerList = new ArrayList<>();
+        String[] split = packed.split(" ");
+        assert split[0].equals("fetchlobby");
+        String header = split[1];
+        int playerCount = Character.getNumericValue(header.charAt(0));
+        for (int i = 0; i < playerCount; i++) {
+            playerList.add(new Player(split[i + 2]));
+        }
+        return new Lobby(header.substring(1), "", playerList, false);
     }
 
     /**

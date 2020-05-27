@@ -12,6 +12,8 @@ public class Lobby {
 
     private final String name;
     private final String password;
+    private boolean started = false;
+    private int lives = 10;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -61,7 +63,11 @@ public class Lobby {
      * @return a packed string representing this lobby
      */
     public String pack() {
-        return players.size() + name;
+        String out = players.size() + name;
+        for (Player player : players) {
+            out += " " + player.getPlayerName();
+        }
+        return out;
     }
 
     /**
@@ -78,5 +84,54 @@ public class Lobby {
      */
     public boolean isFull() {
         return (this.players.size() >= MAX_PLAYERS);
+    }
+
+    /**
+     * Getter for the group's amount of lives left.
+     * @return the amount of lives the group has left
+     */
+    public int getLives() {
+        return lives;
+    }
+
+    /**
+     * Setter for the group's amount of lives left.
+     * @param lives the updated amount of lives left
+     */
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+
+    /**
+     * Gets whether the lobby has started the game.
+     * @return boolean whether the game has been started
+     */
+    public boolean isStarted() {
+        return started;
+    }
+
+    /**
+     * Starts the game for the lobby, and update all players'
+     * lives to the starting amount.
+     */
+    public void startGame() {
+        if (!started) {
+            this.started = true;
+            for (Player player : players) {
+                player.startPoseUpdater();
+                player.startGame();
+                player.updateLives();
+            }
+        }
+    }
+
+    /**
+     * Stops the game for the lobby.
+     */
+    public void stopGame() {
+        this.started = false;
+        for (Player player : players) {
+            player.stopGame();
+        }
     }
 }

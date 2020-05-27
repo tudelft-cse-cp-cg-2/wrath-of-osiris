@@ -1,5 +1,10 @@
 package nl.tudelft.context.cg2.server;
 
+import nl.tudelft.context.cg2.server.game.Arm;
+import nl.tudelft.context.cg2.server.game.Legs;
+import nl.tudelft.context.cg2.server.game.Pose;
+import nl.tudelft.context.cg2.server.game.ScreenPos;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,6 +12,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Timer;
 
 /**
  * A connected player.
@@ -16,7 +22,15 @@ public class Player extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
+    /**
+     * Current pose of the player.
+     * This starts out with all limbs neutral, and in the middle region.
+     */
+    private Pose pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
     private String playerName;
+    private Lobby lobby;
+
+    private final Timer eventTimer;
 
     private boolean terminate = false;
 
@@ -36,6 +50,7 @@ public class Player extends Thread {
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+        this.eventTimer = new Timer();
     }
 
     /**
@@ -66,25 +81,38 @@ public class Player extends Thread {
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
-        if ("listlobbies".equals(clientInput)) {
-            App.packLobbies().forEach(out::println);
-        } else if ("leavelobby".equals(clientInput)) {
-            App.removePlayerFromLobbies(this);
-        } else if (clientInput.startsWith("joinlobby ")) {
+        if (clientInput.startsWith("joinlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             this.setPlayerName(clientInput.split(" ")[2]);
             App.addPlayerToLobby(index, this);
+            out.println(".");
         } else if (clientInput.startsWith("fetchlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
-            App.fetchLobby(index).forEach(out::println);
+            out.println(App.fetchLobby(index));
+        } else if (clientInput.startsWith("updatepose ")) {
+            String poseStr = clientInput.split(" ")[1];
+            this.pose = Pose.unpack(poseStr);
         } else {
-            System.out.println("Unknown command from client: " + clientInput);
+            switch (clientInput) {
+                case "listlobbies":
+                    App.packLobbies().forEach(out::println);
+                    out.println(".");
+                    break;
+                case "leavelobby":
+                    App.removePlayerFromLobbies(this);
+                    break;
+                case "startgame":
+                    lobby.startGame();
+                    break;
+                default:
+                    System.out.println("Unknown command from client: " + clientInput);
+            }
         }
-        out.println(".");
     }
 
     /**
-     * Main loop for this player, which continually listens to their messages.
+     * Main loop for this player, which continually listens to their messages,
+     * and starts the updating of other player's poses to the player.
      */
     public void run() {
         String clientInput;
@@ -103,5 +131,66 @@ public class Player extends Thread {
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+    }
+
+    /**
+     * Getter for a player's pose.
+     * @return the player's current pose.
+     */
+    public Pose getPose() {
+        return pose;
+    }
+
+    /**
+     * Setter for a player's pose.
+     * @param pose the player's current pose.
+     */
+    public void setPose(Pose pose) {
+        this.pose = pose;
+    }
+
+    /**
+     * Gets the lobby of the player.
+     * @return lobby this player is in
+     */
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    /**
+     * Sets the lobby for this player.
+     * @param lobby the new lobby for the player
+     */
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+
+    /**
+     * Signals the player to start the game.
+     */
+    public void startGame() {
+        out.println("startgame");
+    }
+
+    /**
+     * Signals the player to start the game.
+     */
+    public void stopGame() {
+        out.println("stopgame");
+    }
+
+    /**
+     * Updates the lives to the player with its current lobby's lives.
+     */
+    public void updateLives() {
+        out.println("updatelives " + lobby.getLives());
+    }
+
+    /**
+     * Starts the pose updater for this player.
+     */
+    public void startPoseUpdater() {
+        PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
+        eventTimer.schedule(poseUpdater, 500, 500);
     }
 }

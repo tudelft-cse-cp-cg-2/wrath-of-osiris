@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * Class representing the pose of a human body.
@@ -39,6 +40,26 @@ public class Pose {
     public String toString() {
         return "Pose: la: " + leftArm.name() + "| ra: " + rightArm.name() + "| ll: "
                 + leftLeg.name() + "| rl: " + rightLeg.name();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Pose pose = (Pose) o;
+        return leftArm == pose.leftArm
+                && rightArm == pose.rightArm
+                && leftLeg == pose.leftLeg
+                && rightLeg == pose.rightLeg;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(leftArm, rightLeg, leftLeg, rightLeg);
     }
 
     /**
@@ -115,6 +136,98 @@ public class Pose {
             return Position.middle;
         } else {
             return Position.bottom;
+        }
+    }
+
+    /**
+     * Pack to send over the Internet. Position format is:
+     * [section][leftarm][rightarm][leftleg][rightleg]
+     * Section being:
+     * 0 - left
+     * 1 - middle
+     * 2 - right
+     * Arms being:
+     * 0 - top
+     * 1 - middle
+     * 2 - bottom
+     * Legs being:
+     * 0 - neutral
+     * 1 - raised
+     * @return a packed string representing this pose
+     */
+    public String pack() {
+        String msg = "1";
+        msg += packArm(leftArm);
+        msg += packArm(rightArm);
+        msg += packLeg(leftLeg);
+        msg += packLeg(rightLeg);
+        return msg;
+    }
+
+    /**
+     * Packs arm Position object into a String to send over Internet.
+     * @param arm the to-be-packed arm Position object
+     * @return the String packet representing the arm Position
+     */
+    private String packArm(Position arm) {
+        switch (arm) {
+            case bottom: return "2";
+            case middle: return "1";
+            case top: return "0";
+            default: throw new IllegalArgumentException("Illegal arm position: " + arm.toString());
+        }
+    }
+
+    /**
+     * Packs leg Position object into a String to send over Internet.
+     * @param leg the to-be-packed leg Position object
+     * @return the String packet representing the leg Position
+     */
+    private String packLeg(Position leg) {
+        switch (leg) {
+            case neutral: return "0";
+            case raised: return "1";
+            default: throw new IllegalArgumentException("Illegal leg position: " + leg.toString());
+        }
+    }
+
+    /**
+     * Unpack the String packet from server representing a player's pose.
+     * @param poseStr String packet from server containing a player's pose
+     * @return player pose interpreted from packet
+     */
+    public static Pose unpack(String poseStr) {
+        Position leftArm = unpackArm(poseStr.charAt(1));
+        Position rightArm = unpackArm(poseStr.charAt(2));
+        Position leftLeg = unpackLeg(poseStr.charAt(3));
+        Position rightLeg = unpackLeg(poseStr.charAt(4));
+        return new Pose(leftArm, rightArm, leftLeg, rightLeg);
+    }
+
+    /**
+     * Helper function for unpack to specifically unpack the arm position.
+     * @param c character in the String packet representing the arm position
+     * @return arm position interpreted from packet character
+     */
+    private static Position unpackArm(char c) {
+        switch (c) {
+            case '0': return Position.top;
+            case '1': return Position.middle;
+            case '2': return Position.bottom;
+            default: throw new IllegalArgumentException("Illegal arm format: " + c);
+        }
+    }
+
+    /**
+     * Helper function for unpack to specifically unpack the leg position.
+     * @param c character in the String packet representing the leg position
+     * @return leg position interpreted from packet character
+     */
+    private static Position unpackLeg(char c) {
+        switch (c) {
+            case '0': return Position.neutral;
+            case '1': return Position.raised;
+            default: throw new IllegalArgumentException("Illegal leg format: " + c);
         }
     }
 }

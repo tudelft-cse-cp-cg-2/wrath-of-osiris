@@ -34,4 +34,12 @@ public enum Arm {
     public static Arm valueOf(int index) {
         return (Arm) MAP.get(index);
     }
+
+    /**
+     * Returns the index of the Arm value.
+     * @return index of the arm value
+     */
+    public int indexOf() {
+        return this.id;
+    }
 }
