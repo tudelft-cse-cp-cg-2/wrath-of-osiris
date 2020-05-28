@@ -2,19 +2,15 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.ScreenPos;
 
 /**
  * Contains local information about a player.
  */
 public class Player {
     private final String name;
-
-    /**
-     * Current pose of the player.
-     * This starts out with all limbs neutral.
-     */
-    private Pose pose =
-            new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
+    private Pose pose;
+    private boolean poseChanged;
 
     /**
      * Constructor for the Player.
@@ -22,6 +18,9 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
+        this.pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
+                Position.neutral, Position.neutral);
+        this.poseChanged = false;
     }
 
     @Override
@@ -59,9 +58,30 @@ public class Player {
 
     /**
      * Setter for a player's pose.
-     * @param pose the player's current pose.
+     * Also updates the boolean 'poseChanged' whether the pose actually changed.
+     * @param other the other pose.
      */
-    public void setPose(Pose pose) {
-        this.pose = pose;
+    public void updatePose(Pose other) {
+        if (!pose.equals(other)) {
+            this.pose = other;
+            this.poseChanged = true;
+            System.out.println(other.toString());
+        }
+    }
+
+    /**
+     * A boolean to check if the players pose has changed.
+     * @return true if the pose has changed.
+     */
+    public boolean isPoseChanged() {
+        return poseChanged;
+    }
+
+    /**
+     * Sets the pose changed variable.
+     * @param changed whether the pose has changed or not.
+     */
+    public void setPoseChanged(boolean changed) {
+        poseChanged = changed;
     }
 }

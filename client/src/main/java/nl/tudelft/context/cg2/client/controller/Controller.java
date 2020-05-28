@@ -1,17 +1,12 @@
 package nl.tudelft.context.cg2.client.controller;
 
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
+import nl.tudelft.context.cg2.client.controller.controllers.OpenCVController;
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
-import nl.tudelft.context.cg2.client.controller.requests.FetchLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
-import nl.tudelft.context.cg2.client.controller.requests.PoseUpdater;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
-import nl.tudelft.context.cg2.client.model.datastructures.Server;
 import nl.tudelft.context.cg2.client.view.View;
-
-import java.util.Timer;
 
 /**
  * Controller class representing the Controller in the View-Controller-Model design pattern.
@@ -19,16 +14,15 @@ import java.util.Timer;
  */
 public class Controller {
 
-    private final ViewController viewController;
-    private final GameTimer gameTimer;
-
     private final Model model;
     private final View view;
 
-    private final Server server;
-    private GameStateUpdater stateUpdater;
+    private final ViewController viewController;
+    private final OpenCVController openCVController;
+    private final NetworkController networkController;
 
-    private Timer eventTimer;
+    private final GameTimer gameTimer;
+    private GameStateUpdater stateUpdater;
 
     /**
      * Constructor for the Controller object.
@@ -37,20 +31,11 @@ public class Controller {
      */
     public Controller(final Model model, final View view) {
         this.viewController = new ViewController(this, model, view);
+        this.openCVController = new OpenCVController(this, model, view);
+        this.networkController = new NetworkController();
         this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;
-        this.server = new Server();
-        this.eventTimer = new Timer();
-        server.connect();
-    }
-
-    /**
-     * Gets the eventTimer.
-     * @return the eventTimer.
-     */
-    public Timer getEventTimer() {
-        return eventTimer;
     }
 
     /**
@@ -86,11 +71,11 @@ public class Controller {
     }
 
     /**
-     * Gets the server.
-     * @return the server.
+     * Gets the networkController.
+     * @return the networkController.
      */
-    public Server getServer() {
-        return server;
+    public NetworkController getNetworkController() {
+        return networkController;
     }
 
     /**
@@ -110,54 +95,10 @@ public class Controller {
     }
 
     /**
-     * Starts the game.
+     * Gets the OpenCV controller.
+     * @return the controller that ontrols OpenCV logic.
      */
-    public void startGame() {
-        viewController.getOpenCVSceneController().startCapture();
-
-        // Stop fetchLobby requests
-        eventTimer.cancel();
-
-        PoseUpdater poseUpdater = new PoseUpdater(server.getIn(),
-                server.getOut(), model.getCurrentPlayer());
-        eventTimer = new Timer();
-        eventTimer.schedule(poseUpdater, 500, 500);
-
-        model.getWorld().create();
-        view.getGameScene().clear();
-        view.getGameScene().show();
-    }
-
-    /**
-     * Stops the game.
-     */
-    public void stopGame() {
-        viewController.getOpenCVSceneController().stopCapture();
-        view.getLobbyScene().show();
-    }
-
-    /**
-     * Updates the player's pose.
-     * @param playerName player's name
-     * @param pose the new pose
-     */
-    public void updatePose(String playerName, Pose pose) {
-        try {
-            int index = model.getCurrentLobby().getPlayerNames().indexOf(playerName);
-            Player player = model.getCurrentLobby().getPlayers().get(index);
-            player.setPose(pose);
-        } catch (NullPointerException | IndexOutOfBoundsException e) {
-            System.out.println("Player names not yet initialized");
-        }
-    }
-
-    /**
-     * Start lobby updater request.
-     * @param index index of lobby to update
-     */
-    public void scheduleLobbyUpdater(int index) {
-        FetchLobbyRequest fetchLobbyRequest =
-                new FetchLobbyRequest(server.getIn(), server.getOut(), index);
-        eventTimer.schedule(fetchLobbyRequest, 500, 500);
+    public OpenCVController getOpenCVController() {
+        return openCVController;
     }
 }

@@ -1,6 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
-import nl.tudelft.context.cg2.client.model.datastructures.Server;
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,7 +30,7 @@ public class LeaveLobbyRequest extends Thread {
         out.println("leavelobby");
         try {
             String fromServer = in.readLine();
-            assert fromServer != null && fromServer.equals(Server.EOT);
+            assert fromServer != null && fromServer.equals(NetworkController.EOT);
         } catch (IOException e) {
             e.printStackTrace();
         }

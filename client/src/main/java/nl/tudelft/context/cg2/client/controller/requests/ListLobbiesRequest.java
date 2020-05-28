@@ -1,7 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
-import nl.tudelft.context.cg2.client.model.datastructures.Server;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -45,7 +45,7 @@ public class ListLobbiesRequest extends Thread {
         try {
             while (true) {
                 fromServer = in.readLine();
-                if (fromServer == null || fromServer.equals(Server.EOT)) {
+                if (fromServer == null || fromServer.equals(NetworkController.EOT)) {
                     break;
                 }
                 System.out.println("lobby: " + fromServer);

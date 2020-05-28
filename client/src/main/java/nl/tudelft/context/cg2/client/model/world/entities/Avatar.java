@@ -2,6 +2,8 @@ package nl.tudelft.context.cg2.client.model.world.entities;
 
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.Entity;
@@ -12,35 +14,71 @@ import nl.tudelft.context.cg2.client.model.world.World;
  * Features a player avatar.
  */
 public class Avatar extends Entity {
-
     private final Color color;
+    private final Player player;
 
     /**
      * The avatar constructor.
+     * @param player the player this avatar is attached to.
      * @param color the color of the avatar.
      */
-    public Avatar(Color color) {
+    public Avatar(Player player, Color color) {
         super(null, new Vector3D(), new Vector3D(), World.HOLE_SIZE);
+        this.player = player;
         this.color = color;
-        this.updateTexture(1, 2, 0, 1);
+        this.setDefaultTexture();
     }
 
     @Override
     public void step(double t, double dt) {
-        if (Math.random() > 0.95D) {
-            randomTexture();
+        if (player.isPoseChanged()) {
+            Pose pose = player.getPose();
+            updatePose(pose);
+            updatePosition(pose);
+            player.setPoseChanged(false);
         }
-
     }
 
     /**
-     * Creates a texture for the avatar with a random pose.
+     * Updates the avatars position in the world based on the pose.
+     * @param pose the pose of the avatar's player.
      */
-    private void randomTexture() {
-        this.updateTexture((int) Math.round(Math.random() * 2),
-                (int) Math.round(Math.random() * 2),
-                (int) Math.round(Math.random()),
-                (int) Math.round(Math.random()));
+    private void updatePosition(Pose pose) {
+        switch (pose.getScreenPosition()) {
+            case left:
+                setPosition(new Vector3D(
+                        World.WIDTH / 4 - World.HOLE_SIZE.x / 2, 0, 0));
+                break;
+            case middle:
+                setPosition(new Vector3D((
+                        World.WIDTH / 2 - World.HOLE_SIZE.x / 2), 0, 0));
+                break;
+            case right:
+                setPosition(new Vector3D((
+                        World.WIDTH / 4 * 3 - World.HOLE_SIZE.x / 2), 0, 0));
+                break;
+            default: throw new IllegalStateException("Incorrect screenpos: "
+                    + pose.getScreenPosition());
+        }
+    }
+
+    /**
+     * Updates the avatar texture based on a pose.
+     * @param pose the pose of the avatar's player.
+     */
+    private void updatePose(Pose pose) {
+        int la = pose.getLeftArm().indexOf();
+        int ra = pose.getRightArm().indexOf();
+        int ll = pose.getLeftLeg().indexOf();
+        int rl = pose.getRightLeg().indexOf();
+        updateTexture(la, ra, ll, rl);
+    }
+
+    /**
+     * Sets the avatars default texture.
+     */
+    public void setDefaultTexture() {
+        updateTexture(0, 0, 0, 0);
     }
 
     /**
@@ -76,5 +114,7 @@ public class Avatar extends Entity {
 
         setTexture(tex);
     }
+
+
 
 }

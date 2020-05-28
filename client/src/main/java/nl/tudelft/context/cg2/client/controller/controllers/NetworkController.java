@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.model.datastructures;
+package nl.tudelft.context.cg2.client.controller.controllers;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -13,7 +13,7 @@ import java.nio.charset.StandardCharsets;
 /**
  * Representation of the game server.
  */
-public class Server {
+public class NetworkController {
     private static final String HOST = "localhost";
     private static final int PORT = 43594;
 
@@ -45,23 +45,26 @@ public class Server {
     /**
      * Constructor for servers.
      */
-    public Server() {
+    public NetworkController() {
+
     }
 
     /**
      * Connect to the server.
+     * @return true if the connection was successful, false otherwise.
      */
     @SuppressFBWarnings(value = "DM_EXIT", justification = "If we cannot connect, we cannot play.")
-    public void connect() {
+    public boolean connect() {
         try {
             this.sock = new Socket(HOST, PORT);
             this.out = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),
                     StandardCharsets.UTF_8), true);
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream(),
                     StandardCharsets.UTF_8));
+            return true;
         } catch (IOException e) {
             System.out.println("Error: could not connect to server.");
-            System.exit(1);
         }
+        return false;
     }
 }

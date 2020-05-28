@@ -3,8 +3,6 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.awt.Color;
@@ -23,8 +21,8 @@ public class PoseDetector {
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
 
-    private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral,
-            Position.neutral);
+    private final Pose pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
+            Position.neutral, Position.neutral);
     private BufferedImage baseImage;
 
     /**
@@ -37,69 +35,70 @@ public class PoseDetector {
     private List<PoseRegion> generatePoseRegionsFromHead(PoseRegion head) {
         List<PoseRegion> out = new ArrayList<>();
 
-        // arm top right
-        out.add(new PoseRegion(head.getLeftX() + head.getRightX(),
-                head.getTopY() - 3 * head.getBottomY(),
-                head.getLeftX() + 3 * head.getRightX(),
-                head.getTopY() + head.getBottomY(),
-                Limb.right_arm, Position.top));
-        // arm middle right
-        out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * head.getRightX()),
-                head.getTopY() + head.getBottomY() + 10,
-                head.getLeftX() + 5 * head.getRightX(),
-                head.getTopY() + 3 * head.getBottomY(),
-                Limb.right_arm, Position.middle));
-        // arm bottom right
-        out.add(new PoseRegion(head.getLeftX() + head.getRightX(),
-                head.getTopY() + 2 * head.getBottomY(),
-                head.getLeftX() + 3 * head.getRightX(),
-                head.getTopY() + 5 * head.getBottomY(),
-                Limb.right_arm, Position.bottom));
         // arm top left
-        out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
+        out.add(new PoseRegion(head.getLeftX() + (int) (1.2 * head.getRightX()),
                 head.getTopY() - 3 * head.getBottomY(),
-                head.getLeftX(),
+                head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + head.getBottomY(),
                 Limb.left_arm, Position.top));
         // arm middle left
-        out.add(new PoseRegion(head.getLeftX() - 4 * head.getRightX(),
+        out.add(new PoseRegion(head.getLeftX() + (int) (2.5 * head.getRightX()),
                 head.getTopY() + head.getBottomY() + 10,
-                head.getLeftX() - (int) (0.5 * head.getRightX()),
+                head.getLeftX() + 6 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
                 Limb.left_arm, Position.middle));
         // arm bottom left
-        out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
-                head.getTopY() + 2 * head.getBottomY(),
-                head.getLeftX(),
+        out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * head.getRightX()),
+                head.getTopY() + 3 * head.getBottomY(),
+                head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
                 Limb.left_arm, Position.bottom));
 
-        // leg neutral right
+        // arm top right
+        out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
+                head.getTopY() - 3 * head.getBottomY(),
+                head.getLeftX() - (int) (0.2 * head.getRightX()),
+                head.getTopY() + head.getBottomY(),
+                Limb.right_arm, Position.top));
+        // arm middle right
+        out.add(new PoseRegion(head.getLeftX() - 5 * head.getRightX(),
+                head.getTopY() + head.getBottomY() + 10,
+                head.getLeftX() - (int) (1.5 * head.getRightX()),
+                head.getTopY() + 3 * head.getBottomY(),
+                Limb.right_arm, Position.middle));
+        // arm bottom right
+        out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
+                head.getTopY() + 3 * head.getBottomY(),
+                head.getLeftX() - (int) (0.5 * head.getRightX()),
+                head.getTopY() + 5 * head.getBottomY(),
+                Limb.right_arm, Position.bottom));
+
+
+        // leg neutral left
         out.add(new PoseRegion(head.getLeftX() + (int) (0.5 * head.getRightX()),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() + 2 * head.getRightX(),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.right_leg, Position.neutral));
-        // leg raised right
+                Limb.left_leg, Position.neutral));
+        // leg raised left
         out.add(new PoseRegion(head.getLeftX() + 2 * head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() + (int) (3.5 * head.getRightX()),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.right_leg, Position.raised));
-        // leg neutral left
+                Limb.left_leg, Position.raised));
+
+        // leg neutral right
         out.add(new PoseRegion(head.getLeftX() - head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() + (int) (0.5 * head.getRightX()),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.left_leg, Position.neutral));
-        // leg raised left
+                Limb.right_leg, Position.neutral));
+        // leg raised right
         out.add(new PoseRegion(head.getLeftX() - (int) (2.5 * head.getRightX()),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() - head.getRightX(),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.left_leg, Position.raised));
-
-
+                Limb.right_leg, Position.raised));
         return out;
     }
 
@@ -127,10 +126,10 @@ public class PoseDetector {
             return image;
         }
 
-        for (PoseRegion poseRegion : poseRegions) {
-            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
-                    new Scalar(255, 0, 0), 3, 0, 0);
-        }
+//        for (PoseRegion poseRegion : poseRegions) {
+//            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
+//                    new Scalar(255, 0, 0), 3, 0, 0);
+//        }
 
         WritableRaster raster = image.getRaster();
         DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
@@ -156,7 +155,6 @@ public class PoseDetector {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
         this.pose.updatePose();
-        System.out.println(this.pose.toString());
         return bufferedImage;
     }
 
@@ -187,5 +185,11 @@ public class PoseDetector {
         return img;
     }
 
-
+    /**
+     * A getter for the pose.
+     * @return The pose.
+     */
+    public Pose getPose() {
+        return pose;
+    }
 }
