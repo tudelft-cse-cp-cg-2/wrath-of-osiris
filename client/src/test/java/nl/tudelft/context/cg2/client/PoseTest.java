@@ -3,12 +3,15 @@ package nl.tudelft.context.cg2.client;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Limb;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.ScreenPos;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class PoseTest {
+    ScreenPos sp = ScreenPos.middle;
+
     @Test
     public void testPoseInit() {
         // options for arms
@@ -17,7 +20,7 @@ public class PoseTest {
         // options for legs
         Position leftLeg = Position.raised;
         Position rightLeg = Position.neutral;
-        Pose pose = new Pose(leftArm, rightArm, leftLeg, rightLeg);
+        Pose pose = new Pose(sp, leftArm, rightArm, leftLeg, rightLeg);
         // Test pose
         assertTrue(pose.toString()
                 .equals("Pose: la: " + leftArm.name() + "| ra: " + rightArm.name() + "| ll: " + leftLeg.name() + "| rl: " + rightLeg.name()));
@@ -25,7 +28,7 @@ public class PoseTest {
 
     @Test
     public void testUpdatePoseOnce() {
-        Pose pose = new Pose(Position.top, Position.top, Position.neutral, Position.neutral);
+        Pose pose = new Pose(sp, Position.top, Position.top, Position.neutral, Position.neutral);
         pose.resetCounters();
         pose.incrementCounter(Limb.right_arm, Position.top);
         pose.incrementCounter(Limb.right_arm, Position.middle);
@@ -52,7 +55,7 @@ public class PoseTest {
 
     @Test
     public void testUpdatePoseTwice() {
-        Pose pose = new Pose(Position.top, Position.top, Position.neutral, Position.neutral);
+        Pose pose = new Pose(sp, Position.top, Position.top, Position.neutral, Position.neutral);
         pose.resetCounters();
         pose.incrementCounter(Limb.right_arm, Position.top);
         pose.incrementCounter(Limb.right_arm, Position.middle);
@@ -84,13 +87,13 @@ public class PoseTest {
 
     @Test
     public void testPack() {
-        Pose a = new Pose(Position.bottom, Position.top, Position.neutral, Position.raised);
+        Pose a = new Pose(sp, Position.bottom, Position.top, Position.neutral, Position.raised);
         assertEquals("12001", a.pack());
     }
 
     @Test
     public void testUnpack() {
-        Pose a = new Pose(Position.bottom, Position.top, Position.neutral, Position.raised);
+        Pose a = new Pose(sp, Position.bottom, Position.top, Position.neutral, Position.raised);
         assertEquals(a, Pose.unpack("12001"));
     }
 

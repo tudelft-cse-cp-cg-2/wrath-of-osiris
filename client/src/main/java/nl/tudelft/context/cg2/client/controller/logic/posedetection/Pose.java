@@ -162,7 +162,7 @@ public class Pose {
      * @return a packed string representing this pose
      */
     public String pack() {
-        String msg = "1";
+        String msg = Integer.toString(screenPosition.indexOf());
         msg += packArm(leftArm);
         msg += packArm(rightArm);
         msg += packLeg(leftLeg);
