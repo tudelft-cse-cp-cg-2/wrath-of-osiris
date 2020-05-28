@@ -230,4 +230,36 @@ public class Pose {
             default: throw new IllegalArgumentException("Illegal leg format: " + c);
         }
     }
+
+    /**
+     * Getter for left arm position.
+     * @return left arm position
+     */
+    public Position getLeftArm() {
+        return leftArm;
+    }
+
+    /**
+     * Getter for right arm position.
+     * @return right arm position
+     */
+    public Position getRightArm() {
+        return rightArm;
+    }
+
+    /**
+     * Getter for left leg position.
+     * @return left leg position
+     */
+    public Position getLeftLeg() {
+        return leftLeg;
+    }
+
+    /**
+     * Getter for right leg position.
+     * @return right leg position
+     */
+    public Position getRightLeg() {
+        return rightLeg;
+    }
 }

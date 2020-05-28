@@ -2,6 +2,8 @@ package nl.tudelft.context.cg2.client.model.world.entities;
 
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.Entity;
@@ -12,25 +14,32 @@ import nl.tudelft.context.cg2.client.model.world.World;
  * Features a player avatar.
  */
 public class Avatar extends Entity {
-
     private final Color color;
+    private final Player player;
 
     /**
      * The avatar constructor.
      * @param color the color of the avatar.
+     * @param player the player this avatar is attached to.
      */
-    public Avatar(Color color) {
+    public Avatar(Color color, Player player) {
         super(null, new Vector3D(), new Vector3D(), World.HOLE_SIZE);
         this.color = color;
-        this.updateTexture(1, 2, 0, 1);
+        this.updateTexture(2, 2, 0, 0);
+        this.player = player;
     }
 
     @Override
     public void step(double t, double dt) {
-        if (Math.random() > 0.95D) {
-            randomTexture();
+        if (player.isPoseChanged()) {
+            Pose pose = player.getPose();
+            int la = pose.getLeftArm().indexOf();
+            int ra = pose.getRightArm().indexOf();
+            int ll = pose.getLeftLeg().indexOf();
+            int rl = pose.getRightArm().indexOf();
+            updateTexture(la, ra, ll, rl);
+            player.setPoseChanged(false);
         }
-
     }
 
     /**
@@ -76,5 +85,7 @@ public class Avatar extends Entity {
 
         setTexture(tex);
     }
+
+
 
 }
