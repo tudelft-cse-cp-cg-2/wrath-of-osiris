@@ -13,6 +13,7 @@ public enum Arm {
 
     /**
      * Constructor.
+     *
      * @param id identifier connected to the constant
      */
     Arm(int id) {
@@ -37,6 +38,7 @@ public enum Arm {
 
     /**
      * Returns the index of the Arm value.
+     *
      * @return index of the arm value
      */
     public int indexOf() {

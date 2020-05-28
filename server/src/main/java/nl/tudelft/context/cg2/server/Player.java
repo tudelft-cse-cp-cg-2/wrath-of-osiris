@@ -2,8 +2,10 @@ package nl.tudelft.context.cg2.server;
 
 import nl.tudelft.context.cg2.server.game.Arm;
 import nl.tudelft.context.cg2.server.game.Legs;
+import nl.tudelft.context.cg2.server.game.LevelGenerator;
 import nl.tudelft.context.cg2.server.game.Pose;
 import nl.tudelft.context.cg2.server.game.ScreenPos;
+import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -184,6 +187,14 @@ public class Player extends Thread {
      */
     public void updateLives() {
         out.println("updatelives " + lobby.getLives());
+    }
+
+    /**
+     * Sends a level to the client.
+     * @param level level
+     */
+    public void sendLevel(ArrayList<Wall> level) {
+        out.println(LevelGenerator.levelToJsonString(level));
     }
 
     /**

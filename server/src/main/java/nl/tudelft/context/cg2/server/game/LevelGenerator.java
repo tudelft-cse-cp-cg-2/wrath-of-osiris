@@ -1,5 +1,8 @@
 package nl.tudelft.context.cg2.server.game;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -164,5 +167,24 @@ public class LevelGenerator {
      */
     private int rand(int minValue, int maxValue) {
         return (int) (Math.random() * (++maxValue - minValue)) + minValue;
+    }
+
+    /**
+     * Converts a level to a JSON string, which can be sent to the client.
+     * @param level level
+     * @return JSON string
+     */
+    public static String levelToJsonString(ArrayList<Wall> level) {
+        return new Gson().toJson(level);
+    }
+
+    /**
+     * Converts a JSON string from the server to a level, so the client can use it.
+     * @param str JSON string
+     * @return level
+     */
+    public static ArrayList<Wall> jsonStringToLevel(String str) {
+        return new Gson().fromJson(str, new TypeToken<ArrayList<Wall>>() {
+        }.getType());
     }
 }

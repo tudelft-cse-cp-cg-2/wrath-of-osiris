@@ -12,7 +12,7 @@ public class WallTest {
         Wall w = new Wall();
         for (ScreenPos position : ScreenPos.values()) {
             assertNull(w.getPose(position));
-            assertNull(w.getNumber(position));
+            assertEquals(-1, w.getNumber(position));
         }
     }
 
@@ -130,8 +130,8 @@ public class WallTest {
         w.setPose(ScreenPos.LEFT, a);
         w.setPose(ScreenPos.MIDDLE, b);
         w.setNumber(ScreenPos.LEFT, 2);
-        String expected = "2\narms: DOWN UP\nlegs: DOWN\nscreen: LEFT\nnull\narms: UP SIDE" +
-                "\nlegs: LEFTUP\nscreen: MIDDLE\nnull\nnull\n";
+        String expected = "2\narms: DOWN UP\nlegs: DOWN\nscreen: LEFT\n-1\narms: UP SIDE" +
+                "\nlegs: LEFTUP\nscreen: MIDDLE\n-1\nnull\n";
         assertEquals(expected, w.toString());
     }
 }
