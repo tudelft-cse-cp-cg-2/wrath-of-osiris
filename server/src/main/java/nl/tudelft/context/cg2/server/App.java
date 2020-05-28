@@ -38,7 +38,20 @@ public final class App {
      * @param player the player to interrupt
      */
     public static void disconnectPlayer(Player player) {
+        // remove the player from the lobby
+        for (Lobby lobby : lobbies) {
+            for (Player p : lobby.getPlayers()) {
+                if (p.getPlayerName().equals(player.getPlayerName())) {
+                    lobby.removePlayer(p);
+                    break;
+                }
+            }
+        }
+
+        // tell player class to stop its main loop
         player.terminate();
+
+        // interrupt the player's thread
         player.interrupt();
     }
 
@@ -87,6 +100,31 @@ public final class App {
 
         return out;
     }
+
+    /**
+     * Create a new lobby.
+     * @param player the player creating the lobby, who will also automatically join
+     * @param lobbyName the name of the lobby
+     * @param password the optional password of the lobby, or if none, null
+     * @return the index of the newly created lobby
+     */
+    public static int createLobby(Player player, String lobbyName, String password) {
+        Lobby lobby = new Lobby(lobbyName, password, new ArrayList<Player>());
+        lobby.addPlayer(player);
+        lobbies.add(lobby);
+        return lobbies.indexOf(lobby);
+    }
+
+    /**
+     * Create a new lobby without a password.
+     * @param player the player creating the lobby, who will also automatically join
+     * @param lobbyName the name of the lobby
+     * @return the index of the newly created lobby
+     */
+    public static int createLobby(Player player, String lobbyName) {
+        return createLobby(player, lobbyName, null);
+    }
+
 
     /**
      * Generate a compact representation of all existing lobbies.

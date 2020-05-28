@@ -1,15 +1,13 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.CreateLobbyRequest;
+import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The Create Game scene controller class.
@@ -65,18 +63,25 @@ public class CreateGameSceneController extends SceneController {
         String lobbyName = scene.getLobbyNameField().getText();
         String password = scene.getPasswordField().getText();
 
-        // Create model entities based on user input.
-        Player player = new Player(playerName);
-        List<Player> players = new ArrayList<>();
-        players.add(player);
+        CreateLobbyRequest req = new CreateLobbyRequest(controller.getServer().getIn(),
+                controller.getServer().getOut(), playerName, lobbyName, password);
+        req.start();
+        try {
+            req.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-        Lobby lobby = new Lobby(lobbyName, password, players, true);
+        // Set current player object.
+        controller.getModel().setCurrentPlayer(new Player(playerName));
+        controller.scheduleLobbyUpdater(req.getResultIndex());
 
-        model.setCurrentPlayer(player);
-        model.setCurrentLobby(lobby);
+        // Start game state updater thread.
+        controller.setStateUpdater(new GameStateUpdater(controller.getServer().getIn(),
+                controller.getServer().getOut(), controller));
+        controller.getStateUpdater().start();
 
         // Show updated model in view.
-        view.getLobbyScene().setPlayerNames(lobby.getPlayerNames());
         view.getLobbyScene().getStartButton().setVisible(true);
         view.getLobbyScene().getWaitMessage().setVisible(false);
         view.getLobbyScene().show();
