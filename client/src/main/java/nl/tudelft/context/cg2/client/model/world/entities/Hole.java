@@ -40,7 +40,7 @@ public class Hole extends Entity {
     }
 
     /**
-     * Updates the hole's texture to match a given post.
+     * Updates the hole's texture to match a given posture.
      * @param leftArmId the posture id of the left arm.
      * @param rightArmId the posture id of the right arm.
      * @param leftLegId the posture id of the left leg.

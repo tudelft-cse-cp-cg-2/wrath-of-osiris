@@ -43,7 +43,7 @@ public class Wall extends Entity {
     /**
      * A boolean to check if the wall has decayed.
      * The wall should be removed from the game when decayed.
-     * @return true of false.
+     * @return true or false.
      */
     public boolean hasDecayed() {
         return decayed;
