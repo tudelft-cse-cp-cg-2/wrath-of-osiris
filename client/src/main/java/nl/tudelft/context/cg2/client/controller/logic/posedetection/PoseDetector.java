@@ -20,17 +20,10 @@ public class PoseDetector {
     private static final String POSE_DETECTION_DEFAULT = "./src/main/resources/xml/haarcascade_frontalface_default.xml";
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
-    private final Pose pose = new Pose(Position.bottom, Position.bottom,
+
+    private final Pose pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
             Position.neutral, Position.neutral);
     private BufferedImage baseImage;
-
-    /**
-     * A getter for the pose.
-     * @return The pose.
-     */
-    public Pose getPose() {
-        return pose;
-    }
 
     /**
      * Given the coordinates of a head, calculate the bounding boxes
@@ -106,8 +99,6 @@ public class PoseDetector {
                 head.getLeftX() - head.getRightX(),
                 head.getTopY() + 10 * head.getBottomY(),
                 Limb.left_leg, Position.raised));
-
-
         return out;
     }
 
@@ -164,7 +155,6 @@ public class PoseDetector {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
         this.pose.updatePose();
-        System.out.println(this.pose.toString());
         return bufferedImage;
     }
 
@@ -193,5 +183,13 @@ public class PoseDetector {
             }
         }
         return img;
+    }
+
+    /**
+     * A getter for the pose.
+     * @return The pose.
+     */
+    public Pose getPose() {
+        return pose;
     }
 }

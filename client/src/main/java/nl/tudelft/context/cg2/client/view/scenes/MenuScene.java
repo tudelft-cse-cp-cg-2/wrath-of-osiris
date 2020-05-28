@@ -5,6 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -21,6 +22,10 @@ public class MenuScene extends BaseScene {
     private SimpleButton joinGameButton;
     private SimpleButton createGameButton;
     private SimpleButton quitButton;
+
+    private StackPane popup;
+    private StackPane popupPane;
+    private Text popupText;
 
     /**
      * The menu scene constructor.
@@ -60,8 +65,27 @@ public class MenuScene extends BaseScene {
         quitButton.setTranslateY(-30);
         StackPane.setAlignment(quitButton, Pos.BOTTOM_RIGHT);
 
+        popup = new StackPane();
+        popup.minWidthProperty().bind(window.sceneWidthProperty());
+        popup.getStyleClass().add("popup");
+        popup.maxWidthProperty().bind(window.sceneWidthProperty());
+        popup.minHeightProperty().bind(window.sceneHeightProperty());
+        popup.maxHeightProperty().bind(window.sceneHeightProperty());
+        popup.setVisible(false);
+        popupPane = new StackPane();
+        popupPane.setMinSize(400, 250);
+        popupPane.setMaxSize(400, 250);
+        popupPane.getStyleClass().add("popup-pane");
+        popupText = new Text();
+        popupText.setWrappingWidth(350);
+        popupText.setLayoutX(25);
+        popupText.setTextAlignment(TextAlignment.CENTER);
+        popupText.getStyleClass().add("popup-text");
+
+        popupPane.getChildren().add(popupText);
+        popup.getChildren().add(popupPane);
         centerHBox.getChildren().addAll(joinGameButton, createGameButton);
-        root.getChildren().addAll(centerHBox, quitButton, headerText);
+        root.getChildren().addAll(centerHBox, quitButton, headerText, popup);
     }
 
     /**
@@ -102,5 +126,18 @@ public class MenuScene extends BaseScene {
      */
     public SimpleButton getQuitButton() {
         return quitButton;
+    }
+
+    public void showPopup(String message) {
+        popupText.setText(message);
+        popup.setVisible(true);
+    }
+
+    public void closePopup() {
+        popup.setVisible(false);
+    }
+
+    public StackPane getPopup() {
+        return popup;
     }
 }

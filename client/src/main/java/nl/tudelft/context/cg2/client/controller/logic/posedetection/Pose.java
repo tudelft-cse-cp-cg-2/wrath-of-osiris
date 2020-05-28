@@ -12,6 +12,7 @@ public class Pose {
     private Position rightArm;
     private Position leftLeg;
     private Position rightLeg;
+    private ScreenPos screenPosition;
 
     private Map<Position, Integer> leftArmCounter;
     private Map<Position, Integer> rightArmCounter;
@@ -20,16 +21,18 @@ public class Pose {
 
     /**
      * Constructor for pose.
+     * @param sp - screen position
      * @param la - left arm
      * @param ra - right arm
      * @param ll - left leg
      * @param rl - right leg
      */
-    public Pose(Position la, Position ra, Position ll, Position rl) {
+    public Pose(ScreenPos sp, Position la, Position ra, Position ll, Position rl) {
         leftArm = la;
         rightArm = ra;
         leftLeg = ll;
         rightLeg = rl;
+        screenPosition = sp;
     }
 
     /**
@@ -44,14 +47,12 @@ public class Pose {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Pose)) {
             return false;
         }
         Pose pose = (Pose) o;
-        return leftArm == pose.leftArm
+        return  screenPosition == pose.screenPosition
+                && leftArm == pose.leftArm
                 && rightArm == pose.rightArm
                 && leftLeg == pose.leftLeg
                 && rightLeg == pose.rightLeg;
@@ -60,6 +61,11 @@ public class Pose {
     @Override
     public int hashCode() {
         return Objects.hash(leftArm, rightLeg, leftLeg, rightLeg);
+    }
+
+    @Override
+    public Pose clone() {
+        return new Pose(screenPosition, leftArm, rightArm, leftLeg, rightLeg);
     }
 
     /**
@@ -181,7 +187,7 @@ public class Pose {
      * @return a packed string representing this pose
      */
     public String pack() {
-        String msg = "1";
+        String msg = Integer.toString(screenPosition.indexOf());
         msg += packArm(leftArm);
         msg += packArm(rightArm);
         msg += packLeg(leftLeg);
@@ -222,11 +228,12 @@ public class Pose {
      * @return player pose interpreted from packet
      */
     public static Pose unpack(String poseStr) {
+        ScreenPos screenPos = ScreenPos.valueOf(Character.getNumericValue(poseStr.charAt(0)));
         Position leftArm = unpackArm(poseStr.charAt(1));
         Position rightArm = unpackArm(poseStr.charAt(2));
         Position leftLeg = unpackLeg(poseStr.charAt(3));
         Position rightLeg = unpackLeg(poseStr.charAt(4));
-        return new Pose(leftArm, rightArm, leftLeg, rightLeg);
+        return new Pose(screenPos, leftArm, rightArm, leftLeg, rightLeg);
     }
 
     /**
@@ -254,5 +261,45 @@ public class Pose {
             case '1': return Position.raised;
             default: throw new IllegalArgumentException("Illegal leg format: " + c);
         }
+    }
+
+    /**
+     * Getter for left arm position.
+     * @return left arm position
+     */
+    public Position getLeftArm() {
+        return leftArm;
+    }
+
+    /**
+     * Getter for right arm position.
+     * @return right arm position
+     */
+    public Position getRightArm() {
+        return rightArm;
+    }
+
+    /**
+     * Getter for left leg position.
+     * @return left leg position
+     */
+    public Position getLeftLeg() {
+        return leftLeg;
+    }
+
+    /**
+     * Getter for right leg position.
+     * @return right leg position
+     */
+    public Position getRightLeg() {
+        return rightLeg;
+    }
+
+    /**
+     * Getter for screen position.
+     * @return screen position
+     */
+    public ScreenPos getScreenPosition() {
+        return screenPosition;
     }
 }

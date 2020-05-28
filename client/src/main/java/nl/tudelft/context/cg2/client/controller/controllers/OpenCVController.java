@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.controller.view.scenes;
+package nl.tudelft.context.cg2.client.controller.controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,7 +25,7 @@ import static org.opencv.imgproc.Imgproc.resize;
  * The OpenCV scene controller class.
  * Controls the OpenCV scene.
  */
-public class OpenCVSceneController extends SceneController {
+public class OpenCVController extends SceneController {
 
     private final OpenCVScene scene;
 
@@ -38,10 +38,10 @@ public class OpenCVSceneController extends SceneController {
      * The OpenCV scene controller.
      * Controls the input on the main scene.
      * @param controller the controller class.
-     * @param model      the model class.
-     * @param view       the view class.
+     * @param model the model class.
+     * @param view the view class.
      */
-    public OpenCVSceneController(Controller controller, Model model, View view) {
+    public OpenCVController(Controller controller, Model model, View view) {
         super(controller, model, view);
         scene = view.getOpenCVScene();
         this.videoCapture = null;
@@ -97,7 +97,8 @@ public class OpenCVSceneController extends SceneController {
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
-            scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
+//            scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
+            captureAndProcessSnapshot(poseDetector);
         }));
         captureTimer.setCycleCount(Timeline.INDEFINITE);
         captureTimer.play();
@@ -119,7 +120,7 @@ public class OpenCVSceneController extends SceneController {
      * @param poseDetector - PoseDetector object
      * @return an image with the player pose marked
      */
-    public WritableImage captureAndProcessSnapshot(PoseDetector poseDetector) {
+    public void captureAndProcessSnapshot(PoseDetector poseDetector) {
         WritableImage writableImage = null;
 
         Mat matrix = new Mat();
@@ -133,11 +134,13 @@ public class OpenCVSceneController extends SceneController {
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
-            if (this.controller.getModel().getCurrentPlayer() != null) {
-                this.controller.getModel().getCurrentPlayer().setPose(poseDetector.getPose());
+
+            if(controller.getModel().getCurrentPlayer() != null) {
+                this.controller.getModel().getCurrentPlayer().updatePose(poseDetector.getPose().clone());
             }
         }
 
-        return writableImage;
+        scene.getVideo().setImage(writableImage);
+        controller.getView().getGameScene().getCameraView().setImage(writableImage);
     }
 }
