@@ -1,7 +1,5 @@
 package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 
-import javafx.stage.Screen;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -63,6 +61,11 @@ public class Pose {
     @Override
     public int hashCode() {
         return Objects.hash(leftArm, rightLeg, leftLeg, rightLeg);
+    }
+
+    @Override
+    public Pose clone() {
+        return new Pose(screenPosition, leftArm, rightArm, leftLeg, rightLeg);
     }
 
     /**

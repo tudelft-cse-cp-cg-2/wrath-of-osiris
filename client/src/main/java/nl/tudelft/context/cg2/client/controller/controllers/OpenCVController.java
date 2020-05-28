@@ -127,7 +127,10 @@ public class OpenCVController extends SceneController {
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
-            this.controller.getModel().getCurrentPlayer().setPose(poseDetector.getPose());
+
+            if(controller.getModel().getCurrentPlayer() != null) {
+                this.controller.getModel().getCurrentPlayer().updatePose(poseDetector.getPose().clone());
+            }
         }
 
         skip = true;

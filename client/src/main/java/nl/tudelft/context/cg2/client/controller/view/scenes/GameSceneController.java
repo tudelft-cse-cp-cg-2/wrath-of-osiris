@@ -100,7 +100,6 @@ public class GameSceneController extends SceneController {
         model.getWorld().createPlayerAvatars(model.getCurrentLobby().getPlayers());
         view.getGameScene().clear();
         view.getGameScene().show();
-        controller.getOpenCVController().startCapture();
         model.getWorld().setInMotion(true);
     }
 

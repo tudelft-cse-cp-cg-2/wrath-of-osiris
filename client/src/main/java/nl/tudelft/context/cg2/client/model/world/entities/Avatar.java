@@ -70,7 +70,7 @@ public class Avatar extends Entity {
         int la = pose.getLeftArm().indexOf();
         int ra = pose.getRightArm().indexOf();
         int ll = pose.getLeftLeg().indexOf();
-        int rl = pose.getRightArm().indexOf();
+        int rl = pose.getRightLeg().indexOf();
         updateTexture(la, ra, ll, rl);
     }
 

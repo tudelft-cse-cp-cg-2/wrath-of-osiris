@@ -3,8 +3,6 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.awt.Color;
@@ -125,10 +123,10 @@ public class PoseDetector {
             return image;
         }
 
-        for (PoseRegion poseRegion : poseRegions) {
-            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
-                    new Scalar(255, 0, 0), 3, 0, 0);
-        }
+//        for (PoseRegion poseRegion : poseRegions) {
+//            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
+//                    new Scalar(255, 0, 0), 3, 0, 0);
+//        }
 
         WritableRaster raster = image.getRaster();
         DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();

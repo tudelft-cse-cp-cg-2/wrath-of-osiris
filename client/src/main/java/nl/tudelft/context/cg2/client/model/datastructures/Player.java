@@ -60,12 +60,12 @@ public class Player {
     /**
      * Setter for a player's pose.
      * Also updates the boolean 'poseChanged' whether the pose actually changed.
-     * @param otherPose the player's current pose.
      */
-    public void setPose(Pose otherPose) {
-        if (!pose.equals(otherPose)) {
-            this.pose = otherPose;
+    public void updatePose(Pose other) {
+        if (!pose.equals(other)) {
+            this.pose = other;
             this.poseChanged = true;
+            System.out.println(other.toString());
         }
     }
 
