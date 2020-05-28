@@ -18,7 +18,6 @@ import org.opencv.videoio.Videoio;
 
 import java.awt.image.BufferedImage;
 
-import static org.opencv.core.Core.flip;
 import static org.opencv.imgproc.Imgproc.resize;
 
 /**
