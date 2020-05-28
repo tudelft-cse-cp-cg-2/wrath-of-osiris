@@ -10,7 +10,6 @@ import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
  */
 public class Player {
     private final String name;
-    private Avatar avatar;
     private Pose pose;
     private boolean poseChanged;
 
@@ -20,7 +19,6 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
-        this.avatar = null;
         this.pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
                 Position.neutral, Position.neutral);
         this.poseChanged = false;
@@ -69,14 +67,6 @@ public class Player {
             this.pose = otherPose;
             this.poseChanged = true;
         }
-    }
-
-    public Avatar getAvatar() {
-        return avatar;
-    }
-
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
     }
 
     public boolean isPoseChanged() {

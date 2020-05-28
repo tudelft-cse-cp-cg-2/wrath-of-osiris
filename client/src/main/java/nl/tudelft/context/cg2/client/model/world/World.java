@@ -59,13 +59,17 @@ public class World {
         players.forEach(p -> {
             Avatar avatar = new Avatar(p, Color.DARKBLUE);
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
-            p.setAvatar(avatar);
             entities.add(avatar);
         });
     }
 
-    public void destroyPlayerAvatar(Player player) {
-        player.setAvatar(null);
+    /**
+     * Destroys the player avatar and updates
+     * other world values when a player leaves the game.
+     * @param player the player to whom the avatar belongs.
+     */
+    public void onAvatarDeath(Player player) {
+
     }
 
     /**

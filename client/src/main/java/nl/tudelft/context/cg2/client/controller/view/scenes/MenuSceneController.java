@@ -41,6 +41,7 @@ public class MenuSceneController extends SceneController {
         scene.getJoinGameButton().setOnMouseClicked(event -> joinGameClicked());
         scene.getCreateGameButton().setOnMouseClicked(event -> createGameButtonClicked());
         scene.getQuitButton().setOnMouseClicked(event -> quitButtonClicked());
+        scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
 
     /**
@@ -52,6 +53,9 @@ public class MenuSceneController extends SceneController {
             switch (event.getCode()) {
                 case ENTER:
                     startOpenCVClicked();
+                    break;
+                case ESCAPE:
+                    scene.closePopup();
                     break;
                 default:
                     break;

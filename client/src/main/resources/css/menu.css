@@ -52,5 +52,19 @@
 }
 
 .popup {
-    -fx-background-color: palevioletred;
+    -fx-background-color: rgba(0, 0, 0, 0.1);
+}
+
+.popup-pane {
+    -fx-background-color: rgb(15, 15, 27);
+    -fx-border-color: crimson;
+    -fx-border-style: solid;
+    -fx-border-width: 4px;
+}
+
+.popup-text {
+    -fx-font-size: 20px;
+    -fx-font-family: 'SanSerif';
+    -fx-fill: white;
+    -fx-font-weight: bold ;
 }

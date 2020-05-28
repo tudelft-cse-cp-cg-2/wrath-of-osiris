@@ -5,6 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -74,8 +75,12 @@ public class MenuScene extends BaseScene {
         popupPane = new StackPane();
         popupPane.setMinSize(400, 250);
         popupPane.setMaxSize(400, 250);
+        popupPane.getStyleClass().add("popup-pane");
         popupText = new Text();
-        popupText.getStyleClass().add("text");
+        popupText.setWrappingWidth(350);
+        popupText.setLayoutX(25);
+        popupText.setTextAlignment(TextAlignment.CENTER);
+        popupText.getStyleClass().add("popup-text");
 
         popupPane.getChildren().add(popupText);
         popup.getChildren().add(popupPane);
@@ -132,4 +137,7 @@ public class MenuScene extends BaseScene {
         popup.setVisible(false);
     }
 
+    public StackPane getPopup() {
+        return popup;
+    }
 }
