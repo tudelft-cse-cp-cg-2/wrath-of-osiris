@@ -16,6 +16,14 @@ public class Vector3D {
     }
 
     /**
+     * Creates a new Vector3D with the same coords as the other.
+     * @param other the other vector.
+     */
+    public Vector3D(Vector3D other) {
+        this(other.x, other.y, other.z);
+    }
+
+    /**
      * Creates a Vector2D (x, y).
      * @param x x
      * @param y y
