@@ -7,10 +7,8 @@ import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.PoseDetector;
-import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
-import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
 import org.opencv.videoio.VideoCapture;
@@ -18,21 +16,21 @@ import org.opencv.videoio.Videoio;
 
 import java.awt.image.BufferedImage;
 
-import static org.opencv.core.Core.flip;
 import static org.opencv.imgproc.Imgproc.resize;
 
 /**
  * The OpenCV scene controller class.
  * Controls the OpenCV scene.
  */
-public class OpenCVController extends SceneController {
-
-    private final OpenCVScene scene;
+public class OpenCVController {
 
     private VideoCapture videoCapture;
     private PoseDetector poseDetector;
     private Timeline captureTimer;
 
+    private final Controller controller;
+    private final Model model;
+    private View view;
 
     /**
      * The OpenCV scene controller.
@@ -42,44 +40,12 @@ public class OpenCVController extends SceneController {
      * @param view the view class.
      */
     public OpenCVController(Controller controller, Model model, View view) {
-        super(controller, model, view);
-        scene = view.getOpenCVScene();
+        this.controller = controller;
+        this.model = model;
+        this.view = view;
         this.videoCapture = null;
         this.poseDetector = null;
         this.captureTimer = null;
-    }
-
-    /**
-     * Sets up the mouse listeners attached to the various GUI elements.
-     */
-    @Override
-    protected void setupMouseListeners() {
-
-    }
-
-    /**
-     * Sets up the keyboard listeners attached to the various GUI elements.
-     */
-    @Override
-    protected void setupKeyboardListeners() {
-        scene.setOnKeyPressed(event -> {
-            switch (event.getCode()) {
-                case BACK_SPACE:
-                    stopCapture();
-                    view.getMenuScene().show();
-                    break;
-                default:
-                    break;
-            }
-        });
-    }
-
-    /**
-     * Sets up the event listeners attach to various UI properties.
-     */
-    @Override
-    protected void setupEventListeners() {
-
     }
 
     /**
@@ -97,9 +63,9 @@ public class OpenCVController extends SceneController {
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
-//            scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
             captureAndProcessSnapshot(poseDetector);
         }));
+
         captureTimer.setCycleCount(Timeline.INDEFINITE);
         captureTimer.play();
     }
@@ -132,12 +98,11 @@ public class OpenCVController extends SceneController {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
 
-            if (controller.getModel().getCurrentPlayer() != null) {
-                controller.getModel().getCurrentPlayer().updatePose(poseDetector.getPose().copy());
+            if (model.getCurrentPlayer() != null) {
+                model.getCurrentPlayer().updatePose(poseDetector.getPose().copy());
             }
         }
 
-        scene.getVideo().setImage(writableImage);
-        controller.getView().getGameScene().getCameraView().setImage(writableImage);
+        view.getGameScene().getCameraView().setImage(writableImage);
     }
 }

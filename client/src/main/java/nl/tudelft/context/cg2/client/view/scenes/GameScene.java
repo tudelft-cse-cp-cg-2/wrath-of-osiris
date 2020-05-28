@@ -104,6 +104,7 @@ public class GameScene extends BaseScene {
         cameraView.layoutXProperty().bind(window.sceneWidthProperty()
                 .subtract(cameraView.fitWidthProperty().multiply(1.1D)));
         cameraView.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.02D));
+        cameraView.setScaleX(-1D);
 
         // Create scene node family tree.
         lifePane.getChildren().addAll(hearts);
