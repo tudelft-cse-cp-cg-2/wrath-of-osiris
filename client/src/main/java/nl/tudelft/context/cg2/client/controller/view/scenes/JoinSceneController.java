@@ -53,8 +53,8 @@ public class JoinSceneController extends SceneController {
         String name = scene.getPlayerNameField().getText();
 
         // Request server to join lobby.
-        JoinLobbyRequest req = new JoinLobbyRequest(controller.getServer().getIn(),
-                controller.getServer().getOut(), index, name);
+        JoinLobbyRequest req = new JoinLobbyRequest(controller.getNetworkController().getIn(),
+                controller.getNetworkController().getOut(), index, name);
         req.start();
         try {
             req.join();
@@ -64,11 +64,11 @@ public class JoinSceneController extends SceneController {
 
         // Set current player object.
         controller.getModel().setCurrentPlayer(new Player(name));
-        controller.scheduleLobbyUpdater(index);
+        controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(index);
 
         // Start game state updater thread.
-        controller.setStateUpdater(new GameStateUpdater(controller.getServer().getIn(),
-                controller.getServer().getOut(), controller));
+        controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
+                controller.getNetworkController().getOut(), controller));
         controller.getStateUpdater().start();
 
         // Switch to lobby scene.
@@ -86,4 +86,5 @@ public class JoinSceneController extends SceneController {
     protected void setupEventListeners() {
 
     }
+
 }

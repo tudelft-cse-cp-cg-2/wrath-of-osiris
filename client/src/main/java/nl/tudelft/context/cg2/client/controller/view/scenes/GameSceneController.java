@@ -1,11 +1,14 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.PoseUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.GameScene;
+
+import java.util.Timer;
 
 /**
  * The Menu scene controller class.
@@ -15,6 +18,7 @@ public class GameSceneController extends SceneController {
 
     private final GameScene scene;
     private final World world;
+    private Timer updateTimer;
 
     /**
      * The main scene controller.
@@ -76,5 +80,45 @@ public class GameSceneController extends SceneController {
      */
     private void showMenuScene() {
         view.getMenuScene().show();
+    }
+
+    /**
+     * Starts the game.
+     */
+    public void startGame() {
+        controller.getOpenCVController().startCapture();
+
+        // Stop fetchLobby requests
+        controller.getViewController().getLobbySceneController().stopTimer();
+
+        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
+                controller.getNetworkController().getOut(), model.getCurrentPlayer());
+        updateTimer = new Timer();
+        updateTimer.schedule(poseUpdater, 500, 500);
+
+        model.getWorld().create();
+        view.getGameScene().clear();
+        view.getGameScene().show();
+    }
+
+    /**
+     * Stops the game.
+     */
+    public void stopGame() {
+        stopUpdateTimer();
+        controller.getOpenCVController().stopCapture();
+        world.destroy();
+        view.getGameScene().clear();
+        view.getLobbyScene().show();
+    }
+
+    /**
+     * Stops the update timer that sends
+     * scheduled network updates.
+     */
+    public void stopUpdateTimer() {
+        updateTimer.cancel();
+        updateTimer.purge();
+        updateTimer = null;
     }
 }

@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.controller.view.scenes;
+package nl.tudelft.context.cg2.client.controller.controllers;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -22,7 +22,7 @@ import static org.opencv.core.Core.flip;
  * The OpenCV scene controller class.
  * Controls the OpenCV scene.
  */
-public class OpenCVSceneController extends SceneController {
+public class OpenCVController extends SceneController {
 
     private final OpenCVScene scene;
 
@@ -40,7 +40,7 @@ public class OpenCVSceneController extends SceneController {
      * @param model the model class.
      * @param view the view class.
      */
-    public OpenCVSceneController(Controller controller, Model model, View view) {
+    public OpenCVController(Controller controller, Model model, View view) {
         super(controller, model, view);
         scene = view.getOpenCVScene();
         this.videoCapture = null;

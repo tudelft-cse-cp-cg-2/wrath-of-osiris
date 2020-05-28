@@ -50,9 +50,6 @@ public class MenuSceneController extends SceneController {
     protected void setupKeyboardListeners() {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case SPACE:
-                    startGameClicked();
-                    break;
                 case ENTER:
                     startOpenCVClicked();
                     break;
@@ -75,7 +72,7 @@ public class MenuSceneController extends SceneController {
      */
     private void startOpenCVClicked() {
         view.getOpenCVScene().show();
-        controller.getViewController().getOpenCVSceneController().startCapture();
+        controller.getOpenCVController().startCapture();
     }
 
     /**
@@ -92,20 +89,24 @@ public class MenuSceneController extends SceneController {
      * Retrieves available lobbies from server and loads them into the scene.
      */
     private void joinGameClicked() {
-        ListLobbiesRequest req = new ListLobbiesRequest(controller.getServer().getIn(),
-                controller.getServer().getOut());
-        req.start();
-        try {
-            req.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        ArrayList<Lobby> lobbies = req.getResult();
-        List<String> names = lobbies.stream()
-                .map(l -> l.getPlayers().size() + "/5 " + l.getName()).collect(Collectors.toList());
+        if(controller.getNetworkController().connect()) {
+            ListLobbiesRequest req = new ListLobbiesRequest(controller.getNetworkController().getIn(),
+                    controller.getNetworkController().getOut());
+            req.start();
+            try {
+                req.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            ArrayList<Lobby> lobbies = req.getResult();
+            List<String> names = lobbies.stream()
+                    .map(l -> l.getPlayers().size() + "/5 " + l.getName()).collect(Collectors.toList());
 
-        view.getJoinScene().setLobbyNames(names);
-        view.getJoinScene().show();
+            view.getJoinScene().setLobbyNames(names);
+            view.getJoinScene().show();
+        } else {
+            scene.showPopup("There was an error connecting to the server!");
+        }
     }
 
     /**
@@ -113,7 +114,11 @@ public class MenuSceneController extends SceneController {
      * Shows the create game scene.
      */
     private void createGameButtonClicked() {
-        view.getCreateGameScene().show();
+        if(controller.getNetworkController().connect()) {
+            view.getCreateGameScene().show();
+        } else {
+            scene.showPopup("There was an error connecting to the server!");
+        }
     }
 
     /**

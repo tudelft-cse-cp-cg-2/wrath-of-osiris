@@ -1,7 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
-import nl.tudelft.context.cg2.client.model.datastructures.Server;
+import nl.tudelft.context.cg2.client.model.datastructures.NetworkController;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,7 +54,7 @@ public class JoinLobbyRequest extends Thread {
             // join lobby
             out.println("joinlobby " + index + " " + playerName);
             fromServer = in.readLine();
-            assert fromServer != null && fromServer.equals(Server.EOT);
+            assert fromServer != null && fromServer.equals(NetworkController.EOT);
         } catch (IOException e) {
             e.printStackTrace();
         }

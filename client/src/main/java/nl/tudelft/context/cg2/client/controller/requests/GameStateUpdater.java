@@ -4,6 +4,7 @@ import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -76,11 +77,13 @@ public class GameStateUpdater extends Thread {
             switch (serverInput) {
                 case "startgame":
                     started = true;
-                    Platform.runLater(() -> controller.startGame());
+                    Platform.runLater(() -> controller.getViewController()
+                            .getGameSceneController().startGame());
                     break;
                 case "stopgame":
                     // todo: Maybe how "game over" screen and summary?
-                    Platform.runLater(() -> controller.stopGame());
+                    Platform.runLater(() -> controller.getViewController()
+                            .getGameSceneController().stopGame());
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
@@ -98,7 +101,14 @@ public class GameStateUpdater extends Thread {
         String playerName = split[1];
         String poseStr = split[2];
         Pose pose = Pose.unpack(poseStr);
-        controller.updatePose(playerName, pose);
+
+        try {
+            int index = controller.getModel().getCurrentLobby().getPlayerNames().indexOf(playerName);
+            Player player = controller.getModel().getCurrentLobby().getPlayers().get(index);
+            player.setPose(pose);
+        } catch (NullPointerException | IndexOutOfBoundsException e) {
+            System.out.println("Player names not yet initialized");
+        }
     }
 
     /**

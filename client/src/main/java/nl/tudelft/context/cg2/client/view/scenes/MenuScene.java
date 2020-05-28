@@ -22,6 +22,10 @@ public class MenuScene extends BaseScene {
     private SimpleButton createGameButton;
     private SimpleButton quitButton;
 
+    private StackPane popup;
+    private StackPane popupPane;
+    private Text popupText;
+
     /**
      * The menu scene constructor.
      * @param window the window currently showing.
@@ -60,8 +64,21 @@ public class MenuScene extends BaseScene {
         quitButton.setTranslateY(-30);
         StackPane.setAlignment(quitButton, Pos.BOTTOM_RIGHT);
 
+        popup = new StackPane();
+        popup.minWidthProperty().bind(window.sceneWidthProperty());
+        popup.maxWidthProperty().bind(window.sceneWidthProperty());
+        popup.minHeightProperty().bind(window.sceneHeightProperty());
+        popup.maxHeightProperty().bind(window.sceneHeightProperty());
+        popup.setVisible(false);
+        popupPane = new StackPane();
+        popupPane.setMinSize(400, 250);
+        popupPane.setMaxSize(400, 250);
+        popupText = new Text();
+
+        popupPane.getChildren().add(popupText);
+        popup.getChildren().add(popupPane);
         centerHBox.getChildren().addAll(joinGameButton, createGameButton);
-        root.getChildren().addAll(centerHBox, quitButton, headerText);
+        root.getChildren().addAll(centerHBox, quitButton, headerText, popup);
     }
 
     /**
@@ -103,4 +120,14 @@ public class MenuScene extends BaseScene {
     public SimpleButton getQuitButton() {
         return quitButton;
     }
+
+    public void showPopup(String message) {
+        popupText.setText(message);
+        popup.setVisible(true);
+    }
+
+    public void closePopup() {
+        popup.setVisible(false);
+    }
+
 }

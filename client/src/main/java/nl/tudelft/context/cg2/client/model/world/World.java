@@ -63,6 +63,16 @@ public class World {
     }
 
     /**
+     * Clears the world.
+     */
+    public void destroy() {
+        inMotion = false;
+        entities.clear();
+        holes.clear();
+        currentWall = null;
+    }
+
+    /**
      * Processes one step in the game world.
      * @param t the passed time in s since timer initialization.
      * @param dt the passed time in s since the last update.
