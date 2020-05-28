@@ -33,6 +33,22 @@ public class Avatar extends Entity {
     public void step(double t, double dt) {
         if (player.isPoseChanged()) {
             Pose pose = player.getPose();
+            switch (pose.getScreenPosition()) {
+                case left:
+                    setPosition(new Vector3D(
+                            World.WIDTH / 4 - World.HOLE_SIZE.x / 2, 0, 0));
+                    break;
+                case middle:
+                    setPosition(new Vector3D((
+                            World.WIDTH / 2 - World.HOLE_SIZE.x / 2), 0, 0));
+                    break;
+                case right:
+                    setPosition(new Vector3D((
+                            World.WIDTH / 4 * 3 - World.HOLE_SIZE.x / 2), 0, 0));
+                    break;
+                default: throw new IllegalStateException("Incorrect screenpos: "
+                        + pose.getScreenPosition());
+            }
             int la = pose.getLeftArm().indexOf();
             int ra = pose.getRightArm().indexOf();
             int ll = pose.getLeftLeg().indexOf();

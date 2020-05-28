@@ -23,8 +23,8 @@ public class PoseDetector {
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
 
-    private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral,
-            Position.neutral);
+    private final Pose pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
+            Position.neutral, Position.neutral);
     private BufferedImage baseImage;
 
     /**
