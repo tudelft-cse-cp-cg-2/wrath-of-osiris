@@ -92,7 +92,7 @@ public class GameSceneController extends SceneController {
 
 //        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
 //                controller.getNetworkController().getOut(), model.getCurrentPlayer());
-//        updateTimer = new Timer();
+        updateTimer = new Timer();
 //        updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();

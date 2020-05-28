@@ -103,8 +103,8 @@ public class GameStateUpdater extends Thread {
         Pose pose = Pose.unpack(poseStr);
 
         try {
-            int index = controller.getModel().getCurrentLobby().getPlayerNames().indexOf(playerName);
-            Player player = controller.getModel().getCurrentLobby().getPlayers().get(index);
+            int idx = controller.getModel().getCurrentLobby().getPlayerNames().indexOf(playerName);
+            Player player = controller.getModel().getCurrentLobby().getPlayers().get(idx);
             player.updatePose(pose);
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             System.out.println("Player names not yet initialized");

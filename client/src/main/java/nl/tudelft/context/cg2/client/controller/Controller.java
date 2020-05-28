@@ -1,11 +1,11 @@
 package nl.tudelft.context.cg2.client.controller;
 
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 import nl.tudelft.context.cg2.client.controller.controllers.OpenCVController;
 import nl.tudelft.context.cg2.client.controller.core.GameTimer;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.view.ViewController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 import nl.tudelft.context.cg2.client.view.View;
 
 /**

@@ -104,9 +104,8 @@ public class MenuSceneController extends SceneController {
                 e.printStackTrace();
             }
             ArrayList<Lobby> lobbies = req.getResult();
-            List<String> names = lobbies.stream()
-                    .map(l -> l.getPlayers().size() + "/5 " +
-                            l.getName()).collect(Collectors.toList());
+            List<String> names = lobbies.stream().map(l -> l.getPlayers().size() + "/5 "
+                    + l.getName()).collect(Collectors.toList());
 
             view.getJoinScene().setLobbyNames(names);
             view.getJoinScene().show();
