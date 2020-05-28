@@ -40,11 +40,18 @@ public abstract class Entity {
      * size with depth perception.
      * @return the depth scalar.
      */
-    @SuppressWarnings(value = "AvoidInlineConditionals")
     public double getDepthScalar() {
-        double slope = 80D;
+        double slope = 60D;
         double scalar = slope / (position.z + slope);
         return scalar > 1D ? 1D : scalar;
+    }
+
+    /**
+     * Gets the depth value of the entity in the world.
+     * @return the depth value.
+     */
+    public Double getDepth() {
+        return position == null ? 0D : position.z;
     }
 
     /**

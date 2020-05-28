@@ -10,6 +10,9 @@ import nl.tudelft.context.cg2.client.model.world.Entity;
  */
 public class Wall extends Entity {
 
+    private boolean decayed;
+    private double timer;
+
     /**
      * The wall constructor.
      * @param texture the wall texture.
@@ -19,12 +22,30 @@ public class Wall extends Entity {
      */
     public Wall(Image texture, Vector3D position, Vector3D velocity, Vector3D size) {
         super(texture, position, velocity, size);
+        this.decayed = false;
+        this.timer = 0D;
     }
 
     @Override
     public void step(double t, double dt) {
         if (getPosition().z > 0) {
             setPosition(getPosition().add(getVelocity().mult(dt)));
+        } else if (!decayed) {
+            timer += dt;
+
+            if (timer > 1.5D) {
+                timer = 0D;
+                decayed = true;
+            }
         }
+    }
+
+    /**
+     * A boolean to check if the wall has decayed.
+     * The wall should be removed from the game when decayed.
+     * @return true or false.
+     */
+    public boolean hasDecayed() {
+        return decayed;
     }
 }
