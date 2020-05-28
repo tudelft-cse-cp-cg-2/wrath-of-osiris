@@ -38,7 +38,6 @@ public class GameScene extends BaseScene {
 
     private ImageView cameraView;
 
-
     /**
      * The menu scene constructor.
      * @param window the window currently showing.

@@ -64,7 +64,4 @@ public class Hole extends Entity {
         setTexture(tex);
     }
 
-
-
-
 }

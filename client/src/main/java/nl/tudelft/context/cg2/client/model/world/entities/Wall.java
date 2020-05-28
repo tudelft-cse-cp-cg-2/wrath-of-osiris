@@ -10,7 +10,7 @@ import nl.tudelft.context.cg2.client.model.world.Entity;
  */
 public class Wall extends Entity {
 
-    private boolean dacayed;
+    private boolean decayed;
     private double timer;
 
     /**
@@ -22,7 +22,7 @@ public class Wall extends Entity {
      */
     public Wall(Image texture, Vector3D position, Vector3D velocity, Vector3D size) {
         super(texture, position, velocity, size);
-        this.dacayed = false;
+        this.decayed = false;
         this.timer = 0D;
     }
 
@@ -30,12 +30,12 @@ public class Wall extends Entity {
     public void step(double t, double dt) {
         if (getPosition().z > 0) {
             setPosition(getPosition().add(getVelocity().mult(dt)));
-        } else if (!dacayed) {
+        } else if (!decayed) {
             timer += dt;
 
             if (timer > 1.5D) {
                 timer = 0D;
-                dacayed = true;
+                decayed = true;
             }
         }
     }
@@ -46,6 +46,6 @@ public class Wall extends Entity {
      * @return true of false.
      */
     public boolean hasDecayed() {
-        return dacayed;
+        return decayed;
     }
 }
