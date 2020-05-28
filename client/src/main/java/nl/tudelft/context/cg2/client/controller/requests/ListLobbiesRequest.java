@@ -1,7 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
-import nl.tudelft.context.cg2.client.model.datastructures.NetworkController;
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 
 import java.io.BufferedReader;
 import java.io.IOException;

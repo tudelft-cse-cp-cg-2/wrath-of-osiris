@@ -128,15 +128,26 @@ public class MenuScene extends BaseScene {
         return quitButton;
     }
 
+    /**
+     * Shows the message popup.
+     * @param message the message to set on the popup.
+     */
     public void showPopup(String message) {
         popupText.setText(message);
         popup.setVisible(true);
     }
 
+    /**
+     * Closes the message popup.
+     */
     public void closePopup() {
         popup.setVisible(false);
     }
 
+    /**
+     * Gets the message popup.
+     * @return the message popup.
+     */
     public StackPane getPopup() {
         return popup;
     }

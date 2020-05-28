@@ -93,8 +93,9 @@ public class MenuSceneController extends SceneController {
      * Retrieves available lobbies from server and loads them into the scene.
      */
     private void joinGameClicked() {
-        if(controller.getNetworkController().connect()) {
-            ListLobbiesRequest req = new ListLobbiesRequest(controller.getNetworkController().getIn(),
+        if (controller.getNetworkController().connect()) {
+            ListLobbiesRequest req =
+                    new ListLobbiesRequest(controller.getNetworkController().getIn(),
                     controller.getNetworkController().getOut());
             req.start();
             try {
@@ -104,7 +105,8 @@ public class MenuSceneController extends SceneController {
             }
             ArrayList<Lobby> lobbies = req.getResult();
             List<String> names = lobbies.stream()
-                    .map(l -> l.getPlayers().size() + "/5 " + l.getName()).collect(Collectors.toList());
+                    .map(l -> l.getPlayers().size() + "/5 " +
+                            l.getName()).collect(Collectors.toList());
 
             view.getJoinScene().setLobbyNames(names);
             view.getJoinScene().show();
@@ -118,7 +120,7 @@ public class MenuSceneController extends SceneController {
      * Shows the create game scene.
      */
     private void createGameButtonClicked() {
-        if(controller.getNetworkController().connect()) {
+        if (controller.getNetworkController().connect()) {
             view.getCreateGameScene().show();
         } else {
             scene.showPopup("There was an error connecting to the server!");

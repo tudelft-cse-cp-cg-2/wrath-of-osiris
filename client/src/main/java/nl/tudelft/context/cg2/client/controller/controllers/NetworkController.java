@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.model.datastructures;
+package nl.tudelft.context.cg2.client.controller.controllers;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
@@ -46,10 +46,12 @@ public class NetworkController {
      * Constructor for servers.
      */
     public NetworkController() {
+
     }
 
     /**
      * Connect to the server.
+     * @return true if the connection was successful, false otherwise.
      */
     @SuppressFBWarnings(value = "DM_EXIT", justification = "If we cannot connect, we cannot play.")
     public boolean connect() {

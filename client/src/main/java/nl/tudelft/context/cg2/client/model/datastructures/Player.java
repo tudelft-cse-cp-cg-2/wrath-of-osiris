@@ -59,6 +59,7 @@ public class Player {
     /**
      * Setter for a player's pose.
      * Also updates the boolean 'poseChanged' whether the pose actually changed.
+     * @param other the other pose.
      */
     public void updatePose(Pose other) {
         if (!pose.equals(other)) {

@@ -55,6 +55,10 @@ public class World {
         entities.sort(Comparator.comparing(Entity::getDepth).reversed());
     }
 
+    /**
+     * Creates the player avatars in the game world for all players in the game.
+     * @param players the list of players that are in the game.
+     */
     public void createPlayerAvatars(List<Player> players) {
         players.forEach(p -> {
             Avatar avatar = new Avatar(p, Color.DARKBLUE);
