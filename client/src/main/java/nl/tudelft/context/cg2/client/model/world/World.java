@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.model.world;
 
 import javafx.scene.paint.Color;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
 import nl.tudelft.context.cg2.client.model.world.entities.Hole;
@@ -9,6 +10,7 @@ import nl.tudelft.context.cg2.client.model.world.factories.WallFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 
 /**
  * The World class.
@@ -50,16 +52,20 @@ public class World {
         holes.clear();
         holes.addAll(WallFactory.generateHoles(currentWall));
         entities.addAll(holes);
-
-//        Avatar avatarA = new Avatar(Color.DARKGREEN);
-//        entities.add(avatarA);
-//        Avatar avatarB = new Avatar(Color.DEEPPINK);
-//        avatarB.setPosition(new Vector3D(500, 0, 0));
-//        entities.add(avatarB);
-//        Avatar avatarC = new Avatar(Color.DARKMAGENTA);
-//        avatarC.setPosition(new Vector3D(1200, 0, 0));
-//        entities.add(avatarC);
         entities.sort(Comparator.comparing(Entity::getDepth).reversed());
+    }
+
+    public void createPlayerAvatars(List<Player> players) {
+        players.forEach(p -> {
+            Avatar avatar = new Avatar(p, Color.DARKBLUE);
+            avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
+            p.setAvatar(avatar);
+            entities.add(avatar);
+        });
+    }
+
+    public void destroyPlayerAvatar(Player player) {
+        player.setAvatar(null);
     }
 
     /**

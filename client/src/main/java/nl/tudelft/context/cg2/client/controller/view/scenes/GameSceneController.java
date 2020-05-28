@@ -97,6 +97,7 @@ public class GameSceneController extends SceneController {
 //        updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();
+        model.getWorld().createPlayerAvatars(model.getCurrentLobby().getPlayers());
         view.getGameScene().clear();
         view.getGameScene().show();
         controller.getOpenCVController().startCapture();

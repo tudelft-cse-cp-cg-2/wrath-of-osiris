@@ -77,9 +77,11 @@ public class LobbySceneController extends SceneController {
     }
 
     public void stopTimer() {
-        lobbyTimer.cancel();
-        lobbyTimer.purge();
-        lobbyTimer = null;
+        if(lobbyTimer != null) {
+            lobbyTimer.cancel();
+            lobbyTimer.purge();
+            lobbyTimer = null;
+        }
     }
 
     private void startButtonClicked() {
