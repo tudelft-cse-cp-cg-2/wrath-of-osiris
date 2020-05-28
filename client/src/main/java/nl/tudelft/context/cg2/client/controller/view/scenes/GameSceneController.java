@@ -91,14 +91,15 @@ public class GameSceneController extends SceneController {
         // Stop fetchLobby requests
         controller.getViewController().getLobbySceneController().stopTimer();
 
-        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), model.getCurrentPlayer());
-        updateTimer = new Timer();
-        updateTimer.schedule(poseUpdater, 500, 500);
+//        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
+//                controller.getNetworkController().getOut(), model.getCurrentPlayer());
+//        updateTimer = new Timer();
+//        updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();
         view.getGameScene().clear();
         view.getGameScene().show();
+        controller.getOpenCVController().startCapture();
     }
 
     /**

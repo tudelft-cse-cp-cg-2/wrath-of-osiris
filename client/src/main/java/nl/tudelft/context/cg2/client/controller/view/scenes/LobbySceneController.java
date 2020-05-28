@@ -83,6 +83,7 @@ public class LobbySceneController extends SceneController {
     }
 
     private void startButtonClicked() {
-        controller.getStateUpdater().signalStart();
+        //controller.getStateUpdater().signalStart();
+        controller.getViewController().getGameSceneController().startGame();
     }
 }

@@ -92,7 +92,7 @@ public class OpenCVController extends SceneController {
         videoCapture.open(0);
         poseDetector = new PoseDetector();
 
-        captureTimer = new Timeline(new KeyFrame(Duration.seconds(0.05), event -> {
+        captureTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
             scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
         }));
         captureTimer.setCycleCount(Timeline.INDEFINITE);
