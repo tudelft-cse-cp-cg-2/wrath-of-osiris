@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
+import nl.tudelft.context.cg2.client.controller.logic.posedetection.ScreenPos;
 import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
 
 /**
@@ -13,10 +14,11 @@ public class Player {
 
     /**
      * Current pose of the player.
-     * This starts out with all limbs neutral.
+     * This starts out with all limbs neutral, in the middle screen position.
      */
     private Pose pose =
-            new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
+            new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
+                    Position.neutral, Position.neutral);
     private boolean poseChanged = false;
 
     /**
