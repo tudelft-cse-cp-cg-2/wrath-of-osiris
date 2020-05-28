@@ -89,6 +89,9 @@ public class OpenCVSceneController extends SceneController {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
         videoCapture.open(0);
+        if (!videoCapture.isOpened()) {
+            throw new Error("Camera is not opened, perhaps the wrong camera is set as the default");
+        }
         double fps = 15.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
         poseDetector = new PoseDetector();
