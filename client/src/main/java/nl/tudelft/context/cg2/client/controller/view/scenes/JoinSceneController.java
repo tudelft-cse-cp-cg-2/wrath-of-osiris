@@ -50,6 +50,11 @@ public class JoinSceneController extends SceneController {
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
         System.out.println("Selected lobby index: " + index);
+
+        if (index == -1) {
+            return;
+        }
+
         String name = scene.getPlayerNameField().getText();
 
         // Request server to join lobby.

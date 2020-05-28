@@ -76,6 +76,9 @@ public class LobbySceneController extends SceneController {
         lobbyTimer.schedule(fetchLobbyRequest, 500, 500);
     }
 
+    /**
+     * Stops the lobby timer.
+     */
     public void stopTimer() {
         if(lobbyTimer != null) {
             lobbyTimer.cancel();
@@ -84,6 +87,9 @@ public class LobbySceneController extends SceneController {
         }
     }
 
+    /**
+     * When the start button gets click a signal is sent to the server.
+     */
     private void startButtonClicked() {
         //controller.getStateUpdater().signalStart();
         controller.getViewController().getGameSceneController().startGame();
