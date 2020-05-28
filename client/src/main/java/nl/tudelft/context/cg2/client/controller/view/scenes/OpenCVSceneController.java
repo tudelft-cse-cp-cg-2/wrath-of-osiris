@@ -28,7 +28,6 @@ import static org.opencv.imgproc.Imgproc.resize;
 public class OpenCVSceneController extends SceneController {
 
     private final OpenCVScene scene;
-    private final double fps = 15.0;
 
     private VideoCapture videoCapture;
     private PoseDetector poseDetector;
@@ -90,6 +89,7 @@ public class OpenCVSceneController extends SceneController {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
         videoCapture.open(0);
+        double fps = 15.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
         poseDetector = new PoseDetector();
 
