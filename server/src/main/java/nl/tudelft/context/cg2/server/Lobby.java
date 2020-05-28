@@ -1,6 +1,8 @@
 package nl.tudelft.context.cg2.server;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
+import nl.tudelft.context.cg2.server.game.LevelGenerator;
+import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
 
@@ -24,9 +26,10 @@ public class Lobby {
      * Constructor for the Lobby.
      * When the host creates a Lobby, only the host is added as player.
      * If a player joins a lobby, 'players' contains all players, including himself.
-     * @param name lobby name.
+     *
+     * @param name     lobby name.
      * @param password lobby password.
-     * @param players list of current players in the lobby.
+     * @param players  list of current players in the lobby.
      */
     public Lobby(String name, String password, ArrayList<Player> players) {
         this.name = name;
@@ -36,6 +39,7 @@ public class Lobby {
 
     /**
      * Setter method to adjust current players in the lobby.
+     *
      * @param player the new set of players in the lobby.
      */
     public void addPlayer(@NonNull Player player) {
@@ -44,6 +48,7 @@ public class Lobby {
 
     /**
      * Getter method for current players in the lobby.
+     *
      * @return current list of players in the lobby.
      */
     public ArrayList<Player> getPlayers() {
@@ -52,6 +57,7 @@ public class Lobby {
 
     /**
      * Getter for lobby name.
+     *
      * @return the lobby name.
      */
     public String getName() {
@@ -60,6 +66,7 @@ public class Lobby {
 
     /**
      * Pack to send over the Internet.
+     *
      * @return a packed string representing this lobby
      */
     public String pack() {
@@ -72,6 +79,7 @@ public class Lobby {
 
     /**
      * Removes a player from the lobby.
+     *
      * @param player player to be removed
      */
     public void removePlayer(Player player) {
@@ -80,6 +88,7 @@ public class Lobby {
 
     /**
      * Returns whether or not the lobby is full.
+     *
      * @return true if full, false if not
      */
     public boolean isFull() {
@@ -88,6 +97,7 @@ public class Lobby {
 
     /**
      * Getter for the group's amount of lives left.
+     *
      * @return the amount of lives the group has left
      */
     public int getLives() {
@@ -96,6 +106,7 @@ public class Lobby {
 
     /**
      * Setter for the group's amount of lives left.
+     *
      * @param lives the updated amount of lives left
      */
     public void setLives(int lives) {
@@ -104,6 +115,7 @@ public class Lobby {
 
     /**
      * Gets whether the lobby has started the game.
+     *
      * @return boolean whether the game has been started
      */
     public boolean isStarted() {
@@ -122,6 +134,7 @@ public class Lobby {
                 player.startGame();
                 player.updateLives();
             }
+            gameLoop();
         }
     }
 
@@ -132,6 +145,17 @@ public class Lobby {
         this.started = false;
         for (Player player : players) {
             player.stopGame();
+        }
+    }
+
+    /**
+     * Generates levels and sends them to players.
+     */
+    private void gameLoop() {
+        LevelGenerator generator = new LevelGenerator(players.size());
+        ArrayList<Wall> level;
+        while (started) {
+            level = generator.generateLevel();
         }
     }
 }

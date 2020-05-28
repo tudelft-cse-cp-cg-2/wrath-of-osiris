@@ -1,7 +1,7 @@
 package nl.tudelft.context.cg2.server.game;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Objects;
 
 /**
  * A Wall contains up to 3 possible Poses, representing the holes in the wall. It also contains a
@@ -10,19 +10,23 @@ import java.util.HashMap;
  */
 public class Wall {
     private static final int MAX_NUMBER_AMOUNT = 3;
-    private HashMap<ScreenPos, Pose> poses;
-    private HashMap<ScreenPos, Integer> restrictions;
+    private Pose poseLeft;
+    private Pose poseMiddle;
+    private Pose poseRight;
+    private int numberLeft;
+    private int numberMiddle;
+    private int numberRight;
 
     /**
      * Constructor. Produces a blank wall, its poses and numbers should be set using the setters.
      */
     public Wall() {
-        poses = new HashMap<>(MAX_NUMBER_AMOUNT);
-        restrictions = new HashMap<>(MAX_NUMBER_AMOUNT);
-        for (ScreenPos position : ScreenPos.values()) {
-            restrictions.put(position, null);
-            poses.put(position, null);
-        }
+        poseLeft = null;
+        poseMiddle = null;
+        poseRight = null;
+        numberLeft = -1;
+        numberMiddle = -1;
+        numberRight = -1;
     }
 
     /**
@@ -33,7 +37,18 @@ public class Wall {
      * @param num      number that should be set
      */
     public void setNumber(ScreenPos position, int num) {
-        restrictions.put(position, num);
+        switch (position) {
+            default:
+            case LEFT:
+                numberLeft = num;
+                break;
+            case MIDDLE:
+                numberMiddle = num;
+                break;
+            case RIGHT:
+                numberRight = num;
+                break;
+        }
     }
 
     /**
@@ -43,7 +58,16 @@ public class Wall {
      * @return number in that position
      */
     public Integer getNumber(ScreenPos position) {
-        return restrictions.get(position);
+        switch (position) {
+            case LEFT:
+                return numberLeft;
+            case MIDDLE:
+                return numberMiddle;
+            case RIGHT:
+                return numberRight;
+            default:
+                return -1;
+        }
     }
 
     /**
@@ -54,7 +78,18 @@ public class Wall {
      */
     public void setPose(ScreenPos position, Pose pose) {
         pose.setScreenPos(position);
-        poses.put(position, pose);
+        switch (position) {
+            default:
+            case LEFT:
+                poseLeft = pose;
+                break;
+            case MIDDLE:
+                poseMiddle = pose;
+                break;
+            case RIGHT:
+                poseRight = pose;
+                break;
+        }
     }
 
     /**
@@ -64,7 +99,15 @@ public class Wall {
      * @return pose in that position
      */
     public Pose getPose(ScreenPos position) {
-        return poses.get(position);
+        switch (position) {
+            default:
+            case LEFT:
+                return poseLeft;
+            case MIDDLE:
+                return poseMiddle;
+            case RIGHT:
+                return poseRight;
+        }
     }
 
     /**
@@ -102,25 +145,56 @@ public class Wall {
                     break;
             }
         }
-        for (ScreenPos position : ScreenPos.values()) {
-            if (restrictions.get(position) != null) {
-                if (restrictions.get(position) != frequency[position.ordinal()]) {
-                    return false;
-                }
+        if (numberLeft != -1) {
+            if (numberLeft != frequency[0]) {
+                return false;
+            }
+        }
+        if (numberMiddle != -1) {
+            if (numberMiddle != frequency[1]) {
+                return false;
+            }
+        }
+        if (numberRight != -1) {
+            if (numberRight != frequency[2]) {
+                return false;
             }
         }
         return true;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Wall wall = (Wall) o;
+        return numberLeft == wall.numberLeft
+                && numberMiddle == wall.numberMiddle
+                && numberRight == wall.numberRight
+                && Objects.equals(poseLeft, wall.poseLeft)
+                && Objects.equals(poseMiddle, wall.poseMiddle)
+                && Objects.equals(poseRight, wall.poseRight);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(poseLeft, poseMiddle, poseRight, numberLeft, numberMiddle, numberRight);
+    }
+
     /**
      * Returns a string representation of Wall, for debugging purposes.
+     *
      * @return String representation
      */
     public String toString() {
         String res = "";
-        for (ScreenPos s : ScreenPos.values()) {
-            res += restrictions.get(s) + "\n" + poses.get(s) + "\n";
-        }
+        res += numberLeft + "\n" + poseLeft + "\n";
+        res += numberMiddle + "\n" + poseMiddle + "\n";
+        res += numberRight + "\n" + poseRight + "\n";
         return res;
     }
 }
