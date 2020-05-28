@@ -5,7 +5,7 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
@@ -20,7 +20,8 @@ public class PoseDetector {
     private static final String POSE_DETECTION_DEFAULT = "./src/main/resources/xml/haarcascade_frontalface_default.xml";
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
-    private final Pose pose = new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
+    private final Pose pose = new Pose(Position.bottom, Position.bottom,
+            Position.neutral, Position.neutral);
     private BufferedImage baseImage;
 
     /**
