@@ -116,8 +116,7 @@ public class Pose {
      * Get the best pose position for an arm.
      * @param map - the counter for the arm
      * @param current - the current position
-     * @return the pose with the highest chance of being correct,
-     * or current if too little change is detected.
+     * @return the pose with the highest chance of being correct.
      */
     private Position getBestArmPosition(Map<Position, Integer> map, Position current) {
         int epsilon = 150;
@@ -149,8 +148,7 @@ public class Pose {
      * Get the best pose position for a leg.
      * @param map - the counter for the leg
      * @param current - the current position
-     * @return the pose with the highest chance of being correct,
-     * or current if too little change is detected.
+     * @return the pose with the highest chance of being correct.
      */
     private Position getBestLegPosition(Map<Position, Integer> map, Position current) {
         int epsilon = 150;
