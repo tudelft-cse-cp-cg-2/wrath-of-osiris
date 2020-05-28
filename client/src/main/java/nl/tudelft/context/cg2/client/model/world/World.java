@@ -51,14 +51,14 @@ public class World {
         holes.addAll(WallFactory.generateHoles(currentWall));
         entities.addAll(holes);
 
-        Avatar avatarA = new Avatar(Color.DARKGREEN);
-        entities.add(avatarA);
-        Avatar avatarB = new Avatar(Color.DEEPPINK);
-        avatarB.setPosition(new Vector3D(500, 0, 0));
-        entities.add(avatarB);
-        Avatar avatarC = new Avatar(Color.DARKMAGENTA);
-        avatarC.setPosition(new Vector3D(1200, 0, 0));
-        entities.add(avatarC);
+//        Avatar avatarA = new Avatar(Color.DARKGREEN);
+//        entities.add(avatarA);
+//        Avatar avatarB = new Avatar(Color.DEEPPINK);
+//        avatarB.setPosition(new Vector3D(500, 0, 0));
+//        entities.add(avatarB);
+//        Avatar avatarC = new Avatar(Color.DARKMAGENTA);
+//        avatarC.setPosition(new Vector3D(1200, 0, 0));
+//        entities.add(avatarC);
         entities.sort(Comparator.comparing(Entity::getDepth).reversed());
     }
 
