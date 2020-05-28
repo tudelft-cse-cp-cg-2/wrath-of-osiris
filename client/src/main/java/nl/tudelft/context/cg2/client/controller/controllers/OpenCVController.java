@@ -118,7 +118,6 @@ public class OpenCVController extends SceneController {
     /**
      * Captures and processes a snapshot of webcam feed.
      * @param poseDetector - PoseDetector object
-     * @return an image with the player pose marked
      */
     public void captureAndProcessSnapshot(PoseDetector poseDetector) {
         WritableImage writableImage = null;
@@ -135,8 +134,8 @@ public class OpenCVController extends SceneController {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
 
-            if(controller.getModel().getCurrentPlayer() != null) {
-                this.controller.getModel().getCurrentPlayer().updatePose(poseDetector.getPose().clone());
+            if (controller.getModel().getCurrentPlayer() != null) {
+                controller.getModel().getCurrentPlayer().updatePose(poseDetector.getPose().copy());
             }
         }
 

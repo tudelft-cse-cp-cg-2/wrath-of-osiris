@@ -80,7 +80,7 @@ public class LobbySceneController extends SceneController {
      * Stops the lobby timer.
      */
     public void stopTimer() {
-        if(lobbyTimer != null) {
+        if (lobbyTimer != null) {
             lobbyTimer.cancel();
             lobbyTimer.purge();
             lobbyTimer = null;

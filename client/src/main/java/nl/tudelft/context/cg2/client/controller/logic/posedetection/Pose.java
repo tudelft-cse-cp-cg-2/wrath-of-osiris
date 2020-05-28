@@ -63,8 +63,11 @@ public class Pose {
         return Objects.hash(leftArm, rightLeg, leftLeg, rightLeg);
     }
 
-    @Override
-    public Pose clone() {
+    /**
+     * Makes a copy of the pose.
+     * @return a copy of this pose.
+     */
+    public Pose copy() {
         return new Pose(screenPosition, leftArm, rightArm, leftLeg, rightLeg);
     }
 
