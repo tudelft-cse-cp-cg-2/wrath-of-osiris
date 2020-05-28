@@ -49,10 +49,7 @@ public class Pose {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) {
-            return true;
-        }
-        if (o == null || getClass() != o.getClass()) {
+        if (!(o instanceof Pose)) {
             return false;
         }
         Pose pose = (Pose) o;
