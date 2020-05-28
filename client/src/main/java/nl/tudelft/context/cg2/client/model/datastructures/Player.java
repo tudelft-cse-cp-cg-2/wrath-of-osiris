@@ -17,6 +17,7 @@ public class Player {
      */
     private Pose pose =
             new Pose(Position.bottom, Position.bottom, Position.neutral, Position.neutral);
+    private boolean poseChanged = false;
 
     /**
      * Constructor for the Player.
@@ -62,10 +63,15 @@ public class Player {
 
     /**
      * Setter for a player's pose.
-     * @param pose the player's current pose.
+     * Also updates the boolean 'poseChanged' whether the pose actually changed.
+     * @param otherPose the player's current pose.
      */
-    public void setPose(Pose pose) {
-        this.pose = pose;
+    public void setPose(Pose otherPose) {
+        if (!pose.equals(otherPose)) {
+            this.pose = pose;
+            this.poseChanged = true;
+        }
+
     }
 
     public Avatar getAvatar() {
@@ -74,5 +80,13 @@ public class Player {
 
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
+    }
+
+    public boolean isPoseChanged() {
+        return poseChanged;
+    }
+
+    public void setPoseChanged(boolean bool) {
+        this.poseChanged = bool;
     }
 }
