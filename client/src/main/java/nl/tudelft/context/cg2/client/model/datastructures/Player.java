@@ -3,7 +3,6 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.ScreenPos;
-import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
 
 /**
  * Contains local information about a player.
@@ -69,11 +68,19 @@ public class Player {
         }
     }
 
+    /**
+     * A boolean to check if the players pose has changed.
+     * @return true if the pose has changed.
+     */
     public boolean isPoseChanged() {
         return poseChanged;
     }
 
-    public void setPoseChanged(boolean bool) {
-        this.poseChanged = bool;
+    /**
+     * Sets the pose changed variable.
+     * @param changed whether the pose has changed or not.
+     */
+    public void setPoseChanged(boolean changed) {
+        poseChanged = changed;
     }
 }

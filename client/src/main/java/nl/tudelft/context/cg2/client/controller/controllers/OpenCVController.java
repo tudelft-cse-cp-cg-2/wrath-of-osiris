@@ -119,10 +119,6 @@ public class OpenCVController extends SceneController {
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
-        if (skip) {
-            skip = false;
-        }
-
         flip(matrix, matrix, +1);
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
