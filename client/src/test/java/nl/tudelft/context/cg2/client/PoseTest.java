@@ -5,8 +5,7 @@ import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class PoseTest {
     @Test
@@ -57,5 +56,22 @@ public class PoseTest {
         assertEquals("Pose: la: " + Position.top.name() + "| ra: " + Position.bottom.name()
                         + "| ll: " + Position.neutral.name() + "| rl: " + Position.neutral.name(),
                 pose.toString());
+    }
+
+    @Test
+    public void testPack() {
+        Pose a = new Pose(Position.bottom, Position.top, Position.neutral, Position.raised);
+        assertEquals("12001", a.pack());
+    }
+
+    @Test
+    public void testUnpack() {
+        Pose a = new Pose(Position.bottom, Position.top, Position.neutral, Position.raised);
+        assertEquals(a, Pose.unpack("12001"));
+    }
+
+    @Test
+    public void testUnpackIllegalFormat() {
+        assertThrows(IllegalArgumentException.class, () -> Pose.unpack("12033"));
     }
 }
