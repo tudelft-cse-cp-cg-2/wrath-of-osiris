@@ -27,7 +27,6 @@ public class OpenCVController extends SceneController {
     private final OpenCVScene scene;
 
     private VideoCapture videoCapture;
-    private WritableImage writableImage;
     private PoseDetector poseDetector;
     private Timeline captureTimer;
     private boolean skip;
@@ -45,7 +44,6 @@ public class OpenCVController extends SceneController {
         scene = view.getOpenCVScene();
         this.videoCapture = null;
         this.poseDetector = null;
-        this.writableImage = null;
         this.captureTimer = null;
         this.skip = false;
     }
@@ -133,7 +131,6 @@ public class OpenCVController extends SceneController {
         }
 
         skip = true;
-        this.writableImage = writableImage;
         scene.getVideo().setImage(writableImage);
         controller.getView().getGameScene().getCameraView().setImage(writableImage);
     }

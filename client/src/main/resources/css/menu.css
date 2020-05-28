@@ -50,3 +50,7 @@
     -fx-fill: white;
     -fx-font-weight: bold;
 }
+
+.popup {
+    -fx-background-color: palevioletred;
+}

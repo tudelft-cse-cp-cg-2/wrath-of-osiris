@@ -66,6 +66,7 @@ public class MenuScene extends BaseScene {
 
         popup = new StackPane();
         popup.minWidthProperty().bind(window.sceneWidthProperty());
+        popup.getStyleClass().add("popup");
         popup.maxWidthProperty().bind(window.sceneWidthProperty());
         popup.minHeightProperty().bind(window.sceneHeightProperty());
         popup.maxHeightProperty().bind(window.sceneHeightProperty());
@@ -74,6 +75,7 @@ public class MenuScene extends BaseScene {
         popupPane.setMinSize(400, 250);
         popupPane.setMaxSize(400, 250);
         popupText = new Text();
+        popupText.getStyleClass().add("text");
 
         popupPane.getChildren().add(popupText);
         popup.getChildren().add(popupPane);

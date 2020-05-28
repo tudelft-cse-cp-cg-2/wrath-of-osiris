@@ -75,16 +75,6 @@ public class Avatar extends Entity {
     }
 
     /**
-     * Creates a texture for the avatar with a random pose.
-     */
-    private void randomTexture() {
-        this.updateTexture((int) Math.round(Math.random() * 2),
-                (int) Math.round(Math.random() * 2),
-                (int) Math.round(Math.random()),
-                (int) Math.round(Math.random()));
-    }
-
-    /**
      * Sets the avatars default texture.
      */
     public void setDefaultTexture() {

@@ -68,7 +68,6 @@ public class Player {
         if (!pose.equals(otherPose)) {
             this.pose = otherPose;
             this.poseChanged = true;
-            System.out.println(pose.toString());
         }
     }
 

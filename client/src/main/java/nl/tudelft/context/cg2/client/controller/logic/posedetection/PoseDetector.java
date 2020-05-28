@@ -98,8 +98,6 @@ public class PoseDetector {
                 head.getLeftX() - head.getRightX(),
                 head.getTopY() + 10 * head.getBottomY(),
                 Limb.left_leg, Position.raised));
-
-
         return out;
     }
 
@@ -156,7 +154,6 @@ public class PoseDetector {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
         this.pose.updatePose();
-        //System.out.println(this.pose.toString());
         return bufferedImage;
     }
 
