@@ -187,5 +187,11 @@ public class PoseDetector {
         return img;
     }
 
-
+    /**
+     * A getter for the pose.
+     * @return The pose.
+     */
+    public Pose getPose() {
+        return pose;
+    }
 }

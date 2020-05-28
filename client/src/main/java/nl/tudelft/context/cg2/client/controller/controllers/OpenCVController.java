@@ -93,7 +93,7 @@ public class OpenCVController extends SceneController {
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
-            scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
+            captureAndProcessSnapshot(poseDetector);
         }));
         captureTimer.setCycleCount(Timeline.INDEFINITE);
         captureTimer.play();
@@ -115,7 +115,7 @@ public class OpenCVController extends SceneController {
      * @param poseDetector - PoseDetector object
      * @return an image with the player pose marked
      */
-    public WritableImage captureAndProcessSnapshot(PoseDetector poseDetector) {
+    public void captureAndProcessSnapshot(PoseDetector poseDetector) {
         WritableImage writableImage = null;
 
         Mat matrix = new Mat();
@@ -123,18 +123,18 @@ public class OpenCVController extends SceneController {
 
         if (skip) {
             skip = false;
-            return this.writableImage;
         }
 
         flip(matrix, matrix, +1);
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
+            this.controller.getModel().getCurrentPlayer().setPose(poseDetector.getPose());
         }
 
         skip = true;
         this.writableImage = writableImage;
-
-        return writableImage;
+        scene.getVideo().setImage(writableImage);
+        controller.getView().getGameScene().getCameraView().setImage(writableImage);
     }
 }
