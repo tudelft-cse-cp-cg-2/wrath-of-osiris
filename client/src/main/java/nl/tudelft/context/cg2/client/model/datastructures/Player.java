@@ -2,12 +2,14 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
+import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
 
 /**
  * Contains local information about a player.
  */
 public class Player {
     private final String name;
+    private Avatar avatar;
 
     /**
      * Current pose of the player.
@@ -22,6 +24,7 @@ public class Player {
      */
     public Player(String name) {
         this.name = name;
+        this.avatar = null;
     }
 
     @Override
@@ -63,5 +66,13 @@ public class Player {
      */
     public void setPose(Pose pose) {
         this.pose = pose;
+    }
+
+    public Avatar getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 }
