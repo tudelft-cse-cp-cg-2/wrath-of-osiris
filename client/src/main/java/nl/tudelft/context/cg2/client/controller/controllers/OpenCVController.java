@@ -12,11 +12,14 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
 import org.opencv.core.Mat;
+import org.opencv.core.Size;
 import org.opencv.videoio.VideoCapture;
+import org.opencv.videoio.Videoio;
 
 import java.awt.image.BufferedImage;
 
 import static org.opencv.core.Core.flip;
+import static org.opencv.imgproc.Imgproc.resize;
 
 /**
  * The OpenCV scene controller class.
@@ -29,7 +32,6 @@ public class OpenCVController extends SceneController {
     private VideoCapture videoCapture;
     private PoseDetector poseDetector;
     private Timeline captureTimer;
-    private boolean skip;
 
 
     /**
@@ -45,7 +47,6 @@ public class OpenCVController extends SceneController {
         this.videoCapture = null;
         this.poseDetector = null;
         this.captureTimer = null;
-        this.skip = false;
     }
 
     /**
@@ -88,9 +89,15 @@ public class OpenCVController extends SceneController {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
         videoCapture.open(0);
+        if (!videoCapture.isOpened()) {
+            throw new Error("Camera is not opened, perhaps the wrong camera is set as the default");
+        }
+        double fps = 2.0;
+        videoCapture.set(Videoio.CAP_PROP_FPS, fps);
         poseDetector = new PoseDetector();
 
-        captureTimer = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
+        captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
+//            scene.getVideo().setImage(captureAndProcessSnapshot(poseDetector));
             captureAndProcessSnapshot(poseDetector);
         }));
         captureTimer.setCycleCount(Timeline.INDEFINITE);
@@ -119,7 +126,11 @@ public class OpenCVController extends SceneController {
         Mat matrix = new Mat();
         videoCapture.read(matrix);
 
+        // Scale the image to 480p resolution
+        resize(matrix, matrix, new Size(640, 480));
+        // Mirror the image
         flip(matrix, matrix, +1);
+
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
             writableImage = SwingFXUtils.toFXImage(image, null);
@@ -129,7 +140,6 @@ public class OpenCVController extends SceneController {
             }
         }
 
-        skip = true;
         scene.getVideo().setImage(writableImage);
         controller.getView().getGameScene().getCameraView().setImage(writableImage);
     }
