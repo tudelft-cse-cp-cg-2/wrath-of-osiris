@@ -42,12 +42,7 @@ public class App extends Application {
      */
     @Override
     public void stop() {
-        // stop updating any lobbies we're in
-        Timer eventTimer = this.controller.getEventTimer();
-        if (eventTimer != null) {
-            this.controller.getEventTimer().cancel();
-            this.controller.getEventTimer().purge();
-        }
+
     }
 
     /**
