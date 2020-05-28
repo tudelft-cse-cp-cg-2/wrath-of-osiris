@@ -129,7 +129,7 @@ public class OpenCVController extends SceneController {
         // Scale the image to 480p resolution
         resize(matrix, matrix, new Size(640, 480));
         // Mirror the image
-        flip(matrix, matrix, +1);
+//        flip(matrix, matrix, +1);
 
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
