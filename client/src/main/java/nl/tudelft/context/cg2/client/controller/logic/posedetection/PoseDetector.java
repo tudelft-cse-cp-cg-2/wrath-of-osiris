@@ -35,70 +35,70 @@ public class PoseDetector {
     private List<PoseRegion> generatePoseRegionsFromHead(PoseRegion head) {
         List<PoseRegion> out = new ArrayList<>();
 
-        // arm top right
+        // arm top left
         out.add(new PoseRegion(head.getLeftX() + (int) (1.2 * head.getRightX()),
                 head.getTopY() - 3 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + head.getBottomY(),
-                Limb.right_arm, Position.top));
-        // arm middle right
+                Limb.left_arm, Position.top));
+        // arm middle left
         out.add(new PoseRegion(head.getLeftX() + (int) (2.5 * head.getRightX()),
                 head.getTopY() + head.getBottomY() + 10,
                 head.getLeftX() + 6 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
-                Limb.right_arm, Position.middle));
-        // arm bottom right
+                Limb.left_arm, Position.middle));
+        // arm bottom left
         out.add(new PoseRegion(head.getLeftX() + (int) (1.5 * head.getRightX()),
                 head.getTopY() + 3 * head.getBottomY(),
                 head.getLeftX() + 3 * head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
-                Limb.right_arm, Position.bottom));
+                Limb.left_arm, Position.bottom));
 
-        // arm top left
+        // arm top right
         out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() - 3 * head.getBottomY(),
                 head.getLeftX() - (int) (0.2 * head.getRightX()),
                 head.getTopY() + head.getBottomY(),
-                Limb.left_arm, Position.top));
-        // arm middle left
+                Limb.right_arm, Position.top));
+        // arm middle right
         out.add(new PoseRegion(head.getLeftX() - 5 * head.getRightX(),
                 head.getTopY() + head.getBottomY() + 10,
                 head.getLeftX() - (int) (1.5 * head.getRightX()),
                 head.getTopY() + 3 * head.getBottomY(),
-                Limb.left_arm, Position.middle));
-        // arm bottom left
+                Limb.right_arm, Position.middle));
+        // arm bottom right
         out.add(new PoseRegion(head.getLeftX() - 2 * head.getRightX(),
                 head.getTopY() + 3 * head.getBottomY(),
                 head.getLeftX() - (int) (0.5 * head.getRightX()),
                 head.getTopY() + 5 * head.getBottomY(),
-                Limb.left_arm, Position.bottom));
+                Limb.right_arm, Position.bottom));
 
 
-        // leg neutral right
+        // leg neutral left
         out.add(new PoseRegion(head.getLeftX() + (int) (0.5 * head.getRightX()),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() + 2 * head.getRightX(),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.right_leg, Position.neutral));
-        // leg raised right
+                Limb.left_leg, Position.neutral));
+        // leg raised left
         out.add(new PoseRegion(head.getLeftX() + 2 * head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() + (int) (3.5 * head.getRightX()),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.right_leg, Position.raised));
+                Limb.left_leg, Position.raised));
 
-        // leg neutral left
+        // leg neutral right
         out.add(new PoseRegion(head.getLeftX() - head.getRightX(),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() + (int) (0.5 * head.getRightX()),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.left_leg, Position.neutral));
-        // leg raised left
+                Limb.right_leg, Position.neutral));
+        // leg raised right
         out.add(new PoseRegion(head.getLeftX() - (int) (2.5 * head.getRightX()),
                 head.getTopY() + 5 * head.getBottomY(),
                 head.getLeftX() - head.getRightX(),
                 head.getTopY() + 10 * head.getBottomY(),
-                Limb.left_leg, Position.raised));
+                Limb.right_leg, Position.raised));
         return out;
     }
 

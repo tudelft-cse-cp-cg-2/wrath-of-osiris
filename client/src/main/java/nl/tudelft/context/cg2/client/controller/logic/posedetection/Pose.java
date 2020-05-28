@@ -128,7 +128,7 @@ public class Pose {
      * @return the pose with the highest chance of being correct.
      */
     private Position getBestArmPosition(Map<Position, Integer> map, Position current) {
-        int epsilon = 150;
+        int epsilon = 250;
         if (map.get(Position.top) > map.get(Position.middle)) {
             if (map.get(Position.top) > map.get(Position.bottom)) {
                 if (map.get(Position.top) > epsilon) {
@@ -160,7 +160,7 @@ public class Pose {
      * @return the pose with the highest chance of being correct.
      */
     private Position getBestLegPosition(Map<Position, Integer> map, Position current) {
-        int epsilon = 150;
+        int epsilon = 250;
         if (map.get(Position.neutral) > map.get(Position.raised)) {
             if (map.get(Position.neutral) > epsilon) {
                 return Position.neutral;
