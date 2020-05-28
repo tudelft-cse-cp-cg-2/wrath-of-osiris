@@ -52,22 +52,17 @@ public class CreateLobbyRequest extends Thread {
 
         try {
             // create lobby
-            System.out.println("asdf");
             if (password != null) {
                 out.println("createlobby " + playerName + " " + lobbyName + " " + password);
             } else {
                 out.println("createlobby " + playerName + " " + lobbyName);
             }
-            System.out.println("asdf");
             fromServer = in.readLine();
-            System.out.println("asdf");
             assert fromServer != null;
-            System.out.println(resultIndex);
             resultIndex = Integer.parseInt(fromServer);
 
             fromServer = in.readLine();
             assert fromServer != null && fromServer.equals(Server.EOT);
-            System.out.println("reached end");
         } catch (IOException e) {
             e.printStackTrace();
         }
