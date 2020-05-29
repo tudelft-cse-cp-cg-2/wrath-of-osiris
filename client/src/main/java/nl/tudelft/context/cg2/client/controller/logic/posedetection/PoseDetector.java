@@ -16,8 +16,8 @@ import java.util.List;
  * Class for detecting a player's body posture.
  */
 public class PoseDetector {
-    @SuppressWarnings("LineLength")
-    private static final String POSE_DETECTION_DEFAULT = "./src/main/resources/xml/haarcascade_frontalface_default.xml";
+    private static final String POSE_DETECTION_DEFAULT = "haarcascade_frontalface_default.xml";
+
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
 
