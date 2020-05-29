@@ -40,6 +40,7 @@ public class App extends Application {
      */
     @Override
     public void stop() {
+        System.exit(0);
     }
 
     /**
