@@ -305,4 +305,14 @@ public class Pose {
     public ScreenPos getScreenPosition() {
         return screenPosition;
     }
+
+    /**
+     * Update screen position.
+     */
+    public void updateScreenPosition(PoseRegion head) {
+        int headPosition = 640 - (head.getLeftX() + head.getRightX() / 2);
+        int region = 640 / 3;
+        this.screenPosition = headPosition < region ? ScreenPos.left :
+                headPosition > 2 * region ? ScreenPos.right : ScreenPos.middle;
+    }
 }
