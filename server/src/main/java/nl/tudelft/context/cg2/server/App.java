@@ -34,6 +34,13 @@ public final class App {
     }
 
     /**
+     * Remove empty lobbies.
+     */
+    private static void removeEmptyLobbies() {
+        lobbies.removeIf(lobby -> lobby.getPlayers().size() == 0);
+    }
+
+    /**
      * Terminate a player's thread, effectively disconnecting them if they were still connected.
      * @param player the player to interrupt
      */
@@ -47,6 +54,7 @@ public final class App {
                 }
             }
         }
+        removeEmptyLobbies();
 
         // tell player class to stop its main loop
         player.terminate();
@@ -62,6 +70,7 @@ public final class App {
     public static void removePlayerFromLobbies(Player player) {
         lobbies.forEach(x -> x.removePlayer(player));
         player.setLobby(null);
+        removeEmptyLobbies();
     }
 
     /**
