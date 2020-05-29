@@ -163,7 +163,7 @@ public class PoseDetector {
     public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image, PoseRegion head) {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
-//        this.pose.updateScreenPosition(head);
+        this.pose.updateScreenPosition(head);
         this.pose.updatePose();
         return bufferedImage;
     }
