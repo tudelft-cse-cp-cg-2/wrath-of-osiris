@@ -119,7 +119,7 @@ public class PoseDetector {
             faceDetections = new MatOfRect();
             classifier.detectMultiScale(matrix, faceDetections);
         }
-        counter ++;
+        counter++;
 
         BufferedImage image =
                 new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
