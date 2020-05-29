@@ -308,6 +308,7 @@ public class Pose {
 
     /**
      * Update screen position.
+     * @param head - coordinates of the detected head
      */
     public void updateScreenPosition(PoseRegion head) {
         int headPosition = 640 - (head.getLeftX() + head.getRightX() / 2);

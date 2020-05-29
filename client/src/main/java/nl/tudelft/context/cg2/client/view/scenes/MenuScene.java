@@ -10,6 +10,8 @@ import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
+import java.net.URISyntaxException;
+
 /**
  * The menu scene.
  * Features the main menu UI as shown to the user.
@@ -41,7 +43,12 @@ public class MenuScene extends BaseScene {
      */
     @Override
     public void draw() {
-        this.getStylesheets().add("/css/menu.css");
+        try {
+            this.getStylesheets().add(MenuScene.class.getClassLoader()
+                    .getResource("css/menu.css").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         headerText = new Text("Hole in the Wall");
         headerText.setId("header-text");
