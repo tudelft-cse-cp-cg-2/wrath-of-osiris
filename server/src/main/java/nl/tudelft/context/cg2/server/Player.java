@@ -18,6 +18,7 @@ import java.util.Timer;
  * A connected player.
  */
 public class Player extends Thread {
+    private static final String EOT = ".";
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;
@@ -85,18 +86,28 @@ public class Player extends Thread {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             this.setPlayerName(clientInput.split(" ")[2]);
             App.addPlayerToLobby(index, this);
-            out.println(".");
+            out.println(EOT);
         } else if (clientInput.startsWith("fetchlobby ")) {
             int index = Integer.parseInt(clientInput.split(" ")[1]);
             out.println(App.fetchLobby(index));
         } else if (clientInput.startsWith("updatepose ")) {
             String poseStr = clientInput.split(" ")[1];
             this.pose = Pose.unpack(poseStr);
+        } else if (clientInput.startsWith("createlobby ")) {
+            String[] split = clientInput.split(" ");
+            assert split.length > 2;
+            setPlayerName(split[1]);
+            if (split.length >= 4) {
+                out.println(App.createLobby(this, split[2], split[3]));
+            } else {
+                out.println(App.createLobby(this, split[2]));
+            }
+            out.println(EOT);
         } else {
             switch (clientInput) {
                 case "listlobbies":
                     App.packLobbies().forEach(out::println);
-                    out.println(".");
+                    out.println(EOT);
                     break;
                 case "leavelobby":
                     App.removePlayerFromLobbies(this);

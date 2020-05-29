@@ -7,6 +7,8 @@ import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
+import java.util.Timer;
+
 /**
  * JavaFX App.
  */
