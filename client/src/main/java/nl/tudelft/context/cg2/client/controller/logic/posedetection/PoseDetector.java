@@ -25,6 +25,9 @@ public class PoseDetector {
             Position.neutral, Position.neutral);
     private BufferedImage baseImage;
 
+    private int counter = 0;
+    private MatOfRect faceDetections;
+
     /**
      * Given the coordinates of a head, calculate the bounding boxes
      * corresponding to the arm positions.
@@ -111,8 +114,13 @@ public class PoseDetector {
      *     right -> left. if no faces are found, this list will be empty.
      */
     public BufferedImage generatePoseRegions(Mat matrix) {
-        MatOfRect faceDetections = new MatOfRect();
-        classifier.detectMultiScale(matrix, faceDetections);
+        if (counter == 5) {
+            counter = 0;
+            faceDetections = new MatOfRect();
+            classifier.detectMultiScale(matrix, faceDetections);
+        }
+        counter ++;
+
         BufferedImage image =
                 new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
         List<PoseRegion> poseRegions;
