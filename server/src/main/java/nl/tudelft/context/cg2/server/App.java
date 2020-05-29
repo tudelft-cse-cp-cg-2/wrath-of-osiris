@@ -120,6 +120,7 @@ public final class App {
     public static int createLobby(Player player, String lobbyName, String password) {
         Lobby lobby = new Lobby(lobbyName, password, new ArrayList<Player>());
         lobby.addPlayer(player);
+        player.setLobby(lobby);
         lobbies.add(lobby);
         return lobbies.indexOf(lobby);
     }
