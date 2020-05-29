@@ -114,7 +114,7 @@ public class PoseDetector {
      *     right -> left. if no faces are found, this list will be empty.
      */
     public BufferedImage generatePoseRegions(Mat matrix) {
-        if (counter == 5) {
+        if (counter == 5 || faceDetections == null) {
             counter = 0;
             faceDetections = new MatOfRect();
             classifier.detectMultiScale(matrix, faceDetections);
@@ -126,9 +126,10 @@ public class PoseDetector {
         List<PoseRegion> poseRegions;
 
         // Detect
+        PoseRegion head;
         if (faceDetections.toArray().length > 0) {
             Rect rect = faceDetections.toArray()[0];
-            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
+            head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
             return image;
@@ -147,7 +148,7 @@ public class PoseDetector {
         if (baseImage == null) {
             baseImage = image;
         } else {
-            image = findLimbLocations(poseRegions, image);
+            image = findLimbLocations(poseRegions, image, head);
         }
 
         return image;
@@ -159,9 +160,10 @@ public class PoseDetector {
      * @param image - image to find the limbs in
      * @return an image with the pose marked
      */
-    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image) {
+    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image, PoseRegion head) {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
+//        this.pose.updateScreenPosition(head);
         this.pose.updatePose();
         return bufferedImage;
     }
