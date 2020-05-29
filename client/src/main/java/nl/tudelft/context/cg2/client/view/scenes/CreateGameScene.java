@@ -11,6 +11,8 @@ import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
+import java.net.URISyntaxException;
+
 /**
  * The create game scene.
  * Features the main menu UI as shown to the user.
@@ -40,7 +42,12 @@ public class CreateGameScene extends BaseScene {
      */
     @Override
     public void draw() {
-        this.getStylesheets().add("/css/createGame.css");
+        try {
+            this.getStylesheets().add(CreateGameScene.class.getClassLoader()
+                    .getResource("css/createGame.css").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         headerText = new Text("Hole in the Wall");
         headerText.setId("header-text");

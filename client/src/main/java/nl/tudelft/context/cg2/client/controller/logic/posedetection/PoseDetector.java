@@ -158,9 +158,11 @@ public class PoseDetector {
      * Finds a player's limbs.
      * @param poseRegions - regions in which limbs could be
      * @param image - image to find the limbs in
+     * @param head - coordinates of the detected head
      * @return an image with the pose marked
      */
-    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image, PoseRegion head) {
+    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image,
+                                           PoseRegion head) {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
         this.pose.updateScreenPosition(head);

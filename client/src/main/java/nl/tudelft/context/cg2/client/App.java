@@ -1,13 +1,12 @@
 package nl.tudelft.context.cg2.client;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
-
-import java.util.Timer;
 
 /**
  * JavaFX App.
@@ -40,6 +39,7 @@ public class App extends Application {
     /**
      * Ran as the very last method when the application is shut down.
      */
+    @SuppressFBWarnings(value = "DM_EXIT", justification = "This is the stop function")
     @Override
     public void stop() {
         System.exit(0);
