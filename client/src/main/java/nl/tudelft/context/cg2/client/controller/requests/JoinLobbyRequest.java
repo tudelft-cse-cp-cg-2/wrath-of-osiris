@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 public class JoinLobbyRequest extends Thread {
     private final BufferedReader in;
     private final PrintWriter out;
-    private int index;
+    private String lobbyName;
     private final String playerName;
 
     private Lobby result;
@@ -30,14 +30,14 @@ public class JoinLobbyRequest extends Thread {
      * Constructor for JoinLobbyRequest.
      * @param in server input
      * @param out server output
-     * @param index the index of the lobby to be joined
-     * @param playerName the name the player would like to use
+     * @param lobby the name of the lobby to be joined
+     * @param player the name the player would like to use
      */
-    public JoinLobbyRequest(BufferedReader in, PrintWriter out, int index, String playerName) {
+    public JoinLobbyRequest(BufferedReader in, PrintWriter out, String lobby, String player) {
         this.out = out;
         this.in = in;
-        this.index = index;
-        this.playerName = playerName;
+        this.lobbyName = lobby;
+        this.playerName = player;
     }
 
     /**
@@ -45,14 +45,8 @@ public class JoinLobbyRequest extends Thread {
      */
     public void run() {
         String fromServer;
-
-        if (index == -1) {
-            index = 0;
-        }
-
         try {
-            // join lobby
-            out.println("joinlobby " + index + " " + playerName);
+            out.println("joinlobby " + lobbyName + " " + playerName);
             fromServer = in.readLine();
             assert fromServer != null && fromServer.equals(NetworkController.EOT);
         } catch (IOException e) {

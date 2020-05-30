@@ -11,12 +11,15 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * The scene to join available lobbies.
@@ -147,10 +150,12 @@ public class JoinScene extends BaseScene {
 
     /**
      * Updates the displayed list of available lobbies.
-     * @param lobbyNames the new set of lobbies by name.
+     * @param lobbies the new set of lobbies.
      */
-    public void setLobbyNames(List<String> lobbyNames) {
-        listView.setItems(FXCollections.observableArrayList(lobbyNames));
+    public void setLobbyNames(ArrayList<Lobby> lobbies) {
+        List<String> names = lobbies.stream().map(l -> l.getPlayers().size() + "/5 "
+                + l.getName()).collect(Collectors.toList());
+        listView.setItems(FXCollections.observableArrayList(names));
     }
 
     /**

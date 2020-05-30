@@ -83,13 +83,13 @@ public class Player extends Thread {
      */
     private void respond(String clientInput) {
         if (clientInput.startsWith("joinlobby ")) {
-            int index = Integer.parseInt(clientInput.split(" ")[1]);
+            String lobbyName = clientInput.split(" ")[1];
             this.setPlayerName(clientInput.split(" ")[2]);
-            App.addPlayerToLobby(index, this);
+            App.addPlayerToLobby(lobbyName, this);
             out.println(EOT);
         } else if (clientInput.startsWith("fetchlobby ")) {
-            int index = Integer.parseInt(clientInput.split(" ")[1]);
-            out.println(App.fetchLobby(index));
+            String lobbyName = clientInput.split(" ")[1];
+            out.println(App.fetchLobby(lobbyName));
         } else if (clientInput.startsWith("updatepose ")) {
             String poseStr = clientInput.split(" ")[1];
             this.pose = Pose.unpack(poseStr);
@@ -97,11 +97,14 @@ public class Player extends Thread {
             String[] split = clientInput.split(" ");
             assert split.length > 2;
             setPlayerName(split[1]);
+            Lobby newLobby;
             if (split.length >= 4) {
-                out.println(App.createLobby(this, split[2], split[3]));
+                newLobby = App.createLobby(this, split[2], split[3]);
+                out.println();
             } else {
-                out.println(App.createLobby(this, split[2]));
+                newLobby = App.createLobby(this, split[2]);
             }
+            out.println(newLobby.getName());
             out.println(EOT);
         } else {
             switch (clientInput) {
