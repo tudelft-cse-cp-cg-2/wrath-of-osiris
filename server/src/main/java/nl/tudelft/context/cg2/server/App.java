@@ -162,6 +162,12 @@ public final class App {
         }
     }
 
+    /**
+     * A getter for the lobby by name.
+     * @param lobbies array of lobbies
+     * @param lobbyName name of the lobby
+     * @return the lobby, or null if not found.
+     */
     private static Lobby getLobbyByName(ArrayList<Lobby> lobbies, String lobbyName) {
         for (Lobby lobby : lobbies) {
             if (lobbyName.equals(lobby.getName())) {
