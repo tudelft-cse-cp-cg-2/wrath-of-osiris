@@ -5,6 +5,8 @@ import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 
+import java.util.ArrayList;
+
 /**
  * The model class.
  * Holds all the client data and data structures.
@@ -12,6 +14,7 @@ import nl.tudelft.context.cg2.client.model.world.World;
 public class Model {
 
     private final World world;
+    private ArrayList<Lobby> availableLobbies;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
     private int lives = -1;
@@ -85,5 +88,21 @@ public class Model {
      */
     public void setLives(int lives) {
         this.lives = lives;
+    }
+
+    /**
+     * Getter for local set of available lobbies in lobby list.
+     * @return local set of currently available lobbies
+     */
+    public ArrayList<Lobby> getAvailableLobbies() {
+        return availableLobbies;
+    }
+
+    /**
+     * Setter to update local set of available lobbies in lobby list.
+     * @param availableLobbies new set of currently available lobbies
+     */
+    public void setAvailableLobbies(ArrayList<Lobby> availableLobbies) {
+        this.availableLobbies = availableLobbies;
     }
 }
