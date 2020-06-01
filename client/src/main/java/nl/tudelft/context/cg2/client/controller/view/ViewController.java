@@ -1,7 +1,12 @@
 package nl.tudelft.context.cg2.client.controller.view;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.view.scenes.*;
+import nl.tudelft.context.cg2.client.controller.view.scenes.CreateGameSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.GameSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.JoinSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.LobbySceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.MenuSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.SettingsSceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 

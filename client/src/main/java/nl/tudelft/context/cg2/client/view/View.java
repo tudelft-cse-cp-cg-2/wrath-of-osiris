@@ -5,7 +5,13 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.view.scenes.*;
+import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
+import nl.tudelft.context.cg2.client.view.scenes.GameScene;
+import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
+import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
+import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
+import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
+import nl.tudelft.context.cg2.client.view.scenes.SettingsScene;
 
 import java.util.ArrayList;
 import java.util.Arrays;
