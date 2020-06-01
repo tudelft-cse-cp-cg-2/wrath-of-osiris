@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
-import javafx.beans.Observable;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;

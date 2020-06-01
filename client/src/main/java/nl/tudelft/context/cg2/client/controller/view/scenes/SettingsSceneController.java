@@ -42,7 +42,7 @@ public class SettingsSceneController extends SceneController {
     }
 
     /**
-     * Getter for the scene
+     * Getter for the scene.
      * @return the scene.
      */
     public SettingsScene getScene() {

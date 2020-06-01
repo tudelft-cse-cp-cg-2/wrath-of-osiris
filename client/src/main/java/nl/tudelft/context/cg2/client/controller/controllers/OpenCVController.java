@@ -40,6 +40,7 @@ public class OpenCVController {
      * @param controller the controller class.
      * @param model the model class.
      * @param view the view class.
+     * @param settingsSceneController the settingsSceneController.
      */
     public OpenCVController(Controller controller, Model model, View view,
                             SettingsSceneController settingsSceneController) {
