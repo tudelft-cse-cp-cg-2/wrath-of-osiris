@@ -23,6 +23,7 @@ public class MenuScene extends BaseScene {
 
     private SimpleButton joinGameButton;
     private SimpleButton createGameButton;
+    private SimpleButton settingsButton;
     private SimpleButton quitButton;
 
     private StackPane popup;
@@ -65,6 +66,9 @@ public class MenuScene extends BaseScene {
         createGameButton = new SimpleButton("Create Game");
         createGameButton.setSize(220, 80);
 
+        settingsButton = new SimpleButton("Settings");
+        settingsButton.setSize(220, 80);
+
         quitButton = new SimpleButton("Quit");
         quitButton.setId("quit-button");
         quitButton.setSize(80, 60);
@@ -91,7 +95,7 @@ public class MenuScene extends BaseScene {
 
         popupPane.getChildren().add(popupText);
         popup.getChildren().add(popupPane);
-        centerHBox.getChildren().addAll(joinGameButton, createGameButton);
+        centerHBox.getChildren().addAll(joinGameButton, createGameButton, settingsButton);
         root.getChildren().addAll(centerHBox, quitButton, headerText, popup);
     }
 
@@ -125,6 +129,14 @@ public class MenuScene extends BaseScene {
      */
     public SimpleButton getCreateGameButton() {
         return createGameButton;
+    }
+
+    /**
+     * The example button three getter.
+     * @return the example button three.
+     */
+    public SimpleButton getSettingsButton() {
+        return settingsButton;
     }
 
     /**

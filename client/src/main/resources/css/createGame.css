@@ -9,6 +9,13 @@
     -fx-font-weight: bold ;
 }
 
+#sub-header-text {
+    -fx-font-size: 20px;
+    -fx-font-family: 'SanSerif';
+    -fx-fill: white;
+    -fx-font-weight: bold ;
+}
+
 
 
 .simple-button {
