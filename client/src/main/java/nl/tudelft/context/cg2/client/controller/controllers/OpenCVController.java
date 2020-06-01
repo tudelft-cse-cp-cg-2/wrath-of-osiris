@@ -7,6 +7,7 @@ import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.PoseDetector;
+import nl.tudelft.context.cg2.client.controller.view.scenes.SettingsSceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import org.opencv.core.Mat;
@@ -28,6 +29,7 @@ public class OpenCVController {
     private PoseDetector poseDetector;
     private Timeline captureTimer;
 
+    private final SettingsSceneController settingsSceneController;
     private final Controller controller;
     private final Model model;
     private View view;
@@ -39,10 +41,12 @@ public class OpenCVController {
      * @param model the model class.
      * @param view the view class.
      */
-    public OpenCVController(Controller controller, Model model, View view) {
+    public OpenCVController(Controller controller, Model model, View view,
+                            SettingsSceneController settingsSceneController) {
         this.controller = controller;
         this.model = model;
         this.view = view;
+        this.settingsSceneController = settingsSceneController;
         this.videoCapture = null;
         this.poseDetector = null;
         this.captureTimer = null;
@@ -54,8 +58,7 @@ public class OpenCVController {
     public void startCapture() {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
-        // TODO: select index from menu
-        videoCapture.open(0);
+        videoCapture.open(Math.max(settingsSceneController.getScene().getSelectedOption(), 0));
 
         double fps = 5.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);

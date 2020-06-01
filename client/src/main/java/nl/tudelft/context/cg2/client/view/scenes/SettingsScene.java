@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
+import javafx.beans.Observable;
 import javafx.geometry.Pos;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
@@ -30,7 +31,7 @@ public class SettingsScene extends BaseScene {
     /**
      * The menu scene constructor.
      * @param window the window currently showing.
-     * @param root   the root UI element.
+     * @param root the root UI element.
      */
     public SettingsScene(Window window, Pane root) {
         super(window, root);
@@ -115,10 +116,6 @@ public class SettingsScene extends BaseScene {
             }
             videoCapture.release();
         }
-        SimpleButton button = new SimpleButton("Camera index: " + 15);
-        button.setSize(220, 50);
-        button.setOnMouseClicked(this::selectCamera);
-        options.add(button);
         reDraw();
     }
 
@@ -128,6 +125,14 @@ public class SettingsScene extends BaseScene {
      */
     public SimpleButton getLeaveButton() {
         return leaveButton;
+    }
+
+    /**
+     * get the selected option.
+     * @return the selected option.
+     */
+    public int getSelectedOption() {
+        return selectedOption;
     }
 
     /**

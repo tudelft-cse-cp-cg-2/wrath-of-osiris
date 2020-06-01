@@ -23,7 +23,7 @@ public class SettingsSceneController extends SceneController {
      */
     public SettingsSceneController(Controller controller, Model model, View view) {
         super(controller, model, view);
-        this.scene = view.getSettingsScene();
+        scene = view.getSettingsScene();
     }
 
     @Override
@@ -39,6 +39,14 @@ public class SettingsSceneController extends SceneController {
     @Override
     protected void setupEventListeners() {
 
+    }
+
+    /**
+     * Getter for the scene
+     * @return the scene.
+     */
+    public SettingsScene getScene() {
+        return scene;
     }
 
     /**
