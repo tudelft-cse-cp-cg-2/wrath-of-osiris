@@ -58,7 +58,7 @@ public class OpenCVController {
     public void startCapture() {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
-        videoCapture.open(Math.max(settingsSceneController.getScene().getSelectedOption(), 0));
+        videoCapture.open(settingsSceneController.getScene().getSelectedOption());
 
         double fps = 5.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
