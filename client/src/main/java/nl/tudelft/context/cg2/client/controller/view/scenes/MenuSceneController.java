@@ -38,6 +38,7 @@ public class MenuSceneController extends SceneController {
     protected void setupMouseListeners() {
         scene.getJoinGameButton().setOnMouseClicked(event -> joinGameClicked());
         scene.getCreateGameButton().setOnMouseClicked(event -> createGameButtonClicked());
+        scene.getSettingsButton().setOnMouseClicked(event -> settingsButtonClicked());
         scene.getQuitButton().setOnMouseClicked(event -> quitButtonClicked());
         scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
@@ -124,6 +125,14 @@ public class MenuSceneController extends SceneController {
         } else {
             scene.showPopup("There was an error connecting to the server!");
         }
+    }
+
+    /**
+     * Callback for Settings button listener.
+     * Shows the Settings scene.
+     */
+    private void settingsButtonClicked() {
+        view.getSettingsScene().show();
     }
 
     /**

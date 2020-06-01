@@ -1,11 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.view;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.view.scenes.CreateGameSceneController;
-import nl.tudelft.context.cg2.client.controller.view.scenes.GameSceneController;
-import nl.tudelft.context.cg2.client.controller.view.scenes.JoinSceneController;
-import nl.tudelft.context.cg2.client.controller.view.scenes.LobbySceneController;
-import nl.tudelft.context.cg2.client.controller.view.scenes.MenuSceneController;
+import nl.tudelft.context.cg2.client.controller.view.scenes.*;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
@@ -24,6 +20,7 @@ public class ViewController {
     private final GameSceneController gameSceneController;
     private final JoinSceneController joinSceneController;
     private final CreateGameSceneController createGameSceneController;
+    private final SettingsSceneController settingsSceneController;
     private final LobbySceneController lobbySceneController;
 
     /**
@@ -37,6 +34,7 @@ public class ViewController {
         this.gameSceneController = new GameSceneController(controller, model, view);
         this.joinSceneController = new JoinSceneController(controller, model, view);
         this.createGameSceneController = new CreateGameSceneController(controller, model, view);
+        this.settingsSceneController = new SettingsSceneController(controller, model, view);
         this.lobbySceneController = new LobbySceneController(controller, model, view);
 
         this.sceneControllers = new ArrayList<>(Arrays.asList(
@@ -44,6 +42,7 @@ public class ViewController {
                 gameSceneController,
                 joinSceneController,
                 createGameSceneController,
+                settingsSceneController,
                 lobbySceneController
         ));
 
@@ -80,6 +79,14 @@ public class ViewController {
      */
     public CreateGameSceneController getCreateGameSceneController() {
         return createGameSceneController;
+    }
+
+    /**
+     * Gets the settings scene controller.
+     * @return the settings scene controller.
+     */
+    public SettingsSceneController getSettingsSceneController() {
+        return settingsSceneController;
     }
 
     /**
