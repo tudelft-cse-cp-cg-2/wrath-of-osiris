@@ -26,7 +26,7 @@ public class SettingsScene extends BaseScene {
     private ArrayList<SimpleButton> options = new ArrayList<>();
     private VBox centerVBox;
     private SimpleButton leaveButton;
-    private int selectedOption = -1;
+    private int selectedOption = 0;
 
     /**
      * The menu scene constructor.
@@ -72,15 +72,12 @@ public class SettingsScene extends BaseScene {
      */
     public void reDraw() {
         centerVBox.getChildren().clear();
-        if (selectedOption < 0 && options.size() == 1) {
-            selectedOption = getIndexFromButton(options.get(0));
-        }
 
         if (options.size() == 0) {
             Text label = new Text("No camera has been detected");
             label.setId("sub-header-text");
             centerVBox.getChildren().addAll(label);
-        } else if (selectedOption >= 0) {
+        } else {
             Text label = new Text("Camera " + selectedOption + " has been selected");
             label.setId("sub-header-text");
             centerVBox.getChildren().addAll(label);
