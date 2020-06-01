@@ -137,7 +137,7 @@ public class PoseDetector {
         } else {
             System.out.println("No face is recognized");
             Imgproc.putText(
-                    matrix, "No face Detected", new Point(10,50), 1, 3, new Scalar(0, 0, 255), 4
+                    matrix, "No face Detected", new Point(10, 50), 1, 3, new Scalar(0, 0, 255), 4
             );
             WritableRaster raster = image.getRaster();
             DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
