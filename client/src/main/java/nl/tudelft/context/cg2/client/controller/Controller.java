@@ -31,8 +31,7 @@ public class Controller {
      */
     public Controller(final Model model, final View view) {
         this.viewController = new ViewController(this, model, view);
-        this.openCVController = new OpenCVController(this, model, view,
-                viewController.getSettingsSceneController());
+        this.openCVController = new OpenCVController(this, model, view);
         this.networkController = new NetworkController();
         this.gameTimer = new GameTimer(model, view);
         this.model = model;

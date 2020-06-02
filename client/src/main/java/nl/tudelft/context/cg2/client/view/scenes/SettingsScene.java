@@ -1,7 +1,6 @@
 package nl.tudelft.context.cg2.client.view.scenes;
 
 import javafx.geometry.Pos;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -9,12 +8,9 @@ import javafx.scene.text.Text;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
-import org.opencv.videoio.VideoCapture;
 
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * The settings scene.
@@ -99,20 +95,6 @@ public class SettingsScene extends BaseScene {
      */
     @Override
     public void onShown() {
-        nu.pattern.OpenCV.loadLocally();
-        options = new ArrayList<>();
-        VideoCapture videoCapture = new VideoCapture();
-        for (int i = 0; i < 10; i++) {
-            videoCapture.open(i);
-            if (videoCapture.isOpened()) {
-                SimpleButton button = new SimpleButton("Camera index: " + i);
-                button.setSize(220, 50);
-                button.setOnMouseClicked(this::selectCamera);
-                options.add(button);
-            }
-            videoCapture.release();
-        }
-        reDraw();
     }
 
     /**
@@ -124,30 +106,27 @@ public class SettingsScene extends BaseScene {
     }
 
     /**
-     * get the selected option.
-     * @return the selected option.
+     * The options getter.
+     * @return the options.
      */
-    public int getSelectedOption() {
-        return selectedOption;
+
+    public ArrayList<SimpleButton> getOptions() {
+        return options;
     }
 
     /**
-     * Select a camera.
-     * @param event the event.
+     * The options setter.
+     * @param options the options.
      */
-    private void selectCamera(MouseEvent event) {
-        SimpleButton btn = (SimpleButton) event.getSource();
-        selectedOption = getIndexFromButton(btn);
-        reDraw();
+    public void setOptions(ArrayList<SimpleButton> options) {
+        this.options = options;
     }
 
     /**
-     * Get the index from a button.
-     * @param simpleButton the simpleButton.
-     * @return the index.
+     * The selected option setter.
+     * @param val the value.
      */
-    private int getIndexFromButton(SimpleButton simpleButton) {
-        String[] parts = simpleButton.getText().split(" ");
-        return parseInt(parts[parts.length - 1]);
+    public void setSelectedOption(int val) {
+        selectedOption = val;
     }
 }
