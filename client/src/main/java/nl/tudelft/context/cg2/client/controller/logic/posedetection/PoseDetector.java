@@ -135,9 +135,9 @@ public class PoseDetector {
             head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
-            System.out.println("No face is recognized");
+            System.out.println("No face is detected");
             Imgproc.putText(
-                    matrix, "No face Detected", new Point(10, 50), 1, 3, new Scalar(0, 0, 255), 4
+                    matrix, "No face detected", new Point(10, 50), 1, 3, new Scalar(0, 0, 255), 4
             );
             WritableRaster raster = image.getRaster();
             DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();

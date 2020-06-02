@@ -29,7 +29,6 @@ public class OpenCVController {
     private PoseDetector poseDetector;
     private Timeline captureTimer;
 
-    private final SettingsSceneController settingsSceneController;
     private final Controller controller;
     private final Model model;
     private View view;
@@ -40,14 +39,11 @@ public class OpenCVController {
      * @param controller the controller class.
      * @param model the model class.
      * @param view the view class.
-     * @param settingsSceneController the settingsSceneController.
      */
-    public OpenCVController(Controller controller, Model model, View view,
-                            SettingsSceneController settingsSceneController) {
+    public OpenCVController(Controller controller, Model model, View view) {
         this.controller = controller;
         this.model = model;
         this.view = view;
-        this.settingsSceneController = settingsSceneController;
         this.videoCapture = null;
         this.poseDetector = null;
         this.captureTimer = null;
@@ -59,7 +55,7 @@ public class OpenCVController {
     public void startCapture() {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
-        videoCapture.open(settingsSceneController.getScene().getSelectedOption());
+        videoCapture.open(controller.getViewController().getSettingsSceneController().getSelectedOption());
 
         double fps = 5.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
