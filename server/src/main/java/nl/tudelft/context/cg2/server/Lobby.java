@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.server;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import nl.tudelft.context.cg2.server.game.LevelGenerator;
+import nl.tudelft.context.cg2.server.game.Pose;
 import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
@@ -16,6 +17,7 @@ public class Lobby {
     private final String password;
     private boolean started = false;
     private int lives = 10;
+    private long timeInterval = 5000L;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -114,6 +116,13 @@ public class Lobby {
     }
 
     /**
+     * Subtracts one life from the group's amount of lives.
+     */
+    public void subtractLife() {
+        this.lives--;
+    }
+
+    /**
      * Gets whether the lobby has started the game.
      *
      * @return boolean whether the game has been started
@@ -153,8 +162,32 @@ public class Lobby {
      */
     private void gameLoop() {
         LevelGenerator generator = new LevelGenerator(players.size());
-        ArrayList<Wall> level;
+        ArrayList<Wall> level = generator.generateLevel();
+        int currentWallIndex = 0;
         while (started) {
+            for (Player player : players) {
+                player.sendLevel(level);
+            }
+            while (currentWallIndex < level.size()) { // while the level is still going
+                try {
+                    Thread.sleep(timeInterval);
+                    ArrayList<Pose> poses = new ArrayList<>();
+                    //Todo: replace this with explicitly sent "final poses"
+                    for (Player player : players) {
+                        poses.add(player.getPose());
+                    }
+                    boolean collide = level.get(currentWallIndex).compare(poses);
+                    if (!collide) {
+                        subtractLife();
+                        if (lives < 0) {
+                            stopGame();
+                        }
+                    }
+                    currentWallIndex++;
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
             level = generator.generateLevel();
         }
     }
