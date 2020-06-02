@@ -7,7 +7,6 @@ import javafx.scene.image.WritableImage;
 import javafx.util.Duration;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.PoseDetector;
-import nl.tudelft.context.cg2.client.controller.view.scenes.SettingsSceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import org.opencv.core.Mat;
@@ -55,7 +54,8 @@ public class OpenCVController {
     public void startCapture() {
         nu.pattern.OpenCV.loadLocally();
         videoCapture = new VideoCapture();
-        videoCapture.open(controller.getViewController().getSettingsSceneController().getSelectedOption());
+        videoCapture.open(controller.getViewController()
+                .getSettingsSceneController().getSelectedOption());
 
         double fps = 5.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
