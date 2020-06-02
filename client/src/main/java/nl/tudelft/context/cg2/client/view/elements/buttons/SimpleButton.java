@@ -41,4 +41,12 @@ public class SimpleButton extends StackPane {
         this.setMinSize(width, height);
         this.setMaxSize(width, height);
     }
+
+    /**
+     * gets the text of the button.
+     * @return the text.
+     */
+    public String getText() {
+        return name;
+    }
 }

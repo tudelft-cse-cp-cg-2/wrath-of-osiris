@@ -11,6 +11,7 @@ import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 import nl.tudelft.context.cg2.client.view.scenes.LobbyScene;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 import nl.tudelft.context.cg2.client.view.scenes.OpenCVScene;
+import nl.tudelft.context.cg2.client.view.scenes.SettingsScene;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,7 @@ public class View {
     private final GameScene gameScene;
     private final JoinScene joinScene;
     private final CreateGameScene createGameScene;
+    private final SettingsScene settingsScene;
     private final LobbyScene lobbyScene;
     private final OpenCVScene openCVScene;
 
@@ -43,6 +45,7 @@ public class View {
         this.gameScene = new GameScene(window, new Pane(), model.getWorld());
         this.joinScene = new JoinScene(window, new StackPane());
         this.createGameScene = new CreateGameScene(window, new StackPane());
+        this.settingsScene = new SettingsScene(window, new StackPane());
         this.lobbyScene = new LobbyScene(window, new StackPane());
         this.openCVScene = new OpenCVScene(window, new StackPane());
 
@@ -51,6 +54,7 @@ public class View {
                 gameScene,
                 joinScene,
                 createGameScene,
+                settingsScene,
                 lobbyScene,
                 openCVScene
         ));
@@ -103,6 +107,14 @@ public class View {
      */
     public CreateGameScene getCreateGameScene() {
         return createGameScene;
+    }
+
+    /**
+     * The settings scene getter.
+     * @return the settings scene.
+     */
+    public SettingsScene getSettingsScene() {
+        return settingsScene;
     }
 
     /**

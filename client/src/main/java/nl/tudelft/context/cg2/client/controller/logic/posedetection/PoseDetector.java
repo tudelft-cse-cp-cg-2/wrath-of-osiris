@@ -2,7 +2,10 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.awt.Color;
@@ -132,6 +135,14 @@ public class PoseDetector {
             head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
+            System.out.println("No face is detected");
+            Imgproc.putText(
+                    matrix, "No face detected", new Point(10, 50), 1, 3, new Scalar(0, 0, 255), 4
+            );
+            WritableRaster raster = image.getRaster();
+            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+            byte[] data = dataBuffer.getData();
+            matrix.get(0, 0, data);
             return image;
         }
 
