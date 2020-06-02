@@ -1,13 +1,17 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.model.datastructures.BackendWall;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -72,6 +76,8 @@ public class GameStateUpdater extends Thread {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
             updateLobbyNames(serverInput);
+        } else if (serverInput.startsWith("[{")) {
+            updateLevel(serverInput);
         } else {
             switch (serverInput) {
                 case "startgame":
@@ -127,5 +133,23 @@ public class GameStateUpdater extends Thread {
      */
     public boolean isStarted() {
         return started;
+    }
+
+    /**
+     * Updates the level.
+     * @param level level
+     */
+    public void updateLevel(String level) {
+        controller.getModel().setCurrentLevel(jsonStringToLevel(level));
+    }
+
+    /**
+     * Converts a JSON string from the server to a level, so the client can use it.
+     * @param str JSON string
+     * @return level
+     */
+    public static ArrayList<BackendWall> jsonStringToLevel(String str) {
+        return new Gson().fromJson(str, new TypeToken<ArrayList<BackendWall>>() {
+        }.getType());
     }
 }
