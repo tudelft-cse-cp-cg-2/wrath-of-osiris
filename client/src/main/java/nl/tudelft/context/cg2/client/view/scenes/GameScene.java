@@ -8,8 +8,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
+import nl.tudelft.context.cg2.client.model.world.superscripts.Superscript;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.Heart;
@@ -185,16 +188,25 @@ public class GameScene extends BaseScene {
         backgroundGC.drawImage(ImageCache.IMAGES[5], 0, 0, width, offY);
 
         //Draws the world objects on the screen.
+        GraphicsContext ogc = getObjectGraphicsContext();
         world.getEntities().forEach(e -> {
             Image image = e.getTexture();
-            double w = e.getSize().x * widthRatio * e.getDepthScalar();
-            double h = e.getSize().y * heightRatio * e.getDepthScalar();
-            double x = e.getPosition().x * widthRatio + (1 - e.getDepthScalar())
+            double d = e.getDepthScalar();
+            double w = e.getSize().x * widthRatio * d;
+            double h = e.getSize().y * heightRatio * d;
+            double x = e.getPosition().x * widthRatio + (1 - d)
                     * (width * 0.5D - e.getPosition().x * widthRatio);
             double y = offY + height - h + (e.getPosition().y * heightRatio)
-                    - (1 - e.getDepthScalar()) * (height * 0.5D - e.getPosition().y * heightRatio);
+                    - (1 - d) * (height * 0.5D - e.getPosition().y * heightRatio);
+            ogc.drawImage(image, x, y, w, h);
 
-            getObjectGraphicsContext().drawImage(image, x, y, w, h);
+            if (e.getSuperscript() != null) {
+                Superscript s = e.getSuperscript();
+                ogc.setTextAlign(TextAlignment.CENTER);
+                ogc.setFill(s.getColor());
+                ogc.setFont(Font.font(s.getFamily(), s.getWeight(), s.getSize() * d));
+                ogc.fillText(s.getString(), x + w / 2, y - s.getSpacing() * d);
+            }
         });
     }
 

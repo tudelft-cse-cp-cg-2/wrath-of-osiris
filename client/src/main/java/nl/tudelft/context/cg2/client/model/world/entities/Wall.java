@@ -21,7 +21,7 @@ public class Wall extends Entity {
      * @param size the wall size within the world.
      */
     public Wall(Image texture, Vector3D position, Vector3D velocity, Vector3D size) {
-        super(texture, position, velocity, size);
+        super(texture, null, position, velocity, size);
         this.decayed = false;
         this.timer = 0D;
     }

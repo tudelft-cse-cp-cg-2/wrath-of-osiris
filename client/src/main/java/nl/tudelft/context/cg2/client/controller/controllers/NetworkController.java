@@ -14,7 +14,7 @@ import java.nio.charset.StandardCharsets;
  * Representation of the game server.
  */
 public class NetworkController {
-    private static final String HOST = "localhost";
+    private static final String HOST = "131.180.178.142";
     private static final int PORT = 43594;
 
     private Socket sock;

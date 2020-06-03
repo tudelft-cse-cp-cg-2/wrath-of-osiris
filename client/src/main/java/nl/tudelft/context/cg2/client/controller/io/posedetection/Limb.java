@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.controller.logic.posedetection;
+package nl.tudelft.context.cg2.client.controller.io.posedetection;
 
 /**
  * Enumerator representing limbs.

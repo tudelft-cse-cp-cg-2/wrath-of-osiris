@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PoseTest {
 
@@ -117,7 +118,8 @@ public class PoseTest {
 
     @Test
     public void testUnpackIllegalFormat() {
-        assertThrows(IllegalArgumentException.class, () -> Pose.unpack("02033"));
+        Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
+        assertEquals(a, Pose.unpack("02011"));
     }
 }
 

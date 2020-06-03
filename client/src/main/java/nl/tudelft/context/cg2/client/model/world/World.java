@@ -6,11 +6,12 @@ import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
 import nl.tudelft.context.cg2.client.model.world.entities.Hole;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
-import nl.tudelft.context.cg2.client.model.world.factories.WallFactory;
+import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The World class.
@@ -21,8 +22,6 @@ public class World {
     public static final double WIDTH = 2000D;
     public static final double HEIGHT = 1200D;
     public static final double DEPTH = 500D;
-
-    public static final Vector3D HOLE_SIZE = new Vector3D(300D, 500D, 0D);
 
     private final ArrayList<Entity> entities;
     private final ArrayList<Hole> holes;
@@ -46,11 +45,11 @@ public class World {
         inMotion = false;
         entities.clear();
 
-        currentWall = WallFactory.generateWall();
+        currentWall = EntityFactory.generateWall();
         entities.add(currentWall);
 
         holes.clear();
-        holes.addAll(WallFactory.generateHoles(currentWall));
+        holes.addAll(EntityFactory.generateHoles(currentWall));
         entities.addAll(holes);
         entities.sort(Comparator.comparing(Entity::getDepth).reversed());
     }
@@ -61,10 +60,24 @@ public class World {
      */
     public void createPlayerAvatars(List<Player> players) {
         players.forEach(p -> {
-            Avatar avatar = new Avatar(p, Color.DARKBLUE);
+            Color color = selectColor(players, p.getName());
+            Avatar avatar = new Avatar(p, color);
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
             entities.add(avatar);
         });
+    }
+
+    /**
+     * Selects a color for the player based on your player
+     * name and all other players in the game.
+     * @param players the players in the game.
+     * @param name the name of your player.
+     * @return a color.
+     */
+    private Color selectColor(List<Player> players, String name) {
+        Color[] colors = {Color.DARKBLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.LIGHTBLUE};
+        int random = ThreadLocalRandom.current().nextInt(0, 4);
+        return colors[random];
     }
 
     /**
@@ -98,11 +111,11 @@ public class World {
             // Makes walls appear in sequence.
             if (currentWall != null && currentWall.hasDecayed()) {
                 entities.remove(currentWall);
-                currentWall = WallFactory.generateWall();
+                currentWall = EntityFactory.generateWall();
                 entities.add(currentWall);
                 entities.removeAll(holes);
                 holes.clear();
-                holes.addAll(WallFactory.generateHoles(currentWall));
+                holes.addAll(EntityFactory.generateHoles(currentWall));
                 entities.addAll(holes);
                 entities.sort(Comparator.comparing(Entity::getDepth).reversed());
             }

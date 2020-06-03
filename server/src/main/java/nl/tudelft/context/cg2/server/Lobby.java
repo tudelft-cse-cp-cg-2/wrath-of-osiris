@@ -75,11 +75,11 @@ public class Lobby {
      * @return a packed string representing this lobby
      */
     public String pack() {
-        String out = players.size() + name;
+        StringBuilder out = new StringBuilder(players.size() + name);
         for (Player player : players) {
-            out += " " + player.getPlayerName();
+            out.append(" ").append(player.getPlayerName());
         }
-        return out;
+        return out.toString();
     }
 
     /**

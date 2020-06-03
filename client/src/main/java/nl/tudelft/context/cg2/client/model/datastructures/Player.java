@@ -1,8 +1,8 @@
 package nl.tudelft.context.cg2.client.model.datastructures;
 
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.ScreenPos;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Position;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.ScreenPos;
 
 /**
  * Contains local information about a player.
