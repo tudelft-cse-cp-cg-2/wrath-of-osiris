@@ -8,6 +8,7 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
+import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
 /**
  * The Lobby scene controller class.
@@ -49,7 +50,7 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
-        if (index == -1) {
+        if (index == -1 || scene.getPlayerNameField().getText().equals("")) {
             return;
         }
         String lobbyName = model.getAvailableLobbies().get(index).getName();
