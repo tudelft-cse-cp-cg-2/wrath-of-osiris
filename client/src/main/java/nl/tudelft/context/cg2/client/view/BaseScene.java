@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.client.view;
 
-import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -50,6 +49,12 @@ public abstract class BaseScene extends Scene {
      */
     public abstract void onShown();
 
+    /**
+     * String validator for TextField objects.
+     * @param oldV old value
+     * @param newV new value
+     * @param playerNameField field to validate
+     */
     public static void validateInput(String oldV, String newV, TextField playerNameField) {
         if (newV.equals("")) {
             return;

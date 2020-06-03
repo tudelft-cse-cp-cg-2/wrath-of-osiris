@@ -8,7 +8,6 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
-import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
 /**
  * The Lobby scene controller class.
