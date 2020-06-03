@@ -58,6 +58,10 @@ public class CreateGameSceneController extends SceneController {
      * Creates the game with the player as host.
      */
     private void createGameClicked() {
+        if (scene.getPlayerNameField().getText().equals("") || scene.getLobbyNameField().getText().equals("")) {
+            return;
+        }
+
         // Get user input from view.
         String playerName = scene.getPlayerNameField().getText();
         String lobbyName = scene.getLobbyNameField().getText();
