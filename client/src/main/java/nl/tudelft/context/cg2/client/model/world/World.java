@@ -11,6 +11,7 @@ import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.concurrent.ThreadLocalRandom;
 
 /**
  * The World class.
@@ -58,8 +59,10 @@ public class World {
      * @param players the list of players that are in the game.
      */
     public void createPlayerAvatars(List<Player> players) {
+        Color[] colors = {Color.DARKBLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.LIGHTBLUE};
         players.forEach(p -> {
-            Avatar avatar = new Avatar(p, Color.DARKBLUE);
+            int random = ThreadLocalRandom.current().nextInt(0, 4);
+            Avatar avatar = new Avatar(p, colors[random]);
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
             entities.add(avatar);
         });
