@@ -83,25 +83,32 @@ public class Player extends Thread {
      */
     private void respond(String clientInput) {
         if (clientInput.startsWith("joinlobby ")) {
-            String lobbyName = clientInput.split(" ")[1];
-            this.setPlayerName(clientInput.split(" ")[2]);
+            String[] split = clientInput.split(" ");
+            assert split.length == 3;
+            String lobbyName = split[1];
+            this.setPlayerName(split[2]);
             App.addPlayerToLobby(lobbyName, this);
             out.println(EOT);
         } else if (clientInput.startsWith("fetchlobby ")) {
-            String lobbyName = clientInput.split(" ")[1];
+            String[] split = clientInput.split(" ");
+            assert split.length == 2;
+            String lobbyName = split[1];
             out.println(App.fetchLobby(lobbyName));
         } else if (clientInput.startsWith("updatepose ")) {
-            String poseStr = clientInput.split(" ")[1];
+            String[] split = clientInput.split(" ");
+            assert split.length == 2;
+            String poseStr = split[1];
             this.pose = Pose.unpack(poseStr);
         } else if (clientInput.startsWith("createlobby ")) {
             String[] split = clientInput.split(" ");
-            assert split.length > 2;
+            assert (split.length == 3 || split.length == 4);
             setPlayerName(split[1]);
             Lobby newLobby;
-            if (split.length >= 4) {
+
+            if (split.length == 4) { // lobby with password
                 newLobby = App.createLobby(this, split[2], split[3]);
                 out.println();
-            } else {
+            } else { // lobby without password
                 newLobby = App.createLobby(this, split[2]);
             }
             out.println(newLobby.getName());
