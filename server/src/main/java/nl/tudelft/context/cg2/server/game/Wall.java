@@ -117,10 +117,10 @@ public class Wall {
      * @return String representation
      */
     public String toString() {
-        String res = "";
+        StringBuilder res = new StringBuilder();
         for (ScreenPos s : ScreenPos.values()) {
-            res += restrictions.get(s) + "\n" + poses.get(s) + "\n";
+            res.append(restrictions.get(s)).append("\n").append(poses.get(s)).append("\n");
         }
-        return res;
+        return res.toString();
     }
 }
