@@ -49,17 +49,15 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
-        System.out.println("Selected lobby index: " + index);
-
         if (index == -1) {
             return;
         }
-
-        String name = scene.getPlayerNameField().getText();
+        String lobbyName = model.getAvailableLobbies().get(index).getName();
+        String playerName = scene.getPlayerNameField().getText();
 
         // Request server to join lobby.
         JoinLobbyRequest req = new JoinLobbyRequest(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), index, name);
+                controller.getNetworkController().getOut(), lobbyName, playerName);
         req.start();
         try {
             req.join();
@@ -68,8 +66,8 @@ public class JoinSceneController extends SceneController {
         }
 
         // Set current player object.
-        controller.getModel().setCurrentPlayer(new Player(name));
-        controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(index);
+        controller.getModel().setCurrentPlayer(new Player(playerName));
+        controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(lobbyName);
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
@@ -77,7 +75,7 @@ public class JoinSceneController extends SceneController {
         controller.getStateUpdater().start();
 
         // Switch to lobby scene.
-        view.getLobbyScene().getStartButton().setVisible(false);
+        //view.getLobbyScene().getStartButton().setVisible(false);
         view.getLobbyScene().getWaitMessage().setVisible(true);
         view.getLobbyScene().show();
     }

@@ -36,12 +36,12 @@ public class WallFactory {
      */
     public static ArrayList<Hole> generateHoles(Wall wall) {
         ArrayList<Hole> holes = new ArrayList<>();
-        holes.add(new Pose(0,0,0,0), new Hole(new Vector3D(World.WIDTH / 4 - World.HOLE_SIZE.x / 2,
-                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity())));
+        holes.add(new Hole(new Vector3D(World.WIDTH / 4 - World.HOLE_SIZE.x / 2,
+                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
         holes.add(new Hole(new Vector3D((World.WIDTH / 2 - World.HOLE_SIZE.x / 2),
-                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity())));
+                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
         holes.add(new Hole(new Vector3D((World.WIDTH / 4 * 3 - World.HOLE_SIZE.x / 2),
-                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity())));
+                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
         return holes;
     }
 }

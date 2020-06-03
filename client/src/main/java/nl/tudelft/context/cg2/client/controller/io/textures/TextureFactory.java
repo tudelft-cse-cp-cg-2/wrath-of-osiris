@@ -29,6 +29,9 @@ public class TextureFactory {
      */
     public static Image holeTexture(Pose pose) {
         Image texture = null;
+
+        System.out.println(pose.toString());
+
         try {
             texture = TextureFactory.holeTexture(
                     pose.getLeftArm().indexOf(), pose.getRightArm().indexOf(),

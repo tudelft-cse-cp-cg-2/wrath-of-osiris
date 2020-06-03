@@ -14,6 +14,7 @@ import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.Heart;
 
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -54,7 +55,12 @@ public class GameScene extends BaseScene {
      */
     @Override
     public void draw() {
-        this.getStylesheets().add("/css/game.css");
+        try {
+            this.getStylesheets().add(CreateGameScene.class.getClassLoader()
+                    .getResource("css/game.css").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         //Create game canvasses
         this.backgroundCanvas = new Canvas();
