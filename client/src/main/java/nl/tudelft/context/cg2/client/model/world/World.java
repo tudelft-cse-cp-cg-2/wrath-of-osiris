@@ -8,9 +8,7 @@ import nl.tudelft.context.cg2.client.model.world.entities.Hole;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
@@ -59,13 +57,25 @@ public class World {
      * @param players the list of players that are in the game.
      */
     public void createPlayerAvatars(List<Player> players) {
-        Color[] colors = {Color.DARKBLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.LIGHTBLUE};
         players.forEach(p -> {
-            int random = ThreadLocalRandom.current().nextInt(0, 4);
-            Avatar avatar = new Avatar(p, colors[random]);
+            Color color = selectColor(players, p.getName());
+            Avatar avatar = new Avatar(p, color);
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
             entities.add(avatar);
         });
+    }
+
+    /**
+     * Selects a color for the player based on your player
+     * name and all other players in the game.
+     * @param players the players in the game.
+     * @param name the name of your player.
+     * @return a color.
+     */
+    private Color selectColor(List<Player> players, String name) {
+        Color[] colors = {Color.DARKBLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.LIGHTBLUE};
+        int random = ThreadLocalRandom.current().nextInt(0, 4);
+        return colors[random];
     }
 
     /**
