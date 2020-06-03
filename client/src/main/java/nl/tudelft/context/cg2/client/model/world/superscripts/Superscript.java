@@ -8,7 +8,7 @@ import javafx.scene.text.FontWeight;
  * Features a superscript displayed above a
  * world entity in the game world.
  */
-public class Superscript {
+public abstract class Superscript {
 
     private final String string;
 
