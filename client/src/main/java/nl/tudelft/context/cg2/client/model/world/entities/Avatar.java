@@ -1,13 +1,13 @@
 package nl.tudelft.context.cg2.client.model.world.entities;
 
-import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.textures.TextureFactory;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
-import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.Entity;
 import nl.tudelft.context.cg2.client.model.world.World;
+import nl.tudelft.context.cg2.client.model.world.superscripts.PlayerName;
 
 /**
  * The avatar class.
@@ -23,10 +23,10 @@ public class Avatar extends Entity {
      * @param color the color of the avatar.
      */
     public Avatar(Player player, Color color) {
-        super(null, new Vector3D(), new Vector3D(), World.HOLE_SIZE);
+        super(TextureFactory.defaultAvatarTexture(color), new PlayerName(player.getName()),
+                new Vector3D(), new Vector3D(), World.HOLE_SIZE);
         this.player = player;
         this.color = color;
-        this.setDefaultTexture();
     }
 
     @Override
@@ -37,6 +37,14 @@ public class Avatar extends Entity {
             updatePosition(pose);
             player.setPoseChanged(false);
         }
+    }
+
+    /**
+     * Updates the avatar texture based on a pose.
+     * @param pose the pose of the avatar's player.
+     */
+    private void updatePose(Pose pose) {
+        this.setTexture(TextureFactory.avatarTexture(pose, color));
     }
 
     /**
@@ -61,60 +69,4 @@ public class Avatar extends Entity {
                     + pose.getScreenPosition());
         }
     }
-
-    /**
-     * Updates the avatar texture based on a pose.
-     * @param pose the pose of the avatar's player.
-     */
-    private void updatePose(Pose pose) {
-        int la = pose.getLeftArm().indexOf();
-        int ra = pose.getRightArm().indexOf();
-        int ll = pose.getLeftLeg().indexOf();
-        int rl = pose.getRightLeg().indexOf();
-        updateTexture(la, ra, ll, rl);
-    }
-
-    /**
-     * Sets the avatars default texture.
-     */
-    public void setDefaultTexture() {
-        updateTexture(0, 0, 0, 0);
-    }
-
-    /**
-     * Updates the avatar's texture when a pose changes.
-     * @param leftArmId the posture id of the left arm.
-     * @param rightArmId the posture id of the right arm.
-     * @param leftLegId the posture id of the left leg.
-     * @param rightLegId the posture id of the right leg.
-     */
-    private void updateTexture(int leftArmId, int rightArmId, int leftLegId, int rightLegId) {
-        int frameWidth = 134;
-        int frameHeight = 178;
-        int armHeight = 104;
-        int legHeight = 74;
-
-        WritableImage tex = new WritableImage(frameWidth, frameHeight);
-        tex.getPixelWriter().setPixels(0, 0, frameWidth / 2, armHeight,
-                ImageCache.IMAGES[9].getPixelReader(), 0, armHeight * leftArmId);
-        tex.getPixelWriter().setPixels(frameWidth / 2, 0, frameWidth / 2, armHeight,
-                ImageCache.IMAGES[10].getPixelReader(), 0, armHeight * rightArmId);
-        tex.getPixelWriter().setPixels(0, armHeight, frameWidth / 2, legHeight,
-                ImageCache.IMAGES[11].getPixelReader(), 0, legHeight * leftLegId);
-        tex.getPixelWriter().setPixels(frameWidth / 2, armHeight, frameWidth / 2, legHeight,
-                ImageCache.IMAGES[12].getPixelReader(), 0, legHeight * rightLegId);
-
-        for (int x = 0; x < frameWidth; x++) {
-            for (int y = 0; y < frameHeight; y++) {
-                if (!tex.getPixelReader().getColor(x, y).equals(Color.TRANSPARENT)) {
-                    tex.getPixelWriter().setColor(x, y, color);
-                }
-            }
-        }
-
-        setTexture(tex);
-    }
-
-
-
 }

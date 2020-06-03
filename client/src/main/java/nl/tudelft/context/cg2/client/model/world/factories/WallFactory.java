@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.model.world.factories;
 
 import javafx.scene.image.Image;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
@@ -35,7 +36,7 @@ public class WallFactory {
      */
     public static ArrayList<Hole> generateHoles(Wall wall) {
         ArrayList<Hole> holes = new ArrayList<>();
-        holes.add(new Hole(new Vector3D(World.WIDTH / 4 - World.HOLE_SIZE.x / 2,
+        holes.add(new Pose(0,0,0,0), new Hole(new Vector3D(World.WIDTH / 4 - World.HOLE_SIZE.x / 2,
                 0, wall.getDepth() - 1), new Vector3D(wall.getVelocity())));
         holes.add(new Hole(new Vector3D((World.WIDTH / 2 - World.HOLE_SIZE.x / 2),
                 0, wall.getDepth() - 1), new Vector3D(wall.getVelocity())));

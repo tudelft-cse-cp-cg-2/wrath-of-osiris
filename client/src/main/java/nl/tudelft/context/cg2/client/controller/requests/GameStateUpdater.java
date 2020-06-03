@@ -2,7 +2,7 @@ package nl.tudelft.context.cg2.client.controller.requests;
 
 import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 

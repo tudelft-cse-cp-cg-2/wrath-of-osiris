@@ -1,10 +1,11 @@
 package nl.tudelft.context.cg2.client.model.world.entities;
 
-import javafx.scene.image.WritableImage;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.textures.TextureFactory;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
-import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.Entity;
 import nl.tudelft.context.cg2.client.model.world.World;
+import nl.tudelft.context.cg2.client.model.world.superscripts.HoleNumber;
 
 /**
  * The hole class.
@@ -12,14 +13,18 @@ import nl.tudelft.context.cg2.client.model.world.World;
  */
 public class Hole extends Entity {
 
+    private final Pose pose;
+    private final int number;
+
     /**
      * The hole constructor.
      * @param position the position of the hole in the world.
      * @param velocity the velocity the hole is moving at.
      */
-    public Hole(Vector3D position, Vector3D velocity) {
-        super(null, position, velocity, World.HOLE_SIZE.mult(1.1D));
-        this.randomTexture();
+    public Hole(Vector3D position, Vector3D velocity, Pose pose, int number) {
+        super(TextureFactory.holeTexture(pose), new HoleNumber(number), position, velocity, World.HOLE_SIZE);
+        this.pose = pose;
+        this.number = number;
     }
 
     @Override
@@ -30,38 +35,18 @@ public class Hole extends Entity {
     }
 
     /**
-     * Creates a texture for the hole with a random pose.
+     * Gets the pose that matched the hole in the wall.
+     * @return the pose field.
      */
-    private void randomTexture() {
-        this.updateTexture((int) Math.round(Math.random() * 2),
-                (int) Math.round(Math.random() * 2),
-                (int) Math.round(Math.random()),
-                (int) Math.round(Math.random()));
+    public Pose getPose() {
+        return pose;
     }
 
     /**
-     * Updates the hole's texture to match a given posture.
-     * @param leftArmId the posture id of the left arm.
-     * @param rightArmId the posture id of the right arm.
-     * @param leftLegId the posture id of the left leg.
-     * @param rightLegId the posture id of the right leg.
+     * Gets the number of people that need to pass through the hole.
+     * @return the number field.
      */
-    private void updateTexture(int leftArmId, int rightArmId, int leftLegId, int rightLegId) {
-        int frameWidth = 134;
-        int frameHeight = 178;
-        int armHeight = 104;
-        int legHeight = 74;
-
-        WritableImage tex = new WritableImage(frameWidth, frameHeight);
-        tex.getPixelWriter().setPixels(0, 0, frameWidth / 2, armHeight,
-                ImageCache.IMAGES[13].getPixelReader(), 0, armHeight * leftArmId);
-        tex.getPixelWriter().setPixels(frameWidth / 2, 0, frameWidth / 2, armHeight,
-                ImageCache.IMAGES[14].getPixelReader(), 0, armHeight * rightArmId);
-        tex.getPixelWriter().setPixels(0, armHeight, frameWidth / 2, legHeight,
-                ImageCache.IMAGES[15].getPixelReader(), 0, legHeight * leftLegId);
-        tex.getPixelWriter().setPixels(frameWidth / 2, armHeight, frameWidth / 2, legHeight,
-                ImageCache.IMAGES[16].getPixelReader(), 0, legHeight * rightLegId);
-        setTexture(tex);
+    public int getNumber() {
+        return number;
     }
-
 }
