@@ -54,8 +54,10 @@ public class Settings {
                 cameraIndex = Integer.parseInt(properties.getProperty("hardware.camera"));
                 stream.close();
                 System.out.println("Settings loaded successfully.");
-            } catch (IOException e) {
+            } catch (IOException ioe) {
                 System.out.println("Settings loading failed.");
+            } catch (NumberFormatException nfe) {
+                nfe.printStackTrace();
             }
         } else {
             System.out.println("Settings file not found.");
