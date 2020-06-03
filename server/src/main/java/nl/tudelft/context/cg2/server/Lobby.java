@@ -2,10 +2,7 @@ package nl.tudelft.context.cg2.server;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
 import nl.tudelft.context.cg2.server.game.LevelGenerator;
-<<<<<<< HEAD
 import nl.tudelft.context.cg2.server.game.Pose;
-=======
->>>>>>> a9119c0... Refactor Wall to be more JSON-friendly, add methods to convert a level to a JSON object
 import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
