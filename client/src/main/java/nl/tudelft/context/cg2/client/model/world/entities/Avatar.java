@@ -7,6 +7,7 @@ import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.Entity;
 import nl.tudelft.context.cg2.client.model.world.World;
+import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 import nl.tudelft.context.cg2.client.model.world.superscripts.PlayerName;
 
 /**
@@ -24,7 +25,7 @@ public class Avatar extends Entity {
      */
     public Avatar(Player player, Color color) {
         super(TextureFactory.defaultAvatarTexture(color), new PlayerName(player.getName()),
-                new Vector3D(), new Vector3D(), World.HOLE_SIZE);
+                new Vector3D(), new Vector3D(), EntityFactory.HOLE_SIZE);
         this.player = player;
         this.color = color;
     }
@@ -55,15 +56,15 @@ public class Avatar extends Entity {
         switch (pose.getScreenPosition()) {
             case left:
                 setPosition(new Vector3D(
-                        World.WIDTH / 4 - World.HOLE_SIZE.x / 2, 0, 0));
+                        World.WIDTH / 4 - EntityFactory.HOLE_SIZE.x / 2, 0, 0));
                 break;
             case middle:
                 setPosition(new Vector3D((
-                        World.WIDTH / 2 - World.HOLE_SIZE.x / 2), 0, 0));
+                        World.WIDTH / 2 - EntityFactory.HOLE_SIZE.x / 2), 0, 0));
                 break;
             case right:
                 setPosition(new Vector3D((
-                        World.WIDTH / 4 * 3 - World.HOLE_SIZE.x / 2), 0, 0));
+                        World.WIDTH / 4 * 3 - EntityFactory.HOLE_SIZE.x / 2), 0, 0));
                 break;
             default: throw new IllegalStateException("Incorrect screenpos: "
                     + pose.getScreenPosition());

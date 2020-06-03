@@ -15,7 +15,9 @@ import java.util.ArrayList;
  * Generates a wall entity.
  */
 @SuppressWarnings(value = "HideUtilityClassConstructor")
-public class WallFactory {
+public class EntityFactory {
+
+    public static final Vector3D HOLE_SIZE = new Vector3D(300D, 500D, 0D);
 
     /**
      * Generates a pseudo-random wall entity.
@@ -36,11 +38,11 @@ public class WallFactory {
      */
     public static ArrayList<Hole> generateHoles(Wall wall) {
         ArrayList<Hole> holes = new ArrayList<>();
-        holes.add(new Hole(new Vector3D(World.WIDTH / 4 - World.HOLE_SIZE.x / 2,
+        holes.add(new Hole(new Vector3D(World.WIDTH / 4 - HOLE_SIZE.x / 2,
                 0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
-        holes.add(new Hole(new Vector3D((World.WIDTH / 2 - World.HOLE_SIZE.x / 2),
+        holes.add(new Hole(new Vector3D((World.WIDTH / 2 - HOLE_SIZE.x / 2),
                 0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
-        holes.add(new Hole(new Vector3D((World.WIDTH / 4 * 3 - World.HOLE_SIZE.x / 2),
+        holes.add(new Hole(new Vector3D((World.WIDTH / 4 * 3 - HOLE_SIZE.x / 2),
                 0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
         return holes;
     }
