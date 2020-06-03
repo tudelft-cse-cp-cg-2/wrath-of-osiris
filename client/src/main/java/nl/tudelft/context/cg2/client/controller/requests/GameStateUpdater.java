@@ -83,7 +83,6 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().startGame());
                     break;
                 case "stopgame":
-                    // todo: Maybe how "game over" screen and summary?
                     Platform.runLater(() -> controller.getViewController()
                             .getGameSceneController().stopGame());
                     break;
