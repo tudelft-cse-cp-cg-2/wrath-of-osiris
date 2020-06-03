@@ -167,34 +167,36 @@ public class Lobby {
         LevelGenerator generator = new LevelGenerator(players.size());
         ArrayList<Wall> level = generator.generateLevel();
         currentWallIndex = 0;
-        TimerTask wallLoop = new TimerTask() {
-            @Override
-            public void run() {
-                ArrayList<Pose> poses = new ArrayList<>();
-                //Todo: replace this with explicitly sent "final poses"
-                for (Player player : players) {
-                    poses.add(player.getPose());
-                }
-//                boolean avoidedCollision = level.get(currentWallIndex).compare(poses);
-//                if (!avoidedCollision) {
-//                    subtractLife();
-//                    //Todo: use sendFailed to inform everyone which player made the mistake
-//                    if (lives < 0) {
-//                        stopGame();
-//                    }
-//                }
-//                currentWallIndex++;
-//                if (currentWallIndex < level.size()) { // only send "nextwall" if there is one
-//                    for (Player player : players) {
-//                        player.sendNextWall();
-//                    }
-//                }
-            }
-        };
+
         while (started) { // this loop runs once every level
             for (Player player : players) {
                 player.sendLevel(level);
             }
+            final ArrayList<Wall> constLevel = level;
+            TimerTask wallLoop = new TimerTask() {
+                @Override
+                public void run() {
+                    ArrayList<Pose> poses = new ArrayList<>();
+                    //Todo: replace this with explicitly sent "final poses"
+                    for (Player player : players) {
+                        poses.add(player.getPose());
+                    }
+                    boolean avoidedCollision = constLevel.get(currentWallIndex).compare(poses);
+                    if (!avoidedCollision) {
+                        subtractLife();
+                        //Todo: use sendFailed to inform everyone which player made the mistake
+                        if (lives < 0) {
+                            stopGame();
+                        }
+                    }
+                    currentWallIndex++;
+                    if (currentWallIndex < constLevel.size()) { // only send "nextwall" if there is one
+                        for (Player player : players) {
+                            player.sendNextWall();
+                        }
+                    }
+                }
+            };
             while (currentWallIndex < level.size()) { // this loop runs once every wall
                 Timer timer = new Timer("wallTimer");
                 timer.schedule(wallLoop, timeInterval);
