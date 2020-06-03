@@ -36,6 +36,7 @@ public class LobbySceneController extends SceneController {
     protected void setupMouseListeners() {
         scene.getStartButton().setOnMouseClicked(event -> startButtonClicked());
         scene.getLeaveButton().setOnMouseClicked(event -> leaveButtonClicked());
+        scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
 
     @Override

@@ -7,6 +7,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -31,6 +32,10 @@ public class LobbyScene extends BaseScene {
     private Label waitMessage;
     private SimpleButton startButton;
     private SimpleButton leaveButton;
+
+    private StackPane popup;
+    private StackPane popupPane;
+    private Text popupText;
 
     /**
      * The lobby scene constructor.
@@ -81,8 +86,28 @@ public class LobbyScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
+        popup = new StackPane();
+        popup.minWidthProperty().bind(window.sceneWidthProperty());
+        popup.getStyleClass().add("popup");
+        popup.maxWidthProperty().bind(window.sceneWidthProperty());
+        popup.minHeightProperty().bind(window.sceneHeightProperty());
+        popup.maxHeightProperty().bind(window.sceneHeightProperty());
+        popup.setVisible(false);
+        popupPane = new StackPane();
+        popupPane.setMinSize(400, 250);
+        popupPane.setMaxSize(400, 250);
+        popupPane.getStyleClass().add("summary-pane");
+        popupText = new Text();
+        popupText.setWrappingWidth(350);
+        popupText.setLayoutX(25);
+        popupText.setTextAlignment(TextAlignment.CENTER);
+        popupText.getStyleClass().add("popup-text");
+
+        popupPane.getChildren().add(popupText);
+        popup.getChildren().add(popupPane);
+
         centerHBox.getChildren().addAll(playerListVBox, controlsVBox);
-        root.getChildren().addAll(centerHBox, leaveButton, headerText);
+        root.getChildren().addAll(centerHBox, leaveButton, headerText, popup);
     }
 
     /**
@@ -134,5 +159,29 @@ public class LobbyScene extends BaseScene {
      */
     public Label getWaitMessage() {
         return waitMessage;
+    }
+
+    /**
+     * Shows the message popup.
+     * @param message the message to set on the popup.
+     */
+    public void showPopup(String message) {
+        popupText.setText(message);
+        popup.setVisible(true);
+    }
+
+    /**
+     * Closes the message popup.
+     */
+    public void closePopup() {
+        popup.setVisible(false);
+    }
+
+    /**
+     * Gets the message popup.
+     * @return the message popup.
+     */
+    public StackPane getPopup() {
+        return popup;
     }
 }
