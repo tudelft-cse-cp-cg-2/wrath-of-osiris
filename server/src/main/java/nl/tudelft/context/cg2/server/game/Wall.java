@@ -191,10 +191,10 @@ public class Wall {
      * @return String representation
      */
     public String toString() {
-        StringBuilder res = new StringBuilder();
-        for (ScreenPos s : ScreenPos.values()) {
-            res.append(restrictions.get(s)).append("\n").append(poses.get(s)).append("\n");
-        }
-        return res.toString();
+        String res = "";
+        res += numberLeft + "\n" + poseLeft + "\n";
+        res += numberMiddle + "\n" + poseMiddle + "\n";
+        res += numberRight + "\n" + poseRight + "\n";
+        return res;
     }
 }
