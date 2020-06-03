@@ -15,6 +15,7 @@ import java.util.ArrayList;
 public class Model {
 
     private final World world;
+    private ArrayList<Lobby> availableLobbies;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
     private int lives = -1;
@@ -105,5 +106,21 @@ public class Model {
      */
     public void setCurrentLevel(ArrayList<BackendWall> currentLevel) {
         this.currentLevel = currentLevel;
+    }
+
+    /**
+     * Getter for local set of available lobbies in lobby list.
+     * @return local set of currently available lobbies
+     */
+    public ArrayList<Lobby> getAvailableLobbies() {
+        return availableLobbies;
+    }
+
+    /**
+     * Setter to update local set of available lobbies in lobby list.
+     * @param availableLobbies new set of currently available lobbies
+     */
+    public void setAvailableLobbies(ArrayList<Lobby> availableLobbies) {
+        this.availableLobbies = availableLobbies;
     }
 }

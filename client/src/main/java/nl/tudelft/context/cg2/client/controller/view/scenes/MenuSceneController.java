@@ -10,8 +10,6 @@ import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The Menu scene controller class.
@@ -94,21 +92,23 @@ public class MenuSceneController extends SceneController {
      */
     private void joinGameClicked() {
         if (controller.getNetworkController().connect()) {
-            ListLobbiesRequest req =
-                    new ListLobbiesRequest(controller.getNetworkController().getIn(),
-                    controller.getNetworkController().getOut());
-            req.start();
             try {
-                req.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                ListLobbiesRequest req =
+                        new ListLobbiesRequest(controller.getNetworkController().getIn(),
+                                controller.getNetworkController().getOut());
+                req.start();
+                try {
+                    req.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<Lobby> lobbies = req.getResult();
+                controller.getModel().setAvailableLobbies(lobbies);
+                view.getJoinScene().setLobbyNames(lobbies);
+                view.getJoinScene().show();
+            } catch (NoClassDefFoundError e) {
+                scene.showPopup("Please restart the application.");
             }
-            ArrayList<Lobby> lobbies = req.getResult();
-            List<String> names = lobbies.stream().map(l -> l.getPlayers().size() + "/5 "
-                    + l.getName()).collect(Collectors.toList());
-
-            view.getJoinScene().setLobbyNames(names);
-            view.getJoinScene().show();
         } else {
             scene.showPopup("There was an error connecting to the server!");
         }

@@ -75,14 +75,14 @@ public final class App {
 
     /**
      * Adds a player to a specific lobby.
-     * @param index the index of the lobby
+     * @param lobbyName the name of the lobby
      * @param player the player object
      */
-    public static void addPlayerToLobby(int index, Player player) {
-        if (index < 0 || index >= lobbies.size()) {
+    public static void addPlayerToLobby(String lobbyName, Player player) {
+        Lobby lobby = getLobbyByName(lobbies, lobbyName);
+        if (lobby == null) {
             System.out.println("No such lobby");
         } else {
-            Lobby lobby = lobbies.get(index);
             if (lobby.isFull()) {
                 disconnectPlayer(player);
             } else {
@@ -94,16 +94,15 @@ public final class App {
 
     /**
      * Fetches a lobby for the client.
-     * @param index the lobby to be fetched
+     * @param lobbyName the lobby to be fetched
      * @return the packed lobby and its player list
      */
-    public static String fetchLobby(int index) {
+    public static String fetchLobby(String lobbyName) {
         String out = "fetchlobby ";
-
-        if (index < 0 || index >= lobbies.size()) {
+        Lobby lobby = getLobbyByName(lobbies, lobbyName);
+        if (lobby == null) {
             System.out.println("No such lobby");
         } else {
-            Lobby lobby = lobbies.get(index);
             out += lobby.pack();
         }
 
@@ -115,23 +114,23 @@ public final class App {
      * @param player the player creating the lobby, who will also automatically join
      * @param lobbyName the name of the lobby
      * @param password the optional password of the lobby, or if none, null
-     * @return the index of the newly created lobby
+     * @return the newly created lobby
      */
-    public static int createLobby(Player player, String lobbyName, String password) {
+    public static Lobby createLobby(Player player, String lobbyName, String password) {
         Lobby lobby = new Lobby(lobbyName, password, new ArrayList<Player>());
         lobby.addPlayer(player);
         player.setLobby(lobby);
         lobbies.add(lobby);
-        return lobbies.indexOf(lobby);
+        return lobby;
     }
 
     /**
      * Create a new lobby without a password.
      * @param player the player creating the lobby, who will also automatically join
      * @param lobbyName the name of the lobby
-     * @return the index of the newly created lobby
+     * @return the newly created lobby
      */
-    public static int createLobby(Player player, String lobbyName) {
+    public static Lobby createLobby(Player player, String lobbyName) {
         return createLobby(player, lobbyName, null);
     }
 
@@ -161,5 +160,14 @@ public final class App {
             e.printStackTrace();
             System.out.println("Could not start server");
         }
+    }
+
+    private static Lobby getLobbyByName(ArrayList<Lobby> lobbies, String lobbyName) {
+        for (Lobby lobby : lobbies) {
+            if (lobbyName.equals(lobby.getName())) {
+                return lobby;
+            }
+        }
+        return null;
     }
 }

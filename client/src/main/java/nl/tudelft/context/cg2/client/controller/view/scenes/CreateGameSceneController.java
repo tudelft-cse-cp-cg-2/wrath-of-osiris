@@ -75,7 +75,7 @@ public class CreateGameSceneController extends SceneController {
         // Set current player object.
         controller.getModel().setCurrentPlayer(new Player(playerName));
         controller.getViewController().getLobbySceneController()
-                .scheduleLobbyUpdater(req.getResultIndex());
+                .scheduleLobbyUpdater(req.getResultName());
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
