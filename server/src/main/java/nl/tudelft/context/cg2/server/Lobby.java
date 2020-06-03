@@ -6,6 +6,8 @@ import nl.tudelft.context.cg2.server.game.Pose;
 import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Class containing information about the lobby a player is currently in.
@@ -18,6 +20,8 @@ public class Lobby {
     private boolean started = false;
     private int lives = 10;
     private long timeInterval = 5000L;
+    private int currentWallIndex = 0;
+
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -163,32 +167,41 @@ public class Lobby {
     private void gameLoop() {
         LevelGenerator generator = new LevelGenerator(players.size());
         ArrayList<Wall> level = generator.generateLevel();
-        int currentWallIndex = 0;
-        while (started) {
+        currentWallIndex = 0;
+        TimerTask wallLoop = new TimerTask() {
+            @Override
+            public void run() {
+                ArrayList<Pose> poses = new ArrayList<>();
+                //Todo: replace this with explicitly sent "final poses"
+                for (Player player : players) {
+                    poses.add(player.getPose());
+                }
+//                boolean avoidedCollision = level.get(currentWallIndex).compare(poses);
+//                if (!avoidedCollision) {
+//                    subtractLife();
+//                    //Todo: use sendFailed to inform everyone which player made the mistake
+//                    if (lives < 0) {
+//                        stopGame();
+//                    }
+//                }
+//                currentWallIndex++;
+//                if (currentWallIndex < level.size()) { // only send "nextwall" if there is one
+//                    for (Player player : players) {
+//                        player.sendNextWall();
+//                    }
+//                }
+            }
+        };
+        while (started) { // this loop runs once every level
             for (Player player : players) {
                 player.sendLevel(level);
             }
-            while (currentWallIndex < level.size()) { // while the level is still going
-                try {
-                    Thread.sleep(timeInterval);
-                    ArrayList<Pose> poses = new ArrayList<>();
-                    //Todo: replace this with explicitly sent "final poses"
-                    for (Player player : players) {
-                        poses.add(player.getPose());
-                    }
-                    boolean collide = level.get(currentWallIndex).compare(poses);
-                    if (!collide) {
-                        subtractLife();
-                        if (lives < 0) {
-                            stopGame();
-                        }
-                    }
-                    currentWallIndex++;
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            while (currentWallIndex < level.size()) { // this loop runs once every wall
+                Timer timer = new Timer("wallTimer");
+                timer.schedule(wallLoop, timeInterval);
             }
             level = generator.generateLevel();
+
         }
     }
 }
