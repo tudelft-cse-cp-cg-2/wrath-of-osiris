@@ -107,7 +107,6 @@ public class Player extends Thread {
 
             if (split.length == 4) { // lobby with password
                 newLobby = App.createLobby(this, split[2], split[3]);
-                out.println();
             } else { // lobby without password
                 newLobby = App.createLobby(this, split[2]);
             }
