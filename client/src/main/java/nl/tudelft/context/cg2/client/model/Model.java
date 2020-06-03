@@ -93,22 +93,6 @@ public class Model {
     }
 
     /**
-     * Getter for the current level.
-     * @return level
-     */
-    public ArrayList<BackendWall> getCurrentLevel() {
-        return currentLevel;
-    }
-
-    /**
-     * Setter to update the current level.
-     * @param currentLevel level
-     */
-    public void setCurrentLevel(ArrayList<BackendWall> currentLevel) {
-        this.currentLevel = currentLevel;
-    }
-
-    /**
      * Getter for local set of available lobbies in lobby list.
      * @return local set of currently available lobbies
      */
@@ -122,5 +106,21 @@ public class Model {
      */
     public void setAvailableLobbies(ArrayList<Lobby> availableLobbies) {
         this.availableLobbies = availableLobbies;
+    }
+
+    /**
+     * Getter for the current level.
+     * @return level
+     */
+    public ArrayList<BackendWall> getCurrentLevel() {
+        return currentLevel;
+    }
+
+    /**
+     * Setter to update the current level.
+     * @param currentLevel level
+     */
+    public void setCurrentLevel(ArrayList<BackendWall> currentLevel) {
+        this.currentLevel = currentLevel;
     }
 }

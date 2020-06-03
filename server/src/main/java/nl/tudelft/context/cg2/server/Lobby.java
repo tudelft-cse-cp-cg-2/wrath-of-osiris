@@ -22,7 +22,6 @@ public class Lobby {
     private long timeInterval = 5000L;
     private int currentWallIndex = 0;
 
-
     /**
      * The list of connected players. The first one (index 0) is always the host.
      */
@@ -201,7 +200,6 @@ public class Lobby {
                 timer.schedule(wallLoop, timeInterval);
             }
             level = generator.generateLevel();
-
         }
     }
 }
