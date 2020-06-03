@@ -65,6 +65,9 @@ public class CreateGameScene extends BaseScene {
         playerNameField = new TextField();
         playerNameField.setPromptText("Player name");
         playerNameField.getStyleClass().add("text-box");
+        playerNameField.textProperty().addListener((obj, oldV, newV) -> {
+            validateInput(oldV, newV, playerNameField);
+        });
         Label lobbyNameLabel = new Label();
         lobbyNameLabel.setLabelFor(lobbyNameField);
         lobbyNameLabel.setText("Lobby name:");
@@ -72,6 +75,9 @@ public class CreateGameScene extends BaseScene {
         lobbyNameField = new TextField();
         lobbyNameField.setPromptText("Lobby name");
         lobbyNameField.getStyleClass().add("text-box");
+        lobbyNameField.textProperty().addListener((obj, oldV, newV) -> {
+            validateInput(oldV, newV, lobbyNameField);
+        });
         Label passwordLabel = new Label();
         passwordLabel.setLabelFor(passwordField);
         passwordLabel.setText("Password:");
@@ -79,6 +85,9 @@ public class CreateGameScene extends BaseScene {
         passwordField = new TextField();
         passwordField.setPromptText("Password (optional)");
         passwordField.getStyleClass().add("text-box");
+        passwordField.textProperty().addListener((obj, oldV, newV) -> {
+            validateInput(oldV, newV, passwordField);
+        });
 
         createGameButton = new SimpleButton("Create Game");
         createGameButton.setSize(220, 80);

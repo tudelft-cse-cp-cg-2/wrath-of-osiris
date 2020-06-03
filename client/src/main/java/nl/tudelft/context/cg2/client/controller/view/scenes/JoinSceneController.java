@@ -49,7 +49,7 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
-        if (index == -1) {
+        if (index == -1 || scene.getPlayerNameField().getText().equals("")) {
             return;
         }
         String lobbyName = model.getAvailableLobbies().get(index).getName();
