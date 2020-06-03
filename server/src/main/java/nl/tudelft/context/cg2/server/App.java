@@ -29,13 +29,6 @@ public final class App {
         ServerSocket serverSock = new ServerSocket(PORT);
         lobbies = new ArrayList<>();
 
-        Lobby dummyLobby = new Lobby("dummy", "", new ArrayList<>());
-        lobbies.add(dummyLobby);
-        Player dummyPlayer = new Player(new Socket("localhost", 43594));
-        dummyPlayer.setPlayerName("dummy");
-        dummyPlayer.setPose(new Pose(Arm.SIDE, Arm.SIDE, Legs.DOWN, ScreenPos.RIGHT));
-        addPlayerToLobby("dummy", dummyPlayer);
-
         System.out.println("Started server on port " + PORT);
         while (true) {
             Socket sock = serverSock.accept();
