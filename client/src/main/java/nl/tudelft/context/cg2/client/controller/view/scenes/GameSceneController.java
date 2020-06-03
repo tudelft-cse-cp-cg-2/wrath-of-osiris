@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.PoseUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
@@ -53,7 +54,7 @@ public class GameSceneController extends SceneController {
                     startWorldTimer();
                     break;
                 case BACK_SPACE:
-                    showMenuScene();
+                    stopGame();
                     break;
                 default:
                     break;
@@ -92,17 +93,21 @@ public class GameSceneController extends SceneController {
         // Stop fetchLobby requests
         controller.getViewController().getLobbySceneController().stopTimer();
 
-//        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
-//                controller.getNetworkController().getOut(), model.getCurrentPlayer());
+        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
+                controller.getNetworkController().getOut(), model.getCurrentPlayer());
         updateTimer = new Timer();
-//        updateTimer.schedule(poseUpdater, 500, 500);
+        updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();
-//        model.getWorld().createPlayerAvatars(model.getCurrentLobby().getPlayers());
-        // Temporary fix for lobby.getPlayers NullException
-        ArrayList<Player> player = new ArrayList<>();
-        player.add(model.getCurrentPlayer());
-        model.getWorld().createPlayerAvatars(player);
+        ArrayList<Player> players = new ArrayList<>();
+        model.getCurrentLobby().getPlayers().forEach(otherPlayer -> {
+            if (!otherPlayer.equals(model.getCurrentPlayer())) {
+                players.add(otherPlayer);
+            } else {
+                players.add(model.getCurrentPlayer());
+            }
+        });
+        model.getWorld().createPlayerAvatars(players);
 
         view.getGameScene().clear();
         view.getGameScene().show();
@@ -117,6 +122,9 @@ public class GameSceneController extends SceneController {
         controller.getOpenCVController().stopCapture();
         world.destroy();
         view.getGameScene().clear();
+        // todo: Set reached level in game-over summary
+        view.getLobbyScene().showPopup("GAME OVER\n\n"
+                                    + "You reached level X");
         view.getLobbyScene().show();
     }
 

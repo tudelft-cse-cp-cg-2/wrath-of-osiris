@@ -1,9 +1,9 @@
 package nl.tudelft.context.cg2.client;
 
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Limb;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Position;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.ScreenPos;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Limb;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Position;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.ScreenPos;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

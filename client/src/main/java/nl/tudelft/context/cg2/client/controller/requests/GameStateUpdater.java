@@ -2,13 +2,15 @@ package nl.tudelft.context.cg2.client.controller.requests;
 
 import javafx.application.Platform;
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.logic.posedetection.Pose;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
+import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -81,7 +83,6 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().startGame());
                     break;
                 case "stopgame":
-                    // todo: Maybe how "game over" screen and summary?
                     Platform.runLater(() -> controller.getViewController()
                             .getGameSceneController().stopGame());
                     break;
@@ -112,15 +113,22 @@ public class GameStateUpdater extends Thread {
     }
 
     /**
-     * Updates the player names in the current lobby.
+     * Updates the player names in the current lobby, and in scene.
+     * Creates the lobby if when ran for the first time.
      * @param serverInput String packet from server containing the player current player names
      */
     private void updateLobbyNames(String serverInput) {
         Lobby newLobby = Lobby.unpackFetchLobby(serverInput);
         List<String> playerNames = newLobby.getPlayerNames();
-        Platform.runLater(() -> {
-            controller.getView().getLobbyScene().setPlayerNames(playerNames);
-        });
+        Model model = controller.getModel();
+        if (model.getCurrentLobby() == null) {
+            model.setCurrentLobby(newLobby);
+        } else {
+            Platform.runLater(() -> {
+                model.getCurrentLobby().setPlayers((ArrayList) newLobby.getPlayers());
+                controller.getView().getLobbyScene().setPlayerNames(playerNames);
+            });
+        }
     }
 
     /**

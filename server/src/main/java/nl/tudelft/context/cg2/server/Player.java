@@ -31,7 +31,7 @@ public class Player extends Thread {
     private String playerName;
     private Lobby lobby;
 
-    private final Timer eventTimer;
+    private Timer eventTimer;
 
     private boolean terminate = false;
 
@@ -146,6 +146,7 @@ public class Player extends Thread {
                         + clientInput);
                 respond(clientInput);
             }
+            stopPoseUpdater();
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
@@ -196,6 +197,7 @@ public class Player extends Thread {
      * Signals the player to start the game.
      */
     public void stopGame() {
+        stopPoseUpdater();
         out.println("stopgame");
     }
 
@@ -212,5 +214,14 @@ public class Player extends Thread {
     public void startPoseUpdater() {
         PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
         eventTimer.schedule(poseUpdater, 500, 500);
+    }
+
+    /**
+     * Stops the pose updater for this player.
+     */
+    public void stopPoseUpdater() {
+        eventTimer.cancel();
+        eventTimer.purge();
+        eventTimer = null;
     }
 }

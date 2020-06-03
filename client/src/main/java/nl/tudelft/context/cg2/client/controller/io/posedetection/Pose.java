@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client.controller.logic.posedetection;
+package nl.tudelft.context.cg2.client.controller.io.posedetection;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,6 +33,13 @@ public class Pose {
         leftLeg = ll;
         rightLeg = rl;
         screenPosition = sp;
+    }
+
+    /**
+     * Creates the base pose.
+     */
+    public Pose() {
+        this(null, Position.bottom, Position.bottom, Position.neutral, Position.neutral);
     }
 
     /**
