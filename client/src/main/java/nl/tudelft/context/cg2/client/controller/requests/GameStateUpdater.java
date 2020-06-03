@@ -96,6 +96,9 @@ public class GameStateUpdater extends Thread {
                 case "nextwall":
                     //TODO: start the client-side wall timer
                     break;
+                case "nextwall":
+                    //TODO: start the client-side wall timer
+                    break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
 
