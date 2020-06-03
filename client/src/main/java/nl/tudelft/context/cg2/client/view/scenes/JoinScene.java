@@ -39,8 +39,6 @@ public class JoinScene extends BaseScene {
 
     private SimpleButton backButton;
 
-    private static final int MAX_PLAYER_NAME_LENGTH = 15;
-
     /**
      * The lobby joining scene constructor.
      * @param window the window currently showing.
@@ -88,12 +86,7 @@ public class JoinScene extends BaseScene {
 
         // enforce that there are no spaces, and enforce the maximum length
         playerNameField.textProperty().addListener((obj, oldV, newV) -> {
-            if (newV.equals("")) {
-                return;
-            }
-            if (newV.length() > MAX_PLAYER_NAME_LENGTH || !newV.matches("\\S+")) {
-                playerNameField.setText(oldV);
-            }
+            validateInput(oldV, newV, playerNameField);
         });
 
         joinButton = new SimpleButton("Join Lobby");
