@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.view;
 
 import javafx.scene.Scene;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
 
 /**
@@ -11,6 +12,8 @@ public abstract class BaseScene extends Scene {
 
     protected final Window window;
     protected final Pane root;
+
+    private static final int MAX_PLAYER_NAME_LENGTH = 15;
 
     /**
      * The base scene constructor.
@@ -45,4 +48,19 @@ public abstract class BaseScene extends Scene {
      * Event thrown when the scene is shown in the window.
      */
     public abstract void onShown();
+
+    /**
+     * String validator for TextField objects.
+     * @param oldV old value
+     * @param newV new value
+     * @param playerNameField field to validate
+     */
+    public static void validateInput(String oldV, String newV, TextField playerNameField) {
+        if (newV.equals("")) {
+            return;
+        }
+        if (newV.length() > MAX_PLAYER_NAME_LENGTH || !newV.matches("\\S+")) {
+            playerNameField.setText(oldV);
+        }
+    }
 }
