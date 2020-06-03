@@ -1,8 +1,8 @@
 package nl.tudelft.context.cg2.client.model.world;
 
 import javafx.scene.image.Image;
-import nl.tudelft.context.cg2.client.model.world.superscripts.Superscript;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
+import nl.tudelft.context.cg2.client.model.world.superscripts.Superscript;
 
 /**
  * The entity abstract class.
@@ -20,11 +20,13 @@ public abstract class Entity {
     /**
      * The entity constructor.
      * @param texture the texture of the entity.
+     * @param superscript the script displayed above the entity.
      * @param position the position of the entity.
      * @param velocity the velocity of the entity.
      * @param size the size of the entity.
      */
-    public Entity(Image texture, Superscript superscript, Vector3D position, Vector3D velocity, Vector3D size) {
+    public Entity(Image texture, Superscript superscript, Vector3D position,
+                  Vector3D velocity, Vector3D size) {
         this.texture = texture;
         this.superscript = superscript;
         this.position = position;
@@ -132,6 +134,7 @@ public abstract class Entity {
 
     /**
      * Sets the superscript attached to this entity.
+     * @param superscript the superscript to set.
      */
     public void setSuperscript(Superscript superscript) {
         this.superscript = superscript;

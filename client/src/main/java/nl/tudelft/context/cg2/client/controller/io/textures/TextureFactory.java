@@ -6,12 +6,16 @@ import javafx.scene.paint.Color;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 
+/**
+ * A factory class that generates texture from sprite sheets.
+ */
+@SuppressWarnings(value = "HideUtilityClassConstructor")
 public class TextureFactory {
 
-    public static int POSE_TEX_FRAME_WIDTH = 134;
-    public static int POSE_TEX_FRAME_HEIGHT = 178;
-    public static int POSE_TEX_ARM_HEIGHT = 104;
-    public static int POSE_TEX_LEG_HEIGHT = 74;
+    public static final int POSE_TEX_FRAME_WIDTH = 134;
+    public static final int POSE_TEX_FRAME_HEIGHT = 178;
+    public static final int POSE_TEX_ARM_HEIGHT = 104;
+    public static final int POSE_TEX_LEG_HEIGHT = 74;
 
     /**
      * Generates a default avatar texture with a given color.
@@ -20,26 +24,6 @@ public class TextureFactory {
      */
     public static Image defaultAvatarTexture(Color color) {
         return avatarTexture(color, 0, 0, 0, 0);
-    }
-
-    /**
-     * Generates a hole texture for the pose.
-     * @param pose the pose to generate the hole texture for.
-     * @return the composed hole texture.
-     */
-    public static Image holeTexture(Pose pose) {
-        Image texture = null;
-
-        System.out.println(pose.toString());
-
-        try {
-            texture = TextureFactory.holeTexture(
-                    pose.getLeftArm().indexOf(), pose.getRightArm().indexOf(),
-                    pose.getLeftLeg().indexOf(), pose.getRightLeg().indexOf());
-        } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid pose arguments inserted to create a texture from the sprite sheets.");
-        }
-        return texture;
     }
 
     /**
@@ -52,10 +36,12 @@ public class TextureFactory {
         Image texture = null;
         try {
             texture = (TextureFactory.avatarTexture(color,
-                    pose.getLeftArm().indexOf(), pose.getRightArm().indexOf(),
-                    pose.getLeftLeg().indexOf(), pose.getRightLeg().indexOf()));
+                    pose.getLeftArm().indexOf(),
+                    pose.getRightArm().indexOf(),
+                    pose.getLeftLeg().indexOf(),
+                    pose.getRightLeg().indexOf()));
         } catch (IndexOutOfBoundsException e) {
-            System.out.println("Invalid pose arguments inserted to create a texture from the sprite sheets.");
+            System.out.println("Invalid pose arguments passed to texture generator.");
         }
         return texture;
     }
@@ -70,10 +56,29 @@ public class TextureFactory {
      * @param rbFrame the bottom right frame of the texture.
      * @return an avatar texture generated from the avatar sprite sheets.
      */
-    public static Image avatarTexture(Color color, int tlFrame, int trFrame, int lbFrame, int rbFrame) {
+    public static Image avatarTexture(Color color, int tlFrame, int trFrame,
+                                      int lbFrame, int rbFrame) {
         WritableImage tex = generatePoseTexture(9, tlFrame, 10, trFrame, 11, lbFrame, 12, rbFrame);
         applyTextureColor(tex, color);
         return tex;
+    }
+
+    /**
+     * Generates a hole texture for the pose.
+     * @param pose the pose to generate the hole texture for.
+     * @return the composed hole texture.
+     */
+    public static Image holeTexture(Pose pose) {
+        Image texture = null;
+        try {
+            texture = TextureFactory.holeTexture(pose.getLeftArm().indexOf(),
+                    pose.getRightArm().indexOf(),
+                    pose.getLeftLeg().indexOf(),
+                    pose.getRightLeg().indexOf());
+        } catch (IndexOutOfBoundsException e) {
+            System.out.println("Invalid pose arguments passed to texture generator.");
+        }
+        return texture;
     }
 
     /**
@@ -101,8 +106,9 @@ public class TextureFactory {
      * @param rbFrame the bottom right frame number.
      * @return the composed pose texture.
      */
-    private static WritableImage generatePoseTexture(int tlSprite, int tlFrame, int trSprite, int trFrame,
-                                                     int lbSprite, int lbFrame, int rbSprite, int rbFrame) {
+    @SuppressWarnings(value = "ParameterNumber")
+    private static WritableImage generatePoseTexture(int tlSprite, int tlFrame, int trSprite,
+                 int trFrame, int lbSprite, int lbFrame, int rbSprite, int rbFrame) {
         WritableImage tex = new WritableImage(POSE_TEX_FRAME_WIDTH, POSE_TEX_FRAME_HEIGHT);
         tex.getPixelWriter().setPixels(0, 0, POSE_TEX_FRAME_WIDTH / 2, POSE_TEX_ARM_HEIGHT,
                 ImageCache.IMAGES[tlSprite].getPixelReader(), 0, POSE_TEX_ARM_HEIGHT * tlFrame);
@@ -132,4 +138,5 @@ public class TextureFactory {
             }
         }
     }
+
 }

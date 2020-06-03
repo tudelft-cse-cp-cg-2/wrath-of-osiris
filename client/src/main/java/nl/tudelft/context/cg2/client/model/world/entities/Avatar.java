@@ -24,7 +24,7 @@ public class Avatar extends Entity {
      * @param color the color of the avatar.
      */
     public Avatar(Player player, Color color) {
-        super(TextureFactory.defaultAvatarTexture(color), new PlayerName(player.getName()),
+        super(TextureFactory.defaultAvatarTexture(color), new PlayerName(player.getName(), color),
                 new Vector3D(), new Vector3D(), EntityFactory.HOLE_SIZE);
         this.player = player;
         this.color = color;

@@ -4,7 +4,6 @@ import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.io.textures.TextureFactory;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.Entity;
-import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 import nl.tudelft.context.cg2.client.model.world.superscripts.HoleNumber;
 
@@ -21,9 +20,12 @@ public class Hole extends Entity {
      * The hole constructor.
      * @param position the position of the hole in the world.
      * @param velocity the velocity the hole is moving at.
+     * @param pose the pose that shapes the hole in the wall.
+     * @param number the number above the wall.
      */
     public Hole(Vector3D position, Vector3D velocity, Pose pose, int number) {
-        super(TextureFactory.holeTexture(pose), new HoleNumber(number), position, velocity, EntityFactory.HOLE_SIZE);
+        super(TextureFactory.holeTexture(pose), new HoleNumber(number),
+                position, velocity, EntityFactory.HOLE_SIZE);
         this.pose = pose;
         this.number = number;
     }
