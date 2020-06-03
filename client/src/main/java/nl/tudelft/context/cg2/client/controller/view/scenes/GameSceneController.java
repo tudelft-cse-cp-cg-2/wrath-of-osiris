@@ -100,10 +100,11 @@ public class GameSceneController extends SceneController {
 
         model.getWorld().create();
         ArrayList<Player> players = new ArrayList<>();
-        players.add(model.getCurrentPlayer());
         model.getCurrentLobby().getPlayers().forEach(otherPlayer -> {
             if (!otherPlayer.equals(model.getCurrentPlayer())) {
                 players.add(otherPlayer);
+            } else {
+                players.add(model.getCurrentPlayer());
             }
         });
         model.getWorld().createPlayerAvatars(players);
