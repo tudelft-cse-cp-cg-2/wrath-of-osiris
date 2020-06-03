@@ -78,6 +78,8 @@ public class GameStateUpdater extends Thread {
             updateLobbyNames(serverInput);
         } else if (serverInput.startsWith("[{")) {
             updateLevel(serverInput);
+        } else if (serverInput.startsWith("failed ")) {
+            //TODO: display which player got hit
         } else {
             switch (serverInput) {
                 case "startgame":
@@ -87,6 +89,9 @@ public class GameStateUpdater extends Thread {
                 case "stopgame":
                     // todo: Maybe how "game over" screen and summary?
                     Platform.runLater(() -> controller.stopGame());
+                    break;
+                case "nextwall":
+                    //TODO: start the client-side wall timer
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
@@ -151,5 +156,13 @@ public class GameStateUpdater extends Thread {
     public static ArrayList<BackendWall> jsonStringToLevel(String str) {
         return new Gson().fromJson(str, new TypeToken<ArrayList<BackendWall>>() {
         }.getType());
+    }
+
+    public void sendReady() {
+        out.println("ready");
+    }
+
+    public void sendFinalPose(Pose pose) {
+        out.println("finalpose " + pose.pack());
     }
 }

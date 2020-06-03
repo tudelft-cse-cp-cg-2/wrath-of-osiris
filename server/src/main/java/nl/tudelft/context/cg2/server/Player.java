@@ -30,6 +30,12 @@ public class Player extends Thread {
      * This starts out with all limbs neutral, and in the middle region.
      */
     private Pose pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
+
+    /**
+     * Pose that should be compared to the hole in the wall. After the comparison, it should be
+     * changed back to null such that the same finalPose won't be used twice in a row.
+     */
+    private Pose finalPose = null;
     private String playerName;
     private Lobby lobby;
 
@@ -95,6 +101,9 @@ public class Player extends Thread {
         } else if (clientInput.startsWith("updatepose ")) {
             String poseStr = clientInput.split(" ")[1];
             this.pose = Pose.unpack(poseStr);
+        } else if (clientInput.startsWith("finalpose ")) {
+            String poseStr = clientInput.split(" ")[1];
+            //TODO: set as finalpose
         } else {
             switch (clientInput) {
                 case "listlobbies":
@@ -106,6 +115,9 @@ public class Player extends Thread {
                     break;
                 case "startgame":
                     lobby.startGame();
+                    break;
+                case "ready":
+                    //TODO: ready
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
@@ -161,6 +173,29 @@ public class Player extends Thread {
     }
 
     /**
+     * Getter for a player's final pose.
+     * @return the player's final pose
+     */
+    public Pose getFinalPose() {
+        return finalPose;
+    }
+
+    /**
+     * Setter for a player's final pose.
+     * @param p the player's final pose
+     */
+    public void setFinalPose(Pose p) {
+        finalPose = p;
+    }
+
+    /**
+     * Sets a player's final pose to null.
+     */
+    public void nullFinalPose() {
+        finalPose = null;
+    }
+
+    /**
      * Sets the lobby for this player.
      * @param lobby the new lobby for the player
      */
@@ -203,5 +238,13 @@ public class Player extends Thread {
     public void startPoseUpdater() {
         PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
         eventTimer.schedule(poseUpdater, 500, 500);
+    }
+
+    public void sendFailed(Player player) {
+        out.println("failed " + player.getPlayerName());
+    }
+
+    public void sendNextWall() {
+        out.println("nextwall");
     }
 }
