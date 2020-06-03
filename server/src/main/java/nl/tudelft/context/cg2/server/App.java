@@ -1,14 +1,8 @@
 package nl.tudelft.context.cg2.server;
 
-import nl.tudelft.context.cg2.server.game.Arm;
-import nl.tudelft.context.cg2.server.game.Legs;
-import nl.tudelft.context.cg2.server.game.Pose;
-import nl.tudelft.context.cg2.server.game.ScreenPos;
-
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
