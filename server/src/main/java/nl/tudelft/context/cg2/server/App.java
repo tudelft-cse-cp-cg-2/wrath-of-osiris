@@ -1,8 +1,14 @@
 package nl.tudelft.context.cg2.server;
 
-import java.io.IOException;
+import nl.tudelft.context.cg2.server.game.Arm;
+import nl.tudelft.context.cg2.server.game.Legs;
+import nl.tudelft.context.cg2.server.game.Pose;
+import nl.tudelft.context.cg2.server.game.ScreenPos;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +28,13 @@ public final class App {
     private static void startServer() throws IOException {
         ServerSocket serverSock = new ServerSocket(PORT);
         lobbies = new ArrayList<>();
+
+        Lobby dummyLobby = new Lobby("dummy", "", new ArrayList<>());
+        lobbies.add(dummyLobby);
+        Player dummyPlayer = new Player(new Socket("localhost", 43594));
+        dummyPlayer.setPlayerName("dummy");
+        dummyPlayer.setPose(new Pose(Arm.SIDE, Arm.SIDE, Legs.DOWN, ScreenPos.RIGHT));
+        addPlayerToLobby("dummy", dummyPlayer);
 
         System.out.println("Started server on port " + PORT);
         while (true) {
