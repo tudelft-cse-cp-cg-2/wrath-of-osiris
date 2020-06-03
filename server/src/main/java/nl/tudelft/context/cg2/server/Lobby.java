@@ -177,12 +177,22 @@ public class Lobby {
             TimerTask wallLoop = new TimerTask() {
                 @Override
                 public void run() {
-                    ArrayList<Pose> poses = new ArrayList<>();
-                    //Todo: replace this with explicitly sent "final poses"
-                    for (Player player : players) {
-                        poses.add(player.getPose());
+                    ArrayList<Pose> finalPoses = new ArrayList<>();
+                    boolean everyoneSentFinalPose = false;
+                    while (!everyoneSentFinalPose) {
+                        everyoneSentFinalPose = true;
+                        for (Player player : players) {
+                            if (player.getFinalPose() == null) {
+                                everyoneSentFinalPose = false;
+                            }
+                        }
                     }
-                    boolean avoidedCollision = constLevel.get(currentWallIndex).compare(poses);
+                    for (Player player : players) {
+                        finalPoses.add(player.getFinalPose());
+                        player.setFinalPose(null);
+                    }
+
+                    boolean avoidedCollision = constLevel.get(currentWallIndex).compare(finalPoses);
                     if (!avoidedCollision) {
                         subtractLife();
                         //Todo: use sendFailed to inform everyone which player made the mistake

@@ -126,7 +126,7 @@ public class Player extends Thread {
             out.println(EOT);
         } else if (clientInput.startsWith("finalpose ")) {
             String poseStr = clientInput.split(" ")[1];
-            //TODO: set as finalpose
+            setFinalPose(Pose.unpack(poseStr));
         } else {
             switch (clientInput) {
                 case "listlobbies":
@@ -200,7 +200,7 @@ public class Player extends Thread {
      * @return the player's final pose
      */
     public Pose getFinalPose() {
-        return finalPose;
+        return this.finalPose;
     }
 
     /**
@@ -208,7 +208,7 @@ public class Player extends Thread {
      * @param p the player's final pose
      */
     public void setFinalPose(Pose p) {
-        finalPose = p;
+        this.finalPose = p;
     }
 
     /**
