@@ -200,6 +200,7 @@ public class Lobby {
                 timer.schedule(wallLoop, timeInterval);
             }
             level = generator.generateLevel();
+
         }
     }
 }
