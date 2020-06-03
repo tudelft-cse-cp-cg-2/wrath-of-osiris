@@ -66,13 +66,13 @@ public class LobbySceneController extends SceneController {
 
     /**
      * Start lobby updater request.
-     * @param index index of lobby to update
+     * @param lobbyName name of lobby to update
      */
-    public void scheduleLobbyUpdater(int index) {
+    public void scheduleLobbyUpdater(String lobbyName) {
         this.lobbyTimer = new Timer();
         FetchLobbyRequest fetchLobbyRequest =
                 new FetchLobbyRequest(controller.getNetworkController().getIn(),
-                        controller.getNetworkController().getOut(), index);
+                        controller.getNetworkController().getOut(), lobbyName);
         lobbyTimer.schedule(fetchLobbyRequest, 500, 500);
     }
 
@@ -91,7 +91,6 @@ public class LobbySceneController extends SceneController {
      * When the start button gets click a signal is sent to the server.
      */
     private void startButtonClicked() {
-        //controller.getStateUpdater().signalStart();
-        controller.getViewController().getGameSceneController().startGame();
+        controller.getStateUpdater().signalStart();
     }
 }

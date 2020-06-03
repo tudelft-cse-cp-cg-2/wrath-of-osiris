@@ -12,6 +12,7 @@ import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 import nl.tudelft.context.cg2.client.view.elements.etc.ListEntry;
 
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +46,12 @@ public class LobbyScene extends BaseScene {
      */
     @Override
     public void draw() {
-        this.getStylesheets().add("/css/createGame.css");
+        try {
+            this.getStylesheets().add(LobbyScene.class.getClassLoader()
+                    .getResource("css/createGame.css").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         headerText = new Text("Hole in the Wall");
         headerText.setId("header-text");

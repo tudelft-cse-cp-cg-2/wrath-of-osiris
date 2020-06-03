@@ -2,7 +2,10 @@ package nl.tudelft.context.cg2.client.controller.logic.posedetection;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
+import org.opencv.core.Point;
 import org.opencv.core.Rect;
+import org.opencv.core.Scalar;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
 import java.awt.Color;
@@ -16,14 +19,17 @@ import java.util.List;
  * Class for detecting a player's body posture.
  */
 public class PoseDetector {
-    @SuppressWarnings("LineLength")
-    private static final String POSE_DETECTION_DEFAULT = "./src/main/resources/xml/haarcascade_frontalface_default.xml";
+    private static final String POSE_DETECTION_DEFAULT = "haarcascade_frontalface_default.xml";
+
     private final CascadeClassifier classifier = new CascadeClassifier(POSE_DETECTION_DEFAULT);
     private final int green = new Color(0, 255, 0).getRGB();
 
     private final Pose pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
             Position.neutral, Position.neutral);
     private BufferedImage baseImage;
+
+    private int counter = 0;
+    private MatOfRect faceDetections;
 
     /**
      * Given the coordinates of a head, calculate the bounding boxes
@@ -111,18 +117,32 @@ public class PoseDetector {
      *     right -> left. if no faces are found, this list will be empty.
      */
     public BufferedImage generatePoseRegions(Mat matrix) {
-        MatOfRect faceDetections = new MatOfRect();
-        classifier.detectMultiScale(matrix, faceDetections);
+        if (counter == 5 || faceDetections == null) {
+            counter = 0;
+            faceDetections = new MatOfRect();
+            classifier.detectMultiScale(matrix, faceDetections);
+        }
+        counter++;
+
         BufferedImage image =
                 new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
         List<PoseRegion> poseRegions;
 
         // Detect
+        PoseRegion head;
         if (faceDetections.toArray().length > 0) {
             Rect rect = faceDetections.toArray()[0];
-            PoseRegion head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
+            head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
+            System.out.println("No face is detected");
+            Imgproc.putText(
+                    matrix, "No face detected", new Point(10, 50), 1, 3, new Scalar(0, 0, 255), 4
+            );
+            WritableRaster raster = image.getRaster();
+            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
+            byte[] data = dataBuffer.getData();
+            matrix.get(0, 0, data);
             return image;
         }
 
@@ -139,7 +159,7 @@ public class PoseDetector {
         if (baseImage == null) {
             baseImage = image;
         } else {
-            image = findLimbLocations(poseRegions, image);
+            image = findLimbLocations(poseRegions, image, head);
         }
 
         return image;
@@ -149,11 +169,14 @@ public class PoseDetector {
      * Finds a player's limbs.
      * @param poseRegions - regions in which limbs could be
      * @param image - image to find the limbs in
+     * @param head - coordinates of the detected head
      * @return an image with the pose marked
      */
-    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image) {
+    public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image,
+                                           PoseRegion head) {
         this.pose.resetCounters();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
+        this.pose.updateScreenPosition(head);
         this.pose.updatePose();
         return bufferedImage;
     }

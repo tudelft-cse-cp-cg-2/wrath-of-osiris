@@ -10,6 +10,8 @@ import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 
+import java.net.URISyntaxException;
+
 /**
  * The menu scene.
  * Features the main menu UI as shown to the user.
@@ -21,6 +23,7 @@ public class MenuScene extends BaseScene {
 
     private SimpleButton joinGameButton;
     private SimpleButton createGameButton;
+    private SimpleButton settingsButton;
     private SimpleButton quitButton;
 
     private StackPane popup;
@@ -41,7 +44,12 @@ public class MenuScene extends BaseScene {
      */
     @Override
     public void draw() {
-        this.getStylesheets().add("/css/menu.css");
+        try {
+            this.getStylesheets().add(MenuScene.class.getClassLoader()
+                    .getResource("css/menu.css").toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
 
         headerText = new Text("Hole in the Wall");
         headerText.setId("header-text");
@@ -57,6 +65,9 @@ public class MenuScene extends BaseScene {
 
         createGameButton = new SimpleButton("Create Game");
         createGameButton.setSize(220, 80);
+
+        settingsButton = new SimpleButton("Settings");
+        settingsButton.setSize(220, 80);
 
         quitButton = new SimpleButton("Quit");
         quitButton.setId("quit-button");
@@ -84,7 +95,7 @@ public class MenuScene extends BaseScene {
 
         popupPane.getChildren().add(popupText);
         popup.getChildren().add(popupPane);
-        centerHBox.getChildren().addAll(joinGameButton, createGameButton);
+        centerHBox.getChildren().addAll(joinGameButton, createGameButton, settingsButton);
         root.getChildren().addAll(centerHBox, quitButton, headerText, popup);
     }
 
@@ -118,6 +129,14 @@ public class MenuScene extends BaseScene {
      */
     public SimpleButton getCreateGameButton() {
         return createGameButton;
+    }
+
+    /**
+     * The example button three getter.
+     * @return the example button three.
+     */
+    public SimpleButton getSettingsButton() {
+        return settingsButton;
     }
 
     /**

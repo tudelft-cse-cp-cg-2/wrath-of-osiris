@@ -3,10 +3,12 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.GameScene;
 
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -96,7 +98,12 @@ public class GameSceneController extends SceneController {
 //        updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();
-        model.getWorld().createPlayerAvatars(model.getCurrentLobby().getPlayers());
+//        model.getWorld().createPlayerAvatars(model.getCurrentLobby().getPlayers());
+        // Temporary fix for lobby.getPlayers NullException
+        ArrayList<Player> player = new ArrayList<>();
+        player.add(model.getCurrentPlayer());
+        model.getWorld().createPlayerAvatars(player);
+
         view.getGameScene().clear();
         view.getGameScene().show();
         model.getWorld().setInMotion(true);

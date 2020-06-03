@@ -63,8 +63,8 @@ public class CreateGameSceneController extends SceneController {
         String lobbyName = scene.getLobbyNameField().getText();
         String password = scene.getPasswordField().getText();
 
-        CreateLobbyRequest req = new CreateLobbyRequest(controller.getServer().getIn(),
-                controller.getServer().getOut(), playerName, lobbyName, password);
+        CreateLobbyRequest req = new CreateLobbyRequest(controller.getNetworkController().getIn(),
+                controller.getNetworkController().getOut(), playerName, lobbyName, password);
         req.start();
         try {
             req.join();
@@ -74,11 +74,12 @@ public class CreateGameSceneController extends SceneController {
 
         // Set current player object.
         controller.getModel().setCurrentPlayer(new Player(playerName));
-        controller.scheduleLobbyUpdater(req.getResultIndex());
+        controller.getViewController().getLobbySceneController()
+                .scheduleLobbyUpdater(req.getResultName());
 
         // Start game state updater thread.
-        controller.setStateUpdater(new GameStateUpdater(controller.getServer().getIn(),
-                controller.getServer().getOut(), controller));
+        controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
+                controller.getNetworkController().getOut(), controller));
         controller.getStateUpdater().start();
 
         // Show updated model in view.

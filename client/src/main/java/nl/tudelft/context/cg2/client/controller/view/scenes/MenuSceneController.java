@@ -10,8 +10,6 @@ import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * The Menu scene controller class.
@@ -40,6 +38,7 @@ public class MenuSceneController extends SceneController {
     protected void setupMouseListeners() {
         scene.getJoinGameButton().setOnMouseClicked(event -> joinGameClicked());
         scene.getCreateGameButton().setOnMouseClicked(event -> createGameButtonClicked());
+        scene.getSettingsButton().setOnMouseClicked(event -> settingsButtonClicked());
         scene.getQuitButton().setOnMouseClicked(event -> quitButtonClicked());
         scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
@@ -94,21 +93,23 @@ public class MenuSceneController extends SceneController {
      */
     private void joinGameClicked() {
         if (controller.getNetworkController().connect()) {
-            ListLobbiesRequest req =
-                    new ListLobbiesRequest(controller.getNetworkController().getIn(),
-                    controller.getNetworkController().getOut());
-            req.start();
             try {
-                req.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+                ListLobbiesRequest req =
+                        new ListLobbiesRequest(controller.getNetworkController().getIn(),
+                                controller.getNetworkController().getOut());
+                req.start();
+                try {
+                    req.join();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                ArrayList<Lobby> lobbies = req.getResult();
+                controller.getModel().setAvailableLobbies(lobbies);
+                view.getJoinScene().setLobbyNames(lobbies);
+                view.getJoinScene().show();
+            } catch (NoClassDefFoundError e) {
+                scene.showPopup("Please restart the application.");
             }
-            ArrayList<Lobby> lobbies = req.getResult();
-            List<String> names = lobbies.stream().map(l -> l.getPlayers().size() + "/5 "
-                    + l.getName()).collect(Collectors.toList());
-
-            view.getJoinScene().setLobbyNames(names);
-            view.getJoinScene().show();
         } else {
             scene.showPopup("There was an error connecting to the server!");
         }
@@ -124,6 +125,14 @@ public class MenuSceneController extends SceneController {
         } else {
             scene.showPopup("There was an error connecting to the server!");
         }
+    }
+
+    /**
+     * Callback for Settings button listener.
+     * Shows the Settings scene.
+     */
+    private void settingsButtonClicked() {
+        view.getSettingsScene().show();
     }
 
     /**
