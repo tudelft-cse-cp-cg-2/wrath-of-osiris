@@ -8,7 +8,9 @@ import nl.tudelft.context.cg2.client.model.world.entities.Hole;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
