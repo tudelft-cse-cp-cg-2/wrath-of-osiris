@@ -172,7 +172,7 @@ public class Lobby {
             for (Player player : players) {
                 player.sendLevel(level);
             }
-            everybodyReady();
+            everybodyLevelReady();
             final ArrayList<Wall> constLevel = level;
             TimerTask wallLoop = new TimerTask() {
                 @Override
@@ -200,6 +200,9 @@ public class Lobby {
                             stopGame();
                         }
                     }
+                    for (Player player : players) {
+                        player.updateLives();
+                    }
                     currentWallIndex++;
                     if (currentWallIndex < constLevel.size()) { // only send "nextwall" if there is one
                         for (Player player : players) {
@@ -210,7 +213,7 @@ public class Lobby {
             };
             while (currentWallIndex < level.size()) { // this loop runs once every wall
                 Timer timer = new Timer("wallTimer");
-                everybodyReady();
+                everybodyWallReady();
                 timer.schedule(wallLoop, timeInterval);
             }
             level = generator.generateLevel();
@@ -221,18 +224,36 @@ public class Lobby {
     /**
      * Doesn't stop until all players have reported "ready", then resets the ready variable.
      */
-    private void everybodyReady() {
-        boolean everybodyReady = false;
-        while (!everybodyReady) {
-            everybodyReady = true;
+    private void everybodyLevelReady() {
+        boolean everybodyLevelReady = false;
+        while (!everybodyLevelReady) {
+            everybodyLevelReady = true;
             for (Player player : players) {
-                if (!player.isReady()) {
-                    everybodyReady = false;
+                if (!player.isLevelReady()) {
+                    everybodyLevelReady = false;
                 }
             }
         }
         for (Player player : players) {
-            player.setReady(false);
+            player.setLevelReady(false);
+        }
+    }
+
+    /**
+     * Doesn't stop until all players have reported "ready", then resets the ready variable.
+     */
+    private void everybodyWallReady() {
+        boolean everybodyWallReady = false;
+        while (!everybodyWallReady) {
+            everybodyWallReady = true;
+            for (Player player : players) {
+                if (!player.isWallReady()) {
+                    everybodyWallReady = false;
+                }
+            }
+        }
+        for (Player player : players) {
+            player.setWallReady(false);
         }
     }
 }

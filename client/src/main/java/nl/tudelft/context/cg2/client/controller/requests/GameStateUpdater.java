@@ -74,6 +74,7 @@ public class GameStateUpdater extends Thread {
         if (serverInput.startsWith("updatelives ")) {
             int newLives = Integer.parseInt(serverInput.split(" ")[1]);
             Platform.runLater(() -> controller.getModel().setLives(newLives));
+            sendWallReady();
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
@@ -163,6 +164,7 @@ public class GameStateUpdater extends Thread {
      */
     public void updateLevel(String level) {
         controller.getModel().setCurrentLevel(jsonStringToLevel(level));
+        sendLevelReady();
     }
 
     /**
@@ -175,8 +177,12 @@ public class GameStateUpdater extends Thread {
         }.getType());
     }
 
-    public void sendReady() {
-        out.println("ready");
+    public void sendWallReady() {
+        out.println("wallready");
+    }
+
+    public void sendLevelReady() {
+        out.println("levelready");
     }
 
     public void sendFinalPose(Pose pose) {
