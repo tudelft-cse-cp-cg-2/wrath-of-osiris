@@ -48,6 +48,7 @@ public class App extends Application {
             this.controller.getEventTimer().cancel();
             this.controller.getEventTimer().purge();
         }
+        System.exit(0);
     }
 
     /**
