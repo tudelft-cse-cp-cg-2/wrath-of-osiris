@@ -8,6 +8,8 @@ import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
+import java.util.Timer;
+
 /**
  * JavaFX App.
  */
@@ -42,12 +44,6 @@ public class App extends Application {
     @SuppressFBWarnings(value = "DM_EXIT", justification = "This is the stop function")
     @Override
     public void stop() {
-        // stop updating any lobbies we're in
-        Timer eventTimer = this.controller.getEventTimer();
-        if (eventTimer != null) {
-            this.controller.getEventTimer().cancel();
-            this.controller.getEventTimer().purge();
-        }
         System.exit(0);
     }
 
