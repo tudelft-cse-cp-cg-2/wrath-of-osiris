@@ -11,6 +11,7 @@ import java.util.TimerTask;
  * Because player pose is only communicated to see others, and not for game
  * mechanics, it can be periodically sent.
  */
+
 public class PoseUpdater extends TimerTask {
     private final BufferedReader in;
     private final PrintWriter out;

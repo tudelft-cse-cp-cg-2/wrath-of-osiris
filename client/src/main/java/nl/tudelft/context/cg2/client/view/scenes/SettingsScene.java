@@ -5,6 +5,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.context.cg2.client.Settings;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -21,7 +22,6 @@ public class SettingsScene extends BaseScene {
     private ArrayList<SimpleButton> options = new ArrayList<>();
     private VBox centerVBox;
     private SimpleButton leaveButton;
-    private int selectedOption = 0;
 
     /**
      * The menu scene constructor.
@@ -73,7 +73,7 @@ public class SettingsScene extends BaseScene {
             label.setId("sub-header-text");
             centerVBox.getChildren().addAll(label);
         } else {
-            Text label = new Text("Camera " + selectedOption + " has been selected");
+            Text label = new Text("Camera " + Settings.getCameraIndex() + " has been selected");
             label.setId("sub-header-text");
             centerVBox.getChildren().addAll(label);
         }
@@ -120,13 +120,5 @@ public class SettingsScene extends BaseScene {
      */
     public void setOptions(ArrayList<SimpleButton> options) {
         this.options = options;
-    }
-
-    /**
-     * The selected option setter.
-     * @param val the value.
-     */
-    public void setSelectedOption(int val) {
-        selectedOption = val;
     }
 }
