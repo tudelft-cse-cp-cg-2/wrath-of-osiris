@@ -37,6 +37,7 @@ public class Player extends Thread {
      * changed back to null such that the same finalPose won't be used twice in a row.
      */
     private Pose finalPose = null;
+    private boolean ready = false;
     private String playerName;
     private Lobby lobby;
 
@@ -86,6 +87,14 @@ public class Player extends Thread {
         return this.playerName;
     }
 
+    public boolean isReady() {
+        return ready;
+    }
+
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
     /**
      * Responds to messages received from the player's client.
      * @param clientInput the input to process
@@ -131,7 +140,7 @@ public class Player extends Thread {
                     lobby.startGame();
                     break;
                 case "ready":
-                    //TODO: ready
+                    setReady(true);
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);

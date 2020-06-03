@@ -172,6 +172,7 @@ public class Lobby {
             for (Player player : players) {
                 player.sendLevel(level);
             }
+            everybodyReady();
             final ArrayList<Wall> constLevel = level;
             TimerTask wallLoop = new TimerTask() {
                 @Override
@@ -199,10 +200,29 @@ public class Lobby {
             };
             while (currentWallIndex < level.size()) { // this loop runs once every wall
                 Timer timer = new Timer("wallTimer");
+                everybodyReady();
                 timer.schedule(wallLoop, timeInterval);
             }
             level = generator.generateLevel();
 
+        }
+    }
+
+    /**
+     * Doesn't stop until all players have reported "ready", then resets the ready variable.
+     */
+    private void everybodyReady() {
+        boolean everybodyReady = false;
+        while (!everybodyReady) {
+            everybodyReady = true;
+            for (Player player : players) {
+                if (!player.isReady()) {
+                    everybodyReady = false;
+                }
+            }
+        }
+        for (Player player : players) {
+            player.setReady(false);
         }
     }
 }
