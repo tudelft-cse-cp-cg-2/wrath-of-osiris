@@ -19,7 +19,7 @@ public class ListLobbiesRequest extends Thread {
 
     /**
      * Getter for result.
-     * @return a list of lobbies
+     * @return a list of lobbies.
      */
     public ArrayList<Lobby> getResult() {
         return result;
@@ -27,8 +27,8 @@ public class ListLobbiesRequest extends Thread {
 
     /**
      * Constructor for ListLobbiesRequest.
-     * @param in server input
-     * @param out server output
+     * @param in server input.
+     * @param out server output.
      */
     public ListLobbiesRequest(BufferedReader in, PrintWriter out) {
         this.out = out;
