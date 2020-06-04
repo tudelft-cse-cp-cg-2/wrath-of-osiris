@@ -118,9 +118,10 @@ public class GameSceneController extends SceneController {
     }
 
     /**
-     *
-     * @param oldV
-     * @param newV
+     * When the wave is completed, this sends the pose to the server that will be compared to the
+     * hole in the wall.
+     * @param oldV should be false
+     * @param newV should be true
      */
     private void onWaveCompletion(Boolean oldV, Boolean newV) {
         if (!oldV && newV) {
