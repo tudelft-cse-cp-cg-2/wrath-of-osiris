@@ -159,6 +159,7 @@ public class Player extends Thread {
                     setWallReady(true);
                     break;
                 case "levelready":
+                    System.out.println("Received level ready!!");
                     setLevelReady(true);
                     break;
                 default:

@@ -70,11 +70,9 @@ public class GameStateUpdater extends Thread {
      * @param serverInput message from server
      */
     private void respond(String serverInput) {
-        System.out.println(serverInput);
         if (serverInput.startsWith("updatelives ")) {
             int newLives = Integer.parseInt(serverInput.split(" ")[1]);
-            Platform.runLater(() -> controller.getModel().setLives(newLives));
-            sendWallReady();
+            Platform.runLater(() -> controller.getModel().getWorld().setLives(newLives));
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
@@ -95,7 +93,7 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().stopGame());
                     break;
                 case "nextwall":
-                    //controller.getModel().getWorld().setNextWallSent(true);
+                    controller.getModel().getWorld().startWave();
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
@@ -163,7 +161,7 @@ public class GameStateUpdater extends Thread {
      * @param level level
      */
     public void updateLevel(String level) {
-        controller.getModel().setCurrentLevel(jsonStringToLevel(level));
+        controller.getModel().getWorld().setLevel(jsonStringToLevel(level));
         sendLevelReady();
     }
 
@@ -177,12 +175,12 @@ public class GameStateUpdater extends Thread {
         }.getType());
     }
 
-    public void sendWallReady() {
-        out.println("wallready");
-    }
-
     public void sendLevelReady() {
         out.println("levelready");
+    }
+
+    public void sendWallReady() {
+        out.println("wallready");
     }
 
     public void sendFinalPose(Pose pose) {

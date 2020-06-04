@@ -86,6 +86,8 @@ public class GameLoop extends Thread {
      * Doesn't stop until all players have reported "ready", then resets the ready variable.
      */
     private void everybodyLevelReady() {
+        System.out.println("Checking all ready...");
+
         boolean everybodyLevelReady = false;
         while (!everybodyLevelReady) {
             everybodyLevelReady = true;
@@ -95,6 +97,9 @@ public class GameLoop extends Thread {
                 }
             }
         }
+
+        System.out.println("Everybody ready!!");
+
         for (Player player : lobby.getPlayers()) {
             player.setLevelReady(false);
         }

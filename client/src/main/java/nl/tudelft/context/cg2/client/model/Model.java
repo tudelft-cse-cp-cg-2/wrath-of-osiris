@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.client.model;
 
-import nl.tudelft.context.cg2.client.model.datastructures.BackendWall;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
@@ -18,8 +17,6 @@ public class Model {
     private ArrayList<Lobby> availableLobbies;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
-    private int lives = -1;
-    private ArrayList<BackendWall> currentLevel = null;
 
     /**
      * The model constructor.
@@ -77,22 +74,6 @@ public class Model {
     }
 
     /**
-     * Getter for amount of lives left.
-     * @return amount of lives left
-     */
-    public int getLives() {
-        return lives;
-    }
-
-    /**
-     * Setter to update lives.
-     * @param lives new amount of lives left
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    /**
      * Getter for local set of available lobbies in lobby list.
      * @return local set of currently available lobbies
      */
@@ -106,21 +87,5 @@ public class Model {
      */
     public void setAvailableLobbies(ArrayList<Lobby> availableLobbies) {
         this.availableLobbies = availableLobbies;
-    }
-
-    /**
-     * Getter for the current level.
-     * @return level
-     */
-    public ArrayList<BackendWall> getCurrentLevel() {
-        return currentLevel;
-    }
-
-    /**
-     * Setter to update the current level.
-     * @param currentLevel level
-     */
-    public void setCurrentLevel(ArrayList<BackendWall> currentLevel) {
-        this.currentLevel = currentLevel;
     }
 }

@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.model.datastructures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -17,6 +18,7 @@ public class BackendWall {
     private int numberMiddle;
     private int numberRight;
 
+
     /**
      * Constructor. Produces a blank wall, its poses and numbers should be set using the setters.
      */
@@ -27,6 +29,18 @@ public class BackendWall {
         numberLeft = -1;
         numberMiddle = -1;
         numberRight = -1;
+    }
+
+    /**
+     * Gets a hashmap of available poses.
+     * @return the hashmap of poses.
+     */
+    public HashMap<BackendPose, Integer> getPoses() {
+        HashMap<BackendPose, Integer> poses = new HashMap<>();
+        if(poseLeft != null) poses.put(poseLeft, numberLeft);
+        if(poseMiddle != null) poses.put(poseMiddle, numberMiddle);
+        if(poseRight != null) poses.put(poseRight, numberRight);
+        return poses;
     }
 
     /**
