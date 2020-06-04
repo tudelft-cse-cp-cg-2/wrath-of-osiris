@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.model.world;
 
 import javafx.scene.paint.Color;
+import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
@@ -27,15 +28,17 @@ public class World {
     private final ArrayList<Hole> holes;
     private Wall currentWall;
     private boolean inMotion;
+    private Controller controller;
 
     /**
      * The World Constructor.
      */
-    public World() {
+    public World(Controller controller) {
         this.inMotion = false;
         this.currentWall = null;
         this.entities = new ArrayList<>();
         this.holes = new ArrayList<>();
+        this.controller = controller;
     }
 
     /**
@@ -118,6 +121,16 @@ public class World {
                 holes.addAll(EntityFactory.generateHoles(currentWall));
                 entities.addAll(holes);
                 entities.sort(Comparator.comparing(Entity::getDepth).reversed());
+
+                // Send final pose
+
+
+                // Wait for updatelives
+
+                // Send ready
+
+                // Receive nextwall
+
             }
         }
     }

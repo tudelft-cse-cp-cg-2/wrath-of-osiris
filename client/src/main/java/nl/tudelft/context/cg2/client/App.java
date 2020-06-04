@@ -31,6 +31,7 @@ public class App extends Application {
         view.getMenuScene().show();
 
         this.controller = new Controller(model, view);
+        model.setControllerAndWorld(controller);
         controller.getGameTimer().start();
 
         stage.show();

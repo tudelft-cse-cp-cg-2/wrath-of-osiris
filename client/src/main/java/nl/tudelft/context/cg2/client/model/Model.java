@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.model;
 
+import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.model.datastructures.BackendWall;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
@@ -14,18 +15,27 @@ import java.util.ArrayList;
  */
 public class Model {
 
-    private final World world;
+    private World world;
     private ArrayList<Lobby> availableLobbies;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
     private int lives = -1;
     private ArrayList<BackendWall> currentLevel = null;
+    private Controller controller;
 
     /**
      * The model constructor.
      */
     public Model() {
-        this.world = new World();
+    }
+
+    /**
+     * Setter for controller and world field.
+     * @param controller the controller to be used
+     */
+    public void setControllerAndWorld(Controller controller) {
+        this.controller = controller;
+        this.world = new World(controller);
     }
 
     /**
