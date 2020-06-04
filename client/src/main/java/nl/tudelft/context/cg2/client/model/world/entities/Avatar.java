@@ -3,7 +3,6 @@ package nl.tudelft.context.cg2.client.model.world.entities;
 import javafx.scene.paint.Color;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.io.textures.TextureFactory;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.Entity;
 import nl.tudelft.context.cg2.client.model.world.World;

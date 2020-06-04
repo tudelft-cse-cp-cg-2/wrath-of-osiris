@@ -26,8 +26,10 @@ public class MenuSceneController extends SceneController {
      * @param controller the controller class.
      * @param model the model class.
      * @param view the view class.
+     * @param playerFactory the playerFactory.
      */
-    public MenuSceneController(Controller controller, Model model, View view, PlayerFactory playerFactory) {
+    public MenuSceneController(Controller controller, Model model, View view,
+                               PlayerFactory playerFactory) {
         super(controller, model, view);
         scene = view.getMenuScene();
         this.playerFactory = playerFactory;
