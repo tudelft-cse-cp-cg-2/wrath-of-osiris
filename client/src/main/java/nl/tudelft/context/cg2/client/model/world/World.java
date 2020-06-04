@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
+import static sun.misc.Version.println;
+
 /**
  * The World class.
  * Features the game world.

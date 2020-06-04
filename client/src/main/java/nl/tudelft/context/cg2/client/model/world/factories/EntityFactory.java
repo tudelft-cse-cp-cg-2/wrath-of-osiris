@@ -32,25 +32,17 @@ public class EntityFactory {
         return new Wall(image, position, velocity, size);
     }
 
-//    /**
-//     * Generates 3 holes with random posture shapes.
-//     * @param wall the wall to generate them for.
-//     * @return a list of 3 holes.
-//     */
-//    public static ArrayList<Hole> generateHoles(Wall wall) {
-//        ArrayList<Hole> holes = new ArrayList<>();
-//        holes.add(new Hole(new Vector3D(World.WIDTH / 4 - HOLE_SIZE.x / 2,
-//                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
-//        holes.add(new Hole(new Vector3D((World.WIDTH / 2 - HOLE_SIZE.x / 2),
-//                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
-//        holes.add(new Hole(new Vector3D((World.WIDTH / 4 * 3 - HOLE_SIZE.x / 2),
-//                0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()), new Pose(), 1));
-//        return holes;
-//    }
-
+    /**
+     * Generates a hole in the wall based on a backend pose and value
+     * @param wall the wall to attach the hole to.
+     * @param pose the pose of the hole in the wall.
+     * @param value the number above the hole.
+     * @return a new hole.
+     */
     public static Hole generateHole(Wall wall, BackendPose pose, Integer value) {
         return new Hole(new Vector3D(World.WIDTH / 4 - HOLE_SIZE.x / 2,
                 pose.getScreenPos().indexOf(), wall.getDepth() - 1),
-                new Vector3D(wall.getVelocity()), new Pose(), value);
+                new Vector3D(wall.getVelocity()),
+                new Pose(), value);
     }
 }
