@@ -229,4 +229,12 @@ public class World {
     public void setLevel(ArrayList<BackendWall> level) {
         this.level = level;
     }
+
+    /**
+     * Getter for level index.
+     * @return the current level index
+     */
+    public int getLevelIdx() {
+        return levelIdx;
+    }
 }

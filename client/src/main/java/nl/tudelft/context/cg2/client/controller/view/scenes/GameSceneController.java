@@ -140,7 +140,8 @@ public class GameSceneController extends SceneController {
         // todo: Set reached level in game-over summary
 
         view.getLobbyScene().showPopup("GAME OVER\n\n"
-                                    + "You reached level X");
+                                    + "You reached level "
+                                    + controller.getModel().getWorld().getLevelIdx());
         view.getLobbyScene().show();
     }
 
