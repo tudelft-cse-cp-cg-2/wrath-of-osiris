@@ -15,9 +15,8 @@ public class Lobby {
 
     private final String name;
     private final String password;
+    private GameLoop gameLoop;
     private boolean started = false;
-    private int lives = 10;
-    private int currentWallIndex = 0;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -37,6 +36,7 @@ public class Lobby {
         this.name = name;
         this.password = password;
         this.players = players;
+        this.gameLoop = new GameLoop(this);
     }
 
     /**
@@ -98,37 +98,16 @@ public class Lobby {
     }
 
     /**
-     * Getter for the group's amount of lives left.
-     *
-     * @return the amount of lives the group has left
-     */
-    public int getLives() {
-        return lives;
-    }
-
-    /**
-     * Setter for the group's amount of lives left.
-     *
-     * @param lives the updated amount of lives left
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    /**
-     * Subtracts one life from the group's amount of lives.
-     */
-    public void subtractLife() {
-        this.lives--;
-    }
-
-    /**
      * Gets whether the lobby has started the game.
      *
      * @return boolean whether the game has been started
      */
     public boolean isStarted() {
         return started;
+    }
+
+    public GameLoop getGameLoop() {
+        return gameLoop;
     }
 
     /**
@@ -143,7 +122,7 @@ public class Lobby {
                 player.startGame();
                 player.updateLives();
             }
-            gameLoop();
+            gameLoop.run();
         }
     }
 
@@ -157,98 +136,5 @@ public class Lobby {
         }
     }
 
-    /**
-     * Generates levels and sends them to players.
-     */
-    private void gameLoop() {
-        LevelGenerator generator = new LevelGenerator(players.size());
-        ArrayList<Wall> level = generator.generateLevel();
-        currentWallIndex = 0;
 
-        while (started) { // this loop runs once every level
-            for (Player player : players) {
-                player.sendLevel(level);
-            }
-            everybodyLevelReady();
-            while (currentWallIndex < level.size()) { // this loop runs once every wall
-                everybodyWallReady();
-                waitForFinalPoses();
-                ArrayList<Pose> finalPoses = new ArrayList<>();
-                for (Player player : players) {
-                    finalPoses.add(player.getFinalPose());
-                    player.setFinalPose(null);
-                }
-
-                boolean avoidedCollision = level.get(currentWallIndex).compare(finalPoses);
-                if (!avoidedCollision) {
-                    subtractLife();
-                    //Todo: use sendFailed to inform everyone which player made the mistake
-                    if (lives < 0) {
-                        stopGame();
-                    }
-                }
-                for (Player player : players) {
-                    player.updateLives();
-                }
-                currentWallIndex++;
-                if (currentWallIndex < level.size()) { // only send "nextwall" if there is one
-                    for (Player player : players) {
-                        player.sendNextWall();
-                    }
-                }
-            }
-            level = generator.generateLevel();
-        }
-    }
-
-    /**
-     * Doesn't stop until all players have reported "ready", then resets the ready variable.
-     */
-    private void everybodyLevelReady() {
-        boolean everybodyLevelReady = false;
-        while (!everybodyLevelReady) {
-            everybodyLevelReady = true;
-            for (Player player : players) {
-                if (!player.isLevelReady()) {
-                    everybodyLevelReady = false;
-                }
-            }
-        }
-        for (Player player : players) {
-            player.setLevelReady(false);
-        }
-    }
-
-    /**
-     * Doesn't stop until all players have reported "ready", then resets the ready variable.
-     */
-    private void everybodyWallReady() {
-        boolean everybodyWallReady = false;
-        while (!everybodyWallReady) {
-            everybodyWallReady = true;
-            for (Player player : players) {
-                if (!player.isWallReady()) {
-                    everybodyWallReady = false;
-                }
-            }
-        }
-        for (Player player : players) {
-            player.setWallReady(false);
-        }
-    }
-
-    /**
-     * Doesn't stop until all players have sent their final pose.
-     */
-    private void waitForFinalPoses() {
-        boolean everyoneSentFinalPose = false;
-        while (!everyoneSentFinalPose) {
-            everyoneSentFinalPose = true;
-            for (Player player : players) {
-                if (player.getFinalPose() == null) {
-                    everyoneSentFinalPose = false;
-                }
-            }
-        }
-    }
 }

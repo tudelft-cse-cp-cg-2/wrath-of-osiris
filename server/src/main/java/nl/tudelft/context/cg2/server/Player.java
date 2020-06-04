@@ -258,7 +258,7 @@ public class Player extends Thread {
      * Updates the lives to the player with its current lobby's lives.
      */
     public void updateLives() {
-        out.println("updatelives " + lobby.getLives());
+        out.println("updatelives " + lobby.getGameLoop().getLives());
     }
 
     /**
