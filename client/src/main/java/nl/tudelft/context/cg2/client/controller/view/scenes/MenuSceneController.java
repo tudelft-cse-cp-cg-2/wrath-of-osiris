@@ -6,6 +6,7 @@ import nl.tudelft.context.cg2.client.controller.requests.ListLobbiesRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.MenuScene;
 
@@ -26,9 +27,10 @@ public class MenuSceneController extends SceneController {
      * @param model the model class.
      * @param view the view class.
      */
-    public MenuSceneController(Controller controller, Model model, View view) {
+    public MenuSceneController(Controller controller, Model model, View view, PlayerFactory playerFactory) {
         super(controller, model, view);
         scene = view.getMenuScene();
+        this.playerFactory = playerFactory;
     }
 
     /**
@@ -96,7 +98,7 @@ public class MenuSceneController extends SceneController {
             try {
                 ListLobbiesRequest req =
                         new ListLobbiesRequest(controller.getNetworkController().getIn(),
-                                controller.getNetworkController().getOut());
+                                controller.getNetworkController().getOut(), playerFactory);
                 req.start();
                 try {
                     req.join();

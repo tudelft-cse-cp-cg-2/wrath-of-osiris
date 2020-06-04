@@ -6,6 +6,7 @@ import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -22,6 +23,7 @@ public class GameStateUpdater extends Thread {
     private final Controller controller;
     private boolean started = false;
     private boolean terminate = false;
+    private PlayerFactory playerFactory;
 
     /**
      * Constructor for GameStateUpdater.
@@ -29,10 +31,11 @@ public class GameStateUpdater extends Thread {
      * @param out server output
      * @param controller app controller
      */
-    public GameStateUpdater(BufferedReader in, PrintWriter out, Controller controller) {
+    public GameStateUpdater(BufferedReader in, PrintWriter out, Controller controller, PlayerFactory playerFactory) {
         this.in = in;
         this.out = out;
         this.controller = controller;
+        this.playerFactory = playerFactory;
     }
 
     /**
@@ -118,7 +121,7 @@ public class GameStateUpdater extends Thread {
      * @param serverInput String packet from server containing the player current player names
      */
     private void updateLobbyNames(String serverInput) {
-        Lobby newLobby = Lobby.unpackFetchLobby(serverInput);
+        Lobby newLobby = Lobby.unpackFetchLobby(serverInput, playerFactory);
         List<String> playerNames = newLobby.getPlayerNames();
         Model model = controller.getModel();
         if (model.getCurrentLobby() == null) {

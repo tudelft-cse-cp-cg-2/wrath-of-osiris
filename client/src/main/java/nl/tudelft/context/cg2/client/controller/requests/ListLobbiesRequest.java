@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.controller.requests;
 
 import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
+import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 public class ListLobbiesRequest extends Thread {
     private final BufferedReader in;
     private final PrintWriter out;
+    private PlayerFactory playerFactory;
 
     private final ArrayList<Lobby> result = new ArrayList<>();
 
@@ -30,9 +32,10 @@ public class ListLobbiesRequest extends Thread {
      * @param in server input
      * @param out server output
      */
-    public ListLobbiesRequest(BufferedReader in, PrintWriter out) {
+    public ListLobbiesRequest(BufferedReader in, PrintWriter out, PlayerFactory playerFactory) {
         this.out = out;
         this.in = in;
+        this.playerFactory = playerFactory;
     }
 
     /**
@@ -49,7 +52,7 @@ public class ListLobbiesRequest extends Thread {
                     break;
                 }
                 System.out.println("lobby: " + fromServer);
-                result.add(Lobby.unpackLobby(fromServer));
+                result.add(Lobby.unpackLobby(fromServer, playerFactory));
             }
         } catch (IOException e) {
             e.printStackTrace();

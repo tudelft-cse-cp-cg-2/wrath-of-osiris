@@ -16,6 +16,7 @@ public class Lobby {
     private final String password;
     private List<Player> players;
     private final Boolean isHost;
+    private PlayerFactory playerFactory;
 
     /**
      * Constructor for the Lobby.
@@ -26,11 +27,12 @@ public class Lobby {
      * @param players list of current players in the lobby.
      * @param isHost whether currentPlayer is host of the lobby.6
      */
-    public Lobby(String name, String password, List<Player> players, Boolean isHost) {
+    public Lobby(String name, String password, List<Player> players, Boolean isHost, PlayerFactory playerFactory) {
         this.name = name;
         this.password = password;
         this.players = players;
         this.isHost = isHost;
+        this.playerFactory = playerFactory;
     }
 
     @Override
@@ -58,13 +60,13 @@ public class Lobby {
      * @param packed lobby representation from the server
      * @return a Lobby
      */
-    public static Lobby unpackLobby(String packed) {
+    public static Lobby unpackLobby(String packed, PlayerFactory playerFactory) {
         ArrayList<Player> playerList = new ArrayList<>();
         int playerCount = Character.getNumericValue(packed.charAt(0));
         for (int i = 0; i < playerCount; i++) {
-            playerList.add(new Player(""));
+            playerList.add(playerFactory.createPlayer(""));
         }
-        return new Lobby(packed.substring(1), "", playerList, false);
+        return new Lobby(packed.substring(1), "", playerList, false, playerFactory);
     }
 
     /**
@@ -72,16 +74,16 @@ public class Lobby {
      * @param packed lobby representation from the server
      * @return a Lobby
      */
-    public static Lobby unpackFetchLobby(String packed) {
+    public static Lobby unpackFetchLobby(String packed, PlayerFactory playerFactory) {
         ArrayList<Player> playerList = new ArrayList<>();
         String[] split = packed.split(" ");
         assert split[0].equals("fetchlobby");
         String header = split[1];
         int playerCount = Character.getNumericValue(header.charAt(0));
         for (int i = 0; i < playerCount; i++) {
-            playerList.add(new Player(split[i + 2]));
+            playerList.add(playerFactory.createPlayer(split[i + 2]));
         }
-        return new Lobby(header.substring(1), "", playerList, false);
+        return new Lobby(header.substring(1), "", playerList, false, playerFactory);
     }
 
     /**

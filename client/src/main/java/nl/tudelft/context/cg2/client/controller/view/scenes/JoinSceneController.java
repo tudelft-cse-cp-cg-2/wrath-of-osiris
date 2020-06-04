@@ -6,6 +6,7 @@ import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
 
@@ -24,9 +25,10 @@ public class JoinSceneController extends SceneController {
      * @param model the model class.
      * @param view       the view class.
      */
-    public JoinSceneController(Controller controller, Model model, View view) {
+    public JoinSceneController(Controller controller, Model model, View view, PlayerFactory playerFactory) {
         super(controller, model, view);
         this.scene = view.getJoinScene();
+        this.playerFactory = playerFactory;
     }
 
     @Override
@@ -66,12 +68,12 @@ public class JoinSceneController extends SceneController {
         }
 
         // Set current player object.
-        controller.getModel().setCurrentPlayer(new Player(playerName));
+        controller.getModel().setCurrentPlayer(playerFactory.createPlayer(playerName));
         controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(lobbyName);
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), controller));
+                controller.getNetworkController().getOut(), controller, playerFactory));
         controller.getStateUpdater().start();
 
         // Switch to lobby scene.

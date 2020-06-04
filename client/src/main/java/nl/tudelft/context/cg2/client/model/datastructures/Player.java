@@ -71,7 +71,11 @@ public class Player {
         if (!pose.equals(other)) {
             this.pose = other;
             this.poseChanged = true;
-            this.avatar.step(pose);
+            if (this.avatar == null) {
+                System.out.println("Player: " + name + " has no avatar");
+            } else {
+                this.avatar.step(pose);
+            }
             System.out.println(other.toString());
         }
     }

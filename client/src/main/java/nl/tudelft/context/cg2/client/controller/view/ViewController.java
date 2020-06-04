@@ -8,6 +8,7 @@ import nl.tudelft.context.cg2.client.controller.view.scenes.LobbySceneController
 import nl.tudelft.context.cg2.client.controller.view.scenes.MenuSceneController;
 import nl.tudelft.context.cg2.client.controller.view.scenes.SettingsSceneController;
 import nl.tudelft.context.cg2.client.model.Model;
+import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 import nl.tudelft.context.cg2.client.view.View;
 
 import java.util.ArrayList;
@@ -35,10 +36,11 @@ public class ViewController {
      * @param view the view class.
      */
     public ViewController(final Controller controller, final Model model, final View view) {
-        this.menuSceneController = new MenuSceneController(controller, model, view);
+        PlayerFactory playerFactory = new PlayerFactory();
+        this.menuSceneController = new MenuSceneController(controller, model, view, playerFactory);
         this.gameSceneController = new GameSceneController(controller, model, view);
-        this.joinSceneController = new JoinSceneController(controller, model, view);
-        this.createGameSceneController = new CreateGameSceneController(controller, model, view);
+        this.joinSceneController = new JoinSceneController(controller, model, view, playerFactory);
+        this.createGameSceneController = new CreateGameSceneController(controller, model, view, playerFactory);
         this.settingsSceneController = new SettingsSceneController(controller, model, view);
         this.lobbySceneController = new LobbySceneController(controller, model, view);
 
