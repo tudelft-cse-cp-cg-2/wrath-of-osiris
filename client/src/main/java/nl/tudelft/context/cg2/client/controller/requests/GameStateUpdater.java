@@ -171,7 +171,7 @@ public class GameStateUpdater extends Thread {
     }
 
     public void sendReady() {
-        out.println("ready");
+        out.println("wallready");
     }
 
     public void sendFinalPose(Pose pose) {

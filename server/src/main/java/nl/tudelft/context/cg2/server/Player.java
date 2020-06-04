@@ -38,8 +38,6 @@ public class Player extends Thread {
      */
     private Pose finalPose = null;
     private boolean ready = false;
-    private boolean wallReady = false;
-    private boolean levelReady = false;
     private String playerName;
     private Lobby lobby;
 
@@ -89,12 +87,12 @@ public class Player extends Thread {
         return this.playerName;
     }
 
-    public boolean isWallReady() {
-        return wallReady;
+    public boolean isReady() {
+        return ready;
     }
 
-    public void setWallReady(boolean wallReady) {
-        this.wallReady = wallReady;
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
     /**
@@ -148,7 +146,7 @@ public class Player extends Thread {
                     lobby.startGame();
                     break;
                 case "wallready":
-                    setWallReady(true);
+                    setReady(true);
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);

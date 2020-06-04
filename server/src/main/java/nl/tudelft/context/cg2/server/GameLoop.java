@@ -84,13 +84,13 @@ public class GameLoop extends Thread {
         while (!everybodyWallReady) {
             everybodyWallReady = true;
             for (Player player : lobby.getPlayers()) {
-                if (!player.isWallReady()) {
+                if (!player.isReady()) {
                     everybodyWallReady = false;
                 }
             }
         }
         for (Player player : lobby.getPlayers()) {
-            player.setWallReady(false);
+            player.setReady(false);
             player.sendNextWall();
         }
     }
