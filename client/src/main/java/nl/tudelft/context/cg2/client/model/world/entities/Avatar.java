@@ -29,12 +29,7 @@ public class Avatar extends Entity {
 
     @Override
     public void step(double t, double dt) {
-//        if (player.isPoseChanged()) {
-//            Pose pose = player.getPose();
-//            updatePose(pose);
-//            updatePosition(pose);
-//            player.setPoseChanged(false);
-//        }
+        throw new RuntimeException("Wrong step function called.");
     }
 
     /**
