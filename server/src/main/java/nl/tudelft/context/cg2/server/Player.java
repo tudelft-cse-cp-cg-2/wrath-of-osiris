@@ -164,6 +164,7 @@ public class Player extends Thread {
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
+                    break;
             }
         }
     }
@@ -172,17 +173,20 @@ public class Player extends Thread {
      * Main loop for this player, which continually listens to their messages,
      * and starts the updating of other player's poses to the player.
      */
+    @Override
     public void run() {
         String clientInput;
         try {
             while (!terminate) {
-                clientInput = in.readLine();
-                if (clientInput == null) {
-                    break;
+                if(in.ready()) {
+                    clientInput = in.readLine();
+
+                    if (clientInput != null) {
+                        System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
+                                + clientInput);
+                        respond(clientInput);
+                    }
                 }
-                System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
-                        + clientInput);
-                respond(clientInput);
             }
             stopPoseUpdater();
         } catch (IOException e) {
