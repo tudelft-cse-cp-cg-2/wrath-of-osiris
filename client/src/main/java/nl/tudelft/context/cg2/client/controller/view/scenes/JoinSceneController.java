@@ -23,13 +23,10 @@ public class JoinSceneController extends SceneController {
      * @param controller the controller class.
      * @param model the model class.
      * @param view the view class.
-     * @param playerFactory the playerFactory.
      */
-    public JoinSceneController(Controller controller, Model model, View view,
-                               PlayerFactory playerFactory) {
+    public JoinSceneController(Controller controller, Model model, View view) {
         super(controller, model, view);
         this.scene = view.getJoinScene();
-        this.playerFactory = playerFactory;
     }
 
     @Override
@@ -69,12 +66,12 @@ public class JoinSceneController extends SceneController {
         }
 
         // Set current player object.
-        controller.getModel().setCurrentPlayer(playerFactory.createPlayer(playerName));
+        controller.getModel().setCurrentPlayer(PlayerFactory.createPlayer(playerName));
         controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(lobbyName);
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), controller, playerFactory));
+                controller.getNetworkController().getOut(), controller));
         controller.getStateUpdater().start();
 
         // Switch to lobby scene.

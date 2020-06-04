@@ -23,13 +23,10 @@ public class CreateGameSceneController extends SceneController {
      * @param controller the controller class.
      * @param model the model class.
      * @param view the view class.
-     * @param playerFactory the playerFactory.
      */
-    public CreateGameSceneController(Controller controller, Model model, View view,
-                                     PlayerFactory playerFactory) {
+    public CreateGameSceneController(Controller controller, Model model, View view) {
         super(controller, model, view);
         this.scene = view.getCreateGameScene();
-        this.playerFactory = playerFactory;
     }
 
     @Override
@@ -81,13 +78,13 @@ public class CreateGameSceneController extends SceneController {
         }
 
         // Set current player object.
-        controller.getModel().setCurrentPlayer(playerFactory.createPlayer(playerName));
+        controller.getModel().setCurrentPlayer(PlayerFactory.createPlayer(playerName));
         controller.getViewController().getLobbySceneController()
                 .scheduleLobbyUpdater(req.getResultName());
 
         // Start game state updater thread.
         controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), controller, playerFactory));
+                controller.getNetworkController().getOut(), controller));
         controller.getStateUpdater().start();
 
         // Show updated model in view.

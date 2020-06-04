@@ -6,17 +6,22 @@ import java.util.ArrayList;
  * A factory for Players.
  */
 public class PlayerFactory {
-    ArrayList<Player> players = new ArrayList<>();
+    /**
+     * Inaccessible constructor method.
+     */
+    private PlayerFactory() {}
+
+    private static final ArrayList<Player> PLAYERS = new ArrayList<>();
 
     /**
      * Creates and returns players.
      * @param name of the player.
      * @return the Player.
      */
-    public Player createPlayer(String name) {
+    public static Player createPlayer(String name) {
         Player found = null;
 
-        for (Player player: players) {
+        for (Player player: PLAYERS) {
             if (player.getName().equals(name)) {
                 found = player;
             }
@@ -26,7 +31,7 @@ public class PlayerFactory {
             return found;
         }
         found = new Player(name);
-        players.add(found);
+        PLAYERS.add(found);
         return found;
     }
 }
