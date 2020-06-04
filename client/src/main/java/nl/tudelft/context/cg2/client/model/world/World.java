@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.model.world;
 
 import javafx.scene.paint.Color;
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
@@ -29,6 +30,8 @@ public class World {
     private Wall currentWall;
     private boolean inMotion;
     private Controller controller;
+    private boolean livesUpdated; //allows this class to wait until "updatelives" has been received
+    private boolean nextWallSent; //allows this class to wait until "nextwall" has been received
 
     /**
      * The World Constructor.
@@ -113,6 +116,18 @@ public class World {
 
             // Makes walls appear in sequence.
             if (currentWall != null && currentWall.hasDecayed()) {
+                Pose finalPose = controller.getModel().getCurrentPlayer().getPose();
+                controller.getStateUpdater().sendFinalPose(finalPose);
+
+                livesUpdated = false;
+                while (!livesUpdated) {
+                    //do nothing, wait until the boolean is set from GameStateUpdater
+                }
+
+                nextWallSent = false;
+                while (!nextWallSent) {
+                    //do nothing, wait until the boolean is set from GameStateUpdater
+                }
                 entities.remove(currentWall);
                 currentWall = EntityFactory.generateWall();
                 entities.add(currentWall);
@@ -121,15 +136,6 @@ public class World {
                 holes.addAll(EntityFactory.generateHoles(currentWall));
                 entities.addAll(holes);
                 entities.sort(Comparator.comparing(Entity::getDepth).reversed());
-
-                // Send final pose
-
-
-                // Wait for updatelives
-
-                // Send ready
-
-                // Receive nextwall
 
             }
         }
@@ -165,5 +171,13 @@ public class World {
      */
     public void setInMotion(boolean inMotion) {
         this.inMotion = inMotion;
+    }
+
+    public void setLivesUpdated(boolean livesUpdated) {
+        this.livesUpdated = livesUpdated;
+    }
+
+    public void setNextWallSent(boolean nextWallSent) {
+        this.nextWallSent = nextWallSent;
     }
 }

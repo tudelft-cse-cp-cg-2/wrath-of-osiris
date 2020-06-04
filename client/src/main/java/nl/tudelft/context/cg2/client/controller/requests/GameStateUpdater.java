@@ -74,6 +74,7 @@ public class GameStateUpdater extends Thread {
         if (serverInput.startsWith("updatelives ")) {
             int newLives = Integer.parseInt(serverInput.split(" ")[1]);
             Platform.runLater(() -> controller.getModel().setLives(newLives));
+            controller.getModel().getWorld().setLivesUpdated(true);
             sendWallReady();
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
@@ -95,7 +96,7 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().stopGame());
                     break;
                 case "nextwall":
-                    //TODO: start the client-side wall timer
+                    controller.getModel().getWorld().setNextWallSent(true);
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
