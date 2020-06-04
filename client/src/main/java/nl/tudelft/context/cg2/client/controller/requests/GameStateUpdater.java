@@ -95,7 +95,7 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().stopGame());
                     break;
                 case "nextwall":
-                    controller.getModel().getWorld().startWave();
+                    Platform.runLater(() -> controller.getModel().getWorld().startWave());
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
