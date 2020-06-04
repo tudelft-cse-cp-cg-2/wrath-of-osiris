@@ -105,7 +105,7 @@ public class World {
         holes.clear();
         BackendWall next = level.get(levelIdx);
         HashMap<BackendPose, Integer> poses = next.getPoses();
-        poses.forEach((k,v) -> holes.add(EntityFactory.generateHole(currentWall, k, v)));
+        poses.forEach((k, v) -> holes.add(EntityFactory.generateHole(currentWall, k, v)));
         entities.addAll(holes);
         entities.sort(Comparator.comparing(Entity::getDepth).reversed());
 

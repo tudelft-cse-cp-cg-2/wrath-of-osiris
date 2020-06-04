@@ -9,8 +9,6 @@ import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.model.world.entities.Hole;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 
-import java.util.ArrayList;
-
 /**
  * The wall factory class.
  * Generates a wall entity.
@@ -33,7 +31,7 @@ public class EntityFactory {
     }
 
     /**
-     * Generates a hole in the wall based on a backend pose and value
+     * Generates a hole in the wall based on a backend pose and value.
      * @param wall the wall to attach the hole to.
      * @param pose the pose of the hole in the wall.
      * @param value the number above the hole.

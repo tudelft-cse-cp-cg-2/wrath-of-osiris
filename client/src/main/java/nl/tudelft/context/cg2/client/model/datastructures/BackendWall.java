@@ -33,13 +33,20 @@ public class BackendWall {
 
     /**
      * Gets a hashmap of available poses.
+     *
      * @return the hashmap of poses.
      */
     public HashMap<BackendPose, Integer> getPoses() {
         HashMap<BackendPose, Integer> poses = new HashMap<>();
-        if(poseLeft != null) poses.put(poseLeft, numberLeft);
-        if(poseMiddle != null) poses.put(poseMiddle, numberMiddle);
-        if(poseRight != null) poses.put(poseRight, numberRight);
+        if (poseLeft != null) {
+            poses.put(poseLeft, numberLeft);
+        }
+        if (poseMiddle != null) {
+            poses.put(poseMiddle, numberMiddle);
+        }
+        if (poseRight != null) {
+            poses.put(poseRight, numberRight);
+        }
         return poses;
     }
 
