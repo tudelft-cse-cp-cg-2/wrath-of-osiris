@@ -48,6 +48,7 @@ public class GameStateUpdater extends Thread {
     /**
      * Executes the updater.
      */
+    @Override
     public void run() {
         String serverInput;
         System.out.println("Started game state updater");
@@ -95,7 +96,8 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().stopGame());
                     break;
                 case "nextwall":
-                    controller.getModel().getWorld().startWave();
+                    Platform.runLater(() ->
+                            controller.getModel().getWorld().startWave());
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);

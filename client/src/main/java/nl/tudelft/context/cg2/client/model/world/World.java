@@ -56,8 +56,10 @@ public class World {
      * Creates a new world.
      */
     public void create() {
+        waveCompleted.set(false);
         inMotion = false;
         entities.clear();
+        holes.clear();
         currentWall = EntityFactory.generateWall();
         entities.add(currentWall);
     }
@@ -88,8 +90,6 @@ public class World {
      * Starts a new wall wave in the world.
      */
     public void startWave() {
-        System.out.println("Started wave: " + levelIdx);
-
         if (levelIdx < 0 || levelIdx > level.size()) {
             System.out.println("Next wall not found for the current level.");
             return;
