@@ -33,7 +33,7 @@ public class Wall extends Entity {
         } else if (!decayed) {
             timer += dt;
 
-            if (timer > 1.5D) {
+            if (timer > 0.05D) {
                 timer = 0D;
                 decayed = true;
             }

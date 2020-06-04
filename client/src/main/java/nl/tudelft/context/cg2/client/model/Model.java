@@ -14,11 +14,10 @@ import java.util.ArrayList;
  */
 public class Model {
 
-    private final World world;
+    private World world;
     private ArrayList<Lobby> availableLobbies;
     private Lobby currentLobby = null;
     private Player currentPlayer = null;
-    private int lives = -1;
 
     /**
      * The model constructor.
@@ -74,22 +73,6 @@ public class Model {
      */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-    }
-
-    /**
-     * Getter for amount of lives left.
-     * @return amount of lives left
-     */
-    public int getLives() {
-        return lives;
-    }
-
-    /**
-     * Setter to update lives.
-     * @param lives new amount of lives left
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
     }
 
     /**

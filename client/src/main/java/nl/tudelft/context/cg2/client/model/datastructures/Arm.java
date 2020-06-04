@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.server.game;
+package nl.tudelft.context.cg2.client.model.datastructures;
 
 import java.util.HashMap;
 

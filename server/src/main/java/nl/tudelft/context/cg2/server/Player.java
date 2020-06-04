@@ -2,8 +2,10 @@ package nl.tudelft.context.cg2.server;
 
 import nl.tudelft.context.cg2.server.game.Arm;
 import nl.tudelft.context.cg2.server.game.Legs;
+import nl.tudelft.context.cg2.server.game.LevelGenerator;
 import nl.tudelft.context.cg2.server.game.Pose;
 import nl.tudelft.context.cg2.server.game.ScreenPos;
+import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +14,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Timer;
 
 /**
@@ -28,6 +31,13 @@ public class Player extends Thread {
      * This starts out with all limbs neutral, and in the middle region.
      */
     private Pose pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
+
+    /**
+     * Pose that should be compared to the hole in the wall. After the comparison, it should be
+     * changed back to null such that the same finalPose won't be used twice in a row.
+     */
+    private Pose finalPose = null;
+    private boolean ready = false;
     private String playerName;
     private Lobby lobby;
 
@@ -37,6 +47,7 @@ public class Player extends Thread {
 
     /**
      * Constructor for players.
+     *
      * @param sock the socket for the player's connection
      */
     public Player(Socket sock) {
@@ -63,6 +74,7 @@ public class Player extends Thread {
 
     /**
      * Setter for playerName.
+     *
      * @param name playerName
      */
     public void setPlayerName(String name) {
@@ -71,6 +83,7 @@ public class Player extends Thread {
 
     /**
      * Getter for playerName.
+     *
      * @return playerName
      */
     public String getPlayerName() {
@@ -78,7 +91,26 @@ public class Player extends Thread {
     }
 
     /**
+     * Getter for ready, a boolean that indicates whether this player is ready for the wall to come.
+     *
+     * @return ready
+     */
+    public boolean isReady() {
+        return ready;
+    }
+
+    /**
+     * Setter for ready.
+     *
+     * @param ready ready
+     */
+    public void setReady(boolean ready) {
+        this.ready = ready;
+    }
+
+    /**
      * Responds to messages received from the player's client.
+     *
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
@@ -112,6 +144,9 @@ public class Player extends Thread {
             }
             out.println(newLobby.getName());
             out.println(EOT);
+        } else if (clientInput.startsWith("finalpose ")) {
+            String poseStr = clientInput.split(" ")[1];
+            setFinalPose(Pose.unpack(poseStr));
         } else {
             switch (clientInput) {
                 case "listlobbies":
@@ -124,8 +159,12 @@ public class Player extends Thread {
                 case "startgame":
                     lobby.startGame();
                     break;
+                case "wallready":
+                    setReady(true);
+                    break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
+                    break;
             }
         }
     }
@@ -134,17 +173,19 @@ public class Player extends Thread {
      * Main loop for this player, which continually listens to their messages,
      * and starts the updating of other player's poses to the player.
      */
+    @Override
     public void run() {
         String clientInput;
         try {
             while (!terminate) {
-                clientInput = in.readLine();
-                if (clientInput == null) {
-                    break;
+                if (in.ready()) {
+                    clientInput = in.readLine();
+                    if (clientInput != null) {
+                        System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
+                                + clientInput);
+                        respond(clientInput);
+                    }
                 }
-                System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
-                        + clientInput);
-                respond(clientInput);
             }
             stopPoseUpdater();
         } catch (IOException e) {
@@ -156,6 +197,7 @@ public class Player extends Thread {
 
     /**
      * Getter for a player's pose.
+     *
      * @return the player's current pose.
      */
     public Pose getPose() {
@@ -164,6 +206,7 @@ public class Player extends Thread {
 
     /**
      * Setter for a player's pose.
+     *
      * @param pose the player's current pose.
      */
     public void setPose(Pose pose) {
@@ -172,6 +215,7 @@ public class Player extends Thread {
 
     /**
      * Gets the lobby of the player.
+     *
      * @return lobby this player is in
      */
     public Lobby getLobby() {
@@ -179,7 +223,26 @@ public class Player extends Thread {
     }
 
     /**
+     * Getter for a player's final pose.
+     *
+     * @return the player's final pose
+     */
+    public Pose getFinalPose() {
+        return this.finalPose;
+    }
+
+    /**
+     * Setter for a player's final pose.
+     *
+     * @param p the player's final pose
+     */
+    public void setFinalPose(Pose p) {
+        this.finalPose = p;
+    }
+
+    /**
      * Sets the lobby for this player.
+     *
      * @param lobby the new lobby for the player
      */
     public void setLobby(Lobby lobby) {
@@ -205,7 +268,16 @@ public class Player extends Thread {
      * Updates the lives to the player with its current lobby's lives.
      */
     public void updateLives() {
-        out.println("updatelives " + lobby.getLives());
+        out.println("updatelives " + lobby.getGameLoop().getLives());
+    }
+
+    /**
+     * Sends a level to the client.
+     *
+     * @param level level
+     */
+    public void sendLevel(ArrayList<Wall> level) {
+        out.println(LevelGenerator.levelToJsonString(level));
     }
 
     /**
@@ -223,5 +295,20 @@ public class Player extends Thread {
         eventTimer.cancel();
         eventTimer.purge();
         eventTimer = null;
+    }
+
+    /**
+     * Lets the client know which player hit the wall.
+     * @param player the player that hit the wall
+     */
+    public void sendFailed(Player player) {
+        out.println("failed " + player.getPlayerName());
+    }
+
+    /**
+     * Lets the client know that the next wall can come.
+     */
+    public void sendNextWall() {
+        out.println("nextwall");
     }
 }

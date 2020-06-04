@@ -6,7 +6,6 @@ import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
 public class LevelGeneratorTest {
 
     @Test
@@ -15,7 +14,7 @@ public class LevelGeneratorTest {
         ArrayList<Wall> level = gen.generateLevel();
         for (Wall w : level) {
             for (ScreenPos s : ScreenPos.values()) {
-                assertNull(w.getNumber(s));
+                assertEquals(-1, w.getNumber(s));
             }
         }
     }
@@ -34,5 +33,15 @@ public class LevelGeneratorTest {
                 }
             }
         }
+    }
+
+    @Test
+    void levelFromAndToJSON() {
+        LevelGenerator gen = new LevelGenerator(4);
+        ArrayList<Wall> level = gen.generateLevel();
+        String res = LevelGenerator.levelToJsonString(level);
+        System.out.println(res);
+        LevelGenerator.jsonStringToLevel(res);
+        assertEquals(level, LevelGenerator.jsonStringToLevel(res));
     }
 }

@@ -109,9 +109,24 @@ public class GameSceneController extends SceneController {
         });
         model.getWorld().createPlayerAvatars(players);
 
+        model.getWorld().waveCompleted.addListener((obj, oldV, newV) -> {
+            onWaveCompletion(oldV, newV);
+        });
+
         view.getGameScene().clear();
         view.getGameScene().show();
-        model.getWorld().setInMotion(true);
+    }
+
+    /**
+     * When the wave is completed, this sends the pose to the server that will be compared to the
+     * hole in the wall.
+     * @param oldV should be false
+     * @param newV should be true
+     */
+    private void onWaveCompletion(Boolean oldV, Boolean newV) {
+        if (!oldV && newV) {
+            controller.getStateUpdater().sendFinalPose(model.getCurrentPlayer().getPose());
+        }
     }
 
     /**
@@ -123,8 +138,10 @@ public class GameSceneController extends SceneController {
         world.destroy();
         view.getGameScene().clear();
         // todo: Set reached level in game-over summary
+
         view.getLobbyScene().showPopup("GAME OVER\n\n"
-                                    + "You reached level X");
+                                    + "You reached level "
+                                    + controller.getModel().getWorld().getLevelIdx());
         view.getLobbyScene().show();
     }
 

@@ -39,7 +39,6 @@ public class PoseUpdater extends TimerTask {
             System.out.println("Player not in a lobby");
         }
 
-
         for (Player otherPlayer : players) {
             if (!player.getPlayerName().equals(otherPlayer.getPlayerName())) {
                 out.println("updatepose " + otherPlayer.getPlayerName() + " "

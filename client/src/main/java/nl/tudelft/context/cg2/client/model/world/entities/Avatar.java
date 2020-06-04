@@ -53,21 +53,8 @@ public class Avatar extends Entity {
      * @param pose the pose of the avatar's player.
      */
     private void updatePosition(Pose pose) {
-        switch (pose.getScreenPosition()) {
-            case left:
-                setPosition(new Vector3D(
-                        World.WIDTH / 4 - EntityFactory.HOLE_SIZE.x / 2, 0, 0));
-                break;
-            case middle:
-                setPosition(new Vector3D((
-                        World.WIDTH / 2 - EntityFactory.HOLE_SIZE.x / 2), 0, 0));
-                break;
-            case right:
-                setPosition(new Vector3D((
-                        World.WIDTH / 4 * 3 - EntityFactory.HOLE_SIZE.x / 2), 0, 0));
-                break;
-            default: throw new IllegalStateException("Incorrect screenpos: "
-                    + pose.getScreenPosition());
-        }
+        setPosition(new Vector3D(World.WIDTH / 4
+                * (pose.getScreenPosition().indexOf() + 1)
+                - EntityFactory.HOLE_SIZE.x / 2, 0, this.getDepth()));
     }
 }

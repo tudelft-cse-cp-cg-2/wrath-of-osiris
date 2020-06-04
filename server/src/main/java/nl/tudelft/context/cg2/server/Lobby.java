@@ -12,8 +12,8 @@ public class Lobby {
 
     private final String name;
     private final String password;
+    private GameLoop gameLoop;
     private boolean started = false;
-    private int lives = 10;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -24,18 +24,21 @@ public class Lobby {
      * Constructor for the Lobby.
      * When the host creates a Lobby, only the host is added as player.
      * If a player joins a lobby, 'players' contains all players, including himself.
-     * @param name lobby name.
+     *
+     * @param name     lobby name.
      * @param password lobby password.
-     * @param players list of current players in the lobby.
+     * @param players  list of current players in the lobby.
      */
     public Lobby(String name, String password, ArrayList<Player> players) {
         this.name = name;
         this.password = password;
         this.players = players;
+        this.gameLoop = new GameLoop(this);
     }
 
     /**
      * Setter method to adjust current players in the lobby.
+     *
      * @param player the new set of players in the lobby.
      */
     public void addPlayer(@NonNull Player player) {
@@ -44,6 +47,7 @@ public class Lobby {
 
     /**
      * Getter method for current players in the lobby.
+     *
      * @return current list of players in the lobby.
      */
     public ArrayList<Player> getPlayers() {
@@ -52,6 +56,7 @@ public class Lobby {
 
     /**
      * Getter for lobby name.
+     *
      * @return the lobby name.
      */
     public String getName() {
@@ -60,6 +65,7 @@ public class Lobby {
 
     /**
      * Pack to send over the Internet.
+     *
      * @return a packed string representing this lobby
      */
     public String pack() {
@@ -72,6 +78,7 @@ public class Lobby {
 
     /**
      * Removes a player from the lobby.
+     *
      * @param player player to be removed
      */
     public void removePlayer(Player player) {
@@ -80,6 +87,7 @@ public class Lobby {
 
     /**
      * Returns whether or not the lobby is full.
+     *
      * @return true if full, false if not
      */
     public boolean isFull() {
@@ -87,27 +95,20 @@ public class Lobby {
     }
 
     /**
-     * Getter for the group's amount of lives left.
-     * @return the amount of lives the group has left
-     */
-    public int getLives() {
-        return lives;
-    }
-
-    /**
-     * Setter for the group's amount of lives left.
-     * @param lives the updated amount of lives left
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
-    }
-
-    /**
      * Gets whether the lobby has started the game.
+     *
      * @return boolean whether the game has been started
      */
     public boolean isStarted() {
         return started;
+    }
+
+    /**
+     * Getter for the game loop.
+     * @return game loop
+     */
+    public GameLoop getGameLoop() {
+        return gameLoop;
     }
 
     /**
@@ -122,6 +123,7 @@ public class Lobby {
                 player.startGame();
                 player.updateLives();
             }
+            gameLoop.start();
         }
     }
 

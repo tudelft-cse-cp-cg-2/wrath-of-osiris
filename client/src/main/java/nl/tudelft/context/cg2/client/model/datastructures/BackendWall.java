@@ -1,6 +1,7 @@
-package nl.tudelft.context.cg2.server.game;
+package nl.tudelft.context.cg2.client.model.datastructures;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Objects;
 
 /**
@@ -8,25 +9,45 @@ import java.util.Objects;
  * HashMap that maps each screen position to a number representing the amount of players that must
  * pass through a certain hole (or, by default, null if no such number is required).
  */
-public class Wall {
+public class BackendWall {
     private static final int MAX_NUMBER_AMOUNT = 3;
-    private Pose poseLeft;
-    private Pose poseMiddle;
-    private Pose poseRight;
+    private BackendPose poseLeft;
+    private BackendPose poseMiddle;
+    private BackendPose poseRight;
     private int numberLeft;
     private int numberMiddle;
     private int numberRight;
 
+
     /**
      * Constructor. Produces a blank wall, its poses and numbers should be set using the setters.
      */
-    public Wall() {
+    public BackendWall() {
         poseLeft = null;
         poseMiddle = null;
         poseRight = null;
         numberLeft = -1;
         numberMiddle = -1;
         numberRight = -1;
+    }
+
+    /**
+     * Gets a hashmap of available poses.
+     *
+     * @return the hashmap of poses.
+     */
+    public HashMap<BackendPose, Integer> getPoses() {
+        HashMap<BackendPose, Integer> poses = new HashMap<>();
+        if (poseLeft != null) {
+            poses.put(poseLeft, numberLeft);
+        }
+        if (poseMiddle != null) {
+            poses.put(poseMiddle, numberMiddle);
+        }
+        if (poseRight != null) {
+            poses.put(poseRight, numberRight);
+        }
+        return poses;
     }
 
     /**
@@ -76,7 +97,7 @@ public class Wall {
      * @param position screen position
      * @param pose     pose that should be set
      */
-    public void setPose(ScreenPos position, Pose pose) {
+    public void setPose(ScreenPos position, BackendPose pose) {
         pose.setScreenPos(position);
         switch (position) {
             default:
@@ -98,7 +119,7 @@ public class Wall {
      * @param position screen position
      * @return pose in that position
      */
-    public Pose getPose(ScreenPos position) {
+    public BackendPose getPose(ScreenPos position) {
         switch (position) {
             default:
             case LEFT:
@@ -116,9 +137,9 @@ public class Wall {
      * @param playerPoses ArrayList of the players' poses
      * @return false if a life is lost, else true
      */
-    public boolean compare(ArrayList<Pose> playerPoses) {
+    public boolean compare(ArrayList<BackendPose> playerPoses) {
         int[] frequency = new int[MAX_NUMBER_AMOUNT];
-        for (Pose pose : playerPoses) {
+        for (BackendPose pose : playerPoses) {
             switch (pose.getScreenPos()) {
                 case LEFT:
                     if (pose.equals(getPose(ScreenPos.LEFT))) {
@@ -171,7 +192,7 @@ public class Wall {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        Wall wall = (Wall) o;
+        BackendWall wall = (BackendWall) o;
         return numberLeft == wall.numberLeft
                 && numberMiddle == wall.numberMiddle
                 && numberRight == wall.numberRight

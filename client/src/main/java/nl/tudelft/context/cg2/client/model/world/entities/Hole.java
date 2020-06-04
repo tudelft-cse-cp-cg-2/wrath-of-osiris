@@ -24,7 +24,7 @@ public class Hole extends Entity {
      * @param number the number above the wall.
      */
     public Hole(Vector3D position, Vector3D velocity, Pose pose, int number) {
-        super(TextureFactory.holeTexture(pose), new HoleNumber(number),
+        super(TextureFactory.holeTexture(pose), number == -1 ? null : new HoleNumber(number),
                 position, velocity, EntityFactory.HOLE_SIZE);
         this.pose = pose;
         this.number = number;

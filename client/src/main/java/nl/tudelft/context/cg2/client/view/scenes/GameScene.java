@@ -90,22 +90,6 @@ public class GameScene extends BaseScene {
         lifePane.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.015D));
         lifePane.spacingProperty().bind(window.sceneHeightProperty().multiply(0.01D));
 
-        this.hearts = new ArrayList<>(Arrays.asList(
-                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
-                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
-                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
-                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]),
-                new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7])
-        ));
-
-        hearts.forEach(heart -> {
-            heart.setPreserveRatio(true);
-            heart.fitHeightProperty().bind(window.sceneHeightProperty().multiply(0.07D));
-        });
-
-        hearts.get(4).deactivate();
-        hearts.get(3).deactivate();
-
         this.cameraView = new ImageView(ImageCache.IMAGES[8]);
         cameraView.setId("camera-view");
         cameraView.fitWidthProperty().bind(window.sceneHeightProperty().multiply(0.35D));
@@ -116,7 +100,6 @@ public class GameScene extends BaseScene {
         cameraView.setScaleX(-1D);
 
         // Create scene node family tree.
-        lifePane.getChildren().addAll(hearts);
         root.getChildren().addAll(canvasses);
         root.getChildren().addAll(lifePane, cameraView);
     }
@@ -278,11 +261,34 @@ public class GameScene extends BaseScene {
     }
 
     /**
-     * Gets the list of hearts being displayed.
-     * @return the list of hearts.
+     * Sets the max hearts to display.
+     * @param amount the amount of hearts.
      */
-    public ArrayList<Heart> getHearts() {
-        return hearts;
+    public void setMaxHearts(int amount) {
+        lifePane.getChildren().clear();
+
+        this.hearts = new ArrayList<>(amount);
+        for (int i = 0; i < amount; i++) {
+            Heart heart = new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]);
+            heart.setPreserveRatio(true);
+            heart.fitHeightProperty().bind(window.sceneHeightProperty().multiply(0.05D));
+            heart.deactivate();
+            hearts.add(heart);
+        }
+
+        lifePane.getChildren().addAll(hearts);
+    }
+
+    /**
+     * Activates a specific amount of heats.
+     * @param amount the amount ot activate.
+     */
+    public void activateHearts(int amount) {
+        hearts.forEach(Heart::deactivate);
+
+        for (int i = 0; i < amount; i++) {
+            hearts.get(i).activate();
+        }
     }
 
     /**
