@@ -117,7 +117,6 @@ public class GameStateUpdater extends Thread {
             Platform.runLater(() -> controller.getView().getGameScene().setMaxHearts(newLives));
         }
 
-        //System.out.println("ready: " + started);
         Platform.runLater(() -> controller.getView().getGameScene().activateHearts(newLives));
     }
 
