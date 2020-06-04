@@ -1,9 +1,6 @@
 package nl.tudelft.context.cg2.server;
 
 import edu.umd.cs.findbugs.annotations.NonNull;
-import nl.tudelft.context.cg2.server.game.LevelGenerator;
-import nl.tudelft.context.cg2.server.game.Pose;
-import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
 
@@ -106,6 +103,10 @@ public class Lobby {
         return started;
     }
 
+    /**
+     * Getter for the game loop.
+     * @return game loop
+     */
     public GameLoop getGameLoop() {
         return gameLoop;
     }
@@ -135,6 +136,4 @@ public class Lobby {
             player.stopGame();
         }
     }
-
-
 }

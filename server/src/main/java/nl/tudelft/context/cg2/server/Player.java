@@ -297,10 +297,17 @@ public class Player extends Thread {
         eventTimer = null;
     }
 
+    /**
+     * Lets the client know which player hit the wall.
+     * @param player the player that hit the wall
+     */
     public void sendFailed(Player player) {
         out.println("failed " + player.getPlayerName());
     }
 
+    /**
+     * Lets the client know that the next wall can come.
+     */
     public void sendNextWall() {
         out.println("nextwall");
     }

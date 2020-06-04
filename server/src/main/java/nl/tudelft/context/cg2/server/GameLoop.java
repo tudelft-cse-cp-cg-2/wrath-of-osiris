@@ -6,10 +6,17 @@ import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
 
+/**
+ * The backend for the game code itself.
+ */
 public class GameLoop extends Thread {
     private final Lobby lobby;
     private int lives;
 
+    /**
+     * Constructor.
+     * @param lobby lobby that this gameloop resides in
+     */
     public GameLoop(Lobby lobby) {
         this.lobby = lobby;
         this.lives = 10;
