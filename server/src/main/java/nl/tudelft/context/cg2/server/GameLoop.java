@@ -49,7 +49,6 @@ public class GameLoop extends Thread {
             for (Player player : lobby.getPlayers()) {
                 player.sendLevel(level);
             }
-            everybodyLevelReady();
             while (currentWallIndex < level.size()) { // this loop runs once every wall
                 everybodyWallReady();
                 waitForFinalPoses();
@@ -71,37 +70,14 @@ public class GameLoop extends Thread {
                     player.updateLives();
                 }
                 currentWallIndex++;
-                if (currentWallIndex < level.size()) { // only send "nextwall" if there is one
-                    for (Player player : lobby.getPlayers()) {
-                        player.sendNextWall();
-                    }
-                }
             }
             level = generator.generateLevel();
         }
     }
 
     /**
-     * Doesn't stop until all players have reported "ready", then resets the ready variable.
-     */
-    private void everybodyLevelReady() {
-        boolean everybodyLevelReady = false;
-        while (!everybodyLevelReady) {
-            everybodyLevelReady = true;
-            for (Player player : lobby.getPlayers()) {
-                if (!player.isLevelReady()) {
-                    everybodyLevelReady = false;
-                }
-            }
-        }
-
-        for (Player player : lobby.getPlayers()) {
-            player.setLevelReady(false);
-        }
-    }
-
-    /**
-     * Doesn't stop until all players have reported "ready", then resets the ready variable.
+     * Doesn't stop until all players have reported "ready", then resets the ready variable,
+     * and sends signals players to start next wall.
      */
     private void everybodyWallReady() {
         boolean everybodyWallReady = false;
@@ -115,6 +91,7 @@ public class GameLoop extends Thread {
         }
         for (Player player : lobby.getPlayers()) {
             player.setWallReady(false);
+            player.sendNextWall();
         }
     }
 

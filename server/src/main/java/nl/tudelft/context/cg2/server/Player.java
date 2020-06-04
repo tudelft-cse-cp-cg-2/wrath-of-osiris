@@ -97,14 +97,6 @@ public class Player extends Thread {
         this.wallReady = wallReady;
     }
 
-    public boolean isLevelReady() {
-        return levelReady;
-    }
-
-    public void setLevelReady(boolean levelReady) {
-        this.levelReady = levelReady;
-    }
-
     /**
      * Responds to messages received from the player's client.
      * @param clientInput the input to process
@@ -157,10 +149,6 @@ public class Player extends Thread {
                     break;
                 case "wallready":
                     setWallReady(true);
-                    break;
-                case "levelready":
-                    System.out.println("Received level ready!!");
-                    setLevelReady(true);
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
