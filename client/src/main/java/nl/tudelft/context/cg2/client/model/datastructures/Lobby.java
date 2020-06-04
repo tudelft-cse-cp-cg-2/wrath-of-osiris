@@ -26,8 +26,10 @@ public class Lobby {
      * @param password lobby password.
      * @param players list of current players in the lobby.
      * @param isHost whether currentPlayer is host of the lobby.6
+     * @param playerFactory The playerFactory.
      */
-    public Lobby(String name, String password, List<Player> players, Boolean isHost, PlayerFactory playerFactory) {
+    public Lobby(String name, String password, List<Player> players, Boolean isHost,
+                 PlayerFactory playerFactory) {
         this.name = name;
         this.password = password;
         this.players = players;
@@ -57,7 +59,8 @@ public class Lobby {
 
     /**
      * Create a lobby from a packed string as answer from 'listlobbies'.
-     * @param packed lobby representation from the server
+     * @param packed lobby representation from the server.
+     * @param playerFactory The playerFactory.
      * @return a Lobby
      */
     public static Lobby unpackLobby(String packed, PlayerFactory playerFactory) {
@@ -71,7 +74,8 @@ public class Lobby {
 
     /**
      * Create a lobby from a packed string as answer from 'fetchlobby'.
-     * @param packed lobby representation from the server
+     * @param packed lobby representation from the server.
+     * @param playerFactory The playerFactory.
      * @return a Lobby
      */
     public static Lobby unpackFetchLobby(String packed, PlayerFactory playerFactory) {

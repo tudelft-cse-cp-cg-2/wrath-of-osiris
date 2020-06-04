@@ -5,7 +5,6 @@ import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.JoinScene;
@@ -23,9 +22,11 @@ public class JoinSceneController extends SceneController {
      *
      * @param controller the controller class.
      * @param model the model class.
-     * @param view       the view class.
+     * @param view the view class.
+     * @param playerFactory the playerFactory.
      */
-    public JoinSceneController(Controller controller, Model model, View view, PlayerFactory playerFactory) {
+    public JoinSceneController(Controller controller, Model model, View view,
+                               PlayerFactory playerFactory) {
         super(controller, model, view);
         this.scene = view.getJoinScene();
         this.playerFactory = playerFactory;

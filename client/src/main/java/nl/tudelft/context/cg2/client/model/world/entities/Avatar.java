@@ -19,7 +19,7 @@ public class Avatar extends Entity {
 
     /**
      * The avatar constructor.
-     * @param player the player this avatar is attached to.
+     * @param playerName the name of the player this avatar is attached to.
      * @param color the color of the avatar.
      */
     public Avatar(Color color, String playerName) {
@@ -38,6 +38,10 @@ public class Avatar extends Entity {
 //        }
     }
 
+    /**
+     * Step function.
+     * @param pose the new pose.
+     */
     public void step(Pose pose) {
         updatePose(pose);
         updatePosition(pose);

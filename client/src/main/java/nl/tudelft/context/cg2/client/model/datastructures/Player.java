@@ -25,6 +25,10 @@ public class Player {
         this.poseChanged = false;
     }
 
+    /**
+     * Setter for the avatar.
+     * @param avatar to be set.
+     */
     public void setAvatar(Avatar avatar) {
         this.avatar = avatar;
     }

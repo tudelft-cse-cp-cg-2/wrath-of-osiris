@@ -40,7 +40,8 @@ public class ViewController {
         this.menuSceneController = new MenuSceneController(controller, model, view, playerFactory);
         this.gameSceneController = new GameSceneController(controller, model, view);
         this.joinSceneController = new JoinSceneController(controller, model, view, playerFactory);
-        this.createGameSceneController = new CreateGameSceneController(controller, model, view, playerFactory);
+        this.createGameSceneController = new CreateGameSceneController(controller, model, view,
+                playerFactory);
         this.settingsSceneController = new SettingsSceneController(controller, model, view);
         this.lobbySceneController = new LobbySceneController(controller, model, view);
 

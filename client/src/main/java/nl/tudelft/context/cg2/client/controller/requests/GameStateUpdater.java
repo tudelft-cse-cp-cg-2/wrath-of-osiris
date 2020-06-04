@@ -23,15 +23,17 @@ public class GameStateUpdater extends Thread {
     private final Controller controller;
     private boolean started = false;
     private boolean terminate = false;
-    private PlayerFactory playerFactory;
+    private final PlayerFactory playerFactory;
 
     /**
      * Constructor for GameStateUpdater.
      * @param in server input
      * @param out server output
      * @param controller app controller
+     * @param playerFactory the playerFactory
      */
-    public GameStateUpdater(BufferedReader in, PrintWriter out, Controller controller, PlayerFactory playerFactory) {
+    public GameStateUpdater(BufferedReader in, PrintWriter out, Controller controller,
+                            PlayerFactory playerFactory) {
         this.in = in;
         this.out = out;
         this.controller = controller;
