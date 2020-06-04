@@ -27,6 +27,7 @@ public class Model {
      * The model constructor.
      */
     public Model() {
+        this.world = new World();
     }
 
     /**
@@ -35,7 +36,7 @@ public class Model {
      */
     public void setControllerAndWorld(Controller controller) {
         this.controller = controller;
-        this.world = new World(controller);
+        this.world.setController(controller);
     }
 
     /**

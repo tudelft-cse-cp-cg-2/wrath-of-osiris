@@ -25,15 +25,15 @@ public class App extends Application {
     @Override
     public void start(Stage stage) {
         this.model = new Model();
+        model.load();
 
         this.view = new View(stage, model);
         view.getMenuScene().show();
 
         this.controller = new Controller(model, view);
-        model.setControllerAndWorld(controller);
-        model.load();
         controller.getGameTimer().start();
 
+        model.setControllerAndWorld(controller);
         stage.show();
     }
 

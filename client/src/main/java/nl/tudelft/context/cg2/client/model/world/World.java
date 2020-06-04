@@ -36,12 +36,11 @@ public class World {
     /**
      * The World Constructor.
      */
-    public World(Controller controller) {
+    public World() {
         this.inMotion = false;
         this.currentWall = null;
         this.entities = new ArrayList<>();
         this.holes = new ArrayList<>();
-        this.controller = controller;
     }
 
     /**
@@ -116,6 +115,7 @@ public class World {
 
             // Makes walls appear in sequence.
             if (currentWall != null && currentWall.hasDecayed()) {
+                System.out.println("Wall decayed");
                 Pose finalPose = controller.getModel().getCurrentPlayer().getPose();
                 controller.getStateUpdater().sendFinalPose(finalPose);
 
@@ -179,5 +179,13 @@ public class World {
 
     public void setNextWallSent(boolean nextWallSent) {
         this.nextWallSent = nextWallSent;
+    }
+
+    /**
+     * Setter for controller field.
+     * @param controller the to be used controller
+     */
+    public void setController(Controller controller) {
+        this.controller = controller;
     }
 }
