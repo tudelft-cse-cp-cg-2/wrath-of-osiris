@@ -1,5 +1,7 @@
+
 package nl.tudelft.context.cg2.server;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import nl.tudelft.context.cg2.server.game.LevelGenerator;
 import nl.tudelft.context.cg2.server.game.Pose;
 import nl.tudelft.context.cg2.server.game.Wall;
@@ -15,6 +17,7 @@ public class GameLoop extends Thread {
 
     /**
      * Constructor.
+     *
      * @param lobby lobby that this gameloop resides in
      */
     public GameLoop(Lobby lobby) {
@@ -104,6 +107,9 @@ public class GameLoop extends Thread {
     /**
      * Doesn't stop until all players have sent their final pose.
      */
+    @SuppressFBWarnings(value = "UC_USELESS_VOID_METHOD", justification = "waitForFinalPoses "
+            + "isn't useless. If it didn't exist, the server would not wait until the clients have "
+            + "actually sent the final pose.")
     private void waitForFinalPoses() {
         boolean everyoneSentFinalPose = false;
         while (!everyoneSentFinalPose) {
