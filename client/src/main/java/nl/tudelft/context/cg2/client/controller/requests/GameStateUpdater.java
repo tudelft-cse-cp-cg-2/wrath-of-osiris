@@ -72,7 +72,10 @@ public class GameStateUpdater extends Thread {
     private void respond(String serverInput) {
         if (serverInput.startsWith("updatelives ")) {
             int newLives = Integer.parseInt(serverInput.split(" ")[1]);
-            Platform.runLater(() -> controller.getModel().getWorld().setLives(newLives));
+            controller.getModel().getWorld().setLives(newLives);
+            if (started) {
+               sendReady();
+            }
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
@@ -84,7 +87,6 @@ public class GameStateUpdater extends Thread {
         } else {
             switch (serverInput) {
                 case "startgame":
-                    started = true;
                     Platform.runLater(() -> controller.getViewController()
                             .getGameSceneController().startGame());
                     break;
@@ -149,20 +151,13 @@ public class GameStateUpdater extends Thread {
     }
 
     /**
-     * Returns whether the game has been started.
-     * @return boolean whether the game has started.
-     */
-    public boolean isStarted() {
-        return started;
-    }
-
-    /**
      * Updates the level.
      * @param level level
      */
     public void updateLevel(String level) {
         controller.getModel().getWorld().setLevel(jsonStringToLevel(level));
-        sendLevelReady();
+        sendReady();
+        started = true;
     }
 
     /**
@@ -175,15 +170,12 @@ public class GameStateUpdater extends Thread {
         }.getType());
     }
 
-    public void sendLevelReady() {
-        out.println("levelready");
-    }
-
-    public void sendWallReady() {
-        out.println("wallready");
+    public void sendReady() {
+        out.println("ready");
     }
 
     public void sendFinalPose(Pose pose) {
+        System.out.println("Final pose sent!");
         out.println("finalpose " + pose.pack());
     }
 }

@@ -109,8 +109,23 @@ public class GameSceneController extends SceneController {
         });
         model.getWorld().createPlayerAvatars(players);
 
+        model.getWorld().waveCompleted.addListener((obj, oldV, newV) -> {
+            onWaveCompletion(oldV, newV);
+        });
+
         view.getGameScene().clear();
         view.getGameScene().show();
+    }
+
+    /**
+     *
+     * @param oldV
+     * @param newV
+     */
+    private void onWaveCompletion(Boolean oldV, Boolean newV) {
+        if (!oldV && newV) {
+            controller.getStateUpdater().sendFinalPose(model.getCurrentPlayer().getPose());
+        }
     }
 
     /**
