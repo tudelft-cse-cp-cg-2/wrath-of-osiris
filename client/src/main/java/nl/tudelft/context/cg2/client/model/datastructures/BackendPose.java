@@ -190,4 +190,60 @@ public class BackendPose {
                 + "\nlegs: " + legs
                 + "\nscreen: " + screenPos;
     }
+
+    /**
+     * Unpack pose string packet coming from client into server format.
+     * @param poseStr string packet coming from client
+     * @return server Pose format object
+     */
+    public static BackendPose unpack(String poseStr) {
+        ScreenPos screenPos = ScreenPos.valueOf(Character.getNumericValue(poseStr.charAt(0)));
+        Arm leftArm = Arm.valueOf(Character.getNumericValue(poseStr.charAt(1)));
+        Arm rightArm = Arm.valueOf(Character.getNumericValue(poseStr.charAt(2)));
+        Legs legs;
+        switch (poseStr.substring(3, 5)) {
+            case "00": legs = Legs.DOWN;
+                break;
+            case "01": legs = Legs.RIGHTUP;
+                break;
+            case "10": legs = Legs.LEFTUP;
+                break;
+            default: legs = Legs.DOWN;
+        }
+
+        return new BackendPose(leftArm, rightArm, legs, screenPos);
+    }
+
+    /**
+     * Pack to send over the Internet. Position format is:
+     * [section][leftarm][rightarm][leftleg][rightleg]
+     * Section being:
+     * 0 - left
+     * 1 - middle
+     * 2 - right
+     * Arms being:
+     * 0 - top
+     * 1 - middle
+     * 2 - bottom
+     * Legs being:
+     * 0 - neutral
+     * 1 - raised
+     * @return a packed string representing this pose
+     */
+    public String pack() {
+        String msg = "";
+        msg += screenPos.indexOf();
+        msg += leftArm.indexOf();
+        msg += rightArm.indexOf();
+        switch (legs) {
+            case DOWN: msg += "00";
+                break;
+            case LEFTUP: msg += "10";
+                break;
+            case RIGHTUP: msg += "01";
+                break;
+            default: msg += "00";
+        }
+        return msg;
+    }
 }
