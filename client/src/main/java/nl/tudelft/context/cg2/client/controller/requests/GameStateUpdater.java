@@ -176,7 +176,6 @@ public class GameStateUpdater extends Thread {
     }
 
     public void sendFinalPose(Pose pose) {
-        System.out.println("Final pose sent!");
         out.println("finalpose " + pose.pack());
     }
 }
