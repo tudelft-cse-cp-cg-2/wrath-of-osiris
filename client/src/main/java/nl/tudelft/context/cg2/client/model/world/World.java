@@ -138,8 +138,9 @@ public class World {
     public void createPlayerAvatars(List<Player> players) {
         players.forEach(p -> {
             Color color = selectColor(players, p.getName());
-            Avatar avatar = new Avatar(p, color);
+            Avatar avatar = new Avatar(color, p.getName());
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
+            p.setAvatar(avatar);
             entities.add(avatar);
         });
     }

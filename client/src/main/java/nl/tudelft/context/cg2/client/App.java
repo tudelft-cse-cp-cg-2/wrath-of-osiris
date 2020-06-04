@@ -42,6 +42,7 @@ public class App extends Application {
     @SuppressFBWarnings(value = "DM_EXIT", justification = "This is the stop function")
     @Override
     public void stop() {
+        Settings.save();
         System.exit(0);
     }
 

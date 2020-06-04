@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.model;
 
+import nl.tudelft.context.cg2.client.Settings;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
@@ -29,6 +30,7 @@ public class Model {
      * Loads the client data from external resources.
      */
     public void load() {
+        Settings.load();
         ImageCache.loadImages();
         world.create();
     }

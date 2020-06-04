@@ -55,21 +55,21 @@ public class Lobby {
 
     /**
      * Create a lobby from a packed string as answer from 'listlobbies'.
-     * @param packed lobby representation from the server
+     * @param packed lobby representation from the server.
      * @return a Lobby
      */
     public static Lobby unpackLobby(String packed) {
         ArrayList<Player> playerList = new ArrayList<>();
         int playerCount = Character.getNumericValue(packed.charAt(0));
         for (int i = 0; i < playerCount; i++) {
-            playerList.add(new Player(""));
+            playerList.add(PlayerFactory.createPlayer(""));
         }
         return new Lobby(packed.substring(1), "", playerList, false);
     }
 
     /**
      * Create a lobby from a packed string as answer from 'fetchlobby'.
-     * @param packed lobby representation from the server
+     * @param packed lobby representation from the server.
      * @return a Lobby
      */
     public static Lobby unpackFetchLobby(String packed) {
@@ -79,7 +79,7 @@ public class Lobby {
         String header = split[1];
         int playerCount = Character.getNumericValue(header.charAt(0));
         for (int i = 0; i < playerCount; i++) {
-            playerList.add(new Player(split[i + 2]));
+            playerList.add(PlayerFactory.createPlayer(split[i + 2]));
         }
         return new Lobby(header.substring(1), "", playerList, false);
     }

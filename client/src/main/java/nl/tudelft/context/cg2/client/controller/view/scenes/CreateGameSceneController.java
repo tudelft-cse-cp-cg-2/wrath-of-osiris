@@ -5,7 +5,7 @@ import nl.tudelft.context.cg2.client.controller.requests.CreateLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
-import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.scenes.CreateGameScene;
 
@@ -22,7 +22,7 @@ public class CreateGameSceneController extends SceneController {
      *
      * @param controller the controller class.
      * @param model the model class.
-     * @param view       the view class.
+     * @param view the view class.
      */
     public CreateGameSceneController(Controller controller, Model model, View view) {
         super(controller, model, view);
@@ -78,7 +78,7 @@ public class CreateGameSceneController extends SceneController {
         }
 
         // Set current player object.
-        controller.getModel().setCurrentPlayer(new Player(playerName));
+        controller.getModel().setCurrentPlayer(PlayerFactory.createPlayer(playerName));
         controller.getViewController().getLobbySceneController()
                 .scheduleLobbyUpdater(req.getResultName());
 
