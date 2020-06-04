@@ -47,6 +47,7 @@ public class Player extends Thread {
 
     /**
      * Constructor for players.
+     *
      * @param sock the socket for the player's connection
      */
     public Player(Socket sock) {
@@ -73,6 +74,7 @@ public class Player extends Thread {
 
     /**
      * Setter for playerName.
+     *
      * @param name playerName
      */
     public void setPlayerName(String name) {
@@ -81,22 +83,34 @@ public class Player extends Thread {
 
     /**
      * Getter for playerName.
+     *
      * @return playerName
      */
     public String getPlayerName() {
         return this.playerName;
     }
 
+    /**
+     * Getter for ready, a boolean that indicates whether this player is ready for the wall to come.
+     *
+     * @return ready
+     */
     public boolean isReady() {
         return ready;
     }
 
+    /**
+     * Setter for ready.
+     *
+     * @param ready ready
+     */
     public void setReady(boolean ready) {
         this.ready = ready;
     }
 
     /**
      * Responds to messages received from the player's client.
+     *
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
@@ -164,7 +178,7 @@ public class Player extends Thread {
         String clientInput;
         try {
             while (!terminate) {
-                if(in.ready()) {
+                if (in.ready()) {
                     clientInput = in.readLine();
                     if (clientInput != null) {
                         System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
@@ -183,6 +197,7 @@ public class Player extends Thread {
 
     /**
      * Getter for a player's pose.
+     *
      * @return the player's current pose.
      */
     public Pose getPose() {
@@ -191,6 +206,7 @@ public class Player extends Thread {
 
     /**
      * Setter for a player's pose.
+     *
      * @param pose the player's current pose.
      */
     public void setPose(Pose pose) {
@@ -199,6 +215,7 @@ public class Player extends Thread {
 
     /**
      * Gets the lobby of the player.
+     *
      * @return lobby this player is in
      */
     public Lobby getLobby() {
@@ -207,6 +224,7 @@ public class Player extends Thread {
 
     /**
      * Getter for a player's final pose.
+     *
      * @return the player's final pose
      */
     public Pose getFinalPose() {
@@ -215,6 +233,7 @@ public class Player extends Thread {
 
     /**
      * Setter for a player's final pose.
+     *
      * @param p the player's final pose
      */
     public void setFinalPose(Pose p) {
@@ -223,6 +242,7 @@ public class Player extends Thread {
 
     /**
      * Sets the lobby for this player.
+     *
      * @param lobby the new lobby for the player
      */
     public void setLobby(Lobby lobby) {
@@ -253,6 +273,7 @@ public class Player extends Thread {
 
     /**
      * Sends a level to the client.
+     *
      * @param level level
      */
     public void sendLevel(ArrayList<Wall> level) {
