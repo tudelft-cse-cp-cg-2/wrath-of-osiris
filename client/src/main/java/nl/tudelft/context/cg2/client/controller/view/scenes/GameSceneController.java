@@ -111,7 +111,6 @@ public class GameSceneController extends SceneController {
 
         view.getGameScene().clear();
         view.getGameScene().show();
-        model.getWorld().setInMotion(true);
     }
 
     /**

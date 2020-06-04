@@ -33,7 +33,6 @@ public class App extends Application {
         this.controller = new Controller(model, view);
         controller.getGameTimer().start();
 
-        model.setControllerAndWorld(controller);
         stage.show();
     }
 

@@ -1,8 +1,9 @@
 package nl.tudelft.context.cg2.client.model.world;
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.scene.paint.Color;
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
+import nl.tudelft.context.cg2.client.model.datastructures.BackendWall;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.datastructures.Vector3D;
 import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
@@ -29,9 +30,8 @@ public class World {
     private final ArrayList<Hole> holes;
     private Wall currentWall;
     private boolean inMotion;
-    private Controller controller;
-    private boolean livesUpdated; //allows this class to wait until "updatelives" has been received
-    private boolean nextWallSent; //allows this class to wait until "nextwall" has been received
+
+    public final SimpleBooleanProperty waveCompleted;
 
     /**
      * The World Constructor.
@@ -41,6 +41,7 @@ public class World {
         this.currentWall = null;
         this.entities = new ArrayList<>();
         this.holes = new ArrayList<>();
+        this.waveCompleted = new SimpleBooleanProperty(false);
     }
 
     /**
@@ -105,6 +106,23 @@ public class World {
     }
 
     /**
+     * Completes a wall wave.
+     */
+    private void completeWave() {
+        inMotion = false;
+        waveCompleted.set(true);
+    }
+
+    /**
+     * Starts a new wall wave in the world.
+     * @param nextWall
+     */
+    public void startWave(BackendWall nextWall) {
+        inMotion = true;
+        waveCompleted.set(false);
+    }
+
+    /**
      * Processes one step in the game world.
      * @param t the passed time in s since timer initialization.
      * @param dt the passed time in s since the last update.
@@ -115,19 +133,6 @@ public class World {
 
             // Makes walls appear in sequence.
             if (currentWall != null && currentWall.hasDecayed()) {
-                System.out.println("Wall decayed");
-                Pose finalPose = controller.getModel().getCurrentPlayer().getPose();
-                controller.getStateUpdater().sendFinalPose(finalPose);
-
-                livesUpdated = false;
-                while (!livesUpdated) {
-                    //do nothing, wait until the boolean is set from GameStateUpdater
-                }
-
-                nextWallSent = false;
-                while (!nextWallSent) {
-                    //do nothing, wait until the boolean is set from GameStateUpdater
-                }
                 entities.remove(currentWall);
                 currentWall = EntityFactory.generateWall();
                 entities.add(currentWall);
@@ -137,6 +142,7 @@ public class World {
                 entities.addAll(holes);
                 entities.sort(Comparator.comparing(Entity::getDepth).reversed());
 
+                waveCompleted.set(true);
             }
         }
     }
@@ -171,21 +177,5 @@ public class World {
      */
     public void setInMotion(boolean inMotion) {
         this.inMotion = inMotion;
-    }
-
-    public void setLivesUpdated(boolean livesUpdated) {
-        this.livesUpdated = livesUpdated;
-    }
-
-    public void setNextWallSent(boolean nextWallSent) {
-        this.nextWallSent = nextWallSent;
-    }
-
-    /**
-     * Setter for controller field.
-     * @param controller the to be used controller
-     */
-    public void setController(Controller controller) {
-        this.controller = controller;
     }
 }
