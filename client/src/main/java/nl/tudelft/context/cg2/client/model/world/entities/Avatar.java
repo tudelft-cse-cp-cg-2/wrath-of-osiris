@@ -29,14 +29,13 @@ public class Avatar extends Entity {
 
     @Override
     public void step(double t, double dt) {
-        throw new RuntimeException("Wrong step function called.");
     }
 
     /**
-     * Step function.
+     * Update function.
      * @param pose the new pose.
      */
-    public void step(Pose pose) {
+    public void update(Pose pose) {
         updatePose(pose);
         updatePosition(pose);
     }

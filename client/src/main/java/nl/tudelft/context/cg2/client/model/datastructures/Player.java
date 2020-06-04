@@ -78,7 +78,7 @@ public class Player {
             if (this.avatar == null) {
                 System.out.println("Player: " + name + " has no avatar");
             } else {
-                this.avatar.step(pose);
+                this.avatar.update(pose);
             }
             System.out.println(other.toString());
         }
