@@ -136,6 +136,7 @@ public class MenuSceneController extends SceneController {
      * Shows the Settings scene.
      */
     private void settingsButtonClicked() {
+        controller.getViewController().getSettingsSceneController().detectCameras();
         view.getSettingsScene().show();
     }
 
