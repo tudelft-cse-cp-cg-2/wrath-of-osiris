@@ -180,7 +180,6 @@ public class Player extends Thread {
             while (!terminate) {
                 if(in.ready()) {
                     clientInput = in.readLine();
-
                     if (clientInput != null) {
                         System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
                                 + clientInput);

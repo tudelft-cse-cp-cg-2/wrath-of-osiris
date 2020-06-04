@@ -7,7 +7,7 @@ import nl.tudelft.context.cg2.server.game.Wall;
 import java.util.ArrayList;
 
 public class GameLoop extends Thread {
-    Lobby lobby;
+    private final Lobby lobby;
     private int lives;
 
     public GameLoop(Lobby lobby) {
@@ -41,11 +41,10 @@ public class GameLoop extends Thread {
     }
 
     @Override
-    public void start() {
+    public void run() {
         LevelGenerator generator = new LevelGenerator(lobby.getPlayers().size());
         ArrayList<Wall> level = generator.generateLevel();
         int currentWallIndex = 0;
-
         while (lobby.isStarted()) { // this loop runs once every level
             for (Player player : lobby.getPlayers()) {
                 player.sendLevel(level);
@@ -86,8 +85,6 @@ public class GameLoop extends Thread {
      * Doesn't stop until all players have reported "ready", then resets the ready variable.
      */
     private void everybodyLevelReady() {
-        System.out.println("Checking all ready...");
-
         boolean everybodyLevelReady = false;
         while (!everybodyLevelReady) {
             everybodyLevelReady = true;
@@ -97,8 +94,6 @@ public class GameLoop extends Thread {
                 }
             }
         }
-
-        System.out.println("Everybody ready!!");
 
         for (Player player : lobby.getPlayers()) {
             player.setLevelReady(false);
