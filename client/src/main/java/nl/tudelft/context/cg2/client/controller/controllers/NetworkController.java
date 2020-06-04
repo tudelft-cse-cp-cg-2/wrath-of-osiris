@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.controllers;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
+import nl.tudelft.context.cg2.client.Settings;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,7 +15,8 @@ import java.nio.charset.StandardCharsets;
  * Representation of the game server.
  */
 public class NetworkController {
-    private static final String HOST = "131.180.178.142";
+    private static final String HOST =
+            Settings.LOCALHOST ? "127.0.0.1" : "131.180.178.142";
     private static final int PORT = 43594;
 
     private Socket sock;
