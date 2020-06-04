@@ -3,6 +3,7 @@ package nl.tudelft.context.cg2.client.model.datastructures;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.Position;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.ScreenPos;
+import nl.tudelft.context.cg2.client.model.world.entities.Avatar;
 
 /**
  * Contains local information about a player.
@@ -10,6 +11,7 @@ import nl.tudelft.context.cg2.client.controller.io.posedetection.ScreenPos;
 public class Player {
     private final String name;
     private Pose pose;
+    private Avatar avatar;
     private boolean poseChanged;
 
     /**
@@ -21,6 +23,10 @@ public class Player {
         this.pose = new Pose(ScreenPos.middle, Position.bottom, Position.bottom,
                 Position.neutral, Position.neutral);
         this.poseChanged = false;
+    }
+
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
     }
 
     @Override
@@ -65,6 +71,7 @@ public class Player {
         if (!pose.equals(other)) {
             this.pose = other;
             this.poseChanged = true;
+            this.avatar.step(pose);
             System.out.println(other.toString());
         }
     }

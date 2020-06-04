@@ -16,28 +16,31 @@ import nl.tudelft.context.cg2.client.model.world.superscripts.PlayerName;
  */
 public class Avatar extends Entity {
     private final Color color;
-    private final Player player;
 
     /**
      * The avatar constructor.
      * @param player the player this avatar is attached to.
      * @param color the color of the avatar.
      */
-    public Avatar(Player player, Color color) {
-        super(TextureFactory.defaultAvatarTexture(color), new PlayerName(player.getName(), color),
+    public Avatar(Color color, String playerName) {
+        super(TextureFactory.defaultAvatarTexture(color), new PlayerName(playerName, color),
                 new Vector3D(), new Vector3D(), EntityFactory.HOLE_SIZE);
-        this.player = player;
         this.color = color;
     }
 
     @Override
     public void step(double t, double dt) {
-        if (player.isPoseChanged()) {
-            Pose pose = player.getPose();
-            updatePose(pose);
-            updatePosition(pose);
-            player.setPoseChanged(false);
-        }
+//        if (player.isPoseChanged()) {
+//            Pose pose = player.getPose();
+//            updatePose(pose);
+//            updatePosition(pose);
+//            player.setPoseChanged(false);
+//        }
+    }
+
+    public void step(Pose pose) {
+        updatePose(pose);
+        updatePosition(pose);
     }
 
     /**
