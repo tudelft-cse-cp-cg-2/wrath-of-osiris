@@ -232,13 +232,6 @@ public class Player extends Thread {
     }
 
     /**
-     * Sets a player's final pose to null.
-     */
-    public void nullFinalPose() {
-        finalPose = null;
-    }
-
-    /**
      * Sets the lobby for this player.
      * @param lobby the new lobby for the player
      */

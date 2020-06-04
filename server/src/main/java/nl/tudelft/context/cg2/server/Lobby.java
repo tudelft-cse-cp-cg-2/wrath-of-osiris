@@ -6,8 +6,6 @@ import nl.tudelft.context.cg2.server.game.Pose;
 import nl.tudelft.context.cg2.server.game.Wall;
 
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * Class containing information about the lobby a player is currently in.
@@ -19,7 +17,6 @@ public class Lobby {
     private final String password;
     private boolean started = false;
     private int lives = 10;
-    private long timeInterval = 5000L;
     private int currentWallIndex = 0;
 
     /**
@@ -173,51 +170,34 @@ public class Lobby {
                 player.sendLevel(level);
             }
             everybodyLevelReady();
-            final ArrayList<Wall> constLevel = level;
-            TimerTask wallLoop = new TimerTask() {
-                @Override
-                public void run() {
-                    ArrayList<Pose> finalPoses = new ArrayList<>();
-                    boolean everyoneSentFinalPose = false;
-                    while (!everyoneSentFinalPose) {
-                        everyoneSentFinalPose = true;
-                        for (Player player : players) {
-                            if (player.getFinalPose() == null) {
-                                everyoneSentFinalPose = false;
-                            }
-                        }
-                    }
-                    for (Player player : players) {
-                        finalPoses.add(player.getFinalPose());
-                        player.setFinalPose(null);
-                    }
+            while (currentWallIndex < level.size()) { // this loop runs once every wall
+                everybodyWallReady();
+                waitForFinalPoses();
+                ArrayList<Pose> finalPoses = new ArrayList<>();
+                for (Player player : players) {
+                    finalPoses.add(player.getFinalPose());
+                    player.setFinalPose(null);
+                }
 
-                    boolean avoidedCollision = constLevel.get(currentWallIndex).compare(finalPoses);
-                    if (!avoidedCollision) {
-                        subtractLife();
-                        //Todo: use sendFailed to inform everyone which player made the mistake
-                        if (lives < 0) {
-                            stopGame();
-                        }
-                    }
-                    for (Player player : players) {
-                        player.updateLives();
-                    }
-                    currentWallIndex++;
-                    if (currentWallIndex < constLevel.size()) { // only send "nextwall" if there is one
-                        for (Player player : players) {
-                            player.sendNextWall();
-                        }
+                boolean avoidedCollision = level.get(currentWallIndex).compare(finalPoses);
+                if (!avoidedCollision) {
+                    subtractLife();
+                    //Todo: use sendFailed to inform everyone which player made the mistake
+                    if (lives < 0) {
+                        stopGame();
                     }
                 }
-            };
-            while (currentWallIndex < level.size()) { // this loop runs once every wall
-                Timer timer = new Timer("wallTimer");
-                everybodyWallReady();
-                timer.schedule(wallLoop, timeInterval);
+                for (Player player : players) {
+                    player.updateLives();
+                }
+                currentWallIndex++;
+                if (currentWallIndex < level.size()) { // only send "nextwall" if there is one
+                    for (Player player : players) {
+                        player.sendNextWall();
+                    }
+                }
             }
             level = generator.generateLevel();
-
         }
     }
 
@@ -254,6 +234,21 @@ public class Lobby {
         }
         for (Player player : players) {
             player.setWallReady(false);
+        }
+    }
+
+    /**
+     * Doesn't stop until all players have sent their final pose.
+     */
+    private void waitForFinalPoses() {
+        boolean everyoneSentFinalPose = false;
+        while (!everyoneSentFinalPose) {
+            everyoneSentFinalPose = true;
+            for (Player player : players) {
+                if (player.getFinalPose() == null) {
+                    everyoneSentFinalPose = false;
+                }
+            }
         }
     }
 }
