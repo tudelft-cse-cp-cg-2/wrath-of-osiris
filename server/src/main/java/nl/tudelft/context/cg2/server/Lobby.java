@@ -122,7 +122,7 @@ public class Lobby {
                 player.startGame();
                 player.updateLives();
             }
-            gameLoop.run();
+            gameLoop.start();
         }
     }
 

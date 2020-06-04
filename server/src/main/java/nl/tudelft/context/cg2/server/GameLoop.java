@@ -41,7 +41,7 @@ public class GameLoop extends Thread {
     }
 
     @Override
-    public void run() {
+    public void start() {
         LevelGenerator generator = new LevelGenerator(lobby.getPlayers().size());
         ArrayList<Wall> level = generator.generateLevel();
         int currentWallIndex = 0;
