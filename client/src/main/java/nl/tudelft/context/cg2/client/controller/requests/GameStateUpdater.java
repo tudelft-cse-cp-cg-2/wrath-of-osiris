@@ -72,11 +72,7 @@ public class GameStateUpdater extends Thread {
      */
     private void respond(String serverInput) {
         if (serverInput.startsWith("updatelives ")) {
-            int newLives = Integer.parseInt(serverInput.split(" ")[1]);
-            controller.getModel().getWorld().setLives(newLives);
-            if (started) {
-               sendReady();
-            }
+            updateLives(serverInput);
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
@@ -89,7 +85,7 @@ public class GameStateUpdater extends Thread {
             switch (serverInput) {
                 case "startgame":
                     Platform.runLater(() -> controller.getViewController()
-                            .getGameSceneController().startGame());
+                        .getGameSceneController().startGame());
                     break;
                 case "stopgame":
                     Platform.runLater(() -> controller.getViewController()
@@ -100,9 +96,23 @@ public class GameStateUpdater extends Thread {
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
-
+                break;
             }
         }
+    }
+
+    private void updateLives(String serverInput) {
+        int newLives = Integer.parseInt(serverInput.split(" ")[1]);
+        controller.getModel().getWorld().setLives(newLives);
+
+        if (started) {
+            sendReady();
+        } else {
+            Platform.runLater(() -> controller.getView().getGameScene().setMaxHearts(newLives));
+        }
+
+        //System.out.println("ready: " + started);
+        Platform.runLater(() -> controller.getView().getGameScene().activateHearts(newLives));
     }
 
     /**

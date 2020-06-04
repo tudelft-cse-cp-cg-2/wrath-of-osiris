@@ -57,7 +57,6 @@ public class GameLoop extends Thread {
                     finalPoses.add(player.getFinalPose());
                     player.setFinalPose(null);
                 }
-
                 boolean avoidedCollision = level.get(currentWallIndex).compare(finalPoses);
                 if (!avoidedCollision) {
                     subtractLife();

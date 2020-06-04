@@ -17,8 +17,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
-import static sun.misc.Version.println;
-
 /**
  * The World class.
  * Features the game world.
@@ -70,10 +68,10 @@ public class World {
      * Clears the world.
      */
     public void destroy() {
+        inMotion = false;
         waveCompleted.set(false);
         entities.clear();
         holes.clear();
-        inMotion = false;
         currentWall = null;
         level = null;
         levelIdx = 0;

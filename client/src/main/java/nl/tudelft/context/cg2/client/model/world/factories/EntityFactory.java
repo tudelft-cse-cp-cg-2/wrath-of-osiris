@@ -40,9 +40,8 @@ public class EntityFactory {
      * @return a new hole.
      */
     public static Hole generateHole(Wall wall, BackendPose pose, Integer value) {
-        return new Hole(new Vector3D(World.WIDTH / 4 - HOLE_SIZE.x / 2,
-                pose.getScreenPos().indexOf(), wall.getDepth() - 1),
-                new Vector3D(wall.getVelocity()),
-                new Pose(), value);
+        return new Hole(new Vector3D(World.WIDTH / 4 * (pose.getScreenPos().indexOf() + 1)
+                - HOLE_SIZE.x / 2, 0, wall.getDepth() - 1), new Vector3D(wall.getVelocity()),
+                Pose.unpack(pose.pack()), value);
     }
 }
