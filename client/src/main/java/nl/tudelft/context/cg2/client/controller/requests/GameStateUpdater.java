@@ -96,8 +96,7 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().stopGame());
                     break;
                 case "nextwall":
-                    Platform.runLater(() ->
-                            controller.getModel().getWorld().startWave());
+                    Platform.runLater(() -> controller.getModel().getWorld().startWave());
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);
@@ -119,7 +118,7 @@ public class GameStateUpdater extends Thread {
         try {
             int idx = controller.getModel().getCurrentLobby().getPlayerNames().indexOf(playerName);
             Player player = controller.getModel().getCurrentLobby().getPlayers().get(idx);
-            player.updatePose(pose);
+            Platform.runLater(() -> player.updatePose(pose));
         } catch (NullPointerException | IndexOutOfBoundsException e) {
             System.out.println("Player names not yet initialized");
         }
