@@ -62,7 +62,10 @@ public class OpenCVController {
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
+            long startTime = System.nanoTime();
             captureAndProcessSnapshot(poseDetector);
+            long endTime = System.nanoTime();
+            System.out.println("TOTAL (ms): " + (endTime - startTime) / 1000000);
         }));
 
         captureTimer.setCycleCount(Timeline.INDEFINITE);
