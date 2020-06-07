@@ -120,8 +120,11 @@ public class PoseDetector {
     public BufferedImage generatePoseRegions(Mat matrix) {
         if (counter == 5 || faceDetections == null) {
             counter = 0;
+            long startTime = System.nanoTime();
             faceDetections = new MatOfRect();
             classifier.detectMultiScale(matrix, faceDetections);
+            long endTime = System.nanoTime();
+            System.out.println("detectMultiScale took (ms): " + (endTime - startTime) / 1000000);
         }
         counter++;
 
@@ -176,7 +179,10 @@ public class PoseDetector {
     public BufferedImage findLimbLocations(List<PoseRegion> poseRegions, BufferedImage image,
                                            PoseRegion head) {
         this.pose.resetCounters();
+        long startTime = System.nanoTime();
         BufferedImage bufferedImage = blendAndCompareImages(poseRegions, image);
+        long endTime = System.nanoTime();
+        System.out.println("blendAndCompareImages took (ms): " + (endTime - startTime) / 1000000);
         this.pose.updateScreenPosition(head);
         this.pose.updatePose();
         return bufferedImage;
