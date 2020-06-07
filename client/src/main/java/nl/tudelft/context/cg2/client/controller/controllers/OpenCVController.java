@@ -57,7 +57,7 @@ public class OpenCVController {
         videoCapture = new VideoCapture();
         videoCapture.open(Settings.getCameraIndex());
 
-        double fps = 5.0;
+        double fps = 15.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
         poseDetector = new PoseDetector();
 

@@ -10,6 +10,7 @@ import org.opencv.objdetect.CascadeClassifier;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
@@ -189,24 +190,34 @@ public class PoseDetector {
      */
     BufferedImage blendAndCompareImages(List<PoseRegion> poseRegions, BufferedImage img) {
         int epsilon = 750000;
-        for (int x = 0; x < img.getWidth(); x++) {
-            for (int y = 0; y < img.getHeight(); y++) {
-                int rgbValue = (baseImage.getRGB(x, y) + img.getRGB(x, y)) / 2;
-                baseImage.setRGB(x, y, rgbValue);
-                int rgbValueImg = img.getRGB(x, y);
-                if (Math.abs(rgbValue - rgbValueImg) > epsilon) {
-                    img.setRGB(x, y, this.green);
-                    for (PoseRegion poseRegion : poseRegions) {
-                        if (poseRegion.inRange(x, y)) {
-                            this.pose.incrementCounter(poseRegion.getLimb(),
-                                    poseRegion.getPosition());
-                        }
+//        BufferedImage tmp = deepCopy(img);
+        // Loop over regions
+        for (PoseRegion poseRegion : poseRegions) {
+            // Loop over pixels; continue if poseRegion not fully in screen
+            for (int x = poseRegion.getLeftX(); x < poseRegion.getRightX(); x++) {
+                if (x < 0 || x > 639) continue;
+                for (int y = poseRegion.getTopY(); y < poseRegion.getBottomY(); y++) {
+                    if (y < 0 || y > 479) continue;
+                    int rgbValue = baseImage.getRGB(x, y);
+                    int rgbValueImg = img.getRGB(x, y);
+                    if (Math.abs(rgbValue - rgbValueImg) > epsilon) {
+//                        img.setRGB(x, y, this.green);
+                        this.pose.incrementCounter(poseRegion.getLimb(), poseRegion.getPosition());
                     }
                 }
             }
         }
+//        this.baseImage = tmp;
+        this.baseImage = img;
         return img;
     }
+
+//    static BufferedImage deepCopy(BufferedImage bi) {
+//        ColorModel cm = bi.getColorModel();
+//        boolean isAlphaPremultiplied = cm.isAlphaPremultiplied();
+//        WritableRaster raster = bi.copyData(null);
+//        return new BufferedImage(cm, raster, isAlphaPremultiplied, null);
+//    }
 
     /**
      * A getter for the pose.
