@@ -10,7 +10,6 @@ import org.opencv.objdetect.CascadeClassifier;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.awt.image.ColorModel;
 import java.awt.image.DataBufferByte;
 import java.awt.image.WritableRaster;
 import java.util.ArrayList;
@@ -195,9 +194,13 @@ public class PoseDetector {
         for (PoseRegion poseRegion : poseRegions) {
             // Loop over pixels; continue if poseRegion not fully in screen
             for (int x = poseRegion.getLeftX(); x < poseRegion.getRightX(); x++) {
-                if (x < 0 || x > 639) continue;
+                if (x < 0 || x > 639) {
+                    continue;
+                }
                 for (int y = poseRegion.getTopY(); y < poseRegion.getBottomY(); y++) {
-                    if (y < 0 || y > 479) continue;
+                    if (y < 0 || y > 479) {
+                        continue;
+                    }
                     int rgbValue = baseImage.getRGB(x, y);
                     int rgbValueImg = img.getRGB(x, y);
                     if (Math.abs(rgbValue - rgbValueImg) > epsilon) {
