@@ -59,6 +59,8 @@ public class OpenCVController {
 
         double fps = 15.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
+        videoCapture.set(Videoio.CAP_PROP_FRAME_WIDTH, 640);
+        videoCapture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 480);
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
