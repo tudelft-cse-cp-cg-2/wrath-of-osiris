@@ -11,13 +11,10 @@ import nl.tudelft.context.cg2.client.controller.io.posedetection.PoseDetector;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import org.opencv.core.Mat;
-import org.opencv.core.Size;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
 import java.awt.image.BufferedImage;
-
-import static org.opencv.imgproc.Imgproc.resize;
 
 /**
  * The OpenCV scene controller class.
@@ -57,8 +54,10 @@ public class OpenCVController {
         videoCapture = new VideoCapture();
         videoCapture.open(Settings.getCameraIndex());
 
-        double fps = 5.0;
+        double fps = 15.0;
         videoCapture.set(Videoio.CAP_PROP_FPS, fps);
+        videoCapture.set(Videoio.CAP_PROP_FRAME_WIDTH, 640);
+        videoCapture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 480);
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
@@ -89,9 +88,6 @@ public class OpenCVController {
 
         Mat matrix = new Mat();
         videoCapture.read(matrix);
-
-        // Scale the image to 480p resolution
-        resize(matrix, matrix, new Size(640, 480));
 
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
