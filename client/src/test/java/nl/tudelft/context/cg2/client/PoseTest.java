@@ -52,7 +52,7 @@ public class PoseTest {
                         + "| ll: " + Position.neutral.name() + "| rl: " + Position.neutral.name(),
                 pose.toString());
 
-        for (int i = 0; i < 500; i++) {
+        for (int i = 0; i < 1500; i++) {
             pose.incrementCounter(Limb.right_arm, Position.bottom);
         }
         pose.updatePose();
