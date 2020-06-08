@@ -90,11 +90,18 @@ public class OpenCVController {
     public void captureAndProcessSnapshot(PoseDetector poseDetector) {
         WritableImage writableImage = null;
 
+
+        long startTime = System.nanoTime();
         Mat matrix = new Mat();
         videoCapture.read(matrix);
+        long endTime = System.nanoTime();
+        System.out.println("read frame (ms): " + (endTime - startTime) / 1000000);
 
         // Scale the image to 480p resolution
+        startTime = System.nanoTime();
         resize(matrix, matrix, new Size(640, 480));
+        endTime = System.nanoTime();
+        System.out.println("resize (ms): " + (endTime - startTime) / 1000000);
 
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
