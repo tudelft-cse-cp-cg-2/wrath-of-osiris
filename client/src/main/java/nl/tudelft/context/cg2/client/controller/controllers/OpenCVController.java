@@ -66,6 +66,7 @@ public class OpenCVController {
             captureAndProcessSnapshot(poseDetector);
             long endTime = System.nanoTime();
             System.out.println("TOTAL (ms): " + (endTime - startTime) / 1000000);
+            System.out.println("______________________________________________");
         }));
 
         captureTimer.setCycleCount(Timeline.INDEFINITE);
