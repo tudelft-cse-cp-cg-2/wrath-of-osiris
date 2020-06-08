@@ -11,13 +11,10 @@ import nl.tudelft.context.cg2.client.controller.io.posedetection.PoseDetector;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import org.opencv.core.Mat;
-import org.opencv.core.Size;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.videoio.Videoio;
 
 import java.awt.image.BufferedImage;
-
-import static org.opencv.imgproc.Imgproc.resize;
 
 /**
  * The OpenCV scene controller class.
@@ -64,11 +61,7 @@ public class OpenCVController {
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
-            long startTime = System.nanoTime();
             captureAndProcessSnapshot(poseDetector);
-            long endTime = System.nanoTime();
-            System.out.println("TOTAL (ms): " + (endTime - startTime) / 1000000);
-            System.out.println("______________________________________________");
         }));
 
         captureTimer.setCycleCount(Timeline.INDEFINITE);
@@ -93,18 +86,8 @@ public class OpenCVController {
     public void captureAndProcessSnapshot(PoseDetector poseDetector) {
         WritableImage writableImage = null;
 
-
-        long startTime = System.nanoTime();
         Mat matrix = new Mat();
         videoCapture.read(matrix);
-        long endTime = System.nanoTime();
-        System.out.println("read frame (ms): " + (endTime - startTime) / 1000000);
-
-        // Scale the image to 480p resolution
-        startTime = System.nanoTime();
-        resize(matrix, matrix, new Size(640, 480));
-        endTime = System.nanoTime();
-        System.out.println("resize (ms): " + (endTime - startTime) / 1000000);
 
         if (videoCapture.isOpened()) {
             BufferedImage image = poseDetector.generatePoseRegions(matrix);
