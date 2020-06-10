@@ -150,6 +150,36 @@ public final class App {
     }
 
     /**
+     * Checks whether or not a given player name is already in use.
+     * @param playerName the player name to check
+     * @return true if the name is unique, else false
+     */
+    public static boolean playerNameIsUnique(String playerName) {
+        for (Lobby lobby : lobbies) {
+            for (Player player : lobby.getPlayers()) {
+                if (player.getPlayerName().equals(playerName)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks whether or not a lobby player name is already in use.
+     * @param lobbyName the player name to check
+     * @return true if the name is unique, else false
+     */
+    public static boolean lobbyNameIsUnique(String lobbyName) {
+        for (Lobby lobby : lobbies) {
+            if (lobby.getName().equals(lobbyName)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
      * Main function.
      * @param args command line arguments (ignored)
      */

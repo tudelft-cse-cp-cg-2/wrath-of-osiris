@@ -39,6 +39,10 @@ public class JoinScene extends BaseScene {
 
     private SimpleButton backButton;
 
+    private StackPane popup;
+    private StackPane popupPane;
+    private Text popupText;
+
     /**
      * The lobby joining scene constructor.
      * @param window the window currently showing.
@@ -107,7 +111,14 @@ public class JoinScene extends BaseScene {
         backButton.setTranslateY(-30);
         StackPane.setAlignment(backButton, Pos.BOTTOM_RIGHT);
 
-        root.getChildren().addAll(centerHBox, backButton, headerText);
+        popup = drawPopup();
+        popupPane = drawPopupPane();
+        popupText = drawPopupText();
+
+        popupPane.getChildren().add(popupText);
+        popup.getChildren().add(popupPane);
+
+        root.getChildren().addAll(centerHBox, backButton, headerText, popup);
     }
 
     /**
@@ -166,5 +177,29 @@ public class JoinScene extends BaseScene {
      */
     public ListView getListView() {
         return listView;
+    }
+
+    /**
+     * Shows the message popup.
+     * @param message the message to set on the popup.
+     */
+    public void showPopup(String message) {
+        popupText.setText(message);
+        popup.setVisible(true);
+    }
+
+    /**
+     * Closes the message popup.
+     */
+    public void closePopup() {
+        popup.setVisible(false);
+    }
+
+    /**
+     * Gets the message popup.
+     * @return the message popup.
+     */
+    public StackPane getPopup() {
+        return popup;
     }
 }
