@@ -171,6 +171,9 @@ public final class App {
      * @return true if the name is unique, else false
      */
     public static boolean lobbyNameIsUnique(String lobbyName) {
+        // remove empty lobbies first, just to be sure
+        removeEmptyLobbies();
+
         for (Lobby lobby : lobbies) {
             if (lobby.getName().equals(lobbyName)) {
                 return false;
