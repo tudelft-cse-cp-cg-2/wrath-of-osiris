@@ -131,4 +131,12 @@ public class Lobby {
     public Boolean getHost() {
         return isHost;
     }
+
+    /**
+     * Removes a player from the lobby.
+     * @param playerName The name of the player to be removed
+     */
+    public void removePlayer(String playerName) {
+        players.removeIf(player -> playerName.equals(player.getName()));
+    }
 }

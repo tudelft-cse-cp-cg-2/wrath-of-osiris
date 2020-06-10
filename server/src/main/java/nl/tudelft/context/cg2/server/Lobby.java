@@ -136,4 +136,16 @@ public class Lobby {
             player.stopGame();
         }
     }
+
+    /**
+     * Signal all other players in the lobby that the player has left the game.
+     * @param playerName The name of the player that has left
+     */
+    public void signalPlayerLeave(String playerName) {
+        for (Player player : players) {
+            if (!player.getName().equals(playerName)) {
+                player.sendPlayerLeft(playerName);
+            }
+        }
+    }
 }

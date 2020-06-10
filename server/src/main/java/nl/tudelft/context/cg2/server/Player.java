@@ -162,6 +162,11 @@ public class Player extends Thread {
                 case "wallready":
                     setReady(true);
                     break;
+                case "leavegame":
+                    stopPoseUpdater();
+                    lobby.signalPlayerLeave(playerName);
+                    App.removePlayerFromLobbies(this);
+                    break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
                     break;
@@ -310,5 +315,13 @@ public class Player extends Thread {
      */
     public void sendNextWall() {
         out.println("nextwall");
+    }
+
+    /**
+     * Signals the player that another player has left the game.
+     * @param playerName the name of the player that has left
+     */
+    public void sendPlayerLeft(String playerName) {
+        out.println("playerleft " + playerName);
     }
 }
