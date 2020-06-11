@@ -37,7 +37,16 @@ public final class App {
      * Remove empty lobbies.
      */
     private static void removeEmptyLobbies() {
-        lobbies.removeIf(lobby -> lobby.getPlayers().size() == 0);
+        lobbies.removeIf(lobby -> {
+            if (lobby.getPlayers().size() == 0) {
+                System.out.println("Removed empty lobby: " + lobby.getName());
+                // Stop the gameloop.
+                lobby.stopGame();
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     /**

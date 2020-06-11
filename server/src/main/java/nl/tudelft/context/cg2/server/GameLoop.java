@@ -90,11 +90,18 @@ public class GameLoop extends Thread {
      */
     private void everybodyWallReady() {
         boolean everybodyWallReady = false;
-        while (!everybodyWallReady) {
+        /* Checking lobby.isStarted() is necessary for when everyone left while waiting for wall
+         ready. Else ConcurrentModificationException can be thrown. */
+        while (!everybodyWallReady && lobby.isStarted()) {
             everybodyWallReady = true;
             for (Player player : lobby.getPlayers()) {
-                if (!player.isReady()) {
-                    everybodyWallReady = false;
+                try {
+                    if (!player.isReady()) {
+                        everybodyWallReady = false;
+                    }
+                } catch (NullPointerException e) {
+                    // Player left the game, so is null. Therefore, ignore its ready.
+                    System.out.println("Player left during everybodyWallReady.");
                 }
             }
         }
@@ -112,11 +119,18 @@ public class GameLoop extends Thread {
             + "actually sent the final pose.")
     private void waitForFinalPoses() {
         boolean everyoneSentFinalPose = false;
-        while (!everyoneSentFinalPose) {
+         /* Checking lobby.isStarted() is necessary for when everyone left while waiting for final
+         poses. Else ConcurrentModificationException can be thrown. */
+        while (!everyoneSentFinalPose && lobby.isStarted()) {
             everyoneSentFinalPose = true;
             for (Player player : lobby.getPlayers()) {
-                if (player.getFinalPose() == null) {
-                    everyoneSentFinalPose = false;
+                try {
+                    if (player.getFinalPose() == null) {
+                        everyoneSentFinalPose = false;
+                    }
+                } catch (NullPointerException e) {
+                    // Player left the game, so is null. Therefore, ignore its pose.
+                    System.out.println("Player left during waitForFinalPoses.");
                 }
             }
         }

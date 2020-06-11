@@ -164,7 +164,7 @@ public class Player extends Thread {
                     break;
                 case "leavegame":
                     stopPoseUpdater();
-                    lobby.signalPlayerLeave(playerName);
+                    lobby.processPlayerLeave(playerName);
                     App.removePlayerFromLobbies(this);
                     break;
                 default:
@@ -192,12 +192,12 @@ public class Player extends Thread {
                     }
                 }
             }
-            stopPoseUpdater();
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+        stopPoseUpdater();
     }
 
     /**

@@ -138,10 +138,11 @@ public class Lobby {
     }
 
     /**
-     * Signal all other players in the lobby that the player has left the game.
+     * Processes a player leaving the game, by signalling other players and adjusting the levels.
      * @param playerName The name of the player that has left
      */
-    public void signalPlayerLeave(String playerName) {
+    public void processPlayerLeave(String playerName) {
+        // todo: Adjust and update levels for one less player.
         for (Player player : players) {
             if (!player.getName().equals(playerName)) {
                 player.sendPlayerLeft(playerName);
