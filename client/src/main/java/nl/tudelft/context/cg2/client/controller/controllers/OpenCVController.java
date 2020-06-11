@@ -53,7 +53,8 @@ public class OpenCVController {
         nu.pattern.OpenCV.loadLocally();
 
 //        webcam = Webcam.getDefault();
-        webcam = Webcam.getWebcamByName(Webcam.getWebcams().get(Webcam.getWebcams().size() - 2).getName());
+        webcam = Webcam.getWebcamByName(Webcam.getWebcams().get(Webcam.getWebcams().size() - 1).getName());
+//        webcam = Webcam.getWebcamByName(Webcam.getWebcams().get(0).getName());
         webcam.setViewSize(new Dimension(640, 480));
         webcam.open(true);
 
