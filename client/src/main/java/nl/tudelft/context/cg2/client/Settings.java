@@ -16,7 +16,7 @@ import java.util.Properties;
         justification = "Several try-catch blocks not required.")
 public class Settings {
 
-    public static final boolean LOCALHOST = false;
+    public static final boolean LOCALHOST = true;
 
     private static int cameraIndex = 0;
 
