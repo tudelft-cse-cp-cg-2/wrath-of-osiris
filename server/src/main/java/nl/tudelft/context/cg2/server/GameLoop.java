@@ -95,13 +95,8 @@ public class GameLoop extends Thread {
         while (!everybodyWallReady && lobby.isStarted()) {
             everybodyWallReady = true;
             for (Player player : lobby.getPlayers()) {
-                try {
-                    if (!player.isReady()) {
-                        everybodyWallReady = false;
-                    }
-                } catch (NullPointerException e) {
-                    // Player left the game, so is null. Therefore, ignore its ready.
-                    System.out.println("Player left during everybodyWallReady.");
+                if (player != null && !player.isReady()) {
+                    everybodyWallReady = false;
                 }
             }
         }
@@ -124,14 +119,9 @@ public class GameLoop extends Thread {
         while (!everyoneSentFinalPose && lobby.isStarted()) {
             everyoneSentFinalPose = true;
             for (Player player : lobby.getPlayers()) {
-                try {
-                    if (player.getFinalPose() == null) {
+                    if (player != null && player.getFinalPose() == null) {
                         everyoneSentFinalPose = false;
                     }
-                } catch (NullPointerException e) {
-                    // Player left the game, so is null. Therefore, ignore its pose.
-                    System.out.println("Player left during waitForFinalPoses.");
-                }
             }
         }
     }
