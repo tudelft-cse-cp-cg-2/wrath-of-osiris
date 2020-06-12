@@ -201,6 +201,7 @@ public class Player extends Thread {
                     }
                 }
             }
+            System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
@@ -309,6 +310,7 @@ public class Player extends Thread {
         eventTimer.cancel();
         eventTimer.purge();
         eventTimer = null;
+        System.out.println("Pose updater stopped: " + playerName);
     }
 
     /**
