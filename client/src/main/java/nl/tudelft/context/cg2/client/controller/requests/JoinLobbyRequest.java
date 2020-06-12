@@ -1,7 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
 import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
-import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,17 +12,17 @@ import java.io.PrintWriter;
 public class JoinLobbyRequest extends Thread {
     private final BufferedReader in;
     private final PrintWriter out;
-    private String lobbyName;
+    private final String lobbyName;
     private final String playerName;
 
-    private Lobby result;
+    private boolean success;
 
     /**
      * Getter for result.
-     * @return the lobby that was just joined
+     * @return the name of the lobby that was just joined
      */
-    public Lobby getResult() {
-        return result;
+    public boolean isSuccessful() {
+        return success;
     }
 
     /**
@@ -48,7 +47,8 @@ public class JoinLobbyRequest extends Thread {
         try {
             out.println("joinlobby " + lobbyName + " " + playerName);
             fromServer = in.readLine();
-            assert fromServer != null && fromServer.equals(NetworkController.EOT);
+            assert fromServer != null;
+            success = !fromServer.equals(NetworkController.EOT);
         } catch (IOException e) {
             e.printStackTrace();
         }
