@@ -91,7 +91,7 @@ public class GameLoop extends Thread {
     private void everybodyWallReady() {
         boolean everybodyWallReady = false;
         /* Checking lobby.isStarted() is necessary for when everyone left while waiting for wall
-         ready. Else ConcurrentModificationException can be thrown. */
+         ready. */
         while (!everybodyWallReady && lobby.isStarted()) {
             everybodyWallReady = true;
             for (Player player : lobby.getPlayers()) {
@@ -115,7 +115,7 @@ public class GameLoop extends Thread {
     private void waitForFinalPoses() {
         boolean everyoneSentFinalPose = false;
          /* Checking lobby.isStarted() is necessary for when everyone left while waiting for final
-         poses. Else ConcurrentModificationException can be thrown. */
+         poses. */
         while (!everyoneSentFinalPose && lobby.isStarted()) {
             everyoneSentFinalPose = true;
             for (Player player : lobby.getPlayers()) {
