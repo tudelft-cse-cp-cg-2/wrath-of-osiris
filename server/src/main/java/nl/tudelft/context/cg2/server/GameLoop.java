@@ -119,9 +119,9 @@ public class GameLoop extends Thread {
         while (!everyoneSentFinalPose && lobby.isStarted()) {
             everyoneSentFinalPose = true;
             for (Player player : lobby.getPlayers()) {
-                    if (player != null && player.getFinalPose() == null) {
-                        everyoneSentFinalPose = false;
-                    }
+                if (player != null && player.getFinalPose() == null) {
+                    everyoneSentFinalPose = false;
+                }
             }
         }
     }
