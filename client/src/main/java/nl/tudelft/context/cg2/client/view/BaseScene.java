@@ -3,6 +3,9 @@ package nl.tudelft.context.cg2.client.view;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 /**
  * The base scene class.
@@ -48,6 +51,46 @@ public abstract class BaseScene extends Scene {
      * Event thrown when the scene is shown in the window.
      */
     public abstract void onShown();
+
+    /**
+     * Creates the Popup needed in child classes.
+     * @return a popup
+     */
+    protected StackPane drawPopup() {
+        StackPane popup = new StackPane();
+        popup.minWidthProperty().bind(window.sceneWidthProperty());
+        popup.getStyleClass().add("popup");
+        popup.maxWidthProperty().bind(window.sceneWidthProperty());
+        popup.minHeightProperty().bind(window.sceneHeightProperty());
+        popup.maxHeightProperty().bind(window.sceneHeightProperty());
+        popup.setVisible(false);
+        return popup;
+    }
+
+    /**
+     * Creates the PopupPane needed in child classes.
+     * @return a popup pane
+     */
+    protected StackPane drawPopupPane() {
+        StackPane popupPane = new StackPane();
+        popupPane.setMinSize(400, 250);
+        popupPane.setMaxSize(400, 250);
+        popupPane.getStyleClass().add("popup-pane");
+        return popupPane;
+    }
+
+    /**
+     * Creates the PopupText needed in child classes.
+     * @return a popup text field
+     */
+    protected Text drawPopupText() {
+        Text popupText = new Text();
+        popupText.setWrappingWidth(350);
+        popupText.setLayoutX(25);
+        popupText.setTextAlignment(TextAlignment.CENTER);
+        popupText.getStyleClass().add("popup-text");
+        return popupText;
+    }
 
     /**
      * String validator for TextField objects.

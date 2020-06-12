@@ -17,14 +17,14 @@ public class CreateLobbyRequest extends Thread {
     private final String lobbyName;
     private final String password;
 
-    private String resultName;
+    private boolean success;
 
     /**
      * Getter for resultIndex.
      * @return the lobby that was just joined
      */
-    public String getResultName() {
-        return resultName;
+    public boolean isSuccessful() {
+        return success;
     }
 
     /**
@@ -59,10 +59,8 @@ public class CreateLobbyRequest extends Thread {
             }
             fromServer = in.readLine();
             assert fromServer != null;
-            resultName = fromServer;
-
-            fromServer = in.readLine();
-            assert fromServer != null && fromServer.equals(NetworkController.EOT);
+            System.out.println(fromServer);
+            success = !fromServer.equals(NetworkController.EOT);
         } catch (IOException e) {
             e.printStackTrace();
         }

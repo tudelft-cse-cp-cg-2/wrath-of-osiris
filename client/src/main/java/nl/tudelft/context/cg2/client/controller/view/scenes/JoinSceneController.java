@@ -1,6 +1,7 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
@@ -33,6 +34,7 @@ public class JoinSceneController extends SceneController {
     protected void setupMouseListeners() {
         scene.getJoinButton().setOnMouseClicked(event -> joinButtonClicked());
         scene.getBackButton().setOnMouseClicked(event -> backButtonClicked());
+        scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
 
     /**
@@ -49,7 +51,8 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
-        if (index == -1 || scene.getPlayerNameField().getText().equals("")) {
+        if (index == -1 || scene.getPlayerNameField().getText().equals("")
+                || scene.getPlayerNameField().getText().equals(NetworkController.EOT)) {
             return;
         }
         String lobbyName = model.getAvailableLobbies().get(index).getName();
@@ -63,6 +66,11 @@ public class JoinSceneController extends SceneController {
             req.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        if (!req.isSuccessful()) {
+            scene.showPopup("Name already in use! Please pick a different one.");
+            return;
         }
 
         // Set current player object.

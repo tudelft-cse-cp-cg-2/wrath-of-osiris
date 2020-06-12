@@ -28,6 +28,10 @@ public class CreateGameScene extends BaseScene {
     private SimpleButton createGameButton;
     private SimpleButton leaveButton;
 
+    private StackPane popup;
+    private StackPane popupPane;
+    private Text popupText;
+
     /**
      * The menu scene constructor.
      * @param window the window currently showing.
@@ -99,9 +103,16 @@ public class CreateGameScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
+        popup = drawPopup();
+        popupPane = drawPopupPane();
+        popupText = drawPopupText();
+
+        popupPane.getChildren().add(popupText);
+        popup.getChildren().add(popupPane);
+
         centerVBox.getChildren().addAll(playerNameLabel, playerNameField, lobbyNameLabel,
                 lobbyNameField, passwordLabel, passwordField, createGameButton);
-        root.getChildren().addAll(centerVBox, leaveButton, headerText);
+        root.getChildren().addAll(centerVBox, leaveButton, headerText, popup);
     }
 
     /**
@@ -159,5 +170,29 @@ public class CreateGameScene extends BaseScene {
      */
     public TextField getPlayerNameField() {
         return playerNameField;
+    }
+
+    /**
+     * Shows the message popup.
+     * @param message the message to set on the popup.
+     */
+    public void showPopup(String message) {
+        popupText.setText(message);
+        popup.setVisible(true);
+    }
+
+    /**
+     * Closes the message popup.
+     */
+    public void closePopup() {
+        popup.setVisible(false);
+    }
+
+    /**
+     * Gets the message popup.
+     * @return the message popup.
+     */
+    public StackPane getPopup() {
+        return popup;
     }
 }
