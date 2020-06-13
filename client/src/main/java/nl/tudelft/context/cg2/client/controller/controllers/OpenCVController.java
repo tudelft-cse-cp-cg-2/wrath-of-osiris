@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.controllers;
 
+import com.github.sarxos.webcam.Webcam;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
@@ -10,11 +11,9 @@ import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.PoseDetector;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
-import com.github.sarxos.webcam.Webcam;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 
 /**
  * The OpenCV scene controller class.
@@ -52,9 +51,7 @@ public class OpenCVController {
     public void startCapture() {
         nu.pattern.OpenCV.loadLocally();
 
-//        webcam = Webcam.getDefault();
-        webcam = Webcam.getWebcamByName(Webcam.getWebcams().get(Webcam.getWebcams().size() - 1).getName());
-//        webcam = Webcam.getWebcamByName(Webcam.getWebcams().get(0).getName());
+        webcam = Webcam.getWebcamByName(Settings.getWebcamName());
         webcam.setViewSize(new Dimension(640, 480));
         webcam.open(true);
 

@@ -1,13 +1,14 @@
 package nl.tudelft.context.cg2.client.controller.io.posedetection;
 
-import org.opencv.core.*;
-import org.opencv.imgproc.Imgproc;
+import org.opencv.core.CvType;
+import org.opencv.core.Mat;
+import org.opencv.core.MatOfRect;
+import org.opencv.core.Rect;
 import org.opencv.objdetect.CascadeClassifier;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -212,6 +213,11 @@ public class PoseDetector {
         return pose;
     }
 
+    /**
+     * Get the matrix from a BufferedImage.
+     * @param bi the bufferedImage object.
+     * @return The matrix.
+     */
     public static Mat bufferedImageToMat(BufferedImage bi) {
         Mat mat = new Mat(bi.getHeight(), bi.getWidth(), CvType.CV_8UC3);
         byte[] data = ((DataBufferByte) bi.getRaster().getDataBuffer()).getData();
