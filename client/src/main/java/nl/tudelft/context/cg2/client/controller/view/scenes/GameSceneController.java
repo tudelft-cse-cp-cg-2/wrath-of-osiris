@@ -53,9 +53,6 @@ public class GameSceneController extends SceneController {
                 case SPACE:
                     startWorldTimer();
                     break;
-                case BACK_SPACE:
-                    stopGame();
-                    break;
                 case ESCAPE:
                     leaveGame();
                     break;
