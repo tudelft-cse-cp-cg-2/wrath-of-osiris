@@ -27,6 +27,7 @@ public class PoseDetector {
 
     private int counter = 0;
     private MatOfRect faceDetections;
+    private List<PoseRegion> poseRegions;
 
     /**
      * Given the coordinates of a head, calculate the bounding boxes
@@ -117,15 +118,16 @@ public class PoseDetector {
         if (counter == 5 || faceDetections == null) {
             counter = 0;
             faceDetections = new MatOfRect();
+            poseRegions = null;
             classifier.detectMultiScale(bufferedImageToMat(image), faceDetections);
         }
         counter++;
 
-        List<PoseRegion> poseRegions;
+
 
         // Detect
         PoseRegion head;
-        if (faceDetections.toArray().length > 0) {
+        if (faceDetections.toArray().length > 0 && poseRegions == null) {
             Rect rect = faceDetections.toArray()[0];
             head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
