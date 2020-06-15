@@ -115,7 +115,7 @@ public class PoseDetector {
      *     right -> left. if no faces are found, this list will be empty.
      */
     public BufferedImage generatePoseRegions(BufferedImage image) {
-        if (counter == 5 || faceDetections == null) {
+        if (counter == 6 || faceDetections == null) {
             counter = 0;
             faceDetections = new MatOfRect();
             poseRegions = null;

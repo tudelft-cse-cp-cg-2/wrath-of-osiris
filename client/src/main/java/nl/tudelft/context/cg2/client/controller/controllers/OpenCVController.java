@@ -55,14 +55,11 @@ public class OpenCVController {
         webcam.setViewSize(new Dimension(640, 480));
         webcam.open(true);
 
-        double fps = 15.0;
+        double fps = 12.0;
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
-            long start = System.currentTimeMillis();
             captureAndProcessSnapshot(poseDetector);
-            long end = System.currentTimeMillis();
-            System.out.println("TOTAL MS: " + (end - start));
         }));
 
         captureTimer.setCycleCount(Timeline.INDEFINITE);
@@ -88,11 +85,7 @@ public class OpenCVController {
         WritableImage writableImage = null;
 
         if (webcam.isOpen()) {
-            long start = System.currentTimeMillis();
             BufferedImage webcamImage = webcam.getImage();
-            long end = System.currentTimeMillis();
-            System.out.println("Capture image: " + (end - start));
-
             BufferedImage image = poseDetector.generatePoseRegions(webcamImage);
             writableImage = SwingFXUtils.toFXImage(image, null);
 
