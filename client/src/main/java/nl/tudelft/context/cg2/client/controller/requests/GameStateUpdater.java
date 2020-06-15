@@ -83,6 +83,8 @@ public class GameStateUpdater extends Thread {
             updateLevel(serverInput);
         } else if (serverInput.startsWith("failed ")) {
             //Todo: display which player got hit
+        } else if (serverInput.startsWith("playerleft ")) {
+            updatePlayerLeft(serverInput);
         } else {
             switch (serverInput) {
                 case "startgame":
@@ -100,6 +102,30 @@ public class GameStateUpdater extends Thread {
                     System.out.println("Unknown command from server: " + serverInput);
                     break;
             }
+        }
+    }
+
+    /**
+     * Updates the game state when a player has left the running game.
+     * @param serverInput the name of the player that left the running game.
+     */
+    private void updatePlayerLeft(String serverInput) {
+        String playerName = serverInput.split(" ")[1];
+        Lobby lobby = controller.getModel().getCurrentLobby();
+        Player leftPlayer = null;
+        for (Player player : lobby.getPlayers()) {
+            if (playerName.equals(player.getName())) {
+                leftPlayer = player;
+                break;
+            }
+        }
+        if (leftPlayer != null) {
+            Player finalLeftPlayer = leftPlayer;
+            Platform.runLater(() ->
+                    controller.getModel().getWorld().onAvatarDeath(finalLeftPlayer.getAvatar()));
+            lobby.removePlayer(playerName);
+        } else {
+            System.out.println("Left player not found: " + playerName);
         }
     }
 
@@ -166,6 +192,13 @@ public class GameStateUpdater extends Thread {
      */
     public void signalStart() {
         out.println("startgame");
+    }
+
+    /**
+     * Signals the server to leave the running game.
+     */
+    public void signalLeave() {
+        out.println("leavegame");
     }
 
     /**

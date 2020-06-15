@@ -90,10 +90,12 @@ public class GameLoop extends Thread {
      */
     private void everybodyWallReady() {
         boolean everybodyWallReady = false;
-        while (!everybodyWallReady) {
+        /* Checking lobby.isStarted() is necessary for when everyone left while waiting for wall
+         ready. */
+        while (!everybodyWallReady && lobby.isStarted()) {
             everybodyWallReady = true;
             for (Player player : lobby.getPlayers()) {
-                if (!player.isReady()) {
+                if (player != null && !player.isReady()) {
                     everybodyWallReady = false;
                 }
             }
@@ -112,10 +114,12 @@ public class GameLoop extends Thread {
             + "actually sent the final pose.")
     private void waitForFinalPoses() {
         boolean everyoneSentFinalPose = false;
-        while (!everyoneSentFinalPose) {
+         /* Checking lobby.isStarted() is necessary for when everyone left while waiting for final
+         poses. */
+        while (!everyoneSentFinalPose && lobby.isStarted()) {
             everyoneSentFinalPose = true;
             for (Player player : lobby.getPlayers()) {
-                if (player.getFinalPose() == null) {
+                if (player != null && player.getFinalPose() == null) {
                     everyoneSentFinalPose = false;
                 }
             }

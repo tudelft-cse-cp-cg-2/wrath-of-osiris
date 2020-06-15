@@ -53,8 +53,8 @@ public class GameSceneController extends SceneController {
                 case SPACE:
                     startWorldTimer();
                     break;
-                case BACK_SPACE:
-                    stopGame();
+                case ESCAPE:
+                    leaveGame();
                     break;
                 default:
                     break;
@@ -130,19 +130,30 @@ public class GameSceneController extends SceneController {
     }
 
     /**
-     * Stops the game.
+     * Stops the game, returning the player to the lobby.
      */
     public void stopGame() {
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();
         view.getGameScene().clear();
-        // todo: Set reached level in game-over summary
-
         view.getLobbyScene().showPopup("GAME OVER\n\n"
                                     + "You reached level "
                                     + controller.getModel().getWorld().getLevelIdx());
         view.getLobbyScene().show();
+    }
+
+    /**
+     * Leaves the game and lobby, returning the player to the main menu.
+     */
+    private void leaveGame() {
+        controller.getStateUpdater().signalLeave();
+        stopUpdateTimer();
+        controller.getOpenCVController().stopCapture();
+        world.destroy();
+        view.getGameScene().clear();
+        view.getMenuScene().showPopup("You have left a running game!");
+        view.getMenuScene().show();
     }
 
     /**

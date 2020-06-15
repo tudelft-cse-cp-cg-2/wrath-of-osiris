@@ -136,4 +136,17 @@ public class Lobby {
             player.stopGame();
         }
     }
+
+    /**
+     * Processes a player leaving the game, by signalling other players and adjusting the levels.
+     * @param playerName The name of the player that has left
+     */
+    public void processPlayerLeave(String playerName) {
+        // todo: Adjust and update levels for one less player.
+        for (Player player : players) {
+            if (!player.getName().equals(playerName)) {
+                player.sendPlayerLeft(playerName);
+            }
+        }
+    }
 }

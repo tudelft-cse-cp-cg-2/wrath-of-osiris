@@ -171,6 +171,11 @@ public class Player extends Thread {
                 case "wallready":
                     setReady(true);
                     break;
+                case "leavegame":
+                    stopPoseUpdater();
+                    lobby.processPlayerLeave(playerName);
+                    App.removePlayerFromLobbies(this);
+                    break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
                     break;
@@ -196,12 +201,13 @@ public class Player extends Thread {
                     }
                 }
             }
-            stopPoseUpdater();
+            System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+        stopPoseUpdater();
     }
 
     /**
@@ -304,6 +310,7 @@ public class Player extends Thread {
         eventTimer.cancel();
         eventTimer.purge();
         eventTimer = null;
+        System.out.println("Pose updater stopped: " + playerName);
     }
 
     /**
@@ -319,5 +326,13 @@ public class Player extends Thread {
      */
     public void sendNextWall() {
         out.println("nextwall");
+    }
+
+    /**
+     * Signals the player that another player has left the game.
+     * @param playerName the name of the player that has left
+     */
+    public void sendPlayerLeft(String playerName) {
+        out.println("playerleft " + playerName);
     }
 }

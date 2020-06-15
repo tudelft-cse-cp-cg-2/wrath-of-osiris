@@ -7,7 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -86,22 +85,9 @@ public class LobbyScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
-        popup = new StackPane();
-        popup.minWidthProperty().bind(window.sceneWidthProperty());
-        popup.getStyleClass().add("popup");
-        popup.maxWidthProperty().bind(window.sceneWidthProperty());
-        popup.minHeightProperty().bind(window.sceneHeightProperty());
-        popup.maxHeightProperty().bind(window.sceneHeightProperty());
-        popup.setVisible(false);
-        popupPane = new StackPane();
-        popupPane.setMinSize(400, 250);
-        popupPane.setMaxSize(400, 250);
-        popupPane.getStyleClass().add("summary-pane");
-        popupText = new Text();
-        popupText.setWrappingWidth(350);
-        popupText.setLayoutX(25);
-        popupText.setTextAlignment(TextAlignment.CENTER);
-        popupText.getStyleClass().add("popup-text");
+        popup = drawPopup();
+        popupPane = drawPopupPane();
+        popupText = drawPopupText();
 
         popupPane.getChildren().add(popupText);
         popup.getChildren().add(popupPane);

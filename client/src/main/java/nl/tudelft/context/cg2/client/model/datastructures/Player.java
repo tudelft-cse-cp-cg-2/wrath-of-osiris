@@ -33,6 +33,14 @@ public class Player {
         this.avatar = avatar;
     }
 
+    /**
+     * Getter for the avatar.
+     * @return the player's avatar.
+     */
+    public Avatar getAvatar() {
+        return this.avatar;
+    }
+
     @Override
     public int hashCode() {
         return super.hashCode();
