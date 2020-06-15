@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
+import com.github.sarxos.webcam.Webcam;
 import javafx.scene.input.MouseEvent;
 import nl.tudelft.context.cg2.client.Settings;
 import nl.tudelft.context.cg2.client.controller.Controller;
@@ -8,11 +9,8 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
 import nl.tudelft.context.cg2.client.view.scenes.SettingsScene;
-import org.opencv.videoio.VideoCapture;
 
 import java.util.ArrayList;
-
-import static java.lang.Integer.parseInt;
 
 /**
  * The Create Game scene controller class.
@@ -52,19 +50,13 @@ public class SettingsSceneController extends SceneController {
      * Detects the cameras that are available on the machine.
      */
     public void detectCameras() {
-        nu.pattern.OpenCV.loadLocally();
         scene.setOptions(new ArrayList<>());
-        VideoCapture videoCapture = new VideoCapture();
-        for (int i = 0; i < 10; i++) {
-            videoCapture.open(i);
-            if (videoCapture.isOpened()) {
-                SimpleButton button = new SimpleButton("Camera index: " + i);
-                button.setSize(220, 50);
-                button.setOnMouseClicked(this::selectCamera);
-                scene.getOptions().add(button);
-            }
-            videoCapture.release();
-        }
+        Webcam.getWebcams().forEach(webcam -> {
+            SimpleButton button = new SimpleButton(webcam.getName());
+            button.setSize(1000, 50);
+            button.setOnMouseClicked(this::selectCamera);
+            scene.getOptions().add(button);
+        });
         scene.reDraw();
     }
 
@@ -74,18 +66,8 @@ public class SettingsSceneController extends SceneController {
      */
     public void selectCamera(MouseEvent event) {
         SimpleButton btn = (SimpleButton) event.getSource();
-        Settings.setCameraIndex(getIndexFromButton(btn));
+        Settings.setWebcamName(btn.getText());
         getScene().reDraw();
-    }
-
-    /**
-     * Get the index from a button.
-     * @param simpleButton the simpleButton.
-     * @return the index.
-     */
-    private int getIndexFromButton(SimpleButton simpleButton) {
-        String[] parts = simpleButton.getText().split(" ");
-        return parseInt(parts[parts.length - 1]);
     }
 
     /**
