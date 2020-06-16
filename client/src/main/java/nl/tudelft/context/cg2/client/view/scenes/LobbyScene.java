@@ -2,6 +2,7 @@ package nl.tudelft.context.cg2.client.view.scenes;
 
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -29,8 +30,10 @@ public class LobbyScene extends BaseScene {
     private VBox controlsVBox;
 
     private Label waitMessage;
+    private Label tipMessage;
     private SimpleButton startButton;
     private SimpleButton leaveButton;
+    private SimpleButton guideButton;
 
     private StackPane popup;
     private StackPane popupPane;
@@ -57,7 +60,7 @@ public class LobbyScene extends BaseScene {
             e.printStackTrace();
         }
 
-        headerText = new Text("Hole in the Wall");
+        headerText = new Text("Wrath of Osiris");
         headerText.setId("header-text");
         headerText.setTranslateY(20);
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
@@ -85,15 +88,30 @@ public class LobbyScene extends BaseScene {
         leaveButton.setTranslateY(-30);
         StackPane.setAlignment(leaveButton, Pos.BOTTOM_RIGHT);
 
+        guideButton = new SimpleButton("Guide");
+        guideButton.setId("leave-button");
+        guideButton.setSize(80, 60);
+        guideButton.setTranslateX(-30);
+        guideButton.setTranslateY(-100);
+        StackPane.setAlignment(guideButton, Pos.BOTTOM_RIGHT);
+
+        tipMessage = new Label("Tip: To leave the game while playing, press ESCAPE.");
+        tipMessage.getStyleClass().add("label");
+        tipMessage.setTranslateY(-50);
+        StackPane.setAlignment(tipMessage, Pos.BOTTOM_CENTER);
+
         popup = drawPopup();
         popupPane = drawPopupPane();
         popupText = drawPopupText();
+        ScrollPane scrollPane = new ScrollPane(popupText);
+        scrollPane.setId("scroll-pane");
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
 
-        popupPane.getChildren().add(popupText);
+        popupPane.getChildren().add(scrollPane);
         popup.getChildren().add(popupPane);
 
         centerHBox.getChildren().addAll(playerListVBox, controlsVBox);
-        root.getChildren().addAll(centerHBox, leaveButton, headerText, popup);
+        root.getChildren().addAll(centerHBox, guideButton, leaveButton, headerText, popup, tipMessage);
     }
 
     /**
@@ -169,5 +187,13 @@ public class LobbyScene extends BaseScene {
      */
     public StackPane getPopup() {
         return popup;
+    }
+
+    /**
+     * Getter for the Guide button.
+     * @return the Guide button.
+     */
+    public SimpleButton getGuideButton() {
+        return guideButton;
     }
 }

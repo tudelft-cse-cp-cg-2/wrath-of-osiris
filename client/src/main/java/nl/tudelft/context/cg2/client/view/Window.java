@@ -35,7 +35,7 @@ public class Window {
      * Draws the window.
      */
     private void drawWindow() {
-        stage.setTitle("Hole in the wall");
+        stage.setTitle("Wrath of Osiris");
         stage.setResizable(true);
         Screen screen = Screen.getPrimary();
         Rectangle2D bounds = screen.getVisualBounds();
