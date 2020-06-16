@@ -99,6 +99,7 @@ public class CreateGameSceneController extends SceneController {
         // Show updated model in view.
         view.getLobbyScene().getStartButton().setVisible(true);
         view.getLobbyScene().getWaitMessage().setVisible(false);
+        controller.getOpenCVController().startPreview();
         view.getLobbyScene().show();
     }
 }

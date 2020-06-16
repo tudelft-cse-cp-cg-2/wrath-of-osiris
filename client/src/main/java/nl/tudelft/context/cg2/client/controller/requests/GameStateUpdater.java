@@ -78,7 +78,11 @@ public class GameStateUpdater extends Thread {
         } else if (serverInput.startsWith("updatepose ")) {
             updatePlayerPose(serverInput);
         } else if (serverInput.startsWith("fetchlobby ")) {
-            updateLobbyNames(serverInput);
+            try {
+                updateLobbyNames(serverInput);
+            } catch (NullPointerException e) {
+                System.out.println("Lobby already left.");
+            }
         } else if (serverInput.startsWith("[{")) {
             updateLevel(serverInput);
         } else if (serverInput.startsWith("failed ")) {
@@ -96,7 +100,13 @@ public class GameStateUpdater extends Thread {
                             .getGameSceneController().stopGame());
                     break;
                 case "nextwall":
-                    Platform.runLater(() -> controller.getModel().getWorld().startWave());
+                    Platform.runLater(() -> {
+                        try {
+                            controller.getModel().getWorld().startWave();
+                        } catch (NullPointerException e) {
+                            System.out.println("Game already stopped.");
+                        }
+                    });
                     break;
                 default:
                     System.out.println("Unknown command from server: " + serverInput);

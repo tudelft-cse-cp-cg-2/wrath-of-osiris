@@ -88,6 +88,9 @@ public class GameSceneController extends SceneController {
      * Starts the game.
      */
     public void startGame() {
+        // Stop lobby webcam preview.
+        controller.getOpenCVController().stopCapture();
+
         controller.getOpenCVController().startCapture();
 
         // Stop fetchLobby requests

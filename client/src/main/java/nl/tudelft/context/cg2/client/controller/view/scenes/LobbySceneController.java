@@ -85,10 +85,12 @@ public class LobbySceneController extends SceneController {
 
     /**
      * Callback for the leave button listener.
+     * Stops webcam preview capture.
      * Leaves the current lobby and forgets current player information.
-     * Communicate game leaving with server.
+     * Communicates game leaving with server.
      */
     private void leaveButtonClicked() {
+        controller.getOpenCVController().stopCapture();
         LeaveLobbyRequest req = new LeaveLobbyRequest(controller.getNetworkController().getIn(),
                 controller.getNetworkController().getOut());
         stopTimer();

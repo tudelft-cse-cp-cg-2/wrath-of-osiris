@@ -3,11 +3,13 @@ package nl.tudelft.context.cg2.client.view.scenes;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.view.BaseScene;
 import nl.tudelft.context.cg2.client.view.Window;
 import nl.tudelft.context.cg2.client.view.elements.buttons.SimpleButton;
@@ -38,6 +40,8 @@ public class LobbyScene extends BaseScene {
     private StackPane popup;
     private StackPane popupPane;
     private Text popupText;
+
+    private ImageView cameraView;
 
     /**
      * The lobby scene constructor.
@@ -110,8 +114,19 @@ public class LobbyScene extends BaseScene {
         popupPane.getChildren().add(scrollPane);
         popup.getChildren().add(popupPane);
 
+        // Create camera preview
+        this.cameraView = new ImageView(ImageCache.IMAGES[8]);
+        cameraView.setId("camera-view");
+        cameraView.setFitWidth(200);
+        cameraView.setFitHeight(130);
+        cameraView.setTranslateX(-30);
+        cameraView.setTranslateY(30);
+        cameraView.setScaleX(-1D);
+        StackPane.setAlignment(cameraView, Pos.TOP_RIGHT);
+
         centerHBox.getChildren().addAll(playerListVBox, controlsVBox);
-        root.getChildren().addAll(centerHBox, guideButton, leaveButton, headerText, popup, tipMessage);
+        root.getChildren().addAll(centerHBox, guideButton, leaveButton, headerText, popup,
+                tipMessage, cameraView);
     }
 
     /**
@@ -195,5 +210,13 @@ public class LobbyScene extends BaseScene {
      */
     public SimpleButton getGuideButton() {
         return guideButton;
+    }
+
+    /**
+     * Gets the camera view.
+     * @return the camera view.
+     */
+    public ImageView getCameraView() {
+        return cameraView;
     }
 }
