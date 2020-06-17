@@ -58,7 +58,7 @@ public class LobbySceneController extends SceneController {
         scene.showPopup(
                 "Welcome to the guide for\nWrath of Osiris!\n\n"
                 + "As an archeologist you have discovered ancient treasure "
-                + "and awakened the wrath of Osiris: The pyramid is collapsing!"
+                + "and awakened the Wrath of Osiris: The pyramid is collapsing!"
 
                 + "\n\nRun for your life and reach the highest level by taking the pose "
                 + "displayed by the holes in the approaching walls, or else the pyramid "
@@ -68,12 +68,12 @@ public class LobbySceneController extends SceneController {
                 + "When one of your team members fails fitting through one of the holes,"
                 + "the team loses one life. "
                 + "How many lives your team has left is displayed in the top left "
-                + "next to the heart icon. Each game you start with 10 lives."
+                + "next to the heart icon. A game starts out with 10 lives."
 
-                + "\n\nIn the top right, your video capture is displayed "
+                + "\n\nIn the lobby, a preview of your video capture is displayed, "
+                + "so you can check your setup before starting."
+                + "While playing, a similar preview is also displayed in the top right"
                 + "so you can verify whether you're still in the picture. "
-//                + "In the lobby, a preview of your video capture is also displayed, "
-//                + "so you can check your setup before starting."
 
                 + "\n\nSome holes will have a number above them. "
                 + "This number denotes the amount of players that successfully "
