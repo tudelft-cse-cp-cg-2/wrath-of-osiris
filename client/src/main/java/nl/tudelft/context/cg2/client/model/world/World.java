@@ -213,6 +213,7 @@ public class World {
      */
     public void setLives(int lives) {
         this.lives = lives;
+
     }
 
     /**
