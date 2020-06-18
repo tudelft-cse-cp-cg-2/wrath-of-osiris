@@ -11,11 +11,9 @@ import nl.tudelft.context.cg2.client.model.world.entities.Hole;
 import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.stream.IntStream;
 
 /**
  * The World class.
@@ -134,12 +132,14 @@ public class World {
     /**
      * Creates the player avatars in the game world for all players in the game.
      * @param players the list of players that are in the game.
+     * @param myPlayer my player to create an avatar for.
      */
-    public void createPlayerAvatars(List<Player> players) {
+    public void createPlayerAvatars(List<Player> players, Player myPlayer) {
         players.forEach(p -> {
-            Color color = selectColor(players, p.getName());
+            Color color = selectColor(players, p, myPlayer);
             Avatar avatar = new Avatar(color, p.getName());
-            avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D, 0D));
+            avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D,
+                    p == myPlayer ? 0D : -1D));
             p.setAvatar(avatar);
             entities.add(avatar);
         });
@@ -149,13 +149,24 @@ public class World {
      * Selects a color for the player based on your player
      * name and all other players in the game.
      * @param players the players in the game.
-     * @param name the name of your player.
+     * @param player the player to create the color for.
+     * @param myPlayer my player.
      * @return a color.
      */
-    private Color selectColor(List<Player> players, String name) {
+    private Color selectColor(List<Player> players, Player player, Player myPlayer) {
         Color[] colors = {Color.DARKBLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.LIGHTBLUE};
+
+        int value = player.getName().chars().sum();
+
+        System.out.println(value);
+
+        int total = players.stream().flatMapToInt(x -> IntStream.of(x.getName().chars().sum())).sum();
+
+        System.out.println(total);
+
         int random = ThreadLocalRandom.current().nextInt(0, 4);
-        return colors[random];
+        return player == myPlayer ? colors[random] : new Color(colors[random].getRed(),
+                colors[random].getGreen(), colors[random].getBlue(), 0.4D);
     }
 
     /**

@@ -1,7 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
-import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
@@ -49,11 +48,13 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
-        if (index == -1 || scene.getPlayerNameField().getText().equals("")) {
+        String playerName = scene.getPlayerNameField().getText();
+
+        if (index == -1 || playerName.equals("")) {
             return;
         }
+
         String lobbyName = model.getAvailableLobbies().get(index).getName();
-        String playerName = scene.getPlayerNameField().getText();
 
         // Request server to join lobby.
         JoinLobbyRequest req = new JoinLobbyRequest(controller.getNetworkController().getIn(),
@@ -70,9 +71,7 @@ public class JoinSceneController extends SceneController {
         controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(lobbyName);
 
         // Start game state updater thread.
-        controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), controller));
-        controller.getStateUpdater().start();
+        controller.initGameStateUpdater();
 
         // Switch to lobby scene.
         view.getLobbyScene().getStartButton().setVisible(false);

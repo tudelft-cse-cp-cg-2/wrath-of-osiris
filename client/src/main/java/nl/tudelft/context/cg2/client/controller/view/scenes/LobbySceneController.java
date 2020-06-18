@@ -92,6 +92,6 @@ public class LobbySceneController extends SceneController {
      * When the start button gets click a signal is sent to the server.
      */
     private void startButtonClicked() {
-        controller.getStateUpdater().signalStart();
+        controller.getGameStateUpdater().signalStart();
     }
 }

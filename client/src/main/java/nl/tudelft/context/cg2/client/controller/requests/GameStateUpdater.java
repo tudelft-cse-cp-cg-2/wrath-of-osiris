@@ -113,11 +113,9 @@ public class GameStateUpdater extends Thread {
 
         if (started) {
             sendReady();
-        } else {
-            Platform.runLater(() -> controller.getView().getGameScene().setMaxHearts(newLives));
         }
 
-        Platform.runLater(() -> controller.getView().getGameScene().activateHearts(newLives));
+        Platform.runLater(() -> controller.getView().getGameScene().setHearts(newLives));
     }
 
     /**
