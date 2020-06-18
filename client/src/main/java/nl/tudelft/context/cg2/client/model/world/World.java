@@ -170,12 +170,12 @@ public class World {
     }
 
     /**
-     * Destroys the player avatar and updates
-     * other world values when a player leaves the game.
-     * @param player the player to whom the avatar belongs.
+     * Destroys the player avatar and updates other world values when a player leaves the game.
+     * @param avatar the avatar to be removed.
+     * @return whether the operation was successful.
      */
-    public void onAvatarDeath(Player player) {
-
+    public boolean onAvatarDeath(Avatar avatar) {
+        return entities.remove(avatar);
     }
 
     /**

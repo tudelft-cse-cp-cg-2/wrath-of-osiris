@@ -1,6 +1,8 @@
 package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
+import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
@@ -32,6 +34,7 @@ public class JoinSceneController extends SceneController {
     protected void setupMouseListeners() {
         scene.getJoinButton().setOnMouseClicked(event -> joinButtonClicked());
         scene.getBackButton().setOnMouseClicked(event -> backButtonClicked());
+        scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
 
     /**
@@ -48,13 +51,12 @@ public class JoinSceneController extends SceneController {
      */
     private void joinButtonClicked() {
         int index = scene.getListView().getSelectionModel().getSelectedIndex();
-        String playerName = scene.getPlayerNameField().getText();
-
-        if (index == -1 || playerName.equals("")) {
+        if (index == -1 || scene.getPlayerNameField().getText().equals("")
+                || scene.getPlayerNameField().getText().equals(NetworkController.EOT)) {
             return;
         }
-
         String lobbyName = model.getAvailableLobbies().get(index).getName();
+        String playerName = scene.getPlayerNameField().getText();
 
         // Request server to join lobby.
         JoinLobbyRequest req = new JoinLobbyRequest(controller.getNetworkController().getIn(),
@@ -64,6 +66,11 @@ public class JoinSceneController extends SceneController {
             req.join();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+
+        if (!req.isSuccessful()) {
+            scene.showPopup("Name already in use! Please pick a different one.");
+            return;
         }
 
         // Set current player object.

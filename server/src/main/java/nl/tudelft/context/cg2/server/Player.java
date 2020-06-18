@@ -117,10 +117,14 @@ public class Player extends Thread {
         if (clientInput.startsWith("joinlobby ")) {
             String[] split = clientInput.split(" ");
             assert split.length == 3;
-            String lobbyName = split[1];
-            this.setPlayerName(split[2]);
-            App.addPlayerToLobby(lobbyName, this);
-            out.println(EOT);
+            String newPlayerName = split[2];
+            if (App.playerNameIsUnique(newPlayerName)) {
+                this.setPlayerName(newPlayerName);
+                App.addPlayerToLobby(split[1], this);
+                out.println(newPlayerName);
+            } else {
+                out.println(EOT);
+            }
         } else if (clientInput.startsWith("fetchlobby ")) {
             String[] split = clientInput.split(" ");
             assert split.length == 2;
@@ -134,16 +138,21 @@ public class Player extends Thread {
         } else if (clientInput.startsWith("createlobby ")) {
             String[] split = clientInput.split(" ");
             assert (split.length == 3 || split.length == 4);
-            setPlayerName(split[1]);
-            Lobby newLobby;
+            String newPlayerName = split[1];
+            String newLobbyName = split[2];
+            if (App.playerNameIsUnique(playerName) && App.lobbyNameIsUnique(newLobbyName)) {
+                setPlayerName(newPlayerName);
+                Lobby newLobby;
 
-            if (split.length == 4) { // lobby with password
-                newLobby = App.createLobby(this, split[2], split[3]);
-            } else { // lobby without password
-                newLobby = App.createLobby(this, split[2]);
+                if (split.length == 4) { // lobby with password
+                    newLobby = App.createLobby(this, newLobbyName, split[3]);
+                } else { // lobby without password
+                    newLobby = App.createLobby(this, newLobbyName);
+                }
+                out.println(newLobby.getName());
+            } else {
+                out.println(EOT);
             }
-            out.println(newLobby.getName());
-            out.println(EOT);
         } else if (clientInput.startsWith("finalpose ")) {
             String poseStr = clientInput.split(" ")[1];
             setFinalPose(Pose.unpack(poseStr));
@@ -161,6 +170,11 @@ public class Player extends Thread {
                     break;
                 case "wallready":
                     setReady(true);
+                    break;
+                case "leavegame":
+                    stopPoseUpdater();
+                    lobby.processPlayerLeave(playerName);
+                    App.removePlayerFromLobbies(this);
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
@@ -187,12 +201,13 @@ public class Player extends Thread {
                     }
                 }
             }
-            stopPoseUpdater();
+            System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
+        stopPoseUpdater();
     }
 
     /**
@@ -295,6 +310,7 @@ public class Player extends Thread {
         eventTimer.cancel();
         eventTimer.purge();
         eventTimer = null;
+        System.out.println("Pose updater stopped: " + playerName);
     }
 
     /**
@@ -310,5 +326,13 @@ public class Player extends Thread {
      */
     public void sendNextWall() {
         out.println("nextwall");
+    }
+
+    /**
+     * Signals the player that another player has left the game.
+     * @param playerName the name of the player that has left
+     */
+    public void sendPlayerLeft(String playerName) {
+        out.println("playerleft " + playerName);
     }
 }

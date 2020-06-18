@@ -73,7 +73,7 @@ public class SettingsScene extends BaseScene {
             label.setId("sub-header-text");
             centerVBox.getChildren().addAll(label);
         } else {
-            Text label = new Text("Camera " + Settings.getCameraIndex() + " has been selected");
+            Text label = new Text(Settings.getWebcamName() + " has been selected");
             label.setId("sub-header-text");
             centerVBox.getChildren().addAll(label);
         }

@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client;
 
+import com.github.sarxos.webcam.Webcam;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 
 import java.io.File;
@@ -18,7 +19,7 @@ public class Settings {
 
     public static final boolean LOCALHOST = true;
 
-    private static int cameraIndex = 0;
+    private static String webcamName = Webcam.getDefault().getName();
 
     /**
      * Saves the user settings to a properties file.
@@ -29,7 +30,7 @@ public class Settings {
             FileOutputStream stream = new FileOutputStream(file);
             Properties properties = new Properties();
 
-            properties.setProperty("hardware.camera", "" + cameraIndex);
+            properties.setProperty("hardware.camera", "" + webcamName);
             properties.store(stream, null);
             stream.close();
             System.out.println("Settings saved successfully.");
@@ -51,7 +52,7 @@ public class Settings {
                 Properties properties = new Properties();
                 properties.load(stream);
 
-                cameraIndex = Integer.parseInt(properties.getProperty("hardware.camera"));
+                webcamName = properties.getProperty("hardware.camera");
                 stream.close();
                 System.out.println("Settings loaded successfully.");
             } catch (IOException ioe) {
@@ -65,18 +66,18 @@ public class Settings {
     }
 
     /**
-     * Gets the camera index.
-     * @return the camera index.
+     * Gets the camera.
+     * @return the camera.
      */
-    public static int getCameraIndex() {
-        return cameraIndex;
+    public static String getWebcamName() {
+        return webcamName;
     }
 
     /**
-     * Sets the camera index.
-     * @param idx the camera index.
+     * Sets the camera.
+     * @param webcamName the camera name.
      */
-    public static void setCameraIndex(int idx) {
-        cameraIndex = idx;
+    public static void setWebcamName(String webcamName) {
+        Settings.webcamName = webcamName;
     }
 }

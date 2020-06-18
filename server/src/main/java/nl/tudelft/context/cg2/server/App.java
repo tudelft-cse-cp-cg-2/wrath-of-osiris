@@ -37,7 +37,16 @@ public final class App {
      * Remove empty lobbies.
      */
     private static void removeEmptyLobbies() {
-        lobbies.removeIf(lobby -> lobby.getPlayers().size() == 0);
+        lobbies.removeIf(lobby -> {
+            if (lobby.getPlayers().size() == 0) {
+                System.out.println("Removed empty lobby: " + lobby.getName());
+                // Stop the gameloop.
+                lobby.stopGame();
+                return true;
+            } else {
+                return false;
+            }
+        });
     }
 
     /**
@@ -147,6 +156,39 @@ public final class App {
             }
         }
         return out;
+    }
+
+    /**
+     * Checks whether or not a given player name is already in use.
+     * @param playerName the player name to check
+     * @return true if the name is unique, else false
+     */
+    public static boolean playerNameIsUnique(String playerName) {
+        for (Lobby lobby : lobbies) {
+            for (Player player : lobby.getPlayers()) {
+                if (player.getPlayerName().equals(playerName)) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
+     * Checks whether or not a lobby player name is already in use.
+     * @param lobbyName the player name to check
+     * @return true if the name is unique, else false
+     */
+    public static boolean lobbyNameIsUnique(String lobbyName) {
+        // remove empty lobbies first, just to be sure
+        removeEmptyLobbies();
+
+        for (Lobby lobby : lobbies) {
+            if (lobby.getName().equals(lobbyName)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**

@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.controllers;
 
+import com.github.sarxos.webcam.Webcam;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.embed.swing.SwingFXUtils;
@@ -10,10 +11,8 @@ import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.PoseDetector;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
-import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
-import org.opencv.videoio.Videoio;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -22,7 +21,7 @@ import java.awt.image.BufferedImage;
  */
 public class OpenCVController {
 
-    private VideoCapture videoCapture;
+    private Webcam webcam;
     private PoseDetector poseDetector;
     private Timeline captureTimer;
 
@@ -41,7 +40,7 @@ public class OpenCVController {
         this.controller = controller;
         this.model = model;
         this.view = view;
-        this.videoCapture = null;
+        this.webcam = null;
         this.poseDetector = null;
         this.captureTimer = null;
     }
@@ -51,13 +50,12 @@ public class OpenCVController {
      */
     public void startCapture() {
         nu.pattern.OpenCV.loadLocally();
-        videoCapture = new VideoCapture();
-        videoCapture.open(Settings.getCameraIndex());
 
-        double fps = 15.0;
-        videoCapture.set(Videoio.CAP_PROP_FPS, fps);
-        videoCapture.set(Videoio.CAP_PROP_FRAME_WIDTH, 640);
-        videoCapture.set(Videoio.CAP_PROP_FRAME_HEIGHT, 480);
+        webcam = Webcam.getWebcamByName(Settings.getWebcamName());
+        webcam.setViewSize(new Dimension(640, 480));
+        webcam.open(true);
+
+        double fps = 12.0;
         poseDetector = new PoseDetector();
 
         captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
@@ -74,8 +72,8 @@ public class OpenCVController {
     public void stopCapture() {
         captureTimer.stop();
         captureTimer = null;
-        videoCapture.release();
-        videoCapture = null;
+        webcam.close();
+        webcam = null;
         poseDetector = null;
     }
 
@@ -86,11 +84,9 @@ public class OpenCVController {
     public void captureAndProcessSnapshot(PoseDetector poseDetector) {
         WritableImage writableImage = null;
 
-        Mat matrix = new Mat();
-        videoCapture.read(matrix);
-
-        if (videoCapture.isOpened()) {
-            BufferedImage image = poseDetector.generatePoseRegions(matrix);
+        if (webcam.isOpen()) {
+            BufferedImage webcamImage = webcam.getImage();
+            BufferedImage image = poseDetector.generatePoseRegions(webcamImage);
             writableImage = SwingFXUtils.toFXImage(image, null);
 
             if (model.getCurrentPlayer() != null) {

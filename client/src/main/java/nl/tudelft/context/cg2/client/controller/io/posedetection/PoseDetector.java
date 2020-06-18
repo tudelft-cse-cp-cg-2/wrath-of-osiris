@@ -1,17 +1,14 @@
 package nl.tudelft.context.cg2.client.controller.io.posedetection;
 
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
-import org.opencv.core.Scalar;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 
-import java.awt.Color;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.WritableRaster;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +27,7 @@ public class PoseDetector {
 
     private int counter = 0;
     private MatOfRect faceDetections;
+    private List<PoseRegion> poseRegions;
 
     /**
      * Given the coordinates of a head, calculate the bounding boxes
@@ -112,37 +110,29 @@ public class PoseDetector {
      * Detect faces in an image, and return the six bounding boxes in which
      * the arms might be found. In case of multiple faces, take the first
      * detected match.
-     * @param matrix - the input image, a webcam frame
+     * @param image - the input image, a webcam frame
      * @return a list with six regions, in the order top -> bottom,
      *     right -> left. if no faces are found, this list will be empty.
      */
-    public BufferedImage generatePoseRegions(Mat matrix) {
-        if (counter == 5 || faceDetections == null) {
+    public BufferedImage generatePoseRegions(BufferedImage image) {
+        if (counter == 6 || faceDetections == null) {
             counter = 0;
             faceDetections = new MatOfRect();
-            classifier.detectMultiScale(matrix, faceDetections);
+            poseRegions = null;
+            classifier.detectMultiScale(bufferedImageToMat(image), faceDetections);
         }
         counter++;
 
-        BufferedImage image =
-                new BufferedImage(matrix.width(), matrix.height(), BufferedImage.TYPE_3BYTE_BGR);
-        List<PoseRegion> poseRegions;
+
 
         // Detect
         PoseRegion head;
-        if (faceDetections.toArray().length > 0) {
+        if (faceDetections.toArray().length > 0 && poseRegions == null) {
             Rect rect = faceDetections.toArray()[0];
             head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
             System.out.println("No face is detected");
-            Imgproc.putText(
-                    matrix, "No face detected", new Point(10, 50), 1, 3, new Scalar(0, 0, 255), 4
-            );
-            WritableRaster raster = image.getRaster();
-            DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-            byte[] data = dataBuffer.getData();
-            matrix.get(0, 0, data);
             return image;
         }
 
@@ -150,11 +140,6 @@ public class PoseDetector {
 //            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
 //                    new Scalar(255, 0, 0), 3, 0, 0);
 //        }
-
-        WritableRaster raster = image.getRaster();
-        DataBufferByte dataBuffer = (DataBufferByte) raster.getDataBuffer();
-        byte[] data = dataBuffer.getData();
-        matrix.get(0, 0, data);
 
         if (baseImage == null) {
             baseImage = image;
@@ -228,5 +213,17 @@ public class PoseDetector {
      */
     public Pose getPose() {
         return pose;
+    }
+
+    /**
+     * Get the matrix from a BufferedImage.
+     * @param bi the bufferedImage object.
+     * @return The matrix.
+     */
+    public static Mat bufferedImageToMat(BufferedImage bi) {
+        Mat mat = new Mat(bi.getHeight(), bi.getWidth(), CvType.CV_8UC3);
+        byte[] data = ((DataBufferByte) bi.getRaster().getDataBuffer()).getData();
+        mat.put(0, 0, data);
+        return mat;
     }
 }
