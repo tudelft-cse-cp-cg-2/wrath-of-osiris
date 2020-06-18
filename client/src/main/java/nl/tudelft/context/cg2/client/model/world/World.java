@@ -134,27 +134,15 @@ public class World {
      */
     public void createPlayerAvatars(List<Player> players, Player myPlayer) {
         players.forEach(p -> {
-            Color color = selectColor(p, myPlayer);
+            Color color = p == myPlayer ? Color.color(1D, 0.55D, 0D) : Color.DARKBLUE;
             Avatar avatar = new Avatar(color, p.getName());
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D,
-                    p == myPlayer ? -1D: 0D));
+                    p == myPlayer ? -1D : 0D));
             p.setAvatar(avatar);
             entities.add(avatar);
-
-            System.out.println(p == myPlayer ? "ME!!" : "You!!");
         });
 
         entities.sort(Comparator.comparing(Entity::getDepth).reversed());
-    }
-
-    /**
-     * Selects a color for the player.
-     * @param player the player to create the color for.
-     * @param myPlayer my player.
-     * @return a color.
-     */
-    private Color selectColor(Player player, Player myPlayer) {
-        return player == myPlayer ? Color.color(1D,0.55D,0D) : Color.DARKBLUE;
     }
 
     /**

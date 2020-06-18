@@ -2,7 +2,6 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
-import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.requests.JoinLobbyRequest;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
