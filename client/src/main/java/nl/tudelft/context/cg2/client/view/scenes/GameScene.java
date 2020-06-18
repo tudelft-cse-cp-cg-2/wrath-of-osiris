@@ -250,12 +250,14 @@ public class GameScene extends BaseScene {
      * @param amount the amount of hearts.
      */
     public void setHearts(int amount) {
-        if (amount == 0) {
+        if (amount < 0) {
             heart.deactivate();
+            heartCount.setText("");
+        } else if (amount == 0) {
             heartCount.setText("");
         } else {
             heart.activate();
-            heartCount.setText("x" + amount);
+            heartCount.setText("+" + amount);
         }
     }
 
