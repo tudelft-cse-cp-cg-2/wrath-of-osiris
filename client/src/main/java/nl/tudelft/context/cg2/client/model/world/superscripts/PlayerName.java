@@ -13,7 +13,7 @@ public class PlayerName extends Superscript {
      * @param color the color of the text.
      */
     public PlayerName(String name, Color color) {
-        super(name, color.brighter(), "Comic Sans MS", null, 16D, 6D);
+        super(name, color.brighter(), "Comic Sans MS", null, 30D, 10D);
     }
 
 }

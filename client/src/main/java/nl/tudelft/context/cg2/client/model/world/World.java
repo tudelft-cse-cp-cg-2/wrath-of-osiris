@@ -12,8 +12,6 @@ import nl.tudelft.context.cg2.client.model.world.entities.Wall;
 import nl.tudelft.context.cg2.client.model.world.factories.EntityFactory;
 
 import java.util.*;
-import java.util.concurrent.ThreadLocalRandom;
-import java.util.stream.IntStream;
 
 /**
  * The World class.
@@ -136,37 +134,27 @@ public class World {
      */
     public void createPlayerAvatars(List<Player> players, Player myPlayer) {
         players.forEach(p -> {
-            Color color = selectColor(players, p, myPlayer);
+            Color color = selectColor(p, myPlayer);
             Avatar avatar = new Avatar(color, p.getName());
             avatar.setPosition(new Vector3D((World.WIDTH - avatar.getSize().x) * 0.5D, 0D,
-                    p == myPlayer ? 0D : -1D));
+                    p == myPlayer ? -1D: 0D));
             p.setAvatar(avatar);
             entities.add(avatar);
+
+            System.out.println(p == myPlayer ? "ME!!" : "You!!");
         });
+
+        entities.sort(Comparator.comparing(Entity::getDepth).reversed());
     }
 
     /**
-     * Selects a color for the player based on your player
-     * name and all other players in the game.
-     * @param players the players in the game.
+     * Selects a color for the player.
      * @param player the player to create the color for.
      * @param myPlayer my player.
      * @return a color.
      */
-    private Color selectColor(List<Player> players, Player player, Player myPlayer) {
-        Color[] colors = {Color.DARKBLUE, Color.GREEN, Color.YELLOW, Color.PURPLE, Color.LIGHTBLUE};
-
-        int value = player.getName().chars().sum();
-
-        System.out.println(value);
-
-        int total = players.stream().flatMapToInt(x -> IntStream.of(x.getName().chars().sum())).sum();
-
-        System.out.println(total);
-
-        int random = ThreadLocalRandom.current().nextInt(0, 4);
-        return player == myPlayer ? colors[random] : new Color(colors[random].getRed(),
-                colors[random].getGreen(), colors[random].getBlue(), 0.4D);
+    private Color selectColor(Player player, Player myPlayer) {
+        return player == myPlayer ? Color.color(1D,0.55D,0D) : Color.DARKBLUE;
     }
 
     /**
