@@ -142,7 +142,6 @@ public class GameSceneController extends SceneController {
         world.destroy();
         scene.clear();
         scene.getBackgroundMusic().stop();
-        controller.getOpenCVController().startPreview();
         view.getLobbyScene().showPopup("\nGAME OVER\n\n"
                                     + "You reached level "
                                     + controller.getModel().getWorld().getLevelIdx());
