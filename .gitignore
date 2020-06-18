@@ -3,3 +3,5 @@
 */.idea/*
 *.iml
 *.properties
+client/client.jar
+client/client.zip

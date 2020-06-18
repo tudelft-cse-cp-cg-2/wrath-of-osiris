@@ -140,7 +140,7 @@ public class GameSceneController extends SceneController {
      * Leaves the game and lobby, returning the player to the main menu.
      */
     private void leaveGame() {
-        controller.getStateUpdater().signalLeave();
+        controller.getGameStateUpdater().signalLeave();
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();
