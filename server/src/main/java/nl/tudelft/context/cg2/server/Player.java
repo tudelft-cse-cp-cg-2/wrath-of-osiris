@@ -200,8 +200,6 @@ public class Player extends Thread {
                     lobby.processPlayerLeave(playerName);
                     App.removePlayerFromLobbies(this);
                     break;
-                case "pulse": // update heartbeat
-                    break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
                     break;
