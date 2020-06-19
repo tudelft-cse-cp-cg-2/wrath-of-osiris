@@ -240,7 +240,7 @@ public class Player extends Thread {
     }
 
     /**
-     * Timertask to check if the player hasn't asynchronously disconnected.
+     * TimerTask to check if the player hasn't asynchronously disconnected.
      */
     private static class TimeoutTask extends TimerTask {
         private final Player player;
