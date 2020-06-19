@@ -187,3 +187,7 @@
     -fx-fill: white;
     -fx-font-weight: bold ;
 }
+
+#camera-view {
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.8), 40, 0, 0, 0);
+}

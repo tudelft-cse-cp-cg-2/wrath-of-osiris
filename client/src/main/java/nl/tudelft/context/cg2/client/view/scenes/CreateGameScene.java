@@ -53,7 +53,7 @@ public class CreateGameScene extends BaseScene {
             e.printStackTrace();
         }
 
-        headerText = new Text("Hole in the Wall");
+        headerText = new Text("Wrath of Osiris");
         headerText.setId("header-text");
         headerText.setTranslateY(20);
         StackPane.setAlignment(headerText, Pos.TOP_CENTER);
