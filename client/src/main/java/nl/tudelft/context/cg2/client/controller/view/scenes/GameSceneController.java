@@ -33,6 +33,9 @@ public class GameSceneController extends SceneController {
         super(controller, model, view);
         scene = view.getGameScene();
         world = model.getWorld();
+        model.getWorld().waveCompleted.addListener((obj, oldV, newV) -> {
+            onWaveCompletion(oldV, newV);
+        });
     }
 
     /**
@@ -108,10 +111,6 @@ public class GameSceneController extends SceneController {
             }
         });
         model.getWorld().createPlayerAvatars(players);
-
-        model.getWorld().waveCompleted.addListener((obj, oldV, newV) -> {
-            onWaveCompletion(oldV, newV);
-        });
 
         view.getGameScene().clear();
         view.getGameScene().show();
