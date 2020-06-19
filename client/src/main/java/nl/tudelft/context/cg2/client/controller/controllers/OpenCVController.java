@@ -96,4 +96,31 @@ public class OpenCVController {
 
         view.getGameScene().getCameraView().setImage(writableImage);
     }
+
+    /**
+     * Starts video capture and puts into lobby preview.
+     */
+    public void startPreview() {
+        nu.pattern.OpenCV.loadLocally();
+
+        webcam = Webcam.getWebcamByName(Settings.getWebcamName());
+        webcam.setViewSize(new Dimension(640, 480));
+        webcam.open(true);
+
+        double fps = 12.0;
+
+        captureTimer = new Timeline(new KeyFrame(Duration.seconds(1.0 / fps), event -> {
+            WritableImage writableImage = null;
+
+            if (webcam.isOpen()) {
+                BufferedImage webcamImage = webcam.getImage();
+                writableImage = SwingFXUtils.toFXImage(webcamImage, null);
+            }
+
+            view.getLobbyScene().getCameraView().setImage(writableImage);
+        }));
+
+        captureTimer.setCycleCount(Timeline.INDEFINITE);
+        captureTimer.play();
+    }
 }

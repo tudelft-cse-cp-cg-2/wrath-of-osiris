@@ -88,6 +88,9 @@ public class GameSceneController extends SceneController {
      * Starts the game.
      */
     public void startGame() {
+        // Stop lobby webcam preview.
+        controller.getOpenCVController().stopCapture();
+
         controller.getOpenCVController().startCapture();
 
         // Stop fetchLobby requests
@@ -137,7 +140,8 @@ public class GameSceneController extends SceneController {
         controller.getOpenCVController().stopCapture();
         world.destroy();
         view.getGameScene().clear();
-        view.getLobbyScene().showPopup("GAME OVER\n\n"
+        controller.getOpenCVController().startPreview();
+        view.getLobbyScene().showPopup("\nGAME OVER\n\n"
                                     + "You reached level "
                                     + controller.getModel().getWorld().getLevelIdx());
         view.getLobbyScene().show();
