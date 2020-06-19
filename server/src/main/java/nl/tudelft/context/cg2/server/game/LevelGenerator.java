@@ -19,7 +19,7 @@ public class LevelGenerator {
      * Denotes when the aforementioned chance stops increasing. (0.60 = stops at 60%)
      */
     private static final double NUMBERS_ABOVE_HOLES_CHANCE_CAP = 0.60;
-    private static final int AMOUNT_OF_WALLS_PER_LEVEL = 1;
+    private static final int AMOUNT_OF_WALLS_PER_LEVEL = 10;
     private final int amountOfPlayers;
     private int level;
 
