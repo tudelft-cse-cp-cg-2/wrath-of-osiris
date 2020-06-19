@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A connected player.
@@ -25,6 +26,9 @@ public class Player extends Thread {
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;
+
+    private long heartBeat;
+    private static final long timeout = 300000;
 
     /**
      * Current pose of the player.
@@ -63,6 +67,22 @@ public class Player extends Thread {
             App.disconnectPlayer(this);
         }
         this.eventTimer = new Timer();
+        pulse();
+    }
+
+    /**
+     * Updates this player's heartbeat value.
+     */
+    private void pulse() {
+        this.heartBeat = System.currentTimeMillis();
+    }
+
+    /**
+     * Returns whether or not the client is considered to have disappeared.
+     * @return true if so, false otherwise
+     */
+    public boolean hasDisappeared() {
+        return (System.currentTimeMillis() - this.heartBeat) > timeout;
     }
 
     /**
@@ -114,6 +134,10 @@ public class Player extends Thread {
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
+        // update heartbeat
+        pulse();
+
+        // respond
         if (clientInput.startsWith("joinlobby ")) {
             String[] split = clientInput.split(" ");
             assert split.length == 3;
@@ -176,6 +200,8 @@ public class Player extends Thread {
                     lobby.processPlayerLeave(playerName);
                     App.removePlayerFromLobbies(this);
                     break;
+                case "pulse": // update heartbeat
+                    break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
                     break;
@@ -189,6 +215,9 @@ public class Player extends Thread {
      */
     @Override
     public void run() {
+        Timer timeoutTimer = new Timer();
+        timeoutTimer.schedule(new TimeoutTask(this), timeout);
+
         String clientInput;
         try {
             while (!terminate) {
@@ -201,6 +230,8 @@ public class Player extends Thread {
                     }
                 }
             }
+            timeoutTimer.cancel();
+            timeoutTimer.purge();
             System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
@@ -208,6 +239,20 @@ public class Player extends Thread {
             App.disconnectPlayer(this);
         }
         stopPoseUpdater();
+    }
+
+    private static class TimeoutTask extends TimerTask {
+        private final Player player;
+        public TimeoutTask(Player player) {
+            this.player = player;
+        }
+
+        @Override
+        public void run() {
+            if (player.hasDisappeared()) {
+                App.disconnectPlayer(player);
+            }
+        }
     }
 
     /**
