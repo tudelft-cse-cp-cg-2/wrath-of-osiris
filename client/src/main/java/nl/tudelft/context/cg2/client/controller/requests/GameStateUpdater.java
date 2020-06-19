@@ -9,6 +9,7 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.BackendWall;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.world.World;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -138,7 +139,8 @@ public class GameStateUpdater extends Thread {
         controller.getModel().getWorld().setLives(newLives);
 
         if (started) {
-            sendReady();
+            World world = controller.getModel().getWorld();
+            if (world.getWallIdx() < world.getLevel().size()) sendReady();
         } else {
             Platform.runLater(() -> controller.getView().getGameScene().setMaxHearts(newLives));
         }
@@ -207,9 +209,14 @@ public class GameStateUpdater extends Thread {
      * @param level level
      */
     public void updateLevel(String level) {
-        controller.getModel().getWorld().setLevel(jsonStringToLevel(level));
+        World world = controller.getModel().getWorld();
+        world.setLevel(jsonStringToLevel(level));
         sendReady();
-        started = true;
+        if (started) {
+            world.setLevelIdx(world.getLevelIdx() + 1);
+        } else {
+            started = true;
+        }
     }
 
     /**
@@ -237,5 +244,21 @@ public class GameStateUpdater extends Thread {
      */
     public void sendFinalPose(Pose pose) {
         out.println("finalpose " + pose.pack());
+    }
+
+    /**
+     * Getter for the started boolean.
+     * @return whether the game is started
+     */
+    public boolean isStarted() {
+        return started;
+    }
+
+    /**
+     * Setter for the started boolean.
+     * @param started updated started value
+     */
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }

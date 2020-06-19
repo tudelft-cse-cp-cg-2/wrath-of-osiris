@@ -54,11 +54,11 @@ public class GameLoop extends Thread {
     public void run() {
         LevelGenerator generator = new LevelGenerator(lobby.getPlayers().size());
         ArrayList<Wall> level = generator.generateLevel();
-        int currentWallIndex = 0;
         while (lobby.isStarted()) { // this loop runs once every level
             for (Player player : lobby.getPlayers()) {
                 player.sendLevel(level);
             }
+            int currentWallIndex = 0;
             while (currentWallIndex < level.size()) { // this loop runs once every wall
                 everybodyWallReady();
                 waitForFinalPoses();

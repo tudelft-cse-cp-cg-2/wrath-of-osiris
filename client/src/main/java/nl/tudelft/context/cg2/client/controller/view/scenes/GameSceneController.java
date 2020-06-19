@@ -139,7 +139,7 @@ public class GameSceneController extends SceneController {
         view.getGameScene().clear();
         view.getLobbyScene().showPopup("GAME OVER\n\n"
                                     + "You reached level "
-                                    + controller.getModel().getWorld().getLevelIdx());
+                                    + world.getLevelIdx());
         view.getLobbyScene().show();
     }
 

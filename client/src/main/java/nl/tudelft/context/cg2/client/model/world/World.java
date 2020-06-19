@@ -28,6 +28,7 @@ public class World {
     public static final double DEPTH = 500D;
 
     private ArrayList<BackendWall> level;
+    private int wallIdx;
     private int levelIdx;
     private int lives;
 
@@ -48,6 +49,7 @@ public class World {
         this.inMotion = false;
         this.currentWall = null;
         this.level = null;
+        this.wallIdx = 0;
         this.levelIdx = 0;
         this.lives = 0;
     }
@@ -62,6 +64,7 @@ public class World {
         holes.clear();
         currentWall = EntityFactory.generateWall();
         entities.add(currentWall);
+        levelIdx = 0;
     }
 
     /**
@@ -74,7 +77,8 @@ public class World {
         holes.clear();
         currentWall = null;
         level = null;
-        levelIdx = 0;
+        wallIdx = 0;
+        // levelIdx is reset during creation, to be able to display in summary.
         lives = 0;
     }
 
@@ -90,8 +94,9 @@ public class World {
      * Starts a new wall wave in the world.
      */
     public void startWave() {
-        if (levelIdx < 0 || levelIdx > level.size()) {
+        if (wallIdx < 0 || wallIdx >= level.size()) {
             System.out.println("Next wall not found for the current level.");
+            System.out.println("wallIdx: " + wallIdx);
             return;
         }
 
@@ -103,7 +108,7 @@ public class World {
         //Creates the hole for the current level wave.
         entities.removeAll(holes);
         holes.clear();
-        BackendWall next = level.get(levelIdx);
+        BackendWall next = level.get(wallIdx);
         HashMap<BackendPose, Integer> poses = next.getPoses();
         poses.forEach((k, v) -> holes.add(EntityFactory.generateHole(currentWall, k, v)));
         entities.addAll(holes);
@@ -112,7 +117,8 @@ public class World {
         //Starts the new wave.
         inMotion = true;
         waveCompleted.set(false);
-        levelIdx++;
+        wallIdx++;
+        System.out.println("Finished wave");
     }
 
     /**
@@ -229,6 +235,15 @@ public class World {
      */
     public void setLevel(ArrayList<BackendWall> level) {
         this.level = level;
+        wallIdx = 0;
+    }
+
+    /**
+     * Getter for wall index.
+     * @return the current wall index
+     */
+    public int getWallIdx() {
+        return wallIdx;
     }
 
     /**
@@ -237,5 +252,13 @@ public class World {
      */
     public int getLevelIdx() {
         return levelIdx;
+    }
+
+    /**
+     * Setter for level index.
+     * @return the current level index
+     */
+    public void setLevelIdx(int levelIdx) {
+        this.levelIdx = levelIdx;
     }
 }
