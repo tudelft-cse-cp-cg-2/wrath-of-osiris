@@ -28,7 +28,7 @@ public class Player extends Thread {
     private PrintWriter out;
 
     private long heartBeat;
-    private static final long timeout = 300000;
+    private static final long TIMEOUT = 300000;
 
     /**
      * Current pose of the player.
@@ -82,7 +82,7 @@ public class Player extends Thread {
      * @return true if so, false otherwise
      */
     public boolean hasDisappeared() {
-        return (System.currentTimeMillis() - this.heartBeat) > timeout;
+        return (System.currentTimeMillis() - this.heartBeat) > TIMEOUT;
     }
 
     /**
@@ -214,7 +214,7 @@ public class Player extends Thread {
     @Override
     public void run() {
         Timer timeoutTimer = new Timer();
-        timeoutTimer.schedule(new TimeoutTask(this), timeout);
+        timeoutTimer.schedule(new TimeoutTask(this), TIMEOUT);
 
         String clientInput;
         try {
@@ -239,9 +239,17 @@ public class Player extends Thread {
         stopPoseUpdater();
     }
 
+    /**
+     * Timertask to check if the player hasn't asynchronously disconnected.
+     */
     private static class TimeoutTask extends TimerTask {
         private final Player player;
-        public TimeoutTask(Player player) {
+
+        /**
+         * Constructor for the TimoutTask.
+         * @param player the current player
+         */
+        TimeoutTask(Player player) {
             this.player = player;
         }
 
