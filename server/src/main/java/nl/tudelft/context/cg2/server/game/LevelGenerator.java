@@ -11,18 +11,15 @@ import java.util.HashSet;
  */
 public class LevelGenerator {
     /**
-     * The following variable determines the chances for the occurrence of these scenarios:
-     * Scenario 1: all players have to go through the same hole
-     * Scenario 2: some players have to go through a certain hole, others are free to choose another
-     * So if the value is 6: scenario 1: 1/6 chance. scenario 2: 5/6 chance
-     */
-    private static final int NUMBERS_ABOVE_HOLES_SCENARIO_CHANCES = 6;
-    /**
      * The chance that numbers above holes appear increases every level. The following variable
      * determines by how much that chance increases per level. (0.05 = 5% increase per level)
      */
-    private static final double NUMBERS_ABOVE_HOLES_CHANCE_INCREASE_PER_LEVEL = 0.05;
-    private static final int AMOUNT_OF_WALLS_PER_LEVEL = 50;
+    private static final double NUMBERS_ABOVE_HOLES_CHANCE_INCREASE_PER_LEVEL = 0.15;
+    /**
+     * Denotes when the aforementioned chance stops increasing. (0.60 = stops at 60%)
+     */
+    private static final double NUMBERS_ABOVE_HOLES_CHANCE_CAP = 0.60;
+    private static final int AMOUNT_OF_WALLS_PER_LEVEL = 10;
     private final int amountOfPlayers;
     private int level;
 
@@ -46,7 +43,11 @@ public class LevelGenerator {
         for (int i = 0; i < AMOUNT_OF_WALLS_PER_LEVEL; i++) {
             Wall w = generateWall(1);
             if (level > 1) {
-                if (Math.random() < NUMBERS_ABOVE_HOLES_CHANCE_INCREASE_PER_LEVEL * level) {
+                double chance = NUMBERS_ABOVE_HOLES_CHANCE_INCREASE_PER_LEVEL * level;
+                if (chance > NUMBERS_ABOVE_HOLES_CHANCE_CAP) {
+                    chance = NUMBERS_ABOVE_HOLES_CHANCE_CAP;
+                }
+                if (Math.random() < chance) {
                     w = attachNumbersToWall(w);
                 }
             }
@@ -82,37 +83,38 @@ public class LevelGenerator {
 
     /**
      * Attaches numbers restricting the amount of players that must go through a certain hole to
-     * a Wall. Contains 2 possible scenarios:
-     * Scenario 1: all players have to go through the same hole
-     * Scenario 2: some players have to go through a certain hole, others are free to choose another
+     * a Wall. Its range is as follows:
+     * Level 1: no numbers
+     * Level 2: 1
+     * Level 3: 1-2
+     * Level 4: 1-3
      *
      * @param w Wall that numbers should be attached to
      * @return Wall with numbers attached
      */
     private Wall attachNumbersToWall(Wall w) {
-        int scenario = rand(NUMBERS_ABOVE_HOLES_SCENARIO_CHANCES - 1);
+        // pick a random pose index, and make sure there's a hole in its location
         int randomPose = rand(2);
         while (w.getPose(ScreenPos.valueOf(randomPose)) == null) {
             randomPose = rand(2);
         }
-        if (scenario > 0) {
-            //scenario 2
-            //  -if there is 1 hole, abort. else continue
-            //  -set random pose to rand(1, amountOfPlayers - 1)
-            int amountOfHoles = 0;
-            for (ScreenPos p : ScreenPos.values()) {
-                if (p != null) {
-                    amountOfHoles++;
-                }
-            }
-            if (amountOfHoles >= 2) {
-                w.setNumber(ScreenPos.valueOf(randomPose), rand(1, amountOfPlayers - 1));
-                return w;
+        // -if there is 1 hole, abort. else continue
+        // -set random pose to rand(1, maxNumber)
+        // maxNumber = (level - 1, but it can't go higher than amountOfPlayers)
+        int maxNumber = level - 1;
+        if (maxNumber > amountOfPlayers) {
+            maxNumber = amountOfPlayers;
+        }
+
+        int amountOfHoles = 0;
+        for (ScreenPos p : ScreenPos.values()) {
+            if (w.getPose(p) != null) {
+                amountOfHoles++;
             }
         }
-        //scenario 1
-        //  -set random pose to amountOfPlayers
-        w.setNumber(ScreenPos.valueOf(randomPose), amountOfPlayers);
+        if (amountOfHoles >= 2) {
+            w.setNumber(ScreenPos.valueOf(randomPose), rand(1, maxNumber));
+        }
         return w;
     }
 
