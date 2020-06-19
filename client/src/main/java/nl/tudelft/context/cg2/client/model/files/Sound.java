@@ -1,4 +1,4 @@
-package nl.tudelft.context.cg2.client;
+package nl.tudelft.context.cg2.client.model.files;
 
 import javax.sound.sampled.AudioInputStream;
 import javax.sound.sampled.AudioSystem;

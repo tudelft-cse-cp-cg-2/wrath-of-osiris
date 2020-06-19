@@ -3,7 +3,7 @@ package nl.tudelft.context.cg2.client.view.elements.buttons;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
-import nl.tudelft.context.cg2.client.Sound;
+import nl.tudelft.context.cg2.client.model.files.Sound;
 
 import static nl.tudelft.context.cg2.client.model.files.SoundCache.SOUNDS;
 

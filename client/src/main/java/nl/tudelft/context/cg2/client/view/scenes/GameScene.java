@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
-import nl.tudelft.context.cg2.client.Sound;
+import nl.tudelft.context.cg2.client.model.files.Sound;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.files.SoundCache;
 import nl.tudelft.context.cg2.client.model.world.World;

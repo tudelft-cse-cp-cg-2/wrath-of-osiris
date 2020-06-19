@@ -1,7 +1,6 @@
 package nl.tudelft.context.cg2.client.model.files;
 
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import nl.tudelft.context.cg2.client.Sound;
 
 import java.util.HashMap;
 import java.util.Map;
