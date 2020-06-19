@@ -25,6 +25,8 @@ public final class SoundCache {
                     SoundCache.class.getClassLoader().getResource("sounds/win.wav")));
             SOUNDS.put("fail", Sound.loadSound(
                     SoundCache.class.getClassLoader().getResource("sounds/fail.wav")));
+            SOUNDS.put("select", Sound.loadSound(
+                    SoundCache.class.getClassLoader().getResource("sounds/select.wav")));
         } catch (Exception e) {
             System.out.println("Could not load sounds!");
             e.printStackTrace();

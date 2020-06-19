@@ -5,7 +5,8 @@ Art Credits:
 *  https://opengameart.org/content/grey-brick-wall-1
 *  https://www.freepik.com/free-vector/egypt-hieroglyphic-background_2775598.htm
 
-Sounds Credits:
-* https://freesound.org/people/Leszek_Szary/sounds/171671/
-* https://freesound.org/people/uagadugu/sounds/222521/
-* https://freesound.org/people/theojt/sounds/511198/
+Sound Credits:
+* Wall success: https://freesound.org/people/Leszek_Szary/sounds/171671/
+* Wall fail: https://freesound.org/people/uagadugu/sounds/222521/
+* Game music: https://freesound.org/people/theojt/sounds/511198/
+* Button select: https://freesound.org/people/broumbroum/sounds/50560/
