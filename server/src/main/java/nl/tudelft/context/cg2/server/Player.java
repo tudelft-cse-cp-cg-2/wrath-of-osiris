@@ -239,7 +239,7 @@ public class Player extends Thread {
         stopPoseUpdater();
     }
 
-    private static class TimeoutTask extends TimerTask {
+    private class TimeoutTask extends TimerTask {
         private final Player player;
         public TimeoutTask(Player player) {
             this.player = player;
