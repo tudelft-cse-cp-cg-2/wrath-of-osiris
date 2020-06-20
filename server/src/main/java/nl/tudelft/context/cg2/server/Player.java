@@ -206,10 +206,11 @@ public class Player extends Thread {
                 case "forcedisconnect":
                     timeoutTimer.cancel();
                     stopPoseUpdater();
-                    if (lobby != null) {
+                    if (lobby != null && lobby.isStarted()) {
                         lobby.processPlayerLeave(playerName);
+                    } else {
+                        App.removePlayerFromLobbies(this);
                     }
-                    App.removePlayerFromLobbies(this);
                     terminate = true;
                     break;
                 case "leavegame":
