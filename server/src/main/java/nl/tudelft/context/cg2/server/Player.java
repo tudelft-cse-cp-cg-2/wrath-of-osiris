@@ -204,7 +204,9 @@ public class Player extends Thread {
                     setReady(true);
                     break;
                 case "forcedisconnect":
-                    timeoutTimer.cancel();
+                    if (timeoutTimer != null) {
+                        timeoutTimer.cancel();
+                    }
                     stopPoseUpdater();
                     if (lobby != null && lobby.isStarted()) {
                         lobby.processPlayerLeave(playerName);
@@ -244,8 +246,10 @@ public class Player extends Thread {
                     }
                 }
             }
-            timeoutTimer.cancel();
-            timeoutTimer.purge();
+            if (timeoutTimer != null) {
+                timeoutTimer.cancel();
+                timeoutTimer.purge();
+            }
             System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
