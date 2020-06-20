@@ -43,7 +43,7 @@ public class App extends Application {
     @Override
     public void stop() {
         Settings.save();
-        controller.getStateUpdater().signalLeave();
+        controller.getStateUpdater().signalForceDisconnect();
         System.exit(0);
     }
 
