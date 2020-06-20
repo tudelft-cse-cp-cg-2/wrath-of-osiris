@@ -133,7 +133,7 @@ public class Player extends Thread {
      *
      * @param clientInput the input to process
      */
-    private void respond(String clientInput) {
+    private void respond(String clientInput, Timer timeoutTimer) {
         // update heartbeat
         pulse();
 
@@ -143,6 +143,7 @@ public class Player extends Thread {
             assert split.length == 3;
             String newPlayerName = split[2];
             if (App.playerNameIsUnique(newPlayerName)) {
+                timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
                 this.setPlayerName(newPlayerName);
                 App.addPlayerToLobby(split[1], this);
                 out.println(newPlayerName);
@@ -165,6 +166,7 @@ public class Player extends Thread {
             String newPlayerName = split[1];
             String newLobbyName = split[2];
             if (App.playerNameIsUnique(playerName) && App.lobbyNameIsUnique(newLobbyName)) {
+                timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
                 setPlayerName(newPlayerName);
                 Lobby newLobby;
 
@@ -187,6 +189,7 @@ public class Player extends Thread {
                     out.println(EOT);
                     break;
                 case "leavelobby":
+                    timeoutTimer.cancel();
                     App.removePlayerFromLobbies(this);
                     break;
                 case "startgame":
@@ -196,6 +199,7 @@ public class Player extends Thread {
                     setReady(true);
                     break;
                 case "leavegame":
+                    timeoutTimer.cancel();
                     stopPoseUpdater();
                     lobby.processPlayerLeave(playerName);
                     App.removePlayerFromLobbies(this);
@@ -214,7 +218,6 @@ public class Player extends Thread {
     @Override
     public void run() {
         Timer timeoutTimer = new Timer();
-        timeoutTimer.schedule(new TimeoutTask(this), TIMEOUT);
 
         String clientInput;
         try {
@@ -224,7 +227,7 @@ public class Player extends Thread {
                     if (clientInput != null) {
                         System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
                                 + clientInput);
-                        respond(clientInput);
+                        respond(clientInput, timeoutTimer);
                     }
                 }
             }
