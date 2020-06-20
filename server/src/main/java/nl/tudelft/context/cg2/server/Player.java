@@ -210,9 +210,8 @@ public class Player extends Thread {
                     stopPoseUpdater();
                     if (lobby != null && lobby.isStarted()) {
                         lobby.processPlayerLeave(playerName);
-                    } else {
-                        App.removePlayerFromLobbies(this);
                     }
+                    App.removePlayerFromLobbies(this);
                     terminate = true;
                     break;
                 case "leavegame":
