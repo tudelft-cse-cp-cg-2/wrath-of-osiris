@@ -252,7 +252,6 @@ public class Player extends Thread {
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
-        stopPoseUpdater();
     }
 
     /**
