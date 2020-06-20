@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.stage.Stage;
 
 import nl.tudelft.context.cg2.client.controller.Controller;
+import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.view.View;
 
@@ -43,7 +44,10 @@ public class App extends Application {
     @Override
     public void stop() {
         Settings.save();
-        controller.getStateUpdater().signalForceDisconnect();
+        GameStateUpdater updater = controller.getStateUpdater();
+        if (updater != null) {
+            controller.getStateUpdater().signalForceDisconnect();
+        }
         System.exit(0);
     }
 
