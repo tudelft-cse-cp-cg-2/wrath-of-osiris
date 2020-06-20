@@ -136,11 +136,13 @@ public class GameStateUpdater extends Thread {
      */
     private void updateLives(String serverInput) {
         int newLives = Integer.parseInt(serverInput.split(" ")[1]);
-        controller.getModel().getWorld().setLives(newLives);
+        World world = controller.getModel().getWorld();
+        world.setLives(newLives);
 
         if (started) {
-            World world = controller.getModel().getWorld();
-            if (world.getWallIdx() < world.getLevel().size()) sendReady();
+            if (world.getWallIdx() < world.getLevel().size()) {
+                sendReady();
+            }
         } else {
             Platform.runLater(() -> controller.getView().getGameScene().setMaxHearts(newLives));
         }

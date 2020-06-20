@@ -256,7 +256,7 @@ public class World {
 
     /**
      * Setter for level index.
-     * @return the current level index
+     * @param levelIdx the new level index
      */
     public void setLevelIdx(int levelIdx) {
         this.levelIdx = levelIdx;
