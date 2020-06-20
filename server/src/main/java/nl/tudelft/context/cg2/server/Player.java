@@ -27,6 +27,7 @@ public class Player extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
+    private static Timer timeoutTimer;
     private long heartBeat;
     private static final long TIMEOUT = 20000; // 20 seconds
 
@@ -133,7 +134,7 @@ public class Player extends Thread {
      *
      * @param clientInput the input to process
      */
-    private void respond(String clientInput, Timer timeoutTimer) {
+    private void respond(String clientInput) {
         // update heartbeat
         pulse();
 
@@ -143,7 +144,9 @@ public class Player extends Thread {
             assert split.length == 3;
             String newPlayerName = split[2];
             if (App.playerNameIsUnique(newPlayerName)) {
+                timeoutTimer = new Timer();
                 timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
+
                 this.setPlayerName(newPlayerName);
                 App.addPlayerToLobby(split[1], this);
                 out.println(newPlayerName);
@@ -166,7 +169,9 @@ public class Player extends Thread {
             String newPlayerName = split[1];
             String newLobbyName = split[2];
             if (App.playerNameIsUnique(playerName) && App.lobbyNameIsUnique(newLobbyName)) {
+                timeoutTimer = new Timer();
                 timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
+
                 setPlayerName(newPlayerName);
                 Lobby newLobby;
 
@@ -217,8 +222,6 @@ public class Player extends Thread {
      */
     @Override
     public void run() {
-        Timer timeoutTimer = new Timer();
-
         String clientInput;
         try {
             while (!terminate) {
@@ -227,7 +230,7 @@ public class Player extends Thread {
                     if (clientInput != null) {
                         System.out.println(sock.getInetAddress() + ":" + sock.getPort() + "> "
                                 + clientInput);
-                        respond(clientInput, timeoutTimer);
+                        respond(clientInput);
                     }
                 }
             }
