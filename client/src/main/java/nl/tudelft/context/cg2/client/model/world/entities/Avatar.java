@@ -14,7 +14,8 @@ import nl.tudelft.context.cg2.client.model.world.superscripts.PlayerName;
  * Features a player avatar.
  */
 public class Avatar extends Entity {
-    private final Color color;
+
+    private Color color;
 
     /**
      * The avatar constructor.
@@ -56,5 +57,21 @@ public class Avatar extends Entity {
         setPosition(new Vector3D(World.WIDTH / 4
                 * (pose.getScreenPosition().indexOf() + 1)
                 - EntityFactory.HOLE_SIZE.x / 2, 0, this.getDepth()));
+    }
+
+    /**
+     * Gets the avatar color.
+     * @return the color of the avatar.
+     */
+    public Color getColor() {
+        return color;
+    }
+
+    /**
+     * Sets the avatar color.
+     * @param color the color of the avatar.
+     */
+    public void setColor(Color color) {
+        this.color = color;
     }
 }

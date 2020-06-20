@@ -3,7 +3,6 @@ package nl.tudelft.context.cg2.client.controller.view.scenes;
 import nl.tudelft.context.cg2.client.controller.Controller;
 import nl.tudelft.context.cg2.client.controller.controllers.NetworkController;
 import nl.tudelft.context.cg2.client.controller.requests.CreateLobbyRequest;
-import nl.tudelft.context.cg2.client.controller.requests.GameStateUpdater;
 import nl.tudelft.context.cg2.client.controller.view.SceneController;
 import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.PlayerFactory;
@@ -92,9 +91,7 @@ public class CreateGameSceneController extends SceneController {
                 .scheduleLobbyUpdater(lobbyName);
 
         // Start game state updater thread.
-        controller.setStateUpdater(new GameStateUpdater(controller.getNetworkController().getIn(),
-                controller.getNetworkController().getOut(), controller));
-        controller.getStateUpdater().start();
+        controller.initGameStateUpdater();
 
         // Show updated model in view.
         view.getLobbyScene().getStartButton().setVisible(true);

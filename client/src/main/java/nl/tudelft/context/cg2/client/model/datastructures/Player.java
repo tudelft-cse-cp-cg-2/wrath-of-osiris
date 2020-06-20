@@ -25,22 +25,6 @@ public class Player {
         this.poseChanged = false;
     }
 
-    /**
-     * Setter for the avatar.
-     * @param avatar to be set.
-     */
-    public void setAvatar(Avatar avatar) {
-        this.avatar = avatar;
-    }
-
-    /**
-     * Getter for the avatar.
-     * @return the player's avatar.
-     */
-    public Avatar getAvatar() {
-        return this.avatar;
-    }
-
     @Override
     public int hashCode() {
         return super.hashCode();
@@ -106,5 +90,21 @@ public class Player {
      */
     public void setPoseChanged(boolean changed) {
         poseChanged = changed;
+    }
+
+    /**
+     * Setter for the avatar.
+     * @param avatar to be set.
+     */
+    public void setAvatar(Avatar avatar) {
+        this.avatar = avatar;
+    }
+
+    /**
+     * Gets the player avatar.
+     * @return the avatar of the player.
+     */
+    public Avatar getAvatar() {
+        return avatar;
     }
 }

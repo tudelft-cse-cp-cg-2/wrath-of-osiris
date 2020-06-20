@@ -102,15 +102,8 @@ public class GameSceneController extends SceneController {
         updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();
-        ArrayList<Player> players = new ArrayList<>();
-        model.getCurrentLobby().getPlayers().forEach(otherPlayer -> {
-            if (!otherPlayer.equals(model.getCurrentPlayer())) {
-                players.add(otherPlayer);
-            } else {
-                players.add(model.getCurrentPlayer());
-            }
-        });
-        model.getWorld().createPlayerAvatars(players);
+        ArrayList<Player> players = new ArrayList<>(model.getCurrentLobby().getPlayers());
+        model.getWorld().createPlayerAvatars(players, model.getCurrentPlayer());
 
         model.getWorld().waveCompleted.addListener((obj, oldV, newV) -> {
             onWaveCompletion(oldV, newV);
@@ -128,7 +121,7 @@ public class GameSceneController extends SceneController {
      */
     private void onWaveCompletion(Boolean oldV, Boolean newV) {
         if (!oldV && newV) {
-            controller.getStateUpdater().sendFinalPose(model.getCurrentPlayer().getPose());
+            controller.getGameStateUpdater().sendFinalPose(model.getCurrentPlayer().getPose());
         }
     }
 
@@ -151,7 +144,7 @@ public class GameSceneController extends SceneController {
      * Leaves the game and lobby, returning the player to the main menu.
      */
     private void leaveGame() {
-        controller.getStateUpdater().signalLeave();
+        controller.getGameStateUpdater().signalLeave();
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();
