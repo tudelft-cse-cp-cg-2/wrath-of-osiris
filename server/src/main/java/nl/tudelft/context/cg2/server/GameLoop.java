@@ -59,7 +59,7 @@ public class GameLoop extends Thread {
             for (Player player : lobby.getPlayers()) {
                 player.sendLevel(level);
             }
-            while (currentWallIndex < level.size()) { // this loop runs once every wall
+            while (currentWallIndex < level.size() && lobby.isStarted()) { // this loop runs once every wall
                 everybodyWallReady();
                 waitForFinalPoses();
                 ArrayList<Pose> finalPoses = new ArrayList<>();
