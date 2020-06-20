@@ -28,7 +28,7 @@ public class Player extends Thread {
     private PrintWriter out;
 
     private long heartBeat;
-    private static final long TIMEOUT = 900000; // 15 minutes
+    private static final long TIMEOUT = 20000; // 20 seconds
 
     /**
      * Current pose of the player.
