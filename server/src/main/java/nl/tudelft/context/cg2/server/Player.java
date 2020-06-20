@@ -203,6 +203,15 @@ public class Player extends Thread {
                 case "wallready":
                     setReady(true);
                     break;
+                case "forcedisconnect":
+                    timeoutTimer.cancel();
+                    stopPoseUpdater();
+                    if (lobby != null) {
+                        lobby.processPlayerLeave(playerName);
+                    }
+                    App.removePlayerFromLobbies(this);
+                    terminate = true;
+                    break;
                 case "leavegame":
                     timeoutTimer.cancel();
                     stopPoseUpdater();

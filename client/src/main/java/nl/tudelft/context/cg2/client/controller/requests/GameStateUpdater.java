@@ -212,6 +212,13 @@ public class GameStateUpdater extends Thread {
     }
 
     /**
+     * Signals the server we're forcefully disconnecting.
+     */
+    public void signalForceDisconnect() {
+        out.println("forcedisconnect");
+    }
+
+    /**
      * Updates the level.
      *
      * @param level level
