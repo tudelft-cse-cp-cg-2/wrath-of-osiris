@@ -109,8 +109,9 @@ public class GameSceneController extends SceneController {
             onWaveCompletion(oldV, newV);
         });
 
-        view.getGameScene().clear();
-        view.getGameScene().show();
+        scene.clear();
+        scene.show();
+        scene.getBackgroundMusic().loop();
     }
 
     /**
@@ -132,7 +133,8 @@ public class GameSceneController extends SceneController {
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();
-        view.getGameScene().clear();
+        scene.clear();
+        scene.getBackgroundMusic().stop();
         controller.getOpenCVController().startPreview();
         view.getLobbyScene().showPopup("\nGAME OVER\n\n"
                                     + "You reached level "
@@ -148,7 +150,8 @@ public class GameSceneController extends SceneController {
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();
-        view.getGameScene().clear();
+        scene.clear();
+        scene.getBackgroundMusic().stop();
         view.getMenuScene().showPopup("You have left a running game!");
         view.getMenuScene().show();
     }

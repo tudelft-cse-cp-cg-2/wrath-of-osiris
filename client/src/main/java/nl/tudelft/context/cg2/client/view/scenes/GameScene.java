@@ -11,6 +11,8 @@ import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
+import nl.tudelft.context.cg2.client.model.files.Sound;
+import nl.tudelft.context.cg2.client.model.files.SoundCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 import nl.tudelft.context.cg2.client.model.world.superscripts.Superscript;
 import nl.tudelft.context.cg2.client.view.BaseScene;
@@ -41,6 +43,10 @@ public class GameScene extends BaseScene {
 
     private ImageView cameraView;
 
+    private Sound backgroundMusic;
+    private Sound winSound;
+    private Sound failSound;
+
     /**
      * The menu scene constructor.
      * @param window the window currently showing.
@@ -50,6 +56,12 @@ public class GameScene extends BaseScene {
     public GameScene(Window window, Pane root, World world) {
         super(window, root);
         this.world = world;
+        this.backgroundMusic = SoundCache.SOUNDS.get("background");
+        backgroundMusic.setVolume(0.8F);
+        this.winSound = SoundCache.SOUNDS.get("win");
+        winSound.setVolume(1.0F);
+        this.failSound = SoundCache.SOUNDS.get("fail");
+        failSound.setVolume(1.0F);
     }
 
     /**
@@ -267,5 +279,29 @@ public class GameScene extends BaseScene {
      */
     public ImageView getCameraView() {
         return cameraView;
+    }
+
+    /**
+     * Getter for the background music.
+     * @return the background music.
+     */
+    public Sound getBackgroundMusic() {
+        return backgroundMusic;
+    }
+
+    /**
+     * Getter for the win sound.
+     * @return the win sound.
+     */
+    public Sound getWinSound() {
+        return winSound;
+    }
+
+    /**
+     * Getter for the fail sound.
+     * @return the fail sound.
+     */
+    public Sound getFailSound() {
+        return failSound;
     }
 }
