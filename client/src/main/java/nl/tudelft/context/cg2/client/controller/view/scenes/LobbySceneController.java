@@ -35,6 +35,7 @@ public class LobbySceneController extends SceneController {
     @Override
     protected void setupMouseListeners() {
         scene.getStartButton().setOnMouseClicked(event -> startButtonClicked());
+        scene.getGuideButton().setOnMouseClicked(event -> guideButtonClicked());
         scene.getLeaveButton().setOnMouseClicked(event -> leaveButtonClicked());
         scene.getPopup().setOnMouseClicked(event -> scene.closePopup());
     }
@@ -50,11 +51,46 @@ public class LobbySceneController extends SceneController {
     }
 
     /**
+     * Callback for the guide button listener.
+     * Shows a popup containing instructions to play the game.
+     */
+    private void guideButtonClicked() {
+        scene.showPopup(
+                "Welcome to the guide for\nWrath of Osiris!\n\n"
+                + "As an archeologist you have discovered ancient treasure "
+                + "and awakened the Wrath of Osiris: The pyramid is collapsing!"
+
+                + "\n\nRun for your life and reach the highest level by taking the pose "
+                + "displayed by the holes in the approaching walls, or else the pyramid "
+                + "will crumble even faster!"
+
+                + "\n\nEach level consists of several walls. "
+                + "When one of your team members fails fitting through one of the holes,"
+                + "the team loses one life. "
+                + "How many lives your team has left is displayed in the top left "
+                + "next to the heart icon. A game starts out with 10 lives."
+
+                + "\n\nIn the lobby, a preview of your video capture is displayed, "
+                + "so you can check your setup before starting."
+                + "While playing, a similar preview is also displayed in the top right"
+                + "so you can verify whether you're still in the picture. "
+
+                + "\n\nSome holes will have a number above them. "
+                + "This number denotes the amount of players that successfully "
+                + "have to pass through that hole to pass the wall."
+
+                + "\n\nPress ESC to leave while playing the game, "
+                + "but you will be deserting your teammates!");
+    }
+
+    /**
      * Callback for the leave button listener.
+     * Stops webcam preview capture.
      * Leaves the current lobby and forgets current player information.
-     * Communicate game leaving with server.
+     * Communicates game leaving with server.
      */
     private void leaveButtonClicked() {
+        controller.getOpenCVController().stopCapture();
         LeaveLobbyRequest req = new LeaveLobbyRequest(controller.getNetworkController().getIn(),
                 controller.getNetworkController().getOut());
         stopTimer();
@@ -92,6 +128,6 @@ public class LobbySceneController extends SceneController {
      * When the start button gets click a signal is sent to the server.
      */
     private void startButtonClicked() {
-        controller.getStateUpdater().signalStart();
+        controller.getGameStateUpdater().signalStart();
     }
 }

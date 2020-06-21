@@ -91,6 +91,9 @@ public class GameSceneController extends SceneController {
      * Starts the game.
      */
     public void startGame() {
+        // Stop lobby webcam preview.
+        controller.getOpenCVController().stopCapture();
+
         controller.getOpenCVController().startCapture();
 
         // Stop fetchLobby requests
@@ -102,15 +105,8 @@ public class GameSceneController extends SceneController {
         updateTimer.schedule(poseUpdater, 500, 500);
 
         model.getWorld().create();
-        ArrayList<Player> players = new ArrayList<>();
-        model.getCurrentLobby().getPlayers().forEach(otherPlayer -> {
-            if (!otherPlayer.equals(model.getCurrentPlayer())) {
-                players.add(otherPlayer);
-            } else {
-                players.add(model.getCurrentPlayer());
-            }
-        });
-        model.getWorld().createPlayerAvatars(players);
+        ArrayList<Player> players = new ArrayList<>(model.getCurrentLobby().getPlayers());
+        model.getWorld().createPlayerAvatars(players, model.getCurrentPlayer());
 
         view.getGameScene().clear();
         view.getGameScene().show();
@@ -124,7 +120,7 @@ public class GameSceneController extends SceneController {
      */
     private void onWaveCompletion(Boolean oldV, Boolean newV) {
         if (!oldV && newV) {
-            controller.getStateUpdater().sendFinalPose(model.getCurrentPlayer().getPose());
+            controller.getGameStateUpdater().sendFinalPose(model.getCurrentPlayer().getPose());
         }
     }
 
@@ -136,7 +132,8 @@ public class GameSceneController extends SceneController {
         controller.getOpenCVController().stopCapture();
         world.destroy();
         view.getGameScene().clear();
-        view.getLobbyScene().showPopup("GAME OVER\n\n"
+        controller.getOpenCVController().startPreview();
+        view.getLobbyScene().showPopup("\nGAME OVER\n\n"
                                     + "You reached level "
                                     + world.getLevelIdx());
         view.getLobbyScene().show();
@@ -146,7 +143,7 @@ public class GameSceneController extends SceneController {
      * Leaves the game and lobby, returning the player to the main menu.
      */
     private void leaveGame() {
-        controller.getStateUpdater().signalLeave();
+        controller.getGameStateUpdater().signalLeave();
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();

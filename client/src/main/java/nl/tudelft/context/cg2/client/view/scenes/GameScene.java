@@ -2,13 +2,13 @@ package nl.tudelft.context.cg2.client.view.scenes;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.effect.BlendMode;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
 import nl.tudelft.context.cg2.client.model.world.World;
@@ -35,10 +35,9 @@ public class GameScene extends BaseScene {
     private ArrayList<Canvas> canvasses;
     private Canvas backgroundCanvas;
     private Canvas objectCanvas;
-    private Canvas lightCanvas;
 
-    private VBox lifePane;
-    private ArrayList<Heart> hearts;
+    private Heart heart;
+    private Text heartCount;
 
     private ImageView cameraView;
 
@@ -68,11 +67,10 @@ public class GameScene extends BaseScene {
         //Create game canvasses
         this.backgroundCanvas = new Canvas();
         this.objectCanvas = new Canvas();
-        this.lightCanvas = new Canvas();
 
         //Keep track of all the canvasses
         this.canvasses = new ArrayList<>(Arrays.asList(
-                backgroundCanvas, objectCanvas, lightCanvas
+                backgroundCanvas, objectCanvas
         ));
 
         //Bind canvasses to the stage size
@@ -81,14 +79,18 @@ public class GameScene extends BaseScene {
             canvas.heightProperty().bind(window.sceneHeightProperty());
         }
 
-        // Set the blend modes of the canvasses
-        lightCanvas.setBlendMode(BlendMode.SCREEN);
-
         // Add UI elements.
-        this.lifePane = new VBox();
-        lifePane.layoutXProperty().bind(window.sceneHeightProperty().multiply(0.015D));
-        lifePane.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.015D));
-        lifePane.spacingProperty().bind(window.sceneHeightProperty().multiply(0.01D));
+        heartCount = new Text();
+        heartCount.setId("heart-count");
+        heartCount.layoutXProperty().bind(window.sceneHeightProperty().multiply(0.09D));
+        heartCount.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.053D));
+        heart = new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]);
+        heart.setPreserveRatio(true);
+        heart.fitHeightProperty().addListener((obj, oldV, newV) -> heartCount
+                .setFont(Font.font("Comic Sans", FontWeight.BOLD, newV.doubleValue() * 0.45D)));
+        heart.fitHeightProperty().bind(window.sceneHeightProperty().multiply(0.06D));
+        heart.layoutXProperty().bind(window.sceneHeightProperty().multiply(0.015D));
+        heart.layoutYProperty().bind(window.sceneHeightProperty().multiply(0.015D));
 
         this.cameraView = new ImageView(ImageCache.IMAGES[8]);
         cameraView.setId("camera-view");
@@ -101,7 +103,7 @@ public class GameScene extends BaseScene {
 
         // Create scene node family tree.
         root.getChildren().addAll(canvasses);
-        root.getChildren().addAll(lifePane, cameraView);
+        root.getChildren().addAll(heart, heartCount, cameraView);
     }
 
     /**
@@ -142,13 +144,6 @@ public class GameScene extends BaseScene {
         GraphicsContext backgroundGC = getBackgroundGraphicsContext();
         backgroundGC.setFill(Color.BLACK);
         backgroundGC.fillRect(0, 0, getWidth(), getHeight());
-
-        // Clear the lights
-        GraphicsContext lightGC = getLightGraphicsContext();
-        lightGC.setGlobalBlendMode(BlendMode.SRC_OVER);
-        lightGC.setFill(Color.BLACK);
-        lightGC.fillRect(0, 0, getWidth(), getHeight());
-        lightGC.setGlobalBlendMode(BlendMode.SCREEN);
     }
 
     /**
@@ -228,8 +223,7 @@ public class GameScene extends BaseScene {
      */
     public List<GraphicsContext> getAllGraphicsContexts() {
         return Arrays.asList(getObjectGraphicsContext(),
-                getBackgroundGraphicsContext(),
-                getLightGraphicsContext());
+                getBackgroundGraphicsContext());
     }
 
     /**
@@ -252,42 +246,18 @@ public class GameScene extends BaseScene {
     }
 
     /**
-     * Gets the GraphicsContext of the light canvas.
-     * This canvas should be used for drawing lighting.
-     * @return The GraphicsContext of the light canvas
-     */
-    public GraphicsContext getLightGraphicsContext() {
-        return lightCanvas.getGraphicsContext2D();
-    }
-
-    /**
-     * Sets the max hearts to display.
+     * Sets the hearts to display.
      * @param amount the amount of hearts.
      */
-    public void setMaxHearts(int amount) {
-        lifePane.getChildren().clear();
-
-        this.hearts = new ArrayList<>(amount);
-        for (int i = 0; i < amount; i++) {
-            Heart heart = new Heart(ImageCache.IMAGES[6], ImageCache.IMAGES[7]);
-            heart.setPreserveRatio(true);
-            heart.fitHeightProperty().bind(window.sceneHeightProperty().multiply(0.05D));
+    public void setHearts(int amount) {
+        if (amount < 0) {
             heart.deactivate();
-            hearts.add(heart);
-        }
-
-        lifePane.getChildren().addAll(hearts);
-    }
-
-    /**
-     * Activates a specific amount of heats.
-     * @param amount the amount ot activate.
-     */
-    public void activateHearts(int amount) {
-        hearts.forEach(Heart::deactivate);
-
-        for (int i = 0; i < amount; i++) {
-            hearts.get(i).activate();
+            heartCount.setText("");
+        } else if (amount == 0) {
+            heartCount.setText("");
+        } else {
+            heart.activate();
+            heartCount.setText("+" + amount);
         }
     }
 

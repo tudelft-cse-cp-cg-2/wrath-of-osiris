@@ -22,7 +22,7 @@ public class Controller {
     private final NetworkController networkController;
 
     private final GameTimer gameTimer;
-    private GameStateUpdater stateUpdater;
+    private GameStateUpdater gameStateUpdater;
 
     /**
      * Constructor for the Controller object.
@@ -36,6 +36,15 @@ public class Controller {
         this.gameTimer = new GameTimer(model, view);
         this.model = model;
         this.view = view;
+    }
+
+    /**
+     * Creates and starts a new game state updater.
+     */
+    public void initGameStateUpdater() {
+        gameStateUpdater = new GameStateUpdater(networkController.getIn(),
+                networkController.getOut(), this);
+        gameStateUpdater.start();
     }
 
     /**
@@ -82,16 +91,8 @@ public class Controller {
      * Getter for GameStateUpdater thread.
      * @return current GameStateUdpater
      */
-    public GameStateUpdater getStateUpdater() {
-        return stateUpdater;
-    }
-
-    /**
-     * Setter for GameStateUpdater thread.
-     * @param stateUpdater new GameStateUpdater thread
-     */
-    public void setStateUpdater(GameStateUpdater stateUpdater) {
-        this.stateUpdater = stateUpdater;
+    public GameStateUpdater getGameStateUpdater() {
+        return gameStateUpdater;
     }
 
     /**
