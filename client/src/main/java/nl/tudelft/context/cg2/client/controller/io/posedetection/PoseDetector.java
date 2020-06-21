@@ -123,8 +123,6 @@ public class PoseDetector {
         }
         counter++;
 
-
-
         // Detect
         PoseRegion head;
         if (faceDetections.toArray().length > 0 && poseRegions == null) {
@@ -135,11 +133,6 @@ public class PoseDetector {
             System.out.println("No face is detected");
             return image;
         }
-
-//        for (PoseRegion poseRegion : poseRegions) {
-//            Imgproc.rectangle(matrix, poseRegion.getTopLeft(), poseRegion.getBottomRight(),
-//                    new Scalar(255, 0, 0), 3, 0, 0);
-//        }
 
         if (baseImage == null) {
             baseImage = image;
