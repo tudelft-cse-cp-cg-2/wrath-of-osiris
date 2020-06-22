@@ -269,7 +269,7 @@ public class GameScene extends BaseScene {
             heartCount.setText("");
         } else {
             heart.activate();
-            heartCount.setText("+" + amount);
+            heartCount.setText("x" + amount);
         }
     }
 
