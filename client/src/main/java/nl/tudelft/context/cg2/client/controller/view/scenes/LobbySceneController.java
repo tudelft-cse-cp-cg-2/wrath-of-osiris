@@ -56,7 +56,13 @@ public class LobbySceneController extends SceneController {
      */
     private void guideButtonClicked() {
         scene.showPopup(
-                "Welcome to the guide for\nWrath of Osiris!\n\n"
+                "Tips:"
+                        + "\n* Make sure your entire posture is in the webcam preview."
+                        + "\n* Use ESCAPE to leave a running game."
+                        + "\n* Posture is better recognized with contrasting colors compared to " +
+                        "the background color(s)."
+
+                + "\n\nWelcome to the guide for\nWrath of Osiris!\n\n"
                 + "As an archeologist you have discovered ancient treasure "
                 + "and awakened the Wrath of Osiris: The pyramid is collapsing!"
 
@@ -71,7 +77,7 @@ public class LobbySceneController extends SceneController {
                 + "next to the heart icon. A game starts out with 10 lives."
 
                 + "\n\nIn the lobby, a preview of your video capture is displayed, "
-                + "so you can check your setup before starting."
+                + "so you can check your setup before starting. "
                 + "While playing, a similar preview is also displayed in the top right"
                 + "so you can verify whether you're still in the picture. "
 
