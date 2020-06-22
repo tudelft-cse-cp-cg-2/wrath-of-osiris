@@ -117,13 +117,13 @@ public class Lobby {
      */
     public void startGame() {
         if (!started) {
+            gameLoop = new GameLoop(this);
             this.started = true;
             for (Player player : players) {
                 player.startPoseUpdater();
                 player.startGame();
                 player.updateLives();
             }
-            gameLoop = new GameLoop(this);
             gameLoop.start();
         }
     }
