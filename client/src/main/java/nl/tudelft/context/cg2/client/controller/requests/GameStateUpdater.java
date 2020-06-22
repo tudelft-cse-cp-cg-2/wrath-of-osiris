@@ -147,12 +147,6 @@ public class GameStateUpdater extends Thread {
     private void updateLives(String serverInput) {
         int newLives = Integer.parseInt(serverInput.split(" ")[1]);
         World world = controller.getModel().getWorld();
-        if (newLives < world.getLives()) {
-            controller.getView().getGameScene().getFailSound().play();
-        } else {
-            controller.getView().getGameScene().getWinSound().play();
-        }
-        world.setLives(newLives);
 
         if (started) {
             if (world.getWallIdx() < world.getLevel().size()) {
@@ -160,7 +154,18 @@ public class GameStateUpdater extends Thread {
             }
         }
 
-        Platform.runLater(() -> controller.getView().getGameScene().setHearts(newLives));
+        System.out.println("Lives: " + newLives);
+
+        if (newLives < world.getLives()) {
+            controller.getView().getGameScene().getFailSound().play();
+        } else {
+            controller.getView().getGameScene().getWinSound().play();
+        }
+
+        Platform.runLater(() -> {
+            world.setLives(newLives);
+            controller.getView().getGameScene().setHearts(newLives);
+        });
     }
 
     /**

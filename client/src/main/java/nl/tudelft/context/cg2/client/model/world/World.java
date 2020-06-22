@@ -83,7 +83,6 @@ public class World {
     private void completeWave() {
         inMotion = false;
         waveCompleted.set(true);
-        System.out.println("Wave completed");
     }
 
     /**
