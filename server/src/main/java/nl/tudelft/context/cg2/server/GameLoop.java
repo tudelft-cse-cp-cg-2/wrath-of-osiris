@@ -82,6 +82,7 @@ public class GameLoop extends Thread {
             }
             level = generator.generateLevel();
         }
+        System.out.println("Gameloop stopped.");
     }
 
     /**

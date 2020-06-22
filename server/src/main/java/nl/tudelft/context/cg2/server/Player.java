@@ -345,6 +345,9 @@ public class Player extends Thread {
      */
     public void stopGame() {
         stopPoseUpdater();
+        if (timeoutTimer != null) {
+            timeoutTimer.cancel();
+        }
         out.println("stopgame");
     }
 
@@ -369,6 +372,7 @@ public class Player extends Thread {
      */
     public void startPoseUpdater() {
         PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
+        this.eventTimer = new Timer();
         eventTimer.schedule(poseUpdater, 500, 500);
     }
 

@@ -123,6 +123,7 @@ public class Lobby {
                 player.startGame();
                 player.updateLives();
             }
+            gameLoop = new GameLoop(this);
             gameLoop.start();
         }
     }
