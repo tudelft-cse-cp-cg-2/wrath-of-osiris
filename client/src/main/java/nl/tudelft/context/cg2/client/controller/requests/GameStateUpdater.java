@@ -200,10 +200,10 @@ public class GameStateUpdater extends Thread {
             model.setCurrentLobby(newLobby);
         } else {
             Platform.runLater(() -> {
-                try {
+                if (model.getCurrentLobby() != null) {
                     model.getCurrentLobby().setPlayers((ArrayList) newLobby.getPlayers());
                     controller.getView().getLobbyScene().setPlayerNames(playerNames);
-                } catch (NullPointerException e) {
+                } else {
                     debugMessage("Player left before update completed.");
                 }
             });
