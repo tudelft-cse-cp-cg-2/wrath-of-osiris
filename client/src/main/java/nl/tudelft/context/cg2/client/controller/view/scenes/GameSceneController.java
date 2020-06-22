@@ -54,9 +54,6 @@ public class GameSceneController extends SceneController {
     protected void setupKeyboardListeners() {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
-                case SPACE:
-                    startWorldTimer();
-                    break;
                 case ESCAPE:
                     leaveGame();
                     break;
