@@ -17,7 +17,6 @@ public class GameLoop extends Thread {
 
     /**
      * Constructor.
-     *
      * @param lobby lobby that this gameloop resides in
      */
     public GameLoop(Lobby lobby) {
@@ -27,20 +26,10 @@ public class GameLoop extends Thread {
 
     /**
      * Getter for the group's amount of lives left.
-     *
      * @return the amount of lives the group has left
      */
     public int getLives() {
         return lives;
-    }
-
-    /**
-     * Setter for the group's amount of lives left.
-     *
-     * @param lives the updated amount of lives left
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
     }
 
     /**
@@ -54,12 +43,11 @@ public class GameLoop extends Thread {
     public void run() {
         LevelGenerator generator = new LevelGenerator(lobby.getPlayers().size());
         ArrayList<Wall> level = generator.generateLevel();
-        int currentWallIndex = 0;
         while (lobby.isStarted()) { // this loop runs once every level
             for (Player player : lobby.getPlayers()) {
                 player.sendLevel(level);
             }
-            // this loop runs once every wall
+            int currentWallIndex = 0;
             while (currentWallIndex < level.size() && lobby.isStarted()) {
                 everybodyWallReady();
                 waitForFinalPoses();
@@ -83,6 +71,7 @@ public class GameLoop extends Thread {
             }
             level = generator.generateLevel();
         }
+        System.out.println("Gameloop stopped.");
     }
 
     /**

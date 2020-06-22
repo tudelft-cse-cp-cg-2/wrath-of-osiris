@@ -369,6 +369,7 @@ public class Player extends Thread {
      */
     public void startPoseUpdater() {
         PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
+        this.eventTimer = new Timer();
         eventTimer.schedule(poseUpdater, 500, 500);
     }
 
@@ -376,9 +377,11 @@ public class Player extends Thread {
      * Stops the pose updater for this player.
      */
     public void stopPoseUpdater() {
-        eventTimer.cancel();
-        eventTimer.purge();
-        eventTimer = null;
+        if (eventTimer != null) {
+            eventTimer.cancel();
+            eventTimer.purge();
+            eventTimer = null;
+        }
         System.out.println("Pose updater stopped: " + playerName);
     }
 

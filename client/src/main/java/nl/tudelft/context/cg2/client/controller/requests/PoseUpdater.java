@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.requests;
 
+import nl.tudelft.context.cg2.client.Settings;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 
 import java.io.BufferedReader;
@@ -32,7 +33,7 @@ public class PoseUpdater extends TimerTask {
      * Executes the request.
      */
     public void run() {
-        System.out.println("Updated pose to server");
+        Settings.debugMessage("Updated pose to server");
         out.println("updatepose " + player.getPose().pack());
     }
 }

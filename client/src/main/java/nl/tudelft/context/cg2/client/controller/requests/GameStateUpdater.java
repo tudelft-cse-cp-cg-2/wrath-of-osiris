@@ -9,6 +9,7 @@ import nl.tudelft.context.cg2.client.model.Model;
 import nl.tudelft.context.cg2.client.model.datastructures.BackendWall;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
+import nl.tudelft.context.cg2.client.model.world.World;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -69,7 +70,6 @@ public class GameStateUpdater extends Thread {
 
     /**
      * Responds to incoming server messages.
-     *
      * @param serverInput message from server
      */
     private void respond(String serverInput) {
@@ -145,18 +145,25 @@ public class GameStateUpdater extends Thread {
      */
     private void updateLives(String serverInput) {
         int newLives = Integer.parseInt(serverInput.split(" ")[1]);
-        if (newLives < controller.getModel().getWorld().getLives()) {
+
+        World world = controller.getModel().getWorld();
+
+        if (started) {
+            if (world.getWallIdx() < world.getLevel().size()) {
+                sendReady();
+            }
+        }
+
+        if (newLives < world.getLives()) {
             controller.getView().getGameScene().getFailSound().play();
         } else {
             controller.getView().getGameScene().getWinSound().play();
         }
-        controller.getModel().getWorld().setLives(newLives);
 
-        if (started) {
-            sendReady();
-        }
-
-        Platform.runLater(() -> controller.getView().getGameScene().setHearts(newLives));
+        Platform.runLater(() -> {
+            world.setLives(newLives);
+            controller.getView().getGameScene().setHearts(newLives);
+        });
     }
 
     /**
@@ -216,13 +223,17 @@ public class GameStateUpdater extends Thread {
 
     /**
      * Updates the level.
-     *
      * @param level level
      */
     public void updateLevel(String level) {
-        controller.getModel().getWorld().setLevel(jsonStringToLevel(level));
+        World world = controller.getModel().getWorld();
+        world.setLevel(jsonStringToLevel(level));
         sendReady();
-        started = true;
+        if (started) {
+            world.setLevelIdx(world.getLevelIdx() + 1);
+        } else {
+            started = true;
+        }
     }
 
     /**
@@ -250,5 +261,21 @@ public class GameStateUpdater extends Thread {
      */
     public void sendFinalPose(Pose pose) {
         out.println("finalpose " + pose.pack());
+    }
+
+    /**
+     * Getter for the started boolean.
+     * @return whether the game is started
+     */
+    public boolean isStarted() {
+        return started;
+    }
+
+    /**
+     * Setter for the started boolean.
+     * @param started updated started value
+     */
+    public void setStarted(boolean started) {
+        this.started = started;
     }
 }
