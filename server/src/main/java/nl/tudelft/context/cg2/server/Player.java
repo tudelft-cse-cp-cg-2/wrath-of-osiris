@@ -345,9 +345,6 @@ public class Player extends Thread {
      */
     public void stopGame() {
         stopPoseUpdater();
-        if (timeoutTimer != null) {
-            timeoutTimer.cancel();
-        }
         out.println("stopgame");
     }
 

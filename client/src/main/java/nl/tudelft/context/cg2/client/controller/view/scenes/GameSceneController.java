@@ -131,6 +131,9 @@ public class GameSceneController extends SceneController {
     public void stopGame() {
         resetGame();
         controller.getOpenCVController().startPreview();
+        controller.getGameStateUpdater().setStarted(false);
+        String lobbyName = controller.getModel().getCurrentLobby().getName();
+        controller.getViewController().getLobbySceneController().scheduleLobbyUpdater(lobbyName);
         view.getLobbyScene().showPopup("\nGAME OVER\n\n"
                                     + "You reached level "
                                     + world.getLevelIdx());
