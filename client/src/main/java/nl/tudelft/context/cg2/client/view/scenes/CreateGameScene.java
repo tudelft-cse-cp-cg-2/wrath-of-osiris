@@ -24,7 +24,6 @@ public class CreateGameScene extends BaseScene {
 
     private TextField playerNameField;
     private TextField lobbyNameField;
-    private TextField passwordField;
     private SimpleButton createGameButton;
     private SimpleButton leaveButton;
 
@@ -82,16 +81,6 @@ public class CreateGameScene extends BaseScene {
         lobbyNameField.textProperty().addListener((obj, oldV, newV) -> {
             validateInput(oldV, newV, lobbyNameField);
         });
-        Label passwordLabel = new Label();
-        passwordLabel.setLabelFor(passwordField);
-        passwordLabel.setText("Password:");
-        passwordLabel.getStyleClass().add("label");
-        passwordField = new TextField();
-        passwordField.setPromptText("Password (optional)");
-        passwordField.getStyleClass().add("text-box");
-        passwordField.textProperty().addListener((obj, oldV, newV) -> {
-            validateInput(oldV, newV, passwordField);
-        });
 
         createGameButton = new SimpleButton("Create Game");
         createGameButton.setSize(220, 80);
@@ -111,7 +100,7 @@ public class CreateGameScene extends BaseScene {
         popup.getChildren().add(popupPane);
 
         centerVBox.getChildren().addAll(playerNameLabel, playerNameField, lobbyNameLabel,
-                lobbyNameField, passwordLabel, passwordField, createGameButton);
+                lobbyNameField, createGameButton);
         root.getChildren().addAll(centerVBox, leaveButton, headerText, popup);
     }
 
@@ -154,14 +143,6 @@ public class CreateGameScene extends BaseScene {
      */
     public TextField getLobbyNameField() {
         return lobbyNameField;
-    }
-
-    /**
-     * The password text field getter.
-     * @return the password text field.
-     */
-    public TextField getPasswordField() {
-        return passwordField;
     }
 
     /**

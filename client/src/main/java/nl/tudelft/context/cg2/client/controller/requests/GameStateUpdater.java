@@ -17,6 +17,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nl.tudelft.context.cg2.client.Settings.debugMessage;
+
 /**
  * Updater class that syncs the group lives and poses with the server.
  */
@@ -85,8 +87,6 @@ public class GameStateUpdater extends Thread {
             }
         } else if (serverInput.startsWith("[{")) {
             updateLevel(serverInput);
-        } else if (serverInput.startsWith("failed ")) {
-            //Todo: display which player got hit
         } else if (serverInput.startsWith("playerleft ")) {
             updatePlayerLeft(serverInput);
         } else {
@@ -200,8 +200,12 @@ public class GameStateUpdater extends Thread {
             model.setCurrentLobby(newLobby);
         } else {
             Platform.runLater(() -> {
-                model.getCurrentLobby().setPlayers((ArrayList) newLobby.getPlayers());
-                controller.getView().getLobbyScene().setPlayerNames(playerNames);
+                if (model.getCurrentLobby() != null) {
+                    model.getCurrentLobby().setPlayers((ArrayList) newLobby.getPlayers());
+                    controller.getView().getLobbyScene().setPlayerNames(playerNames);
+                } else {
+                    debugMessage("Player left before update completed.");
+                }
             });
         }
     }
