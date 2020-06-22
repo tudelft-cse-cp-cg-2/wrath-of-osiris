@@ -58,9 +58,9 @@ public class LobbySceneController extends SceneController {
         scene.showPopup(
                 "Tips:"
                         + "\n* Make sure your entire posture is in the webcam preview."
-                        + "\n* Use ESCAPE to leave a running game."
-                        + "\n* Posture is better recognized with contrasting colors compared to " +
-                        "the background color(s)."
+                        + "\n* Press ESCAPE to leave a running game."
+                        + "\n* Posture is better recognized with contrasting colors compared to "
+                        + "the background color(s)."
 
                 + "\n\nWelcome to the guide for\nWrath of Osiris!\n\n"
                 + "As an archeologist you have discovered ancient treasure "
@@ -68,7 +68,9 @@ public class LobbySceneController extends SceneController {
 
                 + "\n\nRun for your life and reach the highest level by taking the pose "
                 + "displayed by the holes in the approaching walls, or else the pyramid "
-                + "will crumble even faster!"
+                + "will crumble even faster! "
+                + "The holes can have three positions for each arm, "
+                + "and two positions for each leg. "
 
                 + "\n\nEach level consists of several walls. "
                 + "When one of your team members fails fitting through one of the holes,"
