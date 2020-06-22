@@ -4,6 +4,7 @@ import nl.tudelft.context.cg2.client.Settings;
 import nl.tudelft.context.cg2.client.model.datastructures.Lobby;
 import nl.tudelft.context.cg2.client.model.datastructures.Player;
 import nl.tudelft.context.cg2.client.model.files.ImageCache;
+import nl.tudelft.context.cg2.client.model.files.SoundCache;
 import nl.tudelft.context.cg2.client.model.world.World;
 
 import java.util.ArrayList;
@@ -32,6 +33,7 @@ public class Model {
     public void load() {
         Settings.load();
         ImageCache.loadImages();
+        SoundCache.loadSounds();
         world.create();
     }
 

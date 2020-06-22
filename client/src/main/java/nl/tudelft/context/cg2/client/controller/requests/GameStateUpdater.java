@@ -146,8 +146,12 @@ public class GameStateUpdater extends Thread {
      */
     private void updateLives(String serverInput) {
         int newLives = Integer.parseInt(serverInput.split(" ")[1]);
-        World world = controller.getModel().getWorld();
-        world.setLives(newLives);
+        if (newLives < controller.getModel().getWorld().getLives()) {
+            controller.getView().getGameScene().getFailSound().play();
+        } else {
+            controller.getView().getGameScene().getWinSound().play();
+        }
+        controller.getModel().getWorld().setLives(newLives);
 
         if (started) {
             if (world.getWallIdx() < world.getLevel().size()) {

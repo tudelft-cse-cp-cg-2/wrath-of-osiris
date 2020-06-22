@@ -7,7 +7,7 @@ import java.io.InputStream;
 
 /**
  * The ImageCache class.
- * Loads and caches all the image files. used in the client.
+ * Loads and caches all the image files used in the client.
  */
 public final class ImageCache {
 

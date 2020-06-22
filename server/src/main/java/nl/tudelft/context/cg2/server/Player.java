@@ -16,6 +16,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * A connected player.
@@ -25,6 +26,10 @@ public class Player extends Thread {
     private Socket sock;
     private BufferedReader in;
     private PrintWriter out;
+
+    private static Timer timeoutTimer;
+    private long heartBeat;
+    private static final long TIMEOUT = 20000; // 20 seconds
 
     /**
      * Current pose of the player.
@@ -63,6 +68,22 @@ public class Player extends Thread {
             App.disconnectPlayer(this);
         }
         this.eventTimer = new Timer();
+        pulse();
+    }
+
+    /**
+     * Updates this player's heartbeat value.
+     */
+    private void pulse() {
+        this.heartBeat = System.currentTimeMillis();
+    }
+
+    /**
+     * Returns whether or not the client is considered to have disappeared.
+     * @return true if so, false otherwise
+     */
+    public boolean hasDisappeared() {
+        return (System.currentTimeMillis() - this.heartBeat) > TIMEOUT;
     }
 
     /**
@@ -114,11 +135,18 @@ public class Player extends Thread {
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
+        // update heartbeat
+        pulse();
+
+        // respond
         if (clientInput.startsWith("joinlobby ")) {
             String[] split = clientInput.split(" ");
             assert split.length == 3;
             String newPlayerName = split[2];
             if (App.playerNameIsUnique(newPlayerName)) {
+                timeoutTimer = new Timer();
+                timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
+
                 this.setPlayerName(newPlayerName);
                 App.addPlayerToLobby(split[1], this);
                 out.println(newPlayerName);
@@ -141,6 +169,9 @@ public class Player extends Thread {
             String newPlayerName = split[1];
             String newLobbyName = split[2];
             if (App.playerNameIsUnique(playerName) && App.lobbyNameIsUnique(newLobbyName)) {
+                timeoutTimer = new Timer();
+                timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
+
                 setPlayerName(newPlayerName);
                 Lobby newLobby;
 
@@ -163,6 +194,7 @@ public class Player extends Thread {
                     out.println(EOT);
                     break;
                 case "leavelobby":
+                    timeoutTimer.cancel();
                     App.removePlayerFromLobbies(this);
                     break;
                 case "startgame":
@@ -171,7 +203,19 @@ public class Player extends Thread {
                 case "wallready":
                     setReady(true);
                     break;
+                case "forcedisconnect":
+                    if (timeoutTimer != null) {
+                        timeoutTimer.cancel();
+                    }
+                    stopPoseUpdater();
+                    if (lobby != null && lobby.isStarted()) {
+                        lobby.processPlayerLeave(playerName);
+                    }
+                    App.removePlayerFromLobbies(this);
+                    terminate = true;
+                    break;
                 case "leavegame":
+                    timeoutTimer.cancel();
                     stopPoseUpdater();
                     lobby.processPlayerLeave(playerName);
                     App.removePlayerFromLobbies(this);
@@ -201,13 +245,38 @@ public class Player extends Thread {
                     }
                 }
             }
+            if (timeoutTimer != null) {
+                timeoutTimer.cancel();
+                timeoutTimer.purge();
+            }
             System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
             App.disconnectPlayer(this);
         }
-        stopPoseUpdater();
+    }
+
+    /**
+     * TimerTask to check if the player hasn't asynchronously disconnected.
+     */
+    private static class TimeoutTask extends TimerTask {
+        private final Player player;
+
+        /**
+         * Constructor for the TimoutTask.
+         * @param player the current player
+         */
+        TimeoutTask(Player player) {
+            this.player = player;
+        }
+
+        @Override
+        public void run() {
+            if (player.hasDisappeared()) {
+                App.disconnectPlayer(player);
+            }
+        }
     }
 
     /**

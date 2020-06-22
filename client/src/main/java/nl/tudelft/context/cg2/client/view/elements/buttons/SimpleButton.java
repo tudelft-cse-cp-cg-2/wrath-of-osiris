@@ -1,7 +1,11 @@
 package nl.tudelft.context.cg2.client.view.elements.buttons;
 
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.text.Text;
+import nl.tudelft.context.cg2.client.model.files.Sound;
+
+import static nl.tudelft.context.cg2.client.model.files.SoundCache.SOUNDS;
 
 /**
  * Features a simple Javafx button with text.
@@ -10,6 +14,7 @@ public class SimpleButton extends StackPane {
 
     private final String name;
     private Text text;
+    private Sound select;
 
     /**
      * The simple button constructor.
@@ -18,6 +23,10 @@ public class SimpleButton extends StackPane {
     public SimpleButton(String name) {
         this.name = name;
         this.draw();
+        this.select = SOUNDS.get("select");
+        this.addEventFilter(MouseEvent.MOUSE_CLICKED, event -> {
+            select.play();
+        });
     }
 
     /**

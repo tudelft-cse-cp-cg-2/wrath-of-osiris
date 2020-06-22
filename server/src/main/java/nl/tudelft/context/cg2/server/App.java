@@ -55,21 +55,18 @@ public final class App {
      */
     public static void disconnectPlayer(Player player) {
         // remove the player from the lobby
-        for (Lobby lobby : lobbies) {
-            for (Player p : lobby.getPlayers()) {
-                if (p.getPlayerName().equals(player.getPlayerName())) {
-                    lobby.removePlayer(p);
-                    break;
-                }
-            }
-        }
+        removePlayerFromLobbies(player);
         removeEmptyLobbies();
 
         // tell player class to stop its main loop
         player.terminate();
 
         // interrupt the player's thread
-        player.interrupt();
+        try {
+            player.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -126,7 +123,7 @@ public final class App {
      * @return the newly created lobby
      */
     public static Lobby createLobby(Player player, String lobbyName, String password) {
-        Lobby lobby = new Lobby(lobbyName, password, new ArrayList<Player>());
+        Lobby lobby = new Lobby(lobbyName, password, new ArrayList<>());
         lobby.addPlayer(player);
         player.setLobby(lobby);
         lobbies.add(lobby);
