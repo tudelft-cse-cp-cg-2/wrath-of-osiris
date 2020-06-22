@@ -120,7 +120,11 @@ public class PoseDetector {
             counter = 0;
             faceDetections = new MatOfRect();
             poseRegions = null;
-            classifier.detectMultiScale(bufferedImageToMat(image), faceDetections);
+            try {
+                classifier.detectMultiScale(bufferedImageToMat(image), faceDetections);
+            } catch (Exception e) {
+                Settings.debugMessage("Unknown exception thrown.");
+            }
         }
         counter++;
 
