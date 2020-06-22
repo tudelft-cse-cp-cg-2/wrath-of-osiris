@@ -71,7 +71,9 @@ public class Settings {
      * @param string the string to print.
      */
     public static void debugMessage(String string) {
-        if(DEBUG) System.out.println(string);
+        if (DEBUG) {
+            System.out.println(string);
+        }
     }
 
     /**
