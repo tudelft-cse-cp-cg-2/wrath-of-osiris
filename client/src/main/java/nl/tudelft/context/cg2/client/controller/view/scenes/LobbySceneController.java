@@ -59,8 +59,8 @@ public class LobbySceneController extends SceneController {
                 "Tips:"
                         + "\n* Make sure your entire posture is in the webcam preview."
                         + "\n* Press ESCAPE to leave a running game."
-                        + "\n* Posture is better recognized with contrasting colors compared to " +
-                        "the background color(s)."
+                        + "\n* Posture is better recognized with contrasting colors compared to "
+                        + "the background color(s)."
 
                 + "\n\nWelcome to the guide for\nWrath of Osiris!\n\n"
                 + "As an archeologist you have discovered ancient treasure "
