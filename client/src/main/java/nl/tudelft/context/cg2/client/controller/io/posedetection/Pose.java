@@ -19,6 +19,9 @@ public class Pose {
     private Map<Position, Integer> leftLegCounter;
     private Map<Position, Integer> rightLegCounter;
 
+    private static final int REGION_LEFT = 240;
+    private static final int REGION_RIGHT = 640 - REGION_LEFT;
+
     /**
      * Constructor for pose.
      * @param sp - screen position
@@ -319,8 +322,7 @@ public class Pose {
      */
     public void updateScreenPosition(PoseRegion head) {
         int headPosition = 640 - (head.getLeftX() + head.getRightX() / 2);
-        int region = 640 / 3;
-        this.screenPosition = headPosition < region ? ScreenPos.left :
-                headPosition > 2 * region ? ScreenPos.right : ScreenPos.middle;
+        this.screenPosition = headPosition < REGION_LEFT ? ScreenPos.left :
+                headPosition > REGION_RIGHT ? ScreenPos.right : ScreenPos.middle;
     }
 }
