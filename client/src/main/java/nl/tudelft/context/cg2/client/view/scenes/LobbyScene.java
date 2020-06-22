@@ -99,7 +99,7 @@ public class LobbyScene extends BaseScene {
         guideButton.setTranslateY(-100);
         StackPane.setAlignment(guideButton, Pos.BOTTOM_RIGHT);
 
-        tipMessage = new Label("Tip: To leave the game while playing, press ESCAPE.");
+        tipMessage = new Label("Tip: Read the guide to the right before playing!");
         tipMessage.getStyleClass().add("label");
         tipMessage.setTranslateY(-50);
         StackPane.setAlignment(tipMessage, Pos.BOTTOM_CENTER);
@@ -107,6 +107,8 @@ public class LobbyScene extends BaseScene {
         popup = drawPopup();
         popupPane = drawPopupPane();
         popupText = drawPopupText();
+        popupText.setTranslateX(40);
+        popupText.setTranslateY(20);
         ScrollPane scrollPane = new ScrollPane(popupText);
         scrollPane.setId("scroll-pane");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
