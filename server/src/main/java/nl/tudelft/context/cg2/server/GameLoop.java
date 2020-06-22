@@ -59,7 +59,6 @@ public class GameLoop extends Thread {
                 boolean avoidedCollision = level.get(currentWallIndex).compare(finalPoses);
                 if (!avoidedCollision) {
                     subtractLife();
-                    //Todo: use sendFailed to inform everyone which player made the mistake
                     if (lives < 0) {
                         lobby.stopGame();
                     }

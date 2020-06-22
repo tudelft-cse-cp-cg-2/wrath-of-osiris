@@ -85,8 +85,6 @@ public class GameStateUpdater extends Thread {
             }
         } else if (serverInput.startsWith("[{")) {
             updateLevel(serverInput);
-        } else if (serverInput.startsWith("failed ")) {
-            //Todo: display which player got hit
         } else if (serverInput.startsWith("playerleft ")) {
             updatePlayerLeft(serverInput);
         } else {
