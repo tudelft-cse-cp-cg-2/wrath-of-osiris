@@ -21,7 +21,7 @@ public class GameLoop extends Thread {
      */
     public GameLoop(Lobby lobby) {
         this.lobby = lobby;
-        this.lives = 2;
+        this.lives = 10;
     }
 
     /**
