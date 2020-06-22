@@ -21,6 +21,7 @@ public class GameSceneController extends SceneController {
     private final GameScene scene;
     private final World world;
     private Timer updateTimer;
+    private PoseUpdater poseUpdater;
 
     /**
      * The main scene controller.
@@ -93,13 +94,12 @@ public class GameSceneController extends SceneController {
     public void startGame() {
         // Stop lobby webcam preview.
         controller.getOpenCVController().stopCapture();
-
         controller.getOpenCVController().startCapture();
 
         // Stop fetchLobby requests
         controller.getViewController().getLobbySceneController().stopTimer();
 
-        PoseUpdater poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
+        poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
                 controller.getNetworkController().getOut(), model.getCurrentPlayer());
         updateTimer = new Timer();
         updateTimer.schedule(poseUpdater, 500, 500);
@@ -129,11 +129,7 @@ public class GameSceneController extends SceneController {
      * Stops the game, returning the player to the lobby.
      */
     public void stopGame() {
-        stopUpdateTimer();
-        controller.getOpenCVController().stopCapture();
-        world.destroy();
-        scene.clear();
-        scene.getBackgroundMusic().stop();
+        resetGame();
         controller.getOpenCVController().startPreview();
         view.getLobbyScene().showPopup("\nGAME OVER\n\n"
                                     + "You reached level "
@@ -146,13 +142,20 @@ public class GameSceneController extends SceneController {
      */
     private void leaveGame() {
         controller.getGameStateUpdater().signalLeave();
+        resetGame();
+        view.getMenuScene().showPopup("You have left a running game!");
+        view.getMenuScene().show();
+    }
+
+    /**
+     * Resets the game preparing it for the next run.
+     */
+    private void resetGame() {
         stopUpdateTimer();
         controller.getOpenCVController().stopCapture();
         world.destroy();
         scene.clear();
         scene.getBackgroundMusic().stop();
-        view.getMenuScene().showPopup("You have left a running game!");
-        view.getMenuScene().show();
     }
 
     /**
@@ -160,6 +163,8 @@ public class GameSceneController extends SceneController {
      * scheduled network updates.
      */
     public void stopUpdateTimer() {
+        poseUpdater.cancel();
+        poseUpdater = null;
         updateTimer.cancel();
         updateTimer.purge();
         updateTimer = null;
