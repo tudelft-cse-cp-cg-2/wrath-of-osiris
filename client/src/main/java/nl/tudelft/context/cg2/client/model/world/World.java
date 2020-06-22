@@ -46,7 +46,7 @@ public class World {
         this.currentWall = null;
         this.level = null;
         this.wallIdx = 0;
-        this.levelIdx = 0;
+        this.levelIdx = 1;
         this.lives = 0;
     }
 
@@ -60,7 +60,7 @@ public class World {
         holes.clear();
         currentWall = EntityFactory.generateWall();
         entities.add(currentWall);
-        levelIdx = 0;
+        levelIdx = 1;
     }
 
     /**
