@@ -1,6 +1,5 @@
 package nl.tudelft.context.cg2.client.view;
 
-import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
