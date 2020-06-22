@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.model.datastructures;
 
+import nl.tudelft.context.cg2.client.Settings;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.Pose;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.Position;
 import nl.tudelft.context.cg2.client.controller.io.posedetection.ScreenPos;
@@ -72,7 +73,7 @@ public class Player {
             } else {
                 this.avatar.update(pose);
             }
-            System.out.println(other.toString());
+            Settings.debugMessage(other.toString());
         }
     }
 

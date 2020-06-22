@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.controller.io.posedetection;
 
+import nl.tudelft.context.cg2.client.Settings;
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
@@ -130,7 +131,7 @@ public class PoseDetector {
             head = new PoseRegion(rect.x, rect.y, rect.width, rect.height, null, null);
             poseRegions = generatePoseRegionsFromHead(head); // we always take the last found match
         } else {
-            System.out.println("No face is detected");
+            Settings.debugMessage("No face is detected");
             return image;
         }
 

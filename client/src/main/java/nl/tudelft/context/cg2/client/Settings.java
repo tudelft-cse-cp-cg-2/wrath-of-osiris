@@ -18,6 +18,7 @@ import java.util.Properties;
 public class Settings {
 
     public static final boolean LOCALHOST = true;
+    public static final boolean DEBUG = false;
 
     private static String webcamName = Webcam.getDefault().getName();
 
@@ -63,6 +64,14 @@ public class Settings {
         } else {
             System.out.println("Settings file not found.");
         }
+    }
+
+    /**
+     * Prints a debug statement if debug mode is active.
+     * @param string the string to print.
+     */
+    public static void debugMessage(String string) {
+        if(DEBUG) System.out.println(string);
     }
 
     /**

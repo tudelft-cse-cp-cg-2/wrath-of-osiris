@@ -74,7 +74,6 @@ public class World {
         currentWall = null;
         level = null;
         wallIdx = 0;
-        // levelIdx is reset during creation, to be able to display in summary.
         lives = 0;
     }
 
@@ -84,6 +83,7 @@ public class World {
     private void completeWave() {
         inMotion = false;
         waveCompleted.set(true);
+        System.out.println("Wave completed");
     }
 
     /**
