@@ -17,30 +17,19 @@ public class GameLoop extends Thread {
 
     /**
      * Constructor.
-     *
      * @param lobby lobby that this gameloop resides in
      */
     public GameLoop(Lobby lobby) {
         this.lobby = lobby;
-        this.lives = 3;
+        this.lives = 2;
     }
 
     /**
      * Getter for the group's amount of lives left.
-     *
      * @return the amount of lives the group has left
      */
     public int getLives() {
         return lives;
-    }
-
-    /**
-     * Setter for the group's amount of lives left.
-     *
-     * @param lives the updated amount of lives left
-     */
-    public void setLives(int lives) {
-        this.lives = lives;
     }
 
     /**

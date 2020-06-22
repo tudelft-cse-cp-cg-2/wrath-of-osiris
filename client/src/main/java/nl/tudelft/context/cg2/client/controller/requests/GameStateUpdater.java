@@ -70,7 +70,6 @@ public class GameStateUpdater extends Thread {
 
     /**
      * Responds to incoming server messages.
-     *
      * @param serverInput message from server
      */
     private void respond(String serverInput) {
@@ -146,6 +145,7 @@ public class GameStateUpdater extends Thread {
      */
     private void updateLives(String serverInput) {
         int newLives = Integer.parseInt(serverInput.split(" ")[1]);
+
         World world = controller.getModel().getWorld();
 
         if (started) {
@@ -153,8 +153,6 @@ public class GameStateUpdater extends Thread {
                 sendReady();
             }
         }
-
-        System.out.println("Lives: " + newLives);
 
         if (newLives < world.getLives()) {
             controller.getView().getGameScene().getFailSound().play();
@@ -225,7 +223,6 @@ public class GameStateUpdater extends Thread {
 
     /**
      * Updates the level.
-     *
      * @param level level
      */
     public void updateLevel(String level) {
