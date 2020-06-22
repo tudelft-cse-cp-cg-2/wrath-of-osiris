@@ -73,7 +73,7 @@ public class LevelGenerator {
             while (usedPositions.contains(randomPos)) {
                 randomPos = rand(2);
             }
-            p = randomPose();
+            p = randomPose(level > 1);
             p.setScreenPos(ScreenPos.valueOf(randomPos));
             res.setPose(ScreenPos.valueOf(randomPos), p);
             usedPositions.add(randomPos);
@@ -121,13 +121,17 @@ public class LevelGenerator {
     /**
      * Returns a randomized pose.
      *
+     * @param randomizeLegs if false, only generates poses with both legs down
      * @return random pose
      */
-    private Pose randomPose() {
+    private Pose randomPose(boolean randomizeLegs) {
         Arm aLeft = Arm.valueOf(rand(2));
         Arm aRight = Arm.valueOf(rand(2));
         ScreenPos screenPos = ScreenPos.valueOf(rand(2));
-        Legs legs = Legs.valueOf(rand(2));
+        Legs legs = Legs.DOWN;
+        if (randomizeLegs) {
+            legs = Legs.valueOf(rand(2));
+        }
         return new Pose(aLeft, aRight, legs, screenPos);
     }
 
