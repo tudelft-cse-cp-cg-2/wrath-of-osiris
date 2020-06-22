@@ -86,7 +86,8 @@ public class LobbySceneController extends SceneController {
                 + "have to pass through that hole to pass the wall."
 
                 + "\n\nPress ESC to leave while playing the game, "
-                + "but you will be deserting your teammates!");
+                + "but you will be deserting your teammates!"
+                + "\n\n");
     }
 
     /**

@@ -107,6 +107,8 @@ public class LobbyScene extends BaseScene {
         popup = drawPopup();
         popupPane = drawPopupPane();
         popupText = drawPopupText();
+        popupText.setTranslateX(40);
+        popupText.setTranslateY(20);
         ScrollPane scrollPane = new ScrollPane(popupText);
         scrollPane.setId("scroll-pane");
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);

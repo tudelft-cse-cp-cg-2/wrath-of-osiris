@@ -1,5 +1,6 @@
 package nl.tudelft.context.cg2.client.view;
 
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.Pane;
@@ -73,8 +74,8 @@ public abstract class BaseScene extends Scene {
      */
     protected StackPane drawPopupPane() {
         StackPane popupPane = new StackPane();
-        popupPane.setMinSize(400, 250);
-        popupPane.setMaxSize(400, 250);
+        popupPane.setMinSize(500, 300);
+        popupPane.setMaxSize(500, 300);
         popupPane.getStyleClass().add("popup-pane");
         return popupPane;
     }
@@ -85,8 +86,7 @@ public abstract class BaseScene extends Scene {
      */
     protected Text drawPopupText() {
         Text popupText = new Text();
-        popupText.setWrappingWidth(350);
-        popupText.setLayoutX(25);
+        popupText.setWrappingWidth(400);
         popupText.setTextAlignment(TextAlignment.CENTER);
         popupText.getStyleClass().add("popup-text");
         return popupText;
