@@ -69,7 +69,7 @@ public class CreateGameSceneController extends SceneController {
         // Get user input from view.
         String playerName = scene.getPlayerNameField().getText();
         String lobbyName = scene.getLobbyNameField().getText();
-        String password = scene.getPasswordField().getText();
+        String password = "";
 
         CreateLobbyRequest req = new CreateLobbyRequest(controller.getNetworkController().getIn(),
                 controller.getNetworkController().getOut(), playerName, lobbyName, password);
