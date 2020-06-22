@@ -17,6 +17,8 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static nl.tudelft.context.cg2.client.Settings.debugMessage;
+
 /**
  * Updater class that syncs the group lives and poses with the server.
  */
@@ -198,8 +200,12 @@ public class GameStateUpdater extends Thread {
             model.setCurrentLobby(newLobby);
         } else {
             Platform.runLater(() -> {
-                model.getCurrentLobby().setPlayers((ArrayList) newLobby.getPlayers());
-                controller.getView().getLobbyScene().setPlayerNames(playerNames);
+                try {
+                    model.getCurrentLobby().setPlayers((ArrayList) newLobby.getPlayers());
+                    controller.getView().getLobbyScene().setPlayerNames(playerNames);
+                } catch (NullPointerException e) {
+                    debugMessage("Player left before update completed.");
+                }
             });
         }
     }
