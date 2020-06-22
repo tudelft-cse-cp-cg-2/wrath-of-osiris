@@ -73,7 +73,7 @@ public class LevelGenerator {
             while (usedPositions.contains(randomPos)) {
                 randomPos = rand(2);
             }
-            p = randomPose(level > 1);
+            p = randomPose(level > 2);
             p.setScreenPos(ScreenPos.valueOf(randomPos));
             res.setPose(ScreenPos.valueOf(randomPos), p);
             usedPositions.add(randomPos);
