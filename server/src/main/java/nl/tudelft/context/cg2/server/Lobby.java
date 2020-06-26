@@ -3,7 +3,6 @@ package nl.tudelft.context.cg2.server;
 import edu.umd.cs.findbugs.annotations.NonNull;
 
 import java.util.ArrayList;
-import java.util.Objects;
 
 /**
  * Class containing information about the lobby a player is currently in.
@@ -35,6 +34,9 @@ public class Lobby {
         this.game = null;
     }
 
+    /**
+     * Processes the lobby and the game if it has been started.
+     */
     public void process() {
         if (game != null) {
             game.process();
@@ -59,6 +61,17 @@ public class Lobby {
     public void stopGame() {
         players.forEach(Player::leaveGame);
         game = null;
+    }
+
+    /**
+     * Makes a player leave from the lobby and updates
+     * the other players accordingly.
+     * @param player the player to leave the lobby.
+     */
+    public void leave(Player player) {
+        if (players.remove(player)) {
+            players.forEach(p -> p.sendPlayerLeft(player.getPlayerName()));
+        }
     }
 
     /**
@@ -105,20 +118,26 @@ public class Lobby {
         return name;
     }
 
+    /**
+     * Checks if the lobby is empty.
+     * @return true if lobby is empty.
+     */
     public boolean isEmpty() {
         return players.isEmpty();
     }
 
-    public void leave(Player player) {
-        if (players.remove(player)) {
-            players.forEach(p -> p.sendPlayerLeft(player.getPlayerName()));
-        }
-    }
-
+    /**
+     * The game getter.
+     * @return the game.
+     */
     public Game getGame() {
         return game;
     }
 
+    /**
+     * Checks if the lobby is currently hosting a game.
+     * @return whether a game is active or not.
+     */
     public boolean inGame() {
         return game != null;
     }

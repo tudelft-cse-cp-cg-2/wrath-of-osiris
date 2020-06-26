@@ -17,10 +17,10 @@ import java.util.Properties;
         justification = "Several try-catch blocks not required.")
 public class Settings {
 
-    public static final boolean LOCALHOST = true;
-    public static final boolean DEBUG = false;
-
+    private static String serverIp = "131.180.178.142";
+    private static int serverPort = 43594;
     private static String webcamName = Webcam.getDefault().getName();
+    private static boolean debugMode = false;
 
     /**
      * Saves the user settings to a properties file.
@@ -31,7 +31,11 @@ public class Settings {
             FileOutputStream stream = new FileOutputStream(file);
             Properties properties = new Properties();
 
+            properties.setProperty("server.ip", "" + serverIp);
+            properties.setProperty("server.port", "" + serverPort);
             properties.setProperty("hardware.camera", "" + webcamName);
+            properties.setProperty("debug.mode", "" + debugMode);
+
             properties.store(stream, null);
             stream.close();
             System.out.println("Settings saved successfully.");
@@ -53,7 +57,22 @@ public class Settings {
                 Properties properties = new Properties();
                 properties.load(stream);
 
-                webcamName = properties.getProperty("hardware.camera");
+                if (properties.getProperty("server.ip") != null) {
+                    serverIp = properties.getProperty("server.ip");
+                }
+
+                if (properties.getProperty("server.port") != null) {
+                    serverPort = Integer.parseInt(properties.getProperty("server.port"));
+                }
+
+                if (properties.getProperty("hardware.camera") != null) {
+                    webcamName = properties.getProperty("hardware.camera");
+                }
+
+                if (properties.getProperty("debug.mode") != null) {
+                    debugMode = Boolean.parseBoolean(properties.getProperty("debug.mode"));
+                }
+
                 stream.close();
                 System.out.println("Settings loaded successfully.");
             } catch (IOException ioe) {
@@ -71,7 +90,7 @@ public class Settings {
      * @param string the string to print.
      */
     public static void debugMessage(String string) {
-        if (DEBUG) {
+        if (debugMode) {
             System.out.println(string);
         }
     }
@@ -90,5 +109,21 @@ public class Settings {
      */
     public static void setWebcamName(String webcamName) {
         Settings.webcamName = webcamName;
+    }
+
+    /**
+     * Gets the server ip setting.
+     * @return the server ip.
+     */
+    public static String getServerIp() {
+        return serverIp;
+    }
+
+    /**
+     * Gets the server port setting.
+     * @return the server port.
+     */
+    public static int getServerPort() {
+        return serverPort;
     }
 }

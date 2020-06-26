@@ -16,6 +16,9 @@ import java.util.stream.Stream;
  */
 public class Game {
 
+    /**
+     * Enumerates the various game states.
+     */
     public enum GameState {
         START,
         NEXT_WALL,
@@ -48,7 +51,7 @@ public class Game {
      * processes the game.
      */
     public void process() {
-        switch(state) {
+        switch (state) {
             case START:
             case NEXT_LEVEL:
                 createLevel();
@@ -66,23 +69,33 @@ public class Game {
                     updateLives();
                 }
                 break;
+            default:
+                state = GameState.ENDED;
+                break;
         }
 
         updatePlayerFlags();
     }
 
+    /**
+     * Updates the player specific flags for all other players.
+     * Mainly used to synchronize player poses.
+     */
     private void updatePlayerFlags() {
         getPlayerSteam().forEach(p -> {
             if (p.isPlaying()) {
                 for (Player other : getPlayers()) {
                     if (p != other) {
-                        p.sendPlayerFlags(other);
+                        p.updatePlayer(other);
                     }
                 }
             }
         });
     }
 
+    /**
+     * Creates a new level.
+     */
     private void createLevel() {
         level.clear();
         level.addAll(generator.generateLevel());
@@ -90,10 +103,16 @@ public class Game {
         currentWall = 0;
     }
 
+    /**
+     * Updates the current lives to each player.
+     */
     private void updateLives() {
         getPlayerSteam().forEach(Player::sendLives);
     }
 
+    /**
+     * Starts a new wave: makes a next wall move.
+     */
     private void startWave() {
         getPlayerSteam().forEach(p -> {
             p.setReady(false);
@@ -103,6 +122,11 @@ public class Game {
         state = GameState.FINAL_POSES;
     }
 
+    /**
+     * Finishes the wall wave when a wall arrived at the players' locations.
+     * This then checks if all players passed succesfully or not.
+     * Updates the game state and lives accordingly.
+     */
     private void finishWave() {
         ArrayList<Pose> finalPoses = new ArrayList<>();
         getPlayerSteam().forEach(p -> {
@@ -120,6 +144,10 @@ public class Game {
         state = currentWall < level.size() ? GameState.NEXT_WALL : GameState.NEXT_LEVEL;
     }
 
+    /**
+     * Checks if a wall is ready to start moving.
+     * @return true if the wall is ready, false otherwise.
+     */
     private boolean wallReady() {
         for (Player player : getPlayers()) {
             if (player != null && !player.isReady()) {
@@ -129,6 +157,10 @@ public class Game {
         return true;
     }
 
+    /**
+     * Checks if a all the final poses have been received.
+     * @return true if the final poses are all available.
+     */
     private boolean finalPosesAvailable() {
         for (Player player : getPlayers()) {
             if (player != null && player.getFinalPose() == null) {
@@ -138,10 +170,18 @@ public class Game {
         return true;
     }
 
+    /**
+     * Creates a stream of players in the game.
+     * @return the game player stream.
+     */
     private Stream<Player> getPlayerSteam() {
         return lobby.getPlayers().stream().filter(Objects::nonNull).filter(Player::isPlaying);
     }
 
+    /**
+     * Creates a list of players in the game.
+     * @return the game player list.
+     */
     private List<Player> getPlayers() {
         return getPlayerSteam().collect(Collectors.toList());
     }

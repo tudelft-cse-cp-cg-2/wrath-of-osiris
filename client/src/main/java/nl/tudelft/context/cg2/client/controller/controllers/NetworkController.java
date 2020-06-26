@@ -15,10 +15,6 @@ import java.nio.charset.StandardCharsets;
  * Representation of the game server.
  */
 public class NetworkController {
-    private static final String HOST =
-            Settings.LOCALHOST ? "127.0.0.1" : "131.180.178.142";
-    private static final int PORT = 43594;
-
     private Socket sock;
     private PrintWriter out;
     private BufferedReader in;
@@ -27,6 +23,23 @@ public class NetworkController {
      * Sequence sent at End Of Transmission.
      */
     public static final String EOT = ".";
+
+    /**
+     * Disconnect the client from the server.
+     */
+    public void disconnect() {
+        if (sock != null && sock.isConnected()) {
+            out.println("forcedisconnect");
+
+            try {
+                out.close();
+                in.close();
+                sock.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     /**
      * Gets out.
@@ -45,20 +58,13 @@ public class NetworkController {
     }
 
     /**
-     * Constructor for servers.
-     */
-    public NetworkController() {
-
-    }
-
-    /**
      * Connect to the server.
      * @return true if the connection was successful, false otherwise.
      */
     @SuppressFBWarnings(value = "DM_EXIT", justification = "If we cannot connect, we cannot play.")
     public boolean connect() {
         try {
-            this.sock = new Socket(HOST, PORT);
+            this.sock = new Socket(Settings.getServerIp(), Settings.getServerPort());
             this.out = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(),
                     StandardCharsets.UTF_8), true);
             this.in = new BufferedReader(new InputStreamReader(sock.getInputStream(),

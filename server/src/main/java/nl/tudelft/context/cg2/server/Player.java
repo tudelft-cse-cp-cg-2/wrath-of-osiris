@@ -62,15 +62,21 @@ public class Player extends Thread {
         this.playing = false;
     }
 
+    /**
+     * Processes the player.
+     */
     public void process() {
-        if ((System.currentTimeMillis() - heartBeat) > TIMEOUT) {
+        if (!sock.isConnected() || System.currentTimeMillis() - heartBeat > TIMEOUT) {
             this.disconnect();
         }
     }
 
+    /**
+     * Disconnects the player.
+     */
     public void disconnect() {
         if (playing) {
-           leaveGame();
+            leaveGame();
         }
 
         leaveLobby();
@@ -78,6 +84,7 @@ public class Player extends Thread {
         try {
             this.in.close();
             this.out.close();
+            this.sock.close();
             this.interrupt();
         } catch (IOException e) {
             e.printStackTrace();
@@ -86,11 +93,18 @@ public class Player extends Thread {
         this.disconnected = true;
     }
 
+    /**
+     * Join a lobby.
+     * @param lobby the lobby to join.
+     */
     void joinLobby(Lobby lobby) {
         this.lobby = lobby;
         this.lobby.addPlayer(this);
     }
 
+    /**
+     * Leave a lobby.
+     */
     private void leaveLobby() {
         if (lobby != null) {
             lobby.leave(this);
@@ -98,11 +112,17 @@ public class Player extends Thread {
         }
     }
 
+    /**
+     * Leave a game.
+     */
     public void leaveGame() {
         sendStopGame();
         this.playing = false;
     }
 
+    /**
+     * Join a game.
+     */
     public void joinGame() {
         sendStartGame();
         sendLives();
@@ -187,8 +207,8 @@ public class Player extends Thread {
     }
 
     /**
-     * Main loop for this player, which continually listens to their messages,
-     * and starts the updating of other player's poses to the player.
+     * The player network input thread run method.
+     * Handles player network input.
      */
     @Override
     public void run() {
@@ -212,8 +232,11 @@ public class Player extends Thread {
         }
     }
 
-
-    public void sendPlayerFlags(Player other) {
+    /**
+     * Updates another player's visuals for this player.
+     * @param other the other player.
+     */
+    public void updatePlayer(Player other) {
         out.println("updatepose " + other.getPlayerName() + " "
                 + other.getPose().pack());
         System.out.println("Updated " + other.getPlayerName() + " of other poses");
@@ -242,7 +265,6 @@ public class Player extends Thread {
 
     /**
      * Sends a level to the client.
-     *
      * @param level level
      */
     public void sendLevel(ArrayList<Wall> level) {
@@ -320,10 +342,18 @@ public class Player extends Thread {
         this.ready = ready;
     }
 
+    /**
+     * The has disconnected boolean getter.
+     * @return whether a player was disconnected or not.
+     */
     public boolean hasDisconnected() {
         return disconnected;
     }
 
+    /**
+     * The is playing boolean getter.
+     * @return whether a player is in game game right now.
+     */
     public boolean isPlaying() {
         return playing;
     }

@@ -51,6 +51,7 @@ public final class Server {
 
     /**
      * Starts the network.
+     * @throws IOException could be thrown.
      */
     private static void startNetwork() throws IOException {
         ServerSocket serverSock = new ServerSocket(PORT);
