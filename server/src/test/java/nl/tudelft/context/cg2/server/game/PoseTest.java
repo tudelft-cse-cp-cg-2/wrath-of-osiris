@@ -1,19 +1,11 @@
 package nl.tudelft.context.cg2.server.game;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PoseTest {
-
-    @BeforeEach
-    public void testSetUp() {
-        Pose a = new Pose(Arm.DOWN, Arm.UP, Legs.DOWN, ScreenPos.LEFT);
-        Pose b = new Pose(Arm.UP, Arm.SIDE, Legs.DOWN, ScreenPos.MIDDLE);
-        Pose c = new Pose(Arm.UP, Arm.SIDE, Legs.RIGHTUP, ScreenPos.MIDDLE);
-    }
 
     @Test
     public void testEqualsAfterSetting() {

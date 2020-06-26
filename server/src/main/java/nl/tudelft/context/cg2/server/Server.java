@@ -5,78 +5,93 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Main server application.
  */
 @SuppressWarnings("HideutilityClassConstructor")
-public final class App {
+public final class Server {
+
+    private static ScheduledExecutorService networkThread;
+    private static ScheduledExecutorService gameThread;
     private static final int PORT = 43594;
 
     private static ArrayList<Lobby> lobbies;
+    private static ArrayList<Player> players;
 
     /**
-     * Starts the server.
-     * @throws IOException when no socket could be opened
+     * Main function.
+     * @param args command line arguments (ignored)
      */
-    private static void startServer() throws IOException {
-        ServerSocket serverSock = new ServerSocket(PORT);
-        lobbies = new ArrayList<>();
+    public static void main(String[] args) {
+        System.out.println("Starting server...");
 
-        System.out.println("Started server on port " + PORT);
-        while (true) {
-            Socket sock = serverSock.accept();
-            System.out.println("Accepted new connection from " + sock.getInetAddress());
-
-            Player player = new Player(sock);
-            player.start();
-        }
-    }
-
-    /**
-     * Remove empty lobbies.
-     */
-    private static void removeEmptyLobbies() {
-        lobbies.removeIf(lobby -> {
-            if (lobby.getPlayers().size() == 0) {
-                System.out.println("Removed empty lobby: " + lobby.getName());
-                // Stop the gameloop.
-                lobby.stopGame();
-                return true;
-            } else {
-                return false;
-            }
-        });
-    }
-
-    /**
-     * Terminate a player's thread, effectively disconnecting them if they were still connected.
-     * @param player the player to interrupt
-     */
-    public static void disconnectPlayer(Player player) {
-        // remove the player from the lobby
-        removePlayerFromLobbies(player);
-        removeEmptyLobbies();
-
-        // tell player class to stop its main loop
-        player.terminate();
-
-        // interrupt the player's thread
         try {
-            player.join();
-        } catch (InterruptedException e) {
+            startServer();
+            startNetwork();
+            startGame();
+        } catch (IOException e) {
             e.printStackTrace();
+            System.out.println("Could not start server");
         }
     }
 
     /**
-     * Removes a player from all lobbies.
-     * @param player the player to be removed
+     * Loads the server data and sets variables.
      */
-    public static void removePlayerFromLobbies(Player player) {
-        lobbies.forEach(x -> x.removePlayer(player));
-        player.setLobby(null);
-        removeEmptyLobbies();
+    private static void startServer() {
+        networkThread = Executors.newSingleThreadScheduledExecutor();
+        gameThread = Executors.newSingleThreadScheduledExecutor();
+        lobbies = new ArrayList<>();
+        players = new ArrayList<>();
+    }
+
+    /**
+     * Starts the network.
+     * @throws IOException could be thrown.
+     */
+    private static void startNetwork() throws IOException {
+        ServerSocket serverSock = new ServerSocket(PORT);
+
+        Runnable ioThread = () -> {
+            try {
+                while (true) {
+                    Socket sock = serverSock.accept();
+                    System.out.println("Accepted new connection from " + sock.getInetAddress());
+
+                    Player player = new Player(sock);
+                    players.add(player);
+                    player.start();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Game loop error...");
+            }
+        };
+
+        networkThread.submit(ioThread);
+    }
+
+    /**
+     * Starts the game.
+     */
+    private static void startGame() {
+        Runnable mainThread = () -> {
+            try {
+                players.forEach(Player::process);
+                lobbies.forEach(Lobby::process);
+                players.removeIf(Player::hasDisconnected);
+                lobbies.removeIf(Lobby::isEmpty);
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Gane loop error...");
+            }
+        };
+
+        gameThread.scheduleAtFixedRate(mainThread, 0, 200, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -86,15 +101,10 @@ public final class App {
      */
     public static void addPlayerToLobby(String lobbyName, Player player) {
         Lobby lobby = getLobbyByName(lobbies, lobbyName);
-        if (lobby == null) {
-            System.out.println("No such lobby");
+        if (lobby == null || lobby.isFull()) {
+            System.out.println("Lobby not available.");
         } else {
-            if (lobby.isFull()) {
-                disconnectPlayer(player);
-            } else {
-                lobby.addPlayer(player);
-                player.setLobby(lobby);
-            }
+            player.joinLobby(lobby);
         }
     }
 
@@ -124,9 +134,8 @@ public final class App {
      */
     public static Lobby createLobby(Player player, String lobbyName, String password) {
         Lobby lobby = new Lobby(lobbyName, password, new ArrayList<>());
-        lobby.addPlayer(player);
-        player.setLobby(lobby);
         lobbies.add(lobby);
+        player.joinLobby(lobby);
         return lobby;
     }
 
@@ -140,7 +149,6 @@ public final class App {
         return createLobby(player, lobbyName, null);
     }
 
-
     /**
      * Generate a compact representation of all existing lobbies.
      * @return a list of string representing all lobbies
@@ -148,7 +156,7 @@ public final class App {
     public static List<String> packLobbies() {
         List<String> out = new ArrayList<>();
         for (Lobby lobby : lobbies) {
-            if (!lobby.isStarted()) {
+            if (!lobby.inGame()) {
                 out.add(lobby.getPlayers().size() + lobby.getName());
             }
         }
@@ -177,28 +185,12 @@ public final class App {
      * @return true if the name is unique, else false
      */
     public static boolean lobbyNameIsUnique(String lobbyName) {
-        // remove empty lobbies first, just to be sure
-        removeEmptyLobbies();
-
         for (Lobby lobby : lobbies) {
             if (lobby.getName().equals(lobbyName)) {
                 return false;
             }
         }
         return true;
-    }
-
-    /**
-     * Main function.
-     * @param args command line arguments (ignored)
-     */
-    public static void main(String[] args) {
-        try {
-            startServer();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.out.println("Could not start server");
-        }
     }
 
     /**

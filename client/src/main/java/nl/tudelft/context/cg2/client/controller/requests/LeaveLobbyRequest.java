@@ -27,7 +27,7 @@ public class LeaveLobbyRequest extends Thread {
      * Executes the request.
      */
     public void run() {
-        out.println("leavelobby");
+        out.println("disconnect");
         try {
             String fromServer = in.readLine();
             assert fromServer != null && fromServer.equals(NetworkController.EOT);

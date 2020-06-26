@@ -10,10 +10,9 @@ import java.util.ArrayList;
 public class Lobby {
     private static final int MAX_PLAYERS = 5;
 
+    private Game game;
     private final String name;
     private final String password;
-    private GameLoop gameLoop;
-    private boolean started = false;
 
     /**
      * The list of connected players. The first one (index 0) is always the host.
@@ -24,7 +23,6 @@ public class Lobby {
      * Constructor for the Lobby.
      * When the host creates a Lobby, only the host is added as player.
      * If a player joins a lobby, 'players' contains all players, including himself.
-     *
      * @param name     lobby name.
      * @param password lobby password.
      * @param players  list of current players in the lobby.
@@ -33,12 +31,51 @@ public class Lobby {
         this.name = name;
         this.password = password;
         this.players = players;
-        this.gameLoop = new GameLoop(this);
+        this.game = null;
+    }
+
+    /**
+     * Processes the lobby and the game if it has been started.
+     */
+    public void process() {
+        if (game != null) {
+            game.process();
+        }
+    }
+
+    /**
+     * Starts the game for the lobby, and update all players'
+     * lives to the starting amount.
+     */
+    public void startGame() {
+        if (game == null) {
+            game = new Game(this);
+            players.forEach(Player::joinGame);
+            System.out.println("Starting game!");
+        }
+    }
+
+    /**
+     * Stops the game for the lobby.
+     */
+    public void stopGame() {
+        players.forEach(Player::leaveGame);
+        game = null;
+    }
+
+    /**
+     * Makes a player leave from the lobby and updates
+     * the other players accordingly.
+     * @param player the player to leave the lobby.
+     */
+    public void leave(Player player) {
+        if (players.remove(player)) {
+            players.forEach(p -> p.sendPlayerLeft(player.getPlayerName()));
+        }
     }
 
     /**
      * Setter method to adjust current players in the lobby.
-     *
      * @param player the new set of players in the lobby.
      */
     public void addPlayer(@NonNull Player player) {
@@ -46,8 +83,27 @@ public class Lobby {
     }
 
     /**
+     * Pack to send over the Internet.
+     * @return a packed string representing this lobby
+     */
+    public String pack() {
+        StringBuilder builder = new StringBuilder(players.size() + name);
+        for (Player player : players) {
+            builder.append(" ").append(player.getPlayerName());
+        }
+        return builder.toString();
+    }
+
+    /**
+     * Returns whether or not the lobby is full.
+     * @return true if full, false if not
+     */
+    public boolean isFull() {
+        return players.size() >= MAX_PLAYERS;
+    }
+
+    /**
      * Getter method for current players in the lobby.
-     *
      * @return current list of players in the lobby.
      */
     public ArrayList<Player> getPlayers() {
@@ -56,7 +112,6 @@ public class Lobby {
 
     /**
      * Getter for lobby name.
-     *
      * @return the lobby name.
      */
     public String getName() {
@@ -64,90 +119,26 @@ public class Lobby {
     }
 
     /**
-     * Pack to send over the Internet.
-     *
-     * @return a packed string representing this lobby
+     * Checks if the lobby is empty.
+     * @return true if lobby is empty.
      */
-    public String pack() {
-        StringBuilder out = new StringBuilder(players.size() + name);
-        for (Player player : players) {
-            out.append(" ").append(player.getPlayerName());
-        }
-        return out.toString();
+    public boolean isEmpty() {
+        return players.isEmpty();
     }
 
     /**
-     * Removes a player from the lobby.
-     *
-     * @param player player to be removed
+     * The game getter.
+     * @return the game.
      */
-    public void removePlayer(Player player) {
-        this.players.remove(player);
+    public Game getGame() {
+        return game;
     }
 
     /**
-     * Returns whether or not the lobby is full.
-     *
-     * @return true if full, false if not
+     * Checks if the lobby is currently hosting a game.
+     * @return whether a game is active or not.
      */
-    public boolean isFull() {
-        return (this.players.size() >= MAX_PLAYERS);
-    }
-
-    /**
-     * Gets whether the lobby has started the game.
-     *
-     * @return boolean whether the game has been started
-     */
-    public boolean isStarted() {
-        return started;
-    }
-
-    /**
-     * Getter for the game loop.
-     * @return game loop
-     */
-    public GameLoop getGameLoop() {
-        return gameLoop;
-    }
-
-    /**
-     * Starts the game for the lobby, and update all players'
-     * lives to the starting amount.
-     */
-    public void startGame() {
-        if (!started) {
-            gameLoop = new GameLoop(this);
-            this.started = true;
-            for (Player player : players) {
-                player.startPoseUpdater();
-                player.startGame();
-                player.updateLives();
-            }
-            gameLoop.start();
-        }
-    }
-
-    /**
-     * Stops the game for the lobby.
-     */
-    public void stopGame() {
-        this.started = false;
-        for (Player player : players) {
-            player.stopGame();
-        }
-    }
-
-    /**
-     * Processes a player leaving the game, by signalling other players and adjusting the levels.
-     * @param playerName The name of the player that has left
-     */
-    public void processPlayerLeave(String playerName) {
-        // todo: Adjust and update levels for one less player.
-        for (Player player : players) {
-            if (!player.getName().equals(playerName)) {
-                player.sendPlayerLeft(playerName);
-            }
-        }
+    public boolean inGame() {
+        return game != null;
     }
 }
