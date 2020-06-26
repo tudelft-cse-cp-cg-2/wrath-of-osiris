@@ -57,7 +57,7 @@ public class GameStateUpdater extends Thread {
         String serverInput;
         System.out.println("Started game state updater");
         try {
-            while (in.ready() && !terminate) {
+            while (!terminate) {
                 serverInput = in.readLine();
                 if (serverInput == null) {
                     break;
@@ -66,7 +66,7 @@ public class GameStateUpdater extends Thread {
                 respond(serverInput);
             }
         } catch (IOException e) {
-            System.out.println("Cannot update pose as the input stream was shut down.");
+            e.printStackTrace();
         }
     }
 
