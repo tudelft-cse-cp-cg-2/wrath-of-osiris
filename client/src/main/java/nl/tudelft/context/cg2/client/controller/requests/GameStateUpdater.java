@@ -31,7 +31,6 @@ public class GameStateUpdater extends Thread {
 
     /**
      * Constructor for GameStateUpdater.
-     *
      * @param in         server input
      * @param out        server output
      * @param controller app controller
@@ -40,13 +39,6 @@ public class GameStateUpdater extends Thread {
         this.in = in;
         this.out = out;
         this.controller = controller;
-    }
-
-    /**
-     * Changes this.terminate to true, effectively telling the run function to terminate.
-     */
-    public void terminate() {
-        this.terminate = true;
     }
 
     /**
@@ -265,14 +257,6 @@ public class GameStateUpdater extends Thread {
      */
     public void sendFinalPose(Pose pose) {
         out.println("finalpose " + pose.pack());
-    }
-
-    /**
-     * Getter for the started boolean.
-     * @return whether the game is started
-     */
-    public boolean isStarted() {
-        return started;
     }
 
     /**
