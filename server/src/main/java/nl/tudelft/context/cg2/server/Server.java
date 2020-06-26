@@ -85,9 +85,6 @@ public final class Server {
                 lobbies.forEach(Lobby::process);
                 players.removeIf(Player::hasDisconnected);
                 lobbies.removeIf(Lobby::isEmpty);
-
-                System.out.println("Player #: " + players.size());
-                System.out.println("Lobby #: " + lobbies.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Gane loop error...");
