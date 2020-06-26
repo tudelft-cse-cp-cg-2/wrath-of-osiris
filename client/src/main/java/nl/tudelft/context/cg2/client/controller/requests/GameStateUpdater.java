@@ -66,7 +66,7 @@ public class GameStateUpdater extends Thread {
                 respond(serverInput);
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Could not update game state due to closed connection..");
         }
     }
 
