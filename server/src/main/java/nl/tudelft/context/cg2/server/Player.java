@@ -30,7 +30,7 @@ public class Player extends Thread {
     private Pose pose;
     private Pose finalPose;
 
-    private static final long TIMEOUT = 20000; // 20 seconds
+    private static final long TIMEOUT = 5000; // 5 seconds
     private long heartBeat;
 
     private boolean disconnected;
@@ -184,16 +184,13 @@ public class Player extends Thread {
                     Server.packLobbies().forEach(out::println);
                     out.println(EOT);
                     break;
-                case "leavelobby":
-                    leaveLobby();
-                    break;
                 case "startgame":
                     lobby.startGame();
                     break;
                 case "wallready":
                     setReady(true);
                     break;
-                case "forcedisconnect":
+                case "disconnect":
                     disconnect();
                     break;
                 case "leavegame":

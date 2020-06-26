@@ -29,7 +29,7 @@ public class NetworkController {
      */
     public void disconnect() {
         if (sock != null && sock.isConnected()) {
-            out.println("forcedisconnect");
+            out.println("disconnect");
 
             try {
                 out.close();

@@ -55,7 +55,7 @@ public class GameSceneController extends SceneController {
         scene.setOnKeyPressed(event -> {
             switch (event.getCode()) {
                 case ESCAPE:
-                    leaveGame();
+                    clickLeaveGame();
                     break;
                 default:
                     break;
@@ -69,20 +69,6 @@ public class GameSceneController extends SceneController {
     @Override
     protected void setupEventListeners() {
 
-    }
-
-    /**
-     * Starts the world timer.
-     */
-    private void startWorldTimer() {
-        world.setInMotion(!world.isInMotion());
-    }
-
-    /**
-     * Displays the menu scene in the window.
-     */
-    private void showMenuScene() {
-        view.getMenuScene().show();
     }
 
     /**
@@ -140,11 +126,11 @@ public class GameSceneController extends SceneController {
     /**
      * Leaves the game and lobby, returning the player to the main menu.
      */
-    private void leaveGame() {
-        controller.getGameStateUpdater().signalLeave();
+    private void clickLeaveGame() {
         resetGame();
         view.getMenuScene().showPopup("You have left a running game!");
         view.getMenuScene().show();
+        controller.getNetworkController().disconnect();
     }
 
     /**
@@ -163,10 +149,15 @@ public class GameSceneController extends SceneController {
      * scheduled network updates.
      */
     public void stopUpdateTimer() {
-        poseUpdater.cancel();
-        poseUpdater = null;
-        updateTimer.cancel();
-        updateTimer.purge();
-        updateTimer = null;
+        if (poseUpdater != null) {
+            poseUpdater.cancel();
+            poseUpdater = null;
+        }
+
+        if (updateTimer != null) {
+            updateTimer.cancel();
+            updateTimer.purge();
+            updateTimer = null;
+        }
     }
 }
