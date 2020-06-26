@@ -91,7 +91,7 @@ public final class Server {
             }
         };
 
-        gameThread.scheduleAtFixedRate(mainThread, 0, 600, TimeUnit.MILLISECONDS);
+        gameThread.scheduleAtFixedRate(mainThread, 0, 200, TimeUnit.MILLISECONDS);
     }
 
     /**

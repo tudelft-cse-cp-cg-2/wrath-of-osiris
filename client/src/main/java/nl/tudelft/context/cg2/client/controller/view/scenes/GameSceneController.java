@@ -85,7 +85,7 @@ public class GameSceneController extends SceneController {
         poseUpdater = new PoseUpdater(controller.getNetworkController().getIn(),
                 controller.getNetworkController().getOut(), model.getCurrentPlayer());
         updateTimer = new Timer();
-        updateTimer.schedule(poseUpdater, 500, 500);
+        updateTimer.schedule(poseUpdater, 200, 200);
 
         model.getWorld().create();
         ArrayList<Player> players = new ArrayList<>(model.getCurrentLobby().getPlayers());
