@@ -15,8 +15,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Timer;
-import java.util.TimerTask;
 
 /**
  * A connected player.
@@ -41,7 +39,6 @@ public class Player extends Thread {
 
     /**
      * Constructor for players.
-     *
      * @param sock the socket for the player's connection
      */
     public Player(Socket sock) {
@@ -66,11 +63,8 @@ public class Player extends Thread {
     }
 
     public void process() {
-        heartBeat = System.currentTimeMillis();
-
         if ((System.currentTimeMillis() - heartBeat) > TIMEOUT) {
             this.disconnect();
-            return;
         }
     }
 
@@ -93,8 +87,8 @@ public class Player extends Thread {
     }
 
     void joinLobby(Lobby lobby) {
-        lobby.addPlayer(this);
         this.lobby = lobby;
+        this.lobby.addPlayer(this);
     }
 
     private void leaveLobby() {
@@ -104,11 +98,14 @@ public class Player extends Thread {
         }
     }
 
-    private void leaveGame() {
+    public void leaveGame() {
+        sendStopGame();
         this.playing = false;
     }
 
-    private void joinGame() {
+    public void joinGame() {
+        sendStartGame();
+        sendLives();
         this.playing = true;
     }
 
@@ -117,6 +114,8 @@ public class Player extends Thread {
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
+        heartBeat = System.currentTimeMillis();
+
         // respond
         if (clientInput.startsWith("joinlobby ")) {
             String[] split = clientInput.split(" ");
@@ -175,7 +174,7 @@ public class Player extends Thread {
                     setReady(true);
                     break;
                 case "forcedisconnect":
-                    this.disconnect();
+                    disconnect();
                     break;
                 case "leavegame":
                     leaveGame();
@@ -213,6 +212,13 @@ public class Player extends Thread {
         }
     }
 
+
+    public void sendPlayerFlags(Player other) {
+        out.println("updatepose " + other.getPlayerName() + " "
+                + other.getPose().pack());
+        System.out.println("Updated " + other.getPlayerName() + " of other poses");
+    }
+
     /**
      * Signals the player to start the game.
      */
@@ -231,7 +237,7 @@ public class Player extends Thread {
      * Updates the lives to the player with its current lobby's lives.
      */
     public void sendLives() {
-        out.println("updatelives " + lobby.getGameLoop().getLives());
+        out.println("updatelives " + lobby.getGame().getLives());
     }
 
     /**
@@ -260,7 +266,6 @@ public class Player extends Thread {
 
     /**
      * Getter for a player's pose.
-     *
      * @return the player's current pose.
      */
     public Pose getPose() {
@@ -268,26 +273,7 @@ public class Player extends Thread {
     }
 
     /**
-     * Setter for a player's pose.
-     *
-     * @param pose the player's current pose.
-     */
-    public void setPose(Pose pose) {
-        this.pose = pose;
-    }
-
-    /**
-     * Gets the lobby of the player.
-     *
-     * @return lobby this player is in
-     */
-    public Lobby getLobby() {
-        return lobby;
-    }
-
-    /**
      * Getter for a player's final pose.
-     *
      * @return the player's final pose
      */
     public Pose getFinalPose() {

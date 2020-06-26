@@ -17,7 +17,7 @@ import java.util.Properties;
         justification = "Several try-catch blocks not required.")
 public class Settings {
 
-    public static final boolean LOCALHOST = false;
+    public static final boolean LOCALHOST = true;
     public static final boolean DEBUG = false;
 
     private static String webcamName = Webcam.getDefault().getName();

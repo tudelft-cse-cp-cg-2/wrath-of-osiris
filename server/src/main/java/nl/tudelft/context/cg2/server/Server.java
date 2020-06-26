@@ -5,7 +5,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -16,7 +15,8 @@ import java.util.concurrent.TimeUnit;
 @SuppressWarnings("HideutilityClassConstructor")
 public final class Server {
 
-    private static ScheduledExecutorService threadingService;
+    private static ScheduledExecutorService networkThread;
+    private static ScheduledExecutorService gameThread;
     private static final int PORT = 43594;
 
     private static ArrayList<Lobby> lobbies;
@@ -27,6 +27,8 @@ public final class Server {
      * @param args command line arguments (ignored)
      */
     public static void main(String[] args) {
+        System.out.println("Starting server...");
+
         try {
             startServer();
             startNetwork();
@@ -41,27 +43,35 @@ public final class Server {
      * Loads the server data and sets variables.
      */
     private static void startServer() {
-        threadingService = Executors.newSingleThreadScheduledExecutor();
+        networkThread = Executors.newSingleThreadScheduledExecutor();
+        gameThread = Executors.newSingleThreadScheduledExecutor();
         lobbies = new ArrayList<>();
         players = new ArrayList<>();
     }
 
     /**
-     * Starts the server.
-     * @throws IOException when no socket could be opened
+     * Starts the network.
      */
     private static void startNetwork() throws IOException {
         ServerSocket serverSock = new ServerSocket(PORT);
 
-        System.out.println("Started server on port " + PORT);
-        while (true) {
-            Socket sock = serverSock.accept();
-            System.out.println("Accepted new connection from " + sock.getInetAddress());
+        Runnable ioThread = () -> {
+            try {
+                while (true) {
+                    Socket sock = serverSock.accept();
+                    System.out.println("Accepted new connection from " + sock.getInetAddress());
 
-            Player player = new Player(sock);
-            players.add(player);
-            player.start();
-        }
+                    Player player = new Player(sock);
+                    players.add(player);
+                    player.start();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                System.out.println("Game loop error...");
+            }
+        };
+
+        networkThread.submit(ioThread);
     }
 
     /**
@@ -74,13 +84,16 @@ public final class Server {
                 lobbies.forEach(Lobby::process);
                 players.removeIf(Player::hasDisconnected);
                 lobbies.removeIf(Lobby::isEmpty);
+
+                System.out.println("Player #: " + players.size());
+                System.out.println("Lobby #: " + lobbies.size());
             } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println("Gane loop error...");
             }
         };
 
-        threadingService.scheduleAtFixedRate(mainThread, 0, 600, TimeUnit.MILLISECONDS);
+        gameThread.scheduleAtFixedRate(mainThread, 0, 600, TimeUnit.MILLISECONDS);
     }
 
     /**
@@ -145,7 +158,7 @@ public final class Server {
     public static List<String> packLobbies() {
         List<String> out = new ArrayList<>();
         for (Lobby lobby : lobbies) {
-            if (!lobby.isStarted()) {
+            if (!lobby.inGame()) {
                 out.add(lobby.getPlayers().size() + lobby.getName());
             }
         }
