@@ -10,9 +10,10 @@ import java.util.ArrayList;
 public class Lobby {
     private static final int MAX_PLAYERS = 5;
 
+    private GameLoop gameLoop;
+
     private final String name;
     private final String password;
-    private GameLoop gameLoop;
     private boolean started = false;
 
     /**
@@ -24,7 +25,6 @@ public class Lobby {
      * Constructor for the Lobby.
      * When the host creates a Lobby, only the host is added as player.
      * If a player joins a lobby, 'players' contains all players, including himself.
-     *
      * @param name     lobby name.
      * @param password lobby password.
      * @param players  list of current players in the lobby.
@@ -77,15 +77,6 @@ public class Lobby {
     }
 
     /**
-     * Removes a player from the lobby.
-     *
-     * @param player player to be removed
-     */
-    public void removePlayer(Player player) {
-        this.players.remove(player);
-    }
-
-    /**
      * Returns whether or not the lobby is full.
      *
      * @return true if full, false if not
@@ -121,8 +112,8 @@ public class Lobby {
             this.started = true;
             for (Player player : players) {
                 player.startPoseUpdater();
-                player.startGame();
-                player.updateLives();
+                player.sendStartGame();
+                player.sendLives();
             }
             gameLoop.start();
         }
@@ -134,20 +125,21 @@ public class Lobby {
     public void stopGame() {
         this.started = false;
         for (Player player : players) {
-            player.stopGame();
+            player.sendStopGame();
         }
     }
 
-    /**
-     * Processes a player leaving the game, by signalling other players and adjusting the levels.
-     * @param playerName The name of the player that has left
-     */
-    public void processPlayerLeave(String playerName) {
-        // todo: Adjust and update levels for one less player.
-        for (Player player : players) {
-            if (!player.getName().equals(playerName)) {
-                player.sendPlayerLeft(playerName);
-            }
+    public void process() {
+
+    }
+
+    public boolean isEmpty() {
+        return players.isEmpty();
+    }
+
+    public void leave(Player player) {
+        if (players.remove(player)) {
+            player.sendPlayerLeft(player.getName());
         }
     }
 }

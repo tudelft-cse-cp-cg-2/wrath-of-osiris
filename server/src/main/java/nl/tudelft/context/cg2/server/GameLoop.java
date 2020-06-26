@@ -64,7 +64,7 @@ public class GameLoop extends Thread {
                     }
                 }
                 for (Player player : lobby.getPlayers()) {
-                    player.updateLives();
+                    player.sendLives();
                 }
                 currentWallIndex++;
             }

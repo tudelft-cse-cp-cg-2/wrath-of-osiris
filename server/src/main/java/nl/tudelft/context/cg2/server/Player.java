@@ -27,28 +27,17 @@ public class Player extends Thread {
     private BufferedReader in;
     private PrintWriter out;
 
-    private static Timer timeoutTimer;
-    private long heartBeat;
-    private static final long TIMEOUT = 20000; // 20 seconds
-
-    /**
-     * Current pose of the player.
-     * This starts out with all limbs neutral, and in the middle region.
-     */
-    private Pose pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
-
-    /**
-     * Pose that should be compared to the hole in the wall. After the comparison, it should be
-     * changed back to null such that the same finalPose won't be used twice in a row.
-     */
-    private Pose finalPose = null;
-    private boolean ready = false;
-    private String playerName;
     private Lobby lobby;
+    private String playerName;
+    private Pose pose;
+    private Pose finalPose;
 
-    private Timer eventTimer;
+    private static final long TIMEOUT = 20000; // 20 seconds
+    private long heartBeat;
 
-    private boolean terminate = false;
+    private boolean disconnected;
+    private boolean playing;
+    private boolean ready;
 
     /**
      * Constructor for players.
@@ -65,90 +54,77 @@ public class Player extends Thread {
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
-            App.disconnectPlayer(this);
+            this.disconnect();
         }
-        this.eventTimer = new Timer();
-        pulse();
-    }
 
-    /**
-     * Updates this player's heartbeat value.
-     */
-    private void pulse() {
         this.heartBeat = System.currentTimeMillis();
+        this.pose = new Pose(Arm.DOWN, Arm.DOWN, Legs.DOWN, ScreenPos.MIDDLE);
+        this.finalPose = null;
+        this.ready = false;
+        this.disconnected = false;
+        this.playing = false;
     }
 
-    /**
-     * Returns whether or not the client is considered to have disappeared.
-     * @return true if so, false otherwise
-     */
-    public boolean hasDisappeared() {
-        return (System.currentTimeMillis() - this.heartBeat) > TIMEOUT;
+    public void process() {
+        heartBeat = System.currentTimeMillis();
+
+        if ((System.currentTimeMillis() - heartBeat) > TIMEOUT) {
+            this.disconnect();
+            return;
+        }
     }
 
-    /**
-     * Changes this.terminate to true, effectively telling the run function to terminate.
-     */
-    public void terminate() {
-        this.terminate = true;
+    public void disconnect() {
+        if (playing) {
+           leaveGame();
+        }
+
+        leaveLobby();
+
+        try {
+            this.in.close();
+            this.out.close();
+            this.interrupt();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        this.disconnected = true;
     }
 
-    /**
-     * Setter for playerName.
-     *
-     * @param name playerName
-     */
-    public void setPlayerName(String name) {
-        this.playerName = name;
+    void joinLobby(Lobby lobby) {
+        lobby.addPlayer(this);
+        this.lobby = lobby;
     }
 
-    /**
-     * Getter for playerName.
-     *
-     * @return playerName
-     */
-    public String getPlayerName() {
-        return this.playerName;
+    private void leaveLobby() {
+        if (lobby != null) {
+            lobby.leave(this);
+            lobby = null;
+        }
     }
 
-    /**
-     * Getter for ready, a boolean that indicates whether this player is ready for the wall to come.
-     *
-     * @return ready
-     */
-    public boolean isReady() {
-        return ready;
+    private void leaveGame() {
+        this.playing = false;
     }
 
-    /**
-     * Setter for ready.
-     *
-     * @param ready ready
-     */
-    public void setReady(boolean ready) {
-        this.ready = ready;
+    private void joinGame() {
+        this.playing = true;
     }
 
     /**
      * Responds to messages received from the player's client.
-     *
      * @param clientInput the input to process
      */
     private void respond(String clientInput) {
-        // update heartbeat
-        pulse();
-
         // respond
         if (clientInput.startsWith("joinlobby ")) {
             String[] split = clientInput.split(" ");
             assert split.length == 3;
             String newPlayerName = split[2];
-            if (App.playerNameIsUnique(newPlayerName)) {
-                timeoutTimer = new Timer();
-                timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
-
+            if (Server.playerNameIsUnique(newPlayerName)) {
                 this.setPlayerName(newPlayerName);
-                App.addPlayerToLobby(split[1], this);
+                Server.addPlayerToLobby(split[1], this);
                 out.println(newPlayerName);
             } else {
                 out.println(EOT);
@@ -157,7 +133,7 @@ public class Player extends Thread {
             String[] split = clientInput.split(" ");
             assert split.length == 2;
             String lobbyName = split[1];
-            out.println(App.fetchLobby(lobbyName));
+            out.println(Server.fetchLobby(lobbyName));
         } else if (clientInput.startsWith("updatepose ")) {
             String[] split = clientInput.split(" ");
             assert split.length == 2;
@@ -168,17 +144,13 @@ public class Player extends Thread {
             assert (split.length == 3 || split.length == 4);
             String newPlayerName = split[1];
             String newLobbyName = split[2];
-            if (App.playerNameIsUnique(playerName) && App.lobbyNameIsUnique(newLobbyName)) {
-                timeoutTimer = new Timer();
-                timeoutTimer.schedule(new TimeoutTask(this), 0, TIMEOUT);
-
+            if (Server.playerNameIsUnique(playerName) && Server.lobbyNameIsUnique(newLobbyName)) {
                 setPlayerName(newPlayerName);
                 Lobby newLobby;
-
                 if (split.length == 4) { // lobby with password
-                    newLobby = App.createLobby(this, newLobbyName, split[3]);
+                    newLobby = Server.createLobby(this, newLobbyName, split[3]);
                 } else { // lobby without password
-                    newLobby = App.createLobby(this, newLobbyName);
+                    newLobby = Server.createLobby(this, newLobbyName);
                 }
                 out.println(newLobby.getName());
             } else {
@@ -190,12 +162,11 @@ public class Player extends Thread {
         } else {
             switch (clientInput) {
                 case "listlobbies":
-                    App.packLobbies().forEach(out::println);
+                    Server.packLobbies().forEach(out::println);
                     out.println(EOT);
                     break;
                 case "leavelobby":
-                    timeoutTimer.cancel();
-                    App.removePlayerFromLobbies(this);
+                    leaveLobby();
                     break;
                 case "startgame":
                     lobby.startGame();
@@ -204,21 +175,10 @@ public class Player extends Thread {
                     setReady(true);
                     break;
                 case "forcedisconnect":
-                    if (timeoutTimer != null) {
-                        timeoutTimer.cancel();
-                    }
-                    stopPoseUpdater();
-                    if (lobby != null && lobby.isStarted()) {
-                        lobby.processPlayerLeave(playerName);
-                    }
-                    App.removePlayerFromLobbies(this);
-                    terminate = true;
+                    this.disconnect();
                     break;
                 case "leavegame":
-                    timeoutTimer.cancel();
-                    stopPoseUpdater();
-                    lobby.processPlayerLeave(playerName);
-                    App.removePlayerFromLobbies(this);
+                    leaveGame();
                     break;
                 default:
                     System.out.println("Unknown command from client: " + clientInput);
@@ -235,7 +195,7 @@ public class Player extends Thread {
     public void run() {
         String clientInput;
         try {
-            while (!terminate) {
+            while (!disconnected) {
                 if (in.ready()) {
                     clientInput = in.readLine();
                     if (clientInput != null) {
@@ -245,38 +205,57 @@ public class Player extends Thread {
                     }
                 }
             }
-            if (timeoutTimer != null) {
-                timeoutTimer.cancel();
-                timeoutTimer.purge();
-            }
             System.out.println("Player terminated: " + playerName);
         } catch (IOException e) {
             System.out.println(sock.getInetAddress() + ":" + sock.getPort()
                     + " disconnected (connection lost).");
-            App.disconnectPlayer(this);
+            disconnect();
         }
     }
 
     /**
-     * TimerTask to check if the player hasn't asynchronously disconnected.
+     * Signals the player to start the game.
      */
-    private static class TimeoutTask extends TimerTask {
-        private final Player player;
+    public void sendStartGame() {
+        out.println("startgame");
+    }
 
-        /**
-         * Constructor for the TimoutTask.
-         * @param player the current player
-         */
-        TimeoutTask(Player player) {
-            this.player = player;
-        }
+    /**
+     * Signals the player to stop the game.
+     */
+    public void sendStopGame() {
+        out.println("stopgame");
+    }
 
-        @Override
-        public void run() {
-            if (player.hasDisappeared()) {
-                App.disconnectPlayer(player);
-            }
-        }
+    /**
+     * Updates the lives to the player with its current lobby's lives.
+     */
+    public void sendLives() {
+        out.println("updatelives " + lobby.getGameLoop().getLives());
+    }
+
+    /**
+     * Sends a level to the client.
+     *
+     * @param level level
+     */
+    public void sendLevel(ArrayList<Wall> level) {
+        out.println(LevelGenerator.levelToJsonString(level));
+    }
+
+    /**
+     * Lets the client know that the next wall can come.
+     */
+    public void sendNextWall() {
+        out.println("nextwall");
+    }
+
+    /**
+     * Signals the player that another player has left the game.
+     * @param playerName the name of the player that has left
+     */
+    public void sendPlayerLeft(String playerName) {
+        out.println("playerleft " + playerName);
     }
 
     /**
@@ -317,86 +296,49 @@ public class Player extends Thread {
 
     /**
      * Setter for a player's final pose.
-     *
-     * @param p the player's final pose
+     * @param pose the player's final pose
      */
-    public void setFinalPose(Pose p) {
-        this.finalPose = p;
+    public void setFinalPose(Pose pose) {
+        this.finalPose = pose;
     }
 
     /**
-     * Sets the lobby for this player.
-     *
-     * @param lobby the new lobby for the player
+     * Setter for playerName.
+     * @param name playerName
      */
-    public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
+    public void setPlayerName(String name) {
+        this.playerName = name;
     }
 
     /**
-     * Signals the player to start the game.
+     * Getter for playerName.
+     * @return playerName
      */
-    public void startGame() {
-        out.println("startgame");
+    public String getPlayerName() {
+        return this.playerName;
     }
 
     /**
-     * Signals the player to start the game.
+     * Getter for ready, a boolean that indicates whether this player is ready for the wall to come.
+     * @return ready
      */
-    public void stopGame() {
-        stopPoseUpdater();
-        out.println("stopgame");
+    public boolean isReady() {
+        return ready;
     }
 
     /**
-     * Updates the lives to the player with its current lobby's lives.
+     * Setter for ready.
+     * @param ready ready
      */
-    public void updateLives() {
-        out.println("updatelives " + lobby.getGameLoop().getLives());
+    public void setReady(boolean ready) {
+        this.ready = ready;
     }
 
-    /**
-     * Sends a level to the client.
-     *
-     * @param level level
-     */
-    public void sendLevel(ArrayList<Wall> level) {
-        out.println(LevelGenerator.levelToJsonString(level));
+    public boolean hasDisconnected() {
+        return disconnected;
     }
 
-    /**
-     * Starts the pose updater for this player.
-     */
-    public void startPoseUpdater() {
-        PoseUpdater poseUpdater = new PoseUpdater(in, out, this);
-        this.eventTimer = new Timer();
-        eventTimer.schedule(poseUpdater, 500, 500);
-    }
-
-    /**
-     * Stops the pose updater for this player.
-     */
-    public void stopPoseUpdater() {
-        if (eventTimer != null) {
-            eventTimer.cancel();
-            eventTimer.purge();
-            eventTimer = null;
-        }
-        System.out.println("Pose updater stopped: " + playerName);
-    }
-
-    /**
-     * Lets the client know that the next wall can come.
-     */
-    public void sendNextWall() {
-        out.println("nextwall");
-    }
-
-    /**
-     * Signals the player that another player has left the game.
-     * @param playerName the name of the player that has left
-     */
-    public void sendPlayerLeft(String playerName) {
-        out.println("playerleft " + playerName);
+    public boolean isPlaying() {
+        return playing;
     }
 }
