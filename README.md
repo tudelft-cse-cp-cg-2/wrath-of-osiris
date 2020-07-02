@@ -4,7 +4,7 @@ When people need to stay quarantined at home for long periods of time, lonelines
 ## Running the game
 Requirements: a pc running Linux or Windows, with Java 8 or higher installed, and a webcam.
 
-1. Download the [Linux client](https://github.com/tudelft-cse-cp-cg-2/wrath-of-osiris/raw/final-release/client-release-linux.zip) or [Windows client](https://github.com/tudelft-cse-cp-cg-2/wrath-of-osiris/raw/final-release/client-release-windows.zip).
+1. Download the [Linux client](https://github.com/tudelft-cse-cp-cg-2/wrath-of-osiris/raw/release/client-release-linux.zip) or [Windows client](https://github.com/tudelft-cse-cp-cg-2/wrath-of-osiris/raw/release/client-release-windows.zip).
 2. Unzip the file. Make sure its contents (a `.jar` and a `.xml` file) are now located in the same folder.
 3. In this folder, either double click the jar if possible on your system, or execute `java -jar client-1.0-SNAPSHOT.jar`.
 4. The game should now start and automatically connect to the central server. You can change any settings you like in the now generated `settings.properties` file.
