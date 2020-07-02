@@ -14,7 +14,7 @@
         <junit.jupiter.version>5.7.0-M1</junit.jupiter.version>
         <maven.projectinfo.version>3.0.0</maven.projectinfo.version>
         <maven.checkstyle.version>3.1.1</maven.checkstyle.version>
-        <puppycrawl.checkstyle.version>8.12</puppycrawl.checkstyle.version>
+        <puppycrawl.checkstyle.version>8.29</puppycrawl.checkstyle.version>
         <spotbugs.plugin.version>4.0.0</spotbugs.plugin.version>
         <spotbugs.version>4.0.2</spotbugs.version>
     </properties>
