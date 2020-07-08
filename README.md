@@ -1,6 +1,8 @@
 # Wrath of Osiris
 When people need to stay quarantined at home for long periods of time, loneliness, lack of exercise and boredom tend to affect them more frequently and strongly. Games combining physical exercise, challenging gameplay, and social cooperation can combat these negative phenomena. This paper describes one such game. In Wrath of Osiris, actual player movement in the real world is used as an input method, in order to get some exercise. The players need to work together, to promote feelings of camaraderie and team spirit. Lastly, the issue of boredom is tackled by an increasingly challenging game setting. Commonly available technology, such as image processing via a webcam and networking are used to offer a solution to a wide range of people.
 
+[View the trailer here](https://www.youtube.com/watch?v=0rAwWG25UU0)
+
 ## Running the game
 Requirements: a pc running Linux or Windows, with Java 8 or higher installed, and a webcam.
 
